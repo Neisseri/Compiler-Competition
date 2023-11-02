@@ -3,6 +3,9 @@
 #include "frontend/lexer_parser/SysYBaseVisitor.h"
 #include "frontend/lexer_parser/SysYLexer.h"
 #include "frontend/lexer_parser/SysYParser.h"
+#include "antlr4-runtime.h"
+
+#define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
 using namespace tree;
@@ -10,7 +13,7 @@ using namespace std;
 
 ParseTree * get_parse_tree(ifstream &stream, int step){
     ANTLRInputStream input(stream);
-    SysYLexer lexer(&input);
+    frontend::SysYLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
     SysYParser parser(&tokens);
     ParseTree *tree = parser.compUnit();

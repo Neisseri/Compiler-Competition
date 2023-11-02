@@ -1,24 +1,17 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
-project(miniSysY)
+project(compiler CXX)
 
-# 添加编译的源文件，将所有的.cpp文件包含进来
-file(GLOB_RECURSE MY_SOURCE_FILES "src/*.cpp")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
 
-# execute_process(COMMAND export CLASSPATH="${CMAKE_SOURCE_DIR}/tools/antlr-4.13.0-complete.jar:$CLASSPATH")
+file(GLOB_RECURSE SRC "src/*.cpp")
 
-# 预构建步骤: 运行 antlr4 命令生成文件
-# execute_process(COMMAND java -jar ${CMAKE_SOURCE_DIR}/tools/antlr-4.13.0-complete.jar -Dlanguage=Cpp -no-listener -visitor src/frontend/lexer_parser/SysY.g4
-#                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(src)
+include_directories(3rd_party/antlr4-runtime)
 
-# 添加 ANTLR4 运行时库的头文件目录
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/local/include/antlr4-runtime)
+add_subdirectory(3rd_party/antlr4-runtime)
 
-# 添加 ANTLR4 运行时库的链接目录
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/local/lib)
-
-# 添加可执行文件
-add_executable(miniSysY ${MY_SOURCE_FILES})
-
-# 链接 ANTLR4 运行时库
-target_link_libraries(miniSysY antlr4-runtime)
+add_executable(compiler ${SRC})
+target_link_libraries(compiler antlr4_runtime)
