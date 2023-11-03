@@ -140,7 +140,7 @@ namespace frontend
         public:
             BinaryExpression() = default;
             BinaryExpression(BinaryOp op, std::shared_ptr<Expression> lhs, std::shared_ptr<Expression> rhs)
-                : lhs(lhs), rhs(rhs), op(op) {}
+                : op(op) ,lhs(lhs), rhs(rhs){}
             virtual ~BinaryExpression() = default;
             std::string toString() const override
             {
@@ -227,17 +227,14 @@ namespace frontend
             // move constructor
             LValue(LValue &&) = default;
             virtual ~LValue() = default;
-
-            class AstNode
+            std::string toString() const override
             {
-            public:
-                virtual ~AstNode() = default;
-                virtual std::string toString() const = 0;
-                virtual void print(std::ostream &out, int indent) const
-                {
-                    out << std::string(indent, ' ') << toString() << std::endl;
-                }
-            };
+                return m_ident.toString();
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << toString();
+            }
 
             const Identifier &ident() const { return m_ident; }
 

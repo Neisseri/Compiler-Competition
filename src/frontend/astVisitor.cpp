@@ -272,8 +272,12 @@ antlrcpp::Any AstVisitor::visitMod(SysYParser::ModContext *const ctx)
 
 antlrcpp::Any AstVisitor::visitAdd(SysYParser::AddContext *const ctx)
 {
+    std::cout << "visitAdd" << std::endl;
+    std::cout << "ctx->addExp():" << typeid(ctx->addExp()).name() << std::endl;
     auto const lhs = ctx->addExp()->accept(this).as<Expression *>();
+    std::cout << "lhs:" << lhs << std::endl;
     auto const rhs = ctx->mulExp()->accept(this).as<Expression *>();
+    std::cout << "rhs:" << rhs << std::endl;
     auto const ret =
         new BinaryExpression(BinaryOp::Add, std::unique_ptr<Expression>(lhs),
                              std::unique_ptr<Expression>(rhs));
@@ -415,6 +419,7 @@ antlrcpp::Any AstVisitor::visitVarDecl(SysYParser::VarDeclContext *const ctx)
         {
             std::cout<<"init_"<<std::endl;
             auto const init = init_->accept(this).as<Initializer *>();
+            std::cout<<"init:"<<init<<std::endl;
             auto const decl = new Declaration(std::move(type), ident, std::unique_ptr<Initializer>(init));
             std::cout<<"decl:"<<decl<<std::endl;
             ret.push_back(decl);
@@ -431,8 +436,11 @@ antlrcpp::Any AstVisitor::visitVarDecl(SysYParser::VarDeclContext *const ctx)
 
 antlrcpp::Any AstVisitor::visitInit(SysYParser::InitContext *const ctx)
 {
+    std::cout<<"visitInit"<<std::endl;
     auto expr_ = ctx->exp()->accept(this).as<Expression *>();
+    std::cout<<"expr_:"<<expr_<<std::endl;
     std::unique_ptr<Expression> expr(expr_);
+    std::cout<<"visitInit end"<<std::endl;
     return new Initializer(std::move(expr));
 }
 
@@ -464,5 +472,33 @@ antlrcpp::Any AstVisitor::visitReturn(SysYParser::ReturnContext *const ctx)
     {
         auto const ret = new ReturnStatement(nullptr);
         return static_cast<Statement *>(ret);
+    }
+}
+
+antlrcpp::Any AstVisitor::visitLVal(SysYParser::LValContext *const ctx)
+{
+    if (auto ident_ = ctx->Ident())
+    {
+        auto const ident = Identifier(ident_->getText());
+        auto const ret = new LValue(ident);
+        return static_cast<LValue *>(ret);
+    }
+    else {
+        //TODO: array lvalue
+        assert(false);
+    }
+}
+
+antlrcpp::Any
+AstVisitor::visitPrimaryExp_(SysYParser::PrimaryExp_Context *const ctx)
+{
+    if (ctx->number())
+    {
+        return ctx->number()->accept(this);
+    }
+    else
+    {
+        assert(ctx->exp());
+        return ctx->exp()->accept(this);
     }
 }

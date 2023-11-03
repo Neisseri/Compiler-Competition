@@ -65,9 +65,9 @@ namespace frontend
 
         // antlrcpp::Any visitCond(SysYParser::CondContext *ctx) override;
 
-        // antlrcpp::Any visitLVal(SysYParser::LValContext *ctx) override;
+        antlrcpp::Any visitLVal(SysYParser::LValContext *ctx) override;
 
-        // antlrcpp::Any visitPrimaryExp_(SysYParser::PrimaryExp_Context *ctx) override;
+        antlrcpp::Any visitPrimaryExp_(SysYParser::PrimaryExp_Context *ctx) override;
 
         antlrcpp::Any visitLValExpr(SysYParser::LValExprContext *ctx) override;
 
