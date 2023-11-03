@@ -4,6 +4,8 @@
 #include "frontend/SysYBaseVisitor.h"
 #include "frontend/SysYLexer.h"
 #include "frontend/SysYParser.h"
+#include "frontend/astVisitor.hpp"
+
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
@@ -16,20 +18,20 @@ int main(int argc, const char *argv[])
     ifstream stream;
     stream.open(argv[1]);
     ANTLRInputStream input(stream);
-    SysYLexer lexer(&input);
+    frontend::SysYLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
-    SysYParser parser(&tokens);
-    ParseTree *tree = parser.compUnit();
+    frontend::SysYParser parser(&tokens);
+    auto tree = parser.compUnit();
+    cout<<"parse tree:"<<endl;
+    cout << tree->toStringTree(&parser,true) << endl;
     if (VISITOR)
     {
-        SysYBaseVisitor visitor;
-        visitor.visit(tree);
+        frontend::AstVisitor visitor;
+        cout << "flag1" << endl;
+        visitor.visitCompUnit(tree);
+        cout<<"flag2"<<endl;
+        auto &ast=visitor.compileUnit();
+        ast.print(cout,0);
     }
-    else
-    {
-        // CBaseListener listener;
-        // tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
-    }
-    cout << tree->toStringTree(&parser,true) << endl;
     return 0;
 }
