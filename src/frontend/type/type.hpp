@@ -8,13 +8,13 @@ struct Type
 
     Type(){}
 
-    Type(int type) : type{type}, is_const{false} {}
+    Type(int type) : type(type), is_const(false) {}
 
-    Type(int type, bool is_const) : type(type), is_const{is_const} {}
+    Type(int type, bool is_const) : type(type), is_const(is_const) {}
 
-    Type(int type, std::vector<int> dim) : type{type}, is_const{false}, dim{std::move(dim)} {}
+    Type(int type, std::vector<int> dim) : type(type), is_const(false), dim(std::move(dim)) {}
     
-    Type(Type & type) : type{type.type}, is_const{false}, dim{std::move(type.dim)} {}
+    Type(Type & type) : type(type.type), is_const(false), dim(std::move(type.dim)) {}
 
     int n_dim(){
         return dim.size();
