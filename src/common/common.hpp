@@ -21,6 +21,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <iostream>
 
 #include "../frontend/type/type.hpp"
 #include "const.hpp"

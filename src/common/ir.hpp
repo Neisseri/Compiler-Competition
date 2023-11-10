@@ -2,12 +2,6 @@
 #include "const.hpp"
 namespace ir {
 
-// struct Type {
-//   int base_type; // ScalarType
-//   bool is_const;
-//   std::vector<int> dims; // array dimensions
-// };
-
 struct Reg {
     int type; // ScalarType
     int id;
@@ -82,9 +76,6 @@ struct Function {
     std::vector<Type> param_types;
     std::vector<std::unique_ptr<Instruction>> instrs;
     int num_regs;
-    void do_liveness_analysis();
-    // std::vector<BasicBlock *> compute_post_order();
-    // std::unordered_map<Reg, std::unordered_set<Instruction *>> use_list;
 
 
     std::string toString(){
@@ -123,50 +114,6 @@ struct Program {
     }
 };
 
-
-
-// struct Alloca: Instruction {
-//     Type alloca_type;
-//     Reg dst;
-//     Alloca(Reg dst, Type type): alloca_type(std::move(type)), dst(dst), Instruction(ALLOCA) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Load: Instruction {
-//     Reg addr;
-//     Reg dst;
-//     Load(Reg dst, Reg addr): addr(addr), dst(dst), Instruction(LOAD) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct LoadAddr: Instruction {}
-
-// struct LoadImm: Instruction {}
-
-// struct Store: Instruction {}
-
-// struct GetElementPtr: Instruction {}
-
-// struct Convert: Instruction {}
-
-// struct Unary: Instruction {
-//     UnaryOp op;
-//     Reg dst, src;
-//     // Unary() {}
-//     Unary(Reg dst, UnaryOp op, Reg src): op(op), dst(dst), src(src), Instruction(UNARY) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Binary: Instruction {
-//     BinaryOp op;
-//     Reg dst, src1, src2;
-//     // Binary() {}
-//     Binary(Reg dst, BinaryOp op, Reg src1, Reg src2): op(op), dst(dst), src1(src1), src2(src2), Instruction(BINARY) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Call: Instruction {}
-
 struct Return: Instruction {
     ir::Reg ret_val;
     Return(Reg ret_val): ret_val(ret_val), Instruction(TERMINATOR) {}
@@ -186,13 +133,5 @@ struct Return: Instruction {
         os << std::string(indent, ' ') << toString() << std::endl;
     }
 };
-
-// struct Jump: Instruction {}
-
-// struct Branch: Instruction {}
-
-// struct Phi: Instruction {}
-
-// struct Switch: Instruction {}
 
 }
