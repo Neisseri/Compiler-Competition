@@ -446,16 +446,16 @@ namespace frontend
                 case static_cast<int>(BinaryOpEnum::OR):
                     ret = "||";
                     break;
-                case static_cast<int>(BinaryOpEnum::GT):
+                case static_cast<int>(BinaryOpEnum::SGT):
                     ret = ">";
                     break;
-                case static_cast<int>(BinaryOpEnum::LT):
+                case static_cast<int>(BinaryOpEnum::SLT):
                     ret = "<";
                     break;
-                case static_cast<int>(BinaryOpEnum::GE):
+                case static_cast<int>(BinaryOpEnum::SGE):
                     ret = ">=";
                     break;
-                case static_cast<int>(BinaryOpEnum::LE):
+                case static_cast<int>(BinaryOpEnum::SLE):
                     ret = "<=";
                     break;
                 case static_cast<int>(BinaryOpEnum::EQ):
@@ -518,7 +518,7 @@ namespace frontend
         public:
 
             // LValue(std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> index) : ident(std::move(ident)), index(std::move(index)), has_index(true) {}
-            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(0)) {}
+            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(TypeEnum::INT)) {}
             ~LValue() = default;
             std::string toString() const override
             {

@@ -59,41 +59,41 @@ public:
             ir::Reg lhs = visitExpression(binary->lhs, ir_function);
             ir::Reg rhs = visitExpression(binary->rhs, ir_function);
             ir::Reg dst = get_new_reg(lhs.type); // TODO: change of type
-            switch(binary->op->binary_op_type){
-            case static_cast<int>(BinaryOpEnum::ADD):{
-                std::unique_ptr<ir::ADD> add_instr(new ir::ADD(dst, lhs, rhs));
-                ir_function.instrs.push_back(std::move(add_instr));
-                return dst;
-                break;
-            }
-            case static_cast<int>(BinaryOpEnum::SUB):
-                break;
-            case static_cast<int>(BinaryOpEnum::MUL):
-                break;
-            case static_cast<int>(BinaryOpEnum::DIV):
-                break;
-            case static_cast<int>(BinaryOpEnum::MOD):
-                break;
-            case static_cast<int>(BinaryOpEnum::AND):
-                break;
-            case static_cast<int>(BinaryOpEnum::OR):
-                break;
-            case static_cast<int>(BinaryOpEnum::GT):
-                break;
-            case static_cast<int>(BinaryOpEnum::LT):
-                break;
-            case static_cast<int>(BinaryOpEnum::GE):
-                break;
-            case static_cast<int>(BinaryOpEnum::LE):
-                break;
-            case static_cast<int>(BinaryOpEnum::EQ):
-                break;
-            case static_cast<int>(BinaryOpEnum::NE):
-                break;
-            default:
-                assert(false);
-                break;
-            }
+            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst, static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs));
+            ir_function.instrs.push_back(std::move(add_instr));
+            return dst;
+            // switch(binary->op->binary_op_type){
+            // case static_cast<int>(BinaryOpEnum::ADD):{
+            //     break;
+            // }
+            // case static_cast<int>(BinaryOpEnum::SUB):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::MUL):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::DIV):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::MOD):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::AND):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::OR):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::SGT):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::SLT):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::SGE):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::SLE):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::EQ):
+            //     break;
+            // case static_cast<int>(BinaryOpEnum::NE):
+            //     break;
+            // default:
+            //     assert(false);
+            //     break;
+            // }
         }
         else if (auto intliteral = dynamic_cast<ast::IntLiteral *>(expr.get())){
             ir::Reg ret = get_new_reg(static_cast<int>(TypeEnum::INT));

@@ -483,7 +483,7 @@ public:
   {
     auto const lhs = ctx->relExp()->accept(this).as<Expression *>();
     auto const rhs = ctx->addExp()->accept(this).as<Expression *>();
-    auto const op = new BinaryOp(BinaryOpEnum::GE);
+    auto const op = new BinaryOp(BinaryOpEnum::SGE);
     auto const ret = new Binary(std::unique_ptr<Expression>(lhs),
                                 std::unique_ptr<BinaryOp>(op),
                                 std::unique_ptr<Expression>(rhs));
@@ -494,7 +494,7 @@ public:
   {
     auto const lhs = ctx->relExp()->accept(this).as<Expression *>();
     auto const rhs = ctx->addExp()->accept(this).as<Expression *>();
-    auto const op = new BinaryOp(BinaryOpEnum::LT);
+    auto const op = new BinaryOp(BinaryOpEnum::SLT);
     auto const ret = new Binary(std::unique_ptr<Expression>(lhs),
                                 std::unique_ptr<BinaryOp>(op),
                                 std::unique_ptr<Expression>(rhs));
@@ -505,7 +505,7 @@ public:
   {
     auto const lhs = ctx->relExp()->accept(this).as<Expression *>();
     auto const rhs = ctx->addExp()->accept(this).as<Expression *>();
-    auto const op = new BinaryOp(BinaryOpEnum::LE);
+    auto const op = new BinaryOp(BinaryOpEnum::SLE);
     auto const ret = new Binary(std::unique_ptr<Expression>(lhs),
                                 std::unique_ptr<BinaryOp>(op),
                                 std::unique_ptr<Expression>(rhs));
@@ -516,7 +516,7 @@ public:
   {
     auto const lhs = ctx->relExp()->accept(this).as<Expression *>();
     auto const rhs = ctx->addExp()->accept(this).as<Expression *>();
-    auto const op = new BinaryOp(BinaryOpEnum::GT);
+    auto const op = new BinaryOp(BinaryOpEnum::SGT);
     auto const ret = new Binary(std::unique_ptr<Expression>(lhs),
                                 std::unique_ptr<BinaryOp>(op),
                                 std::unique_ptr<Expression>(rhs));

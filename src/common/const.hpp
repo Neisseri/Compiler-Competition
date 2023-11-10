@@ -7,6 +7,7 @@ const int FLOAT = 2;
 
 enum class TypeEnum : int
 {
+    VOID,
     INT,
     FLOAT,
 };
@@ -20,13 +21,17 @@ enum class BinaryOpEnum : int
     MOD,
     AND,
     OR,
-    GT,
-    LT,
-    GE,
-    LE,
+    SGT,
+    SLT,
+    SGE,
+    SLE,
     EQ,
     NE,
-    ASSIGN,
+
+    SHL,
+    LSHR,
+    ASHR,
+    XOR,
 };
 
 enum class UnaryOpEnum : int

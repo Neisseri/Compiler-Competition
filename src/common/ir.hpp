@@ -2,12 +2,6 @@
 #include "const.hpp"
 namespace ir {
 
-// struct Type {
-//   int base_type; // ScalarType
-//   bool is_const;
-//   std::vector<int> dims; // array dimensions
-// };
-
 struct Reg {
     int type; // ScalarType
     int id;
@@ -33,14 +27,80 @@ struct Instruction {
     }
 };
 
-struct ADD : Instruction {
+struct Binary: Instruction {
+    BinaryOpEnum op;
     Reg src1;
     Reg src2;
     Reg dst;
-    ADD(Reg dst, Reg src1, Reg src2):Instruction(InstType::BINARY), dst(dst), src1(src1), src2(src2){}
+    Binary(Reg dst, BinaryOpEnum op, Reg src1, Reg src2):Instruction(InstType::BINARY), dst(dst), op(op), src1(src1), src2(src2){}
+    
+    std::string get_instr_type(){
+        switch (op)
+        {
+        case BinaryOpEnum::ADD:
+            return "add i32";
+            break;
+        case BinaryOpEnum::SUB:
+            return "sub i32";
+            break;
+        case BinaryOpEnum::MUL:
+            return "mul i32";
+            break;
+        case BinaryOpEnum::DIV:
+            return "sdiv i32";
+            break;
+        case BinaryOpEnum::MOD:
+            return "srem i32";
+            break;
+        case BinaryOpEnum::AND:
+            return "and i32";
+            break;
+        case BinaryOpEnum::OR:
+            return "or i32";
+            break;
+        case BinaryOpEnum::XOR:
+            return "xor i32";
+            break;
+        case BinaryOpEnum::SGT:
+            return "icmp sgt i32";
+            break;
+        case BinaryOpEnum::SLT:
+            return "icmp slt i32";
+            break;
+        case BinaryOpEnum::SGE:
+            return "icmp sge i32";
+            break;
+        case BinaryOpEnum::SLE:
+            return "icmp sle i32";
+            break;
+        case BinaryOpEnum::EQ:
+            return "icmp eq i32";
+            break;
+        case BinaryOpEnum::NE:
+            return "icmp ne i32";
+            break;
+        case BinaryOpEnum::SHL:
+            return "icmp shl i32";
+            break;
+        case BinaryOpEnum::LSHR:
+            return "icmp lshr i32";
+            break;
+        case BinaryOpEnum::ASHR:
+            return "icmp ashr i32";
+            break;
+        default:
+            return "unknown";
+            break;
+        }
+
+    }
 
     virtual std::string toString() override {
-        return dst.toString() + " = add i32 " + src1.toString() + ", " + src2.toString();
+        std::string ret;
+        ret += dst.toString() + " = ";
+        ret += get_instr_type();
+        ret += " " + src1.toString() + ", " + src2.toString();
+        return ret;
     }
 
     virtual void print(std::ostream &os, int indent) override{
@@ -82,10 +142,6 @@ struct Function {
     std::vector<Type> param_types;
     std::vector<std::unique_ptr<Instruction>> instrs;
     int num_regs;
-    void do_liveness_analysis();
-    // std::vector<BasicBlock *> compute_post_order();
-    // std::unordered_map<Reg, std::unordered_set<Instruction *>> use_list;
-
 
     std::string toString(){
         std::string ret = "define " + ret_type.toString(1) + " @" + name + "(";
@@ -123,49 +179,6 @@ struct Program {
     }
 };
 
-
-
-// struct Alloca: Instruction {
-//     Type alloca_type;
-//     Reg dst;
-//     Alloca(Reg dst, Type type): alloca_type(std::move(type)), dst(dst), Instruction(ALLOCA) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Load: Instruction {
-//     Reg addr;
-//     Reg dst;
-//     Load(Reg dst, Reg addr): addr(addr), dst(dst), Instruction(LOAD) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct LoadAddr: Instruction {}
-
-// struct LoadImm: Instruction {}
-
-// struct Store: Instruction {}
-
-// struct GetElementPtr: Instruction {}
-
-// struct Convert: Instruction {}
-
-// struct Unary: Instruction {
-//     UnaryOp op;
-//     Reg dst, src;
-//     // Unary() {}
-//     Unary(Reg dst, UnaryOp op, Reg src): op(op), dst(dst), src(src), Instruction(UNARY) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Binary: Instruction {
-//     BinaryOp op;
-//     Reg dst, src1, src2;
-//     // Binary() {}
-//     Binary(Reg dst, BinaryOp op, Reg src1, Reg src2): op(op), dst(dst), src1(src1), src2(src2), Instruction(BINARY) {}
-//     virtual void emit(std::ostream &os) const override;
-// };
-
-// struct Call: Instruction {}
 
 struct Return: Instruction {
     ir::Reg ret_val;

@@ -49,26 +49,26 @@ enum InstType {
   TERMINATOR,
 };
 
-enum class UnaryOp { Add, Sub, Not };
+// enum class UnaryOp { Add, Sub, Not };
 
-enum class BinaryOp {
-  Add,
-  Sub,
-  Mul,
-  Div,
-  Mod,
-  Eq,
-  Neq,
-  Lt,
-  Gt,
-  Leq,
-  Geq,
-  And,
-  Or,
-  Shr,
-  Shl,
-  NR_OPS
-};
+// enum class BinaryOp {
+//   Add,
+//   Sub,
+//   Mul,
+//   Div,
+//   Mod,
+//   Eq,
+//   Neq,
+//   Lt,
+//   Gt,
+//   Leq,
+//   Geq,
+//   And,
+//   Or,
+//   Shr,
+//   Shl,
+//   NR_OPS
+// };
 
 enum ScalarType {
   Int,
