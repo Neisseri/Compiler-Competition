@@ -25,7 +25,7 @@ void BasicBlock::post_order_dfs(std::unordered_set<BasicBlock*> &visited, std::v
   rst.push_back(this);
 }
 
-void BasicBlock::getDefUseSet() {
+void BasicBlock::get_def_use_set() {
   live_use.clear();
   def.clear();
   for (auto &inst: instructions) {
@@ -41,7 +41,33 @@ void BasicBlock::getDefUseSet() {
   live_out.clear();
 }
 
-std::vector<BasicBlock*> Function::doPostOrderTranverse() {
+void Function::build_basic_blocks() {
+  std::list<std::unique_ptr<Instruction>> buf;
+
+  for (auto &i: instrs) {
+    if (i->is_label()) {
+      
+    }
+    buf.push_back(i);
+    BBType bbtype = BBType::UNDEFINED;
+    if (!i->is_sequential()) {
+      if (i->type == InstType::JMP){
+        bbtype = BBType::END_BY_JUMP;
+      }
+      else if (i->type == InstType::COND_JMP){
+        bbtype = BBType::END_BY_COND_JUMP;
+      }
+      else if (i->type == InstType::RET){
+        bbtype = BBType::END_BY_RETURN;
+      }
+      BasicBlock bb = BasicBlock(bbtype, bbs.size(), label, buf);
+      bbs.push_back(&bb);
+    }
+    buf.push_back(i);
+  }
+}
+
+std::vector<BasicBlock*> Function::do_post_order_tranverse() {
   std::vector<BasicBlock*> rst;
   std::unordered_set<BasicBlock*> visited;
   bbs.front().get()->post_order_dfs(visited, rst);
@@ -50,8 +76,8 @@ std::vector<BasicBlock*> Function::doPostOrderTranverse() {
 
 void Function::do_liveness_analysis() {
   for (auto &bb: bbs) 
-    bb->getDefUseSet();
-  std::vector<BasicBlock*> order = doPostOrderTranverse();
+    bb->get_def_use_set();
+  std::vector<BasicBlock*> order = do_post_order_tranverse();
   std::reverse(order.begin(), order.end());
   bool changed = true;
   while (changed) {

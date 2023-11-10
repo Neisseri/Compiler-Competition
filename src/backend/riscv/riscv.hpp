@@ -61,30 +61,39 @@ struct Riscv {
 };
 
 struct BasicBlock {
+    BBType type;
     std::string label;
+    int id;
     std::list<std::unique_ptr<Instruction>> instructions;
     std::set<BasicBlock *> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
+    BasicBlock(BBType type, int id, std::string label, std::list<std::unique_ptr<Instruction>> instrs):
+        type(type), label(label), id(id), instructions(instrs) {}
     void push(Instruction *insn);
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
-    void getDefUseSet();
+    void get_def_use_set();
     void post_order_dfs(std::unordered_set<BasicBlock*> &visited, std::vector<BasicBlock*> &rst); 
 };
 
 struct Instruction {
-    Instruction() {}
+    InstType type;
+    Instruction(InstType type): type(type) {}
     virtual ~Instruction() = default;
     virtual void emit(std::ostream &os) const {}
     virtual std::set<Reg> def() const { return {}; }
     virtual std::set<Reg> use() const { return {}; }
+    virtual bool is_sequential() const { return type == InstType::SEQ; }
+    virtual bool is_label() const { return type == InstType::LABEL; }
 };
 
 struct Function {
     std::string name;
+    std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<std::unique_ptr<BasicBlock>> bbs;
+    void build_basic_blocks();
     void do_liveness_analysis();
-    std::vector<BasicBlock*> doPostOrderTranverse();
+    std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc() {}
     void emit_prologue_epilogue() {}
@@ -107,7 +116,7 @@ void emit_global(std::ostream &os, const ir::Program &ir_prg);
 struct Unary: Instruction {
     Reg dst, src;
     RiscvUnaryOp op;
-    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src) {}
+    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction(InstType::SEQ) {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src}; }
@@ -116,16 +125,18 @@ struct Unary: Instruction {
 struct Binary: Instruction {
     Reg dst, src1, src2;
     RiscvUnaryOp op;
-    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2) {}
+    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction(InstType::SEQ) {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src1, src2}; }
 };
 
 struct Return: Instruction {
+    int ret_val;
+    Return(int ret_val): ret_val(ret_val), Instruction(InstType::RET) {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {}; }
-    std::set<Reg> use() const override { return {}; } // TODO
+    std::set<Reg> use() const override { return {}; }
 };
 
 }

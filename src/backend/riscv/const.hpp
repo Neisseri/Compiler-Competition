@@ -21,4 +21,19 @@ namespace riscv {
         General,
         Fp,
     };
+
+    enum class InstType {
+        LABEL,
+        SEQ,
+        JMP,
+        COND_JMP,
+        RET
+    };
+
+    enum class BBType {
+        END_BY_JUMP,
+        END_BY_COND_JUMP,
+        END_BY_RETURN,
+        UNDEFINED
+    };
 }
