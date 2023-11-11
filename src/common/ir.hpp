@@ -115,7 +115,7 @@ struct Program {
 };
 
 struct Return: Instruction {
-    ir::Reg ret_val;
+    Reg ret_val;
     Return(Reg ret_val): ret_val(ret_val), Instruction(TERMINATOR) {}
 
     std::string toString(){

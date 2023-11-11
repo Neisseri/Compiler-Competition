@@ -42,3 +42,14 @@ class TacBinaryOp(Enum):
 class CondBranchOp(Enum):
     BEQ = auto()
     BNE = auto()
+
+# Label (function entry or branching target).
+class Mark(TACInstr):
+    def __init__(self, label: Label) -> None:
+        super().__init__(InstrKind.LABEL, [], [], label)
+
+    def __str__(self) -> str:
+        return "%s:" % str(self.label)
+
+    def accept(self, v: TACVisitor) -> None:
+        v.visitMark(self)

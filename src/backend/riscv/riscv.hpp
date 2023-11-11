@@ -1,5 +1,6 @@
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
+#include "../../common/label.hpp"
 #include "const.hpp"
 
 namespace riscv {
@@ -62,14 +63,16 @@ struct Riscv {
 
 struct BasicBlock {
     BBType type;
-    std::string label;
     int id;
+    ir::Label* label;
     std::list<std::unique_ptr<Instruction>> instructions;
-    std::set<BasicBlock *> pred, succ;
+    std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, std::string label, std::list<std::unique_ptr<Instruction>> instrs):
-        type(type), label(label), id(id), instructions(instrs) {}
-    void push(Instruction *insn);
+    BasicBlock(BBType type, int id, ir::Label* label):
+        type(type), label(label), id(id) {}
+    void push(std::unique_ptr<Instruction> insn) {
+        instructions.push_back(std::move(insn));
+    }
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
     void get_def_use_set();
@@ -78,6 +81,7 @@ struct BasicBlock {
 
 struct Instruction {
     InstType type;
+    ir::Label* label;
     Instruction(InstType type): type(type) {}
     virtual ~Instruction() = default;
     virtual void emit(std::ostream &os) const {}
@@ -89,13 +93,14 @@ struct Instruction {
 
 struct Function {
     std::string name;
+    ir::Label label;
     std::vector<std::unique_ptr<Instruction>> instrs;
-    std::list<std::unique_ptr<BasicBlock>> bbs;
-    void build_basic_blocks();
+    std::list<BasicBlock*> bbs;
+    void cfg_build();
     void do_liveness_analysis();
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
-    void do_reg_alloc() {}
+    void do_reg_alloc();
     void emit_prologue_epilogue() {}
 };
 
@@ -137,6 +142,12 @@ struct Return: Instruction {
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {}; }
     std::set<Reg> use() const override { return {}; }
+};
+
+struct Mark: Instruction {
+    Mark(ir::Label* label): Instruction(InstType::LABEL) {}
+    void emit(std::ostream &os) const override;
+    bool is_func_label() { return label->type == LabelType::FuncLabel; }
 };
 
 }

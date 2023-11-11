@@ -31,6 +31,7 @@ namespace riscv {
     };
 
     enum class BBType {
+        CONTINUOUS,
         END_BY_JUMP,
         END_BY_COND_JUMP,
         END_BY_RETURN,

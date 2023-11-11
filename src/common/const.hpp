@@ -38,3 +38,9 @@ enum class UnaryOpEnum : int
     UNARYADD,
     UNARYSUB,
 };
+
+enum class LabelType {
+    FuncLabel,
+    BlockLabel,
+    TMP,
+};
