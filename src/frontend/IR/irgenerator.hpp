@@ -49,6 +49,7 @@ public:
             ir_function.param_types.push_back(*(i->var_type.get()));
         }
 
+        ir_function.instrs.push_back(std::unique_ptr<ir::Mark>(new ir::Mark(ir_function.name)));
         visitBlock(*(func.body.get()), ir_function);
 
         ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(func.ident->name), std::move(ir_function)));

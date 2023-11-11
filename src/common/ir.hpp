@@ -27,6 +27,20 @@ struct Instruction {
     }
 };
 
+struct Mark : Instruction {
+    std::string label_name;
+
+    Mark(std::string name) : Instruction(InstType::LABEL), label_name(name) {}
+
+    virtual std::string toString() override {
+        return label_name + ":";
+    }
+
+    virtual void print(std::ostream &os, int indent) override{
+        os << toString() << std::endl;
+    }
+};
+
 struct Binary: Instruction {
     BinaryOpEnum op;
     Reg src1;

@@ -47,6 +47,8 @@ enum InstType {
   SWITCH,
   OUTPUT,
   TERMINATOR,
+
+  LABEL,
 };
 
 // enum class UnaryOp { Add, Sub, Not };
