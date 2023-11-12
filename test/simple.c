@@ -1,16 +1,5 @@
-int bar(int b,int c)
+void main(int a[][123][123])
 {
-    int a = 0;
-    while(a < 10)
-    {
-        a=a+1;
-        continue;
-        break;
-    }
-    return 1;
-}
-
-int main() {
-    int c = bar(1, 2);
-    return c;
+    const int a[10]=1;
+    return a;
 }

@@ -37,9 +37,7 @@ public:
 
   antlrcpp::Any visitStringConst(SysYParser::StringConstContext *ctx) override
   {
-    std::cerr << "visitStringConst unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    return std::make_shared<std::string>(ctx->getText());
   }
 
   antlrcpp::Any visitFuncRParam(SysYParser::FuncRParamContext *ctx) override
@@ -53,29 +51,62 @@ public:
     std::vector<std::unique_ptr<Expression>> args;
     for (auto arg : ctx->funcRParam())
     {
-      if (auto exp = arg->exp()){
+      if (auto exp = arg->exp())
+      {
         auto const exp_ = exp->accept(this).as<Expression *>();
         args.push_back(std::unique_ptr<Expression>(exp_));
-      }else{
-        std::cerr<<"unimplemented param type"<<std::endl;
+      }
+      else
+      {
+        std::cerr << "unimplemented param type" << std::endl;
         assert(false);
       }
     }
     return new ExpressionList(std::move(args));
-
   }
 
   antlrcpp::Any visitConstDecl(SysYParser::ConstDeclContext *ctx) override
   {
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
+    std::cerr << "visitconstDecl: " << ctx->bType()->getText() << std::endl;
     for (auto item : ctx->constDef())
     {
+      auto dimensions = item->exp();
+      std::unique_ptr<Type> temp_type;
+      if (dimensions.empty())
+      {
+        temp_type = std::make_unique<Type>(*type);
+      }
+      else
+      {
+        std::cerr << "visitconstDecl: array dim_size=" << dimensions.size() << std::endl;
+        std::vector<int> dim_list;
+        for (auto dim_ : dimensions)
+        {
+          auto const dim = dim_->accept(this).as<Expression *>();
+          std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
+          if (!dim_literal)
+          {
+            std::cerr << "visitconstecl: array dim is not int literal" << std::endl;
+            assert(false);
+          }
+          dim_list.push_back(dim_literal->value);
+        }
+        temp_type = std::make_unique<Type>(*type);
+        temp_type->dim = std::move(dim_list);
+      }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
-      std::unique_ptr<Expression> init(item->initVal()->accept(this).as<Expression *>());
-      decls.push_back(new Declaration(std::move(type), std::move(ident), std::move(init)));
+      std::unique_ptr<Assignment> init = nullptr;
+      if (auto init_ = item->initVal())
+      {
+        std::cerr << "visitconstDecl: initVal" << std::endl;
+        init.reset(init_->accept(this).as<Assignment *>());
+      }
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr),true);
+      decls.push_back(decl);
     }
-    return decls;
+    return std::make_shared<std::vector<Declaration *>>(std::move(decls));
   }
 
   antlrcpp::Any visitInt(SysYParser::IntContext *ctx) override
@@ -88,43 +119,48 @@ public:
     return new Type(TypeEnum::FLOAT);
   }
 
-  antlrcpp::Any visitConstDef(SysYParser::ConstDefContext *ctx) override
-  {
-
-    std::cerr << "visitConstDef unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
-  }
-
   antlrcpp::Any visitVarDecl(SysYParser::VarDeclContext *ctx) override
   {
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
-    std::cerr<<"visitVarDecl: "<<ctx->bType()->getText()<<std::endl;
+    std::cerr << "visitVarDecl: " << ctx->bType()->getText() << std::endl;
     for (auto item : ctx->varDef())
     {
       auto dimensions = item->exp();
       std::unique_ptr<Type> temp_type;
-      if (dimensions.empty()){
+      if (dimensions.empty())
+      {
         temp_type = std::make_unique<Type>(*type);
       }
-      else{
-        std::cerr<<"array decl unimplemented"<<std::endl;
-        assert(false);
+      else
+      {
+        std::cerr << "visitVarDecl: array dim_size=" << dimensions.size() << std::endl;
+        std::vector<int> dim_list;
+        for (auto dim_ : dimensions)
+        {
+          auto const dim = dim_->accept(this).as<Expression *>();
+          std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
+          if (!dim_literal)
+          {
+            std::cerr << "visitVarDecl: array dim is not int literal" << std::endl;
+            assert(false);
+          }
+          dim_list.push_back(dim_literal->value);
+        }
+        temp_type = std::make_unique<Type>(*type);
+        temp_type->dim = std::move(dim_list);
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
-      std::unique_ptr<Assignment> init(item->initVal()->accept(this).as<Assignment *>()); // TODO:这里怎么改？
-      auto decl = new Declaration(std::move(temp_type), std::move(ident), std::move(init));
+      std::unique_ptr<Assignment> init = nullptr;
+      if (auto init_ = item->initVal())
+      {
+        std::cerr << "visitVarDecl: initVal" << std::endl;
+        init.reset(init_->accept(this).as<Assignment *>());
+      }
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr));
       decls.push_back(decl);
     }
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));
-  }
-
-  antlrcpp::Any visitVarDef(SysYParser::VarDefContext *ctx) override
-  {
-    std::cerr << "visitVarDef unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
   }
 
   antlrcpp::Any visitInit(SysYParser::InitContext *ctx) override
@@ -136,9 +172,13 @@ public:
 
   antlrcpp::Any visitInitList(SysYParser::InitListContext *ctx) override
   {
-    std::cerr << "visitInitList unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::vector<std::unique_ptr<Expression>> values;
+    for (auto item : ctx->initVal())
+    {
+      auto const value = item->accept(this).as<Assignment *>();
+      values.push_back(std::unique_ptr<Expression>(value));
+    }
+    return new Assignment(std::move(values));
   }
 
   antlrcpp::Any visitFuncDef(SysYParser::FuncDefContext *ctx) override
@@ -146,15 +186,17 @@ public:
     auto const type_ = (ctx->funcType()->accept(this)).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    std::unique_ptr<ParameterList> params_list= nullptr;
+    std::unique_ptr<ParameterList> params_list = nullptr;
     if (auto params = ctx->funcFParams())
     {
       auto const params_list_ = params->accept(this).as<ParameterList *>();
       params_list.reset(params_list_);
-    }else{
+    }
+    else
+    {
       params_list.reset(new ParameterList());
     }
-    std::cerr<<"construct funct block: "<<ctx->Ident()->getText()<<std::endl;
+    std::cerr << "construct funct block: " << ctx->Ident()->getText() << std::endl;
 
     auto const body_ = (ctx->block()->accept(this)).as<Block *>();
     std::unique_ptr<Block> body(body_);
@@ -165,9 +207,7 @@ public:
 
   antlrcpp::Any visitVoid(SysYParser::VoidContext *ctx) override
   {
-    std::cerr << "visitVoid unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    return new Type(TypeEnum::VOID);
   }
 
   antlrcpp::Any visitFuncFParams(SysYParser::FuncFParamsContext *ctx) override
@@ -181,20 +221,40 @@ public:
     return new ParameterList(std::move(params));
   }
 
-
-  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext * ctx) override
+  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext *ctx) override
   {
-      auto const type_ = ctx->bType()->accept(this).as<Type *>();
-      std::unique_ptr<Type> type(type_);
-      std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-      return new Parameter(std::move(type), std::move(ident));
+    auto const type_ = ctx->bType()->accept(this).as<Type *>();
+    std::unique_ptr<Type> type(type_);
+    std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
+    return new Parameter(std::move(type), std::move(ident));
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
   {
-    std::cerr << "visitArrayParam unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::cerr<<"visitArrayParam"<<std::endl;
+    auto const type_ = ctx->bType()->accept(this).as<Type *>();
+    std::unique_ptr<Type> type(type_);
+    std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
+    std::vector<int> dim_list;
+    dim_list.push_back(0);
+    for (auto dim_ : ctx->exp())
+    {
+      auto const dim = dim_->accept(this).as<Expression *>();
+      std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
+      if (!dim_literal)
+      {
+        std::cerr << "visitArrayParam: array dim is not int literal" << std::endl;
+        assert(false);
+      }
+      dim_list.push_back(dim_literal->value);
+    }
+    type->dim = std::move(dim_list);
+    std::cerr<<"dims: "<<type->dim.size()<<std::endl;
+    for (auto i : type->dim)
+    {
+      std::cerr << i << " ";
+    }
+    return new Parameter(std::move(type), std::move(ident));
   }
 
   antlrcpp::Any visitBlock(SysYParser::BlockContext *ctx) override
@@ -232,7 +292,7 @@ public:
 
     auto const ret = new Assign(std::unique_ptr<LValue>(lhs),
                                 std::unique_ptr<Expression>(rhs));
-    std::cerr<<"visitAssign done!"<<std::endl;
+    std::cerr << "visitAssign done!" << std::endl;
     return static_cast<Statement *>(ret);
   }
 
@@ -253,7 +313,7 @@ public:
   {
     auto const cond = ctx->cond()->accept(this).as<Expression *>();
     auto const if_body = ctx->stmt(0)->accept(this).as<Statement *>();
-    //check if there is else
+    // check if there is else
     Statement *else_body = nullptr;
     if (ctx->stmt().size() > 1)
     {
@@ -312,7 +372,6 @@ public:
 
   antlrcpp::Any visitPrimaryExp_(SysYParser::PrimaryExp_Context *ctx) override
   {
-    std::cerr<<"visitPrimaryExp_ warning"<<std::endl;
     if (ctx->number())
     {
       std::cerr
@@ -322,7 +381,7 @@ public:
     else
     {
       assert(ctx->exp());
-      std::cerr<<"visitPrimaryExp_ exp"<<std::endl;
+      std::cerr << "visitPrimaryExp_ exp" << std::endl;
       return ctx->exp()->accept(this);
     }
   }
@@ -380,7 +439,6 @@ public:
     assert(false);
     return static_cast<Expression *>(nullptr);
   }
-
 
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
@@ -565,5 +623,4 @@ public:
 
     return static_cast<Expression *>(ret);
   }
-
 };
