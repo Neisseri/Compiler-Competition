@@ -156,6 +156,10 @@ struct Function {
     std::vector<Type> param_types;
     std::vector<std::unique_ptr<Instruction>> instrs;
     int num_regs;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/ast-feature
 
     std::string toString(){
         std::string ret = "define " + ret_type.toString(1) + " @" + name + "(";
@@ -193,9 +197,12 @@ struct Program {
     }
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/ast-feature
 struct Return: Instruction {
-    ir::Reg ret_val;
+    Reg ret_val;
     Return(Reg ret_val): ret_val(ret_val), Instruction(TERMINATOR) {}
 
     std::string toString(){
@@ -213,13 +220,5 @@ struct Return: Instruction {
         os << std::string(indent, ' ') << toString() << std::endl;
     }
 };
-
-// struct Jump: Instruction {}
-
-// struct Branch: Instruction {}
-
-// struct Phi: Instruction {}
-
-// struct Switch: Instruction {}
 
 }

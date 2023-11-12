@@ -1,14 +1,16 @@
-int main(){
-    int a = 1;
-    int b = 2;
-    int c = 3;
-    a = b + c;
-    return a+b;
+int bar(int b,int c)
+{
+    int a = 0;
+    while(a < 10)
+    {
+        a=a+1;
+        continue;
+        break;
+    }
+    return 1;
 }
 
-int bar()
-{
-    int a = 13;
-    int b = 24;
-    return a + b;
+int main() {
+    int c = bar(1, 2);
+    return c;
 }

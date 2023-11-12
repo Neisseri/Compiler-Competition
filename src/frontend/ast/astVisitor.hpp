@@ -35,14 +35,6 @@ public:
     return program;
   }
 
-  antlrcpp::Any visitCompUnitItem(SysYParser::CompUnitItemContext *ctx) override
-  {
-    std::cerr << "visitCompUnitItem unimplemented" << std::endl;
-    assert(false);
-
-    return visitChildren(ctx);
-  }
-
   antlrcpp::Any visitStringConst(SysYParser::StringConstContext *ctx) override
   {
     std::cerr << "visitStringConst unimplemented" << std::endl;
@@ -52,16 +44,25 @@ public:
 
   antlrcpp::Any visitFuncRParam(SysYParser::FuncRParamContext *ctx) override
   {
-    std::cerr << "visitFuncRParam unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const exp_ = ctx->exp()->accept(this).as<Expression *>();
+    return exp_;
   }
 
   antlrcpp::Any visitFuncRParams(SysYParser::FuncRParamsContext *ctx) override
   {
-    std::cerr << "visitFuncRParams unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::vector<std::unique_ptr<Expression>> args;
+    for (auto arg : ctx->funcRParam())
+    {
+      if (auto exp = arg->exp()){
+        auto const exp_ = exp->accept(this).as<Expression *>();
+        args.push_back(std::unique_ptr<Expression>(exp_));
+      }else{
+        std::cerr<<"unimplemented param type"<<std::endl;
+        assert(false);
+      }
+    }
+    return new ExpressionList(std::move(args));
+
   }
 
   antlrcpp::Any visitConstDecl(SysYParser::ConstDeclContext *ctx) override
@@ -74,7 +75,6 @@ public:
       std::unique_ptr<Expression> init(item->initVal()->accept(this).as<Expression *>());
       decls.push_back(new Declaration(std::move(type), std::move(ident), std::move(init)));
     }
-
     return decls;
   }
 
@@ -146,22 +146,14 @@ public:
     auto const type_ = (ctx->funcType()->accept(this)).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    std::vector<Declaration *> params;
-    if (ctx->funcFParams())
+    std::unique_ptr<ParameterList> params_list= nullptr;
+    if (auto params = ctx->funcFParams())
     {
-      auto const params_ = (ctx->funcFParams()->accept(this)).as<std::vector<Declaration *>>();
-      params = std::move(params_);
+      auto const params_list_ = params->accept(this).as<ParameterList *>();
+      params_list.reset(params_list_);
+    }else{
+      params_list.reset(new ParameterList());
     }
-    std::vector<std::unique_ptr<Parameter>> params_children;
-    if (auto params_ = ctx->funcFParams())
-    {
-      for (auto param_ : params_->funcFParam())
-      {
-        auto const param = param_->accept(this).as<Parameter *>();
-        params_children.push_back(std::unique_ptr<Parameter>(param));
-      }
-    }
-    std::unique_ptr<ParameterList> params_list(new ParameterList(std::move(params_children)));
     std::cerr<<"construct funct block: "<<ctx->Ident()->getText()<<std::endl;
 
     auto const body_ = (ctx->block()->accept(this)).as<Block *>();
@@ -180,16 +172,22 @@ public:
 
   antlrcpp::Any visitFuncFParams(SysYParser::FuncFParamsContext *ctx) override
   {
-    std::cerr << "visitFuncFParams unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::vector<std::unique_ptr<Parameter>> params;
+    for (auto param : ctx->funcFParam())
+    {
+      auto const param_ = param->accept(this).as<Parameter *>();
+      params.push_back(std::unique_ptr<Parameter>(param_));
+    }
+    return new ParameterList(std::move(params));
   }
 
-  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext *ctx) override
+
+  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext * ctx) override
   {
-    std::cerr << "visitScalarParam unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+      auto const type_ = ctx->bType()->accept(this).as<Type *>();
+      std::unique_ptr<Type> type(type_);
+      std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
+      return new Parameter(std::move(type), std::move(ident));
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
@@ -227,13 +225,6 @@ public:
     return new Block(std::move(children));
   }
 
-  antlrcpp::Any visitBlockItem(SysYParser::BlockItemContext *ctx) override
-  {
-    std::cerr << "visitBlockItem unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
-  }
-
   antlrcpp::Any visitAssign(SysYParser::AssignContext *ctx) override
   {
     auto const lhs = ctx->lVal()->accept(this).as<LValue *>();
@@ -247,44 +238,52 @@ public:
 
   antlrcpp::Any visitExprStmt(SysYParser::ExprStmtContext *ctx) override
   {
-    std::cerr << "visitExprStmt unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const expr = ctx->exp()->accept(this).as<Expression *>();
+    auto const ret = new ExprStmt(std::unique_ptr<Expression>(expr));
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitBlockStmt(SysYParser::BlockStmtContext *ctx) override
   {
-    std::cerr << "visitBlockStmt unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const block = ctx->block()->accept(this).as<Block *>();
+    return static_cast<Statement *>(block);
   }
 
   antlrcpp::Any visitIfElse(SysYParser::IfElseContext *ctx) override
   {
-    std::cerr << "visitIfElse unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const cond = ctx->cond()->accept(this).as<Expression *>();
+    auto const if_body = ctx->stmt(0)->accept(this).as<Statement *>();
+    //check if there is else
+    Statement *else_body = nullptr;
+    if (ctx->stmt().size() > 1)
+    {
+      else_body = ctx->stmt(1)->accept(this).as<Statement *>();
+    }
+    auto const ret = new IfElse(std::unique_ptr<Expression>(cond),
+                                std::unique_ptr<Statement>(if_body),
+                                else_body ? std::unique_ptr<Statement>(else_body) : nullptr);
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitWhile(SysYParser::WhileContext *ctx) override
   {
-    std::cerr << "visitWhile unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const cond = ctx->cond()->accept(this).as<Expression *>();
+    auto const body = ctx->stmt()->accept(this).as<Statement *>();
+    auto const ret = new While(std::unique_ptr<Expression>(cond),
+                               std::unique_ptr<Statement>(body));
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitBreak(SysYParser::BreakContext *ctx) override
   {
-    std::cerr << "visitBreak unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ret = new Break();
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitContinue(SysYParser::ContinueContext *ctx) override
   {
-    std::cerr << "visitContinue unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ret = new Continue();
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitReturn(SysYParser::ReturnContext *ctx) override
@@ -296,13 +295,6 @@ public:
     }
     auto const ret = new Return(std::move(res));
     return static_cast<Statement *>(ret);
-  }
-
-  antlrcpp::Any visitCond(SysYParser::CondContext *ctx) override
-  {
-    std::cerr << "visitCond unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
   }
 
   antlrcpp::Any visitLVal(SysYParser::LValContext *ctx) override
@@ -392,9 +384,11 @@ public:
 
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
-    std::cerr<<"visitCall unimplemented"<<std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ident = ctx->Ident()->getText();
+    auto const args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
+    std::unique_ptr<Identifier> ident_(new Identifier(ident));
+    auto const ret = new Call(std::move(ident_), std::unique_ptr<ExpressionList>(args_list));
+    return static_cast<Expression *>(ret);
   }
 
   antlrcpp::Any visitUnaryAdd(SysYParser::UnaryAddContext *ctx) override
