@@ -11,11 +11,16 @@ class IRGenerator{
 public:
     ir::Program ir_program;
     int reg_num = 0;
+    int label_num = 0;
 
     std::unordered_map<std::string, ir::Reg> var_table;
 
     ir::Reg get_new_reg(int type){
         return ir::Reg(type, ++reg_num);
+    }
+
+    ir::Mark* get_new_label_ptr(){
+        return new ir::Mark("L" + std::to_string(++label_num));
     }
 
     void visitPromgram(ast::Program * ast_program){
@@ -56,6 +61,8 @@ public:
     }
 
     ir::Reg visitExpression(std::unique_ptr<ast::Expression> &expr, ir::Function &ir_function){
+        std::cout << "visitExpression" << std::endl;
+
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get())){
             ir::Reg lhs = visitExpression(binary->lhs, ir_function);
             ir::Reg rhs = visitExpression(binary->rhs, ir_function);
@@ -63,38 +70,6 @@ public:
             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst, static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs));
             ir_function.instrs.push_back(std::move(add_instr));
             return dst;
-            // switch(binary->op->binary_op_type){
-            // case static_cast<int>(BinaryOpEnum::ADD):{
-            //     break;
-            // }
-            // case static_cast<int>(BinaryOpEnum::SUB):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::MUL):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::DIV):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::MOD):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::AND):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::OR):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::SGT):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::SLT):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::SGE):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::SLE):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::EQ):
-            //     break;
-            // case static_cast<int>(BinaryOpEnum::NE):
-            //     break;
-            // default:
-            //     assert(false);
-            //     break;
-            // }
         }
         else if (auto intliteral = dynamic_cast<ast::IntLiteral *>(expr.get())){
             ir::Reg ret = get_new_reg(static_cast<int>(TypeEnum::INT));
@@ -110,6 +85,18 @@ public:
             ir::Reg ret = var_table[name];
             return ret;
         }
+        else if (auto call = dynamic_cast<ast::Call *>(expr.get())){
+            std::string name = call->ident->name;
+            Type ret_type = ir_program.functions[name].ret_type;
+            ir::Reg ret = get_new_reg(ret_type.type);
+            std::vector<ir::Reg> params;
+            for (auto &i : call->argument_list->children) {
+                params.push_back(visitExpression(i, ir_function));
+            }
+            std::unique_ptr<ir::Call> call_instr(new ir::Call(ret, name, std::move(params)));
+            ir_function.instrs.push_back(std::move(call_instr));
+            return ret;
+        }
         else{
             expr->print(std::cout,0);
             assert(false);
@@ -117,6 +104,8 @@ public:
     }
 
     ir::Reg visitLValue(std::unique_ptr<ast::LValue> &lvalue){
+        std::cout << "visitValue" << std::endl;
+
         std::string name = lvalue->ident->name;
         int type = lvalue->var_type->type;
         ir::Reg ret = get_new_reg(type);
@@ -139,6 +128,22 @@ public:
                     ir::Reg ret_val = visitExpression(ret->expr, ir_function);
                     std::unique_ptr<ir::Return> ret_instr(new ir::Return(ret_val));
                     ir_function.instrs.push_back(std::move(ret_instr));
+                }
+                else if (auto ifelse = dynamic_cast<ast::IfElse *>(child.get())){
+                    ir::Reg cond = visitExpression(ifelse->cond, ir_function);
+                    ir::Mark* label_true = get_new_label_ptr();
+                    ir::Mark* label_false = get_new_label_ptr();
+                    std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, *label_true, *label_false));
+                    ir_function.instrs.push_back(std::move(condbr_instr));
+                    std::unique_ptr<ir::Mark> label_true_instr(label_true);
+                    ir_function.instrs.push_back(std::move(label_true_instr));
+                    auto then = dynamic_cast<ast::Block *>(ifelse->then.get());
+                    visitBlock(*then, ir_function);
+                    if(auto other = dynamic_cast<ast::Block *>(ifelse->other.get())){
+                        std::unique_ptr<ir::Mark> label_false_instr(label_false);
+                        ir_function.instrs.push_back(std::move(label_false_instr));
+                        visitBlock(*other, ir_function);
+                    }
                 }
             }
             else if (auto decl = dynamic_cast<ast::Declaration *>(child.get())){

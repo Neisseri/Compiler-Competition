@@ -1,5 +1,13 @@
-void main(int a[][123][123])
+void main()
 {
-    const int a[10]=1;
+    int a = 1;
+    int b = 1;
+    if (1){
+        a = 1;
+        b = 1;
+    } else {
+        a = 2;
+    }
+    a = 3;
     return a;
 }

@@ -33,11 +33,11 @@ struct Mark : Instruction {
     Mark(std::string name) : Instruction(InstType::LABEL), label_name(name) {}
 
     virtual std::string toString() override {
-        return label_name + ":";
+        return label_name;
     }
 
     virtual void print(std::ostream &os, int indent) override{
-        os << toString() << std::endl;
+        os << toString() + ":" << std::endl;
     }
 };
 
@@ -150,6 +150,102 @@ struct LoadInt : Instruction {
     }
 };
 
+struct Return: Instruction {
+    Reg ret_val;
+    Return(Reg ret_val): ret_val(ret_val), Instruction(TERMINATOR) {}
+
+    std::string toString(){
+        std::string ret = "ret";
+        if (ret_val.type == static_cast<int>(TypeEnum::INT)){
+            ret += " i32 ";
+        }
+        else if (ret_val.type == static_cast<int>(TypeEnum::FLOAT)){
+            ret += " float ";
+        }
+        return ret + ret_val.toString();
+    }
+
+    void print(std::ostream &os, int indent){
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+struct Call: Instruction {
+    Reg ret_val;
+    std::string func_name;
+    std::vector<Reg> params;
+
+    Call(Reg ret_val, std::string name, std::vector<Reg> params): ret_val(ret_val), func_name(name), params(std::move(params)), Instruction(CALL) {}
+
+    std::string toString(){
+        std::string ret = ret_val.toString() + " = call";
+        if (ret_val.type == static_cast<int>(TypeEnum::INT)){
+            ret += " i32 ";
+        }
+        else if (ret_val.type == static_cast<int>(TypeEnum::FLOAT)){
+            ret += " float ";
+        }
+        ret += "@" + func_name + "(";
+        for (auto i : params){
+            if (i.type == static_cast<int>(TypeEnum::INT)){
+                ret += "i32 ";
+            }
+            else if (i.type == static_cast<int>(TypeEnum::FLOAT)){
+                ret += "float ";
+            }
+            ret += i.toString();
+            if (i.id != params.back().id){
+                ret += ", ";
+            }
+        }
+        ret += ")";
+        return ret;
+    }
+
+    void print(std::ostream &os, int indent){
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+
+struct Branch : Instruction {
+    Mark label;
+
+    Branch(Mark label) : label(label), Instruction(BRANCH) {}
+
+    std::string toString(){
+        return "br label " + label.toString();
+    }
+
+    void print(std::ostream &os, int indent){
+        os << std::string(indent, ' ')  << toString() << std::endl;
+    }
+};
+
+struct CondBranch : Instruction {
+    Mark label_true;
+    Mark label_false;
+    Reg cond;
+
+    CondBranch(Reg cond, Mark label_true, Mark label_false) : label_true(label_true), label_false(label_false), cond(cond), Instruction(BRANCH) {}
+    
+    std::string toString(){
+        std::string cond_type_str;
+        if (cond.type == static_cast<int>(TypeEnum::INT)){
+            cond_type_str += "i32";
+        }
+        else if (cond.type == static_cast<int>(TypeEnum::FLOAT)){
+            cond_type_str += "float";
+        }
+        return "br " + cond_type_str + " " + cond.toString() + ", label " + label_true.toString() + ", label " + label_false.toString();
+    }
+
+    void print(std::ostream &os, int indent){
+        os << std::string(indent, ' ')  << toString() << std::endl;
+    }
+};
+
+
 struct Function {
     std::string name;
     Type ret_type;
@@ -158,16 +254,20 @@ struct Function {
     int num_regs;
 
     std::string toString(){
-        std::string ret = "define " + ret_type.toString(1) + " @" + name + "(";
-        for (auto i : param_types){
-            ret += i.toString(1);
+        std::string ret = " @" + name + "(";
+        for (int i = 0; i < param_types.size(); i++){
+            ret += param_types[i].toString(1);
+            if (i + 1 < param_types.size()){
+                ret += ", ";
+            }
         }
         ret += ")";
         return ret;
     }
 
     void print(std::ostream &os, int indent){
-        os << std::string(indent, ' ') << toString() << '{' << std::endl;
+        os << std::string(indent, ' ')  << "define " + ret_type.toString(1);
+        os << toString() << '{' << std::endl;
 
         for (auto &i : instrs){
             i->print(os, indent);
@@ -190,26 +290,6 @@ struct Program {
         for (auto &child : functions){
             child.second.print(os, indent);
         }
-    }
-};
-
-struct Return: Instruction {
-    Reg ret_val;
-    Return(Reg ret_val): ret_val(ret_val), Instruction(TERMINATOR) {}
-
-    std::string toString(){
-        std::string ret = "ret";
-        if (ret_val.type == static_cast<int>(TypeEnum::INT)){
-            ret += " i32 ";
-        }
-        else if (ret_val.type == static_cast<int>(TypeEnum::FLOAT)){
-            ret += " float ";
-        }
-        return ret + ret_val.toString();
-    }
-
-    void print(std::ostream &os, int indent){
-        os << std::string(indent, ' ') << toString() << std::endl;
     }
 };
 
