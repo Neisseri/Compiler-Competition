@@ -35,14 +35,6 @@ public:
     return program;
   }
 
-  antlrcpp::Any visitCompUnitItem(SysYParser::CompUnitItemContext *ctx) override
-  {
-    std::cerr << "visitCompUnitItem unimplemented" << std::endl;
-    assert(false);
-
-    return visitChildren(ctx);
-  }
-
   antlrcpp::Any visitStringConst(SysYParser::StringConstContext *ctx) override
   {
     std::cerr << "visitStringConst unimplemented" << std::endl;
@@ -227,13 +219,6 @@ public:
     return new Block(std::move(children));
   }
 
-  antlrcpp::Any visitBlockItem(SysYParser::BlockItemContext *ctx) override
-  {
-    std::cerr << "visitBlockItem unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
-  }
-
   antlrcpp::Any visitAssign(SysYParser::AssignContext *ctx) override
   {
     auto const lhs = ctx->lVal()->accept(this).as<LValue *>();
@@ -247,44 +232,52 @@ public:
 
   antlrcpp::Any visitExprStmt(SysYParser::ExprStmtContext *ctx) override
   {
-    std::cerr << "visitExprStmt unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const expr = ctx->exp()->accept(this).as<Expression *>();
+    auto const ret = new ExprStmt(std::unique_ptr<Expression>(expr));
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitBlockStmt(SysYParser::BlockStmtContext *ctx) override
   {
-    std::cerr << "visitBlockStmt unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const block = ctx->block()->accept(this).as<Block *>();
+    return static_cast<Statement *>(block);
   }
 
   antlrcpp::Any visitIfElse(SysYParser::IfElseContext *ctx) override
   {
-    std::cerr << "visitIfElse unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const cond = ctx->cond()->accept(this).as<Expression *>();
+    auto const if_body = ctx->stmt(0)->accept(this).as<Statement *>();
+    //check if there is else
+    Statement *else_body = nullptr;
+    if (ctx->stmt().size() > 1)
+    {
+      else_body = ctx->stmt(1)->accept(this).as<Statement *>();
+    }
+    auto const ret = new IfElse(std::unique_ptr<Expression>(cond),
+                                std::unique_ptr<Statement>(if_body),
+                                else_body ? std::unique_ptr<Statement>(else_body) : nullptr);
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitWhile(SysYParser::WhileContext *ctx) override
   {
-    std::cerr << "visitWhile unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const cond = ctx->cond()->accept(this).as<Expression *>();
+    auto const body = ctx->stmt()->accept(this).as<Statement *>();
+    auto const ret = new While(std::unique_ptr<Expression>(cond),
+                               std::unique_ptr<Statement>(body));
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitBreak(SysYParser::BreakContext *ctx) override
   {
-    std::cerr << "visitBreak unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ret = new Break();
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitContinue(SysYParser::ContinueContext *ctx) override
   {
-    std::cerr << "visitContinue unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ret = new Continue();
+    return static_cast<Statement *>(ret);
   }
 
   antlrcpp::Any visitReturn(SysYParser::ReturnContext *ctx) override
@@ -296,13 +289,6 @@ public:
     }
     auto const ret = new Return(std::move(res));
     return static_cast<Statement *>(ret);
-  }
-
-  antlrcpp::Any visitCond(SysYParser::CondContext *ctx) override
-  {
-    std::cerr << "visitCond unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
   }
 
   antlrcpp::Any visitLVal(SysYParser::LValContext *ctx) override
@@ -392,9 +378,20 @@ public:
 
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
-    std::cerr<<"visitCall unimplemented"<<std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const ident = ctx->Ident()->getText();
+    std::vector<std::unique_ptr<Expression>> args;
+    if (auto args_ = ctx->funcRParams())
+    {
+      for (auto arg_ : args_->funcRParam())
+      {
+        auto const arg = arg_->accept(this).as<Expression *>();
+        args.push_back(std::unique_ptr<Expression>(arg));
+      }
+    }
+    std::unique_ptr<ExpressionList> args_list(new ExpressionList(std::move(args)));
+    std::unique_ptr<Identifier> ident_(new Identifier(ident));
+    auto const ret = new Call(std::move(ident_), std::move(args_list));
+    return static_cast<Expression *>(ret);
   }
 
   antlrcpp::Any visitUnaryAdd(SysYParser::UnaryAddContext *ctx) override
