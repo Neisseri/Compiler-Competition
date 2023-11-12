@@ -1,12 +1,8 @@
 #pragma once
 
-const int VOID = 0;
-const int INT = 1;
-const int FLOAT = 2;
-
-
 enum class TypeEnum : int
 {
+    VOID,
     INT,
     FLOAT,
 };

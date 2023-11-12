@@ -1,7 +1,6 @@
 #pragma once
 #include "../../common/common.hpp"
 #include "../../common/const.hpp"
-
 namespace frontend
 {
 
@@ -255,15 +254,29 @@ namespace frontend
         class Declaration : public AstNode
         {
         public:
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> init_expr) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(init_expr)), has_init(true) {}
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident) : var_type(std::move(var_type)), ident(std::move(ident)), has_init(false) {}
+            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr))
+            {
+                // check if init_expr is Expression
+                if (init_expr != nullptr)
+                    has_init = true;
+                else
+                    has_init = false;
+            }
+            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr, bool is_const) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr)), is_const(is_const)
+            {
+                if (init_expr != nullptr)
+                    has_init = true;
+                else
+                    has_init = false;
+            }
+
             ~Declaration() = default;
             std::string toString() const override
             {
                 if (!has_init)
-                    return var_type->toString() + " " + ident->toString();
+                    return (is_const ?"const ":"")+var_type->toString() + " " + ident->toString();
                 else
-                    return var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
+                    return (is_const ? "const " : "")+var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
@@ -273,6 +286,7 @@ namespace frontend
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<Expression> init_expr = nullptr;
             bool has_init;
+            bool is_const = false;
         };
 
         class Operator : public AstNode
@@ -471,20 +485,42 @@ namespace frontend
         };
 
         class Assignment : public Expression
-        { // TODO：这里只实现了对标量的赋值，对数组的赋值还没实现
+        { // TODO：这里你可以简单的通过判断value是否为空来判断是单个赋值还是多个赋值
         public:
             Assignment(std::unique_ptr<Expression> value)
                 : value{std::move(value)} {}
+            Assignment(std::vector<std::unique_ptr<Expression>> values)
+                : values{std::move(values)} {}
+
             ~Assignment() = default;
             std::string toString() const override
             {
-                return value->toString();
+                if (value)
+                    return value->toString();
+                else
+                    {
+                        std::string ret;
+                        ret+="{";
+                        for (auto &child : values)
+                        {
+                            ret += child->toString() + ", ";
+                        }
+                        if (!values.empty())
+                        {
+                            ret.pop_back();
+                            ret.pop_back();
+                        }
+                        ret+="}";
+                        return ret;
+
+                    }
             }
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
             }
-            std::unique_ptr<Expression> value;
+            std::unique_ptr<Expression> value = nullptr;
+            std::vector<std::unique_ptr<Expression>> values = {};
         };
 
         class ExprStmt : public Statement
@@ -543,38 +579,13 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
-                os << std::string(indent, ' ') << "While" ;
+                os << std::string(indent, ' ') << "While";
                 cond->print(os, indent + 2);
                 body->print(os, indent + 2);
             }
             std::unique_ptr<Expression> cond;
             std::unique_ptr<Statement> body;
         };
-
-        // class For : public Statement
-        // {
-        // public:
-        //     For(std::unique_ptr<Statement> init, std::unique_ptr<Expression> cond, std::unique_ptr<Statement> update, std::unique_ptr<Statement> body) : init(std::move(init)), cond(std::move(cond)), update(std::move(update)), body(std::move(body)) {}
-        //     ~For() = default;
-        //     std::string toString() const override
-        //     {
-        //         std::string ret = "For";
-        //         return ret;
-        //     }
-        //     void print(std::ostream &os, int indent) const override
-        //     {
-        //         os << std::string(indent, ' ') << "For" << std::endl;
-        //         init->print(os, indent + 2);
-        //         cond->print(os, indent + 2);
-        //         update->print(os, indent + 2);
-        //         body->print(os, indent + 2);
-        //     }
-
-        //     std::unique_ptr<Statement> init;
-        //     std::unique_ptr<Expression> cond;
-        //     std::unique_ptr<Statement> update;
-        //     std::unique_ptr<Statement> body;
-        // };
 
         class Break : public Statement
         {
