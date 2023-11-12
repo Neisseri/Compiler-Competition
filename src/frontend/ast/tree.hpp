@@ -200,6 +200,7 @@ namespace frontend
         {
         public:
             ParameterList(std::vector<std::unique_ptr<Parameter>> children) : children(std::move(children)) {}
+            ParameterList() = default;
             ~ParameterList() = default;
             const std::vector<std::unique_ptr<Parameter>> &getChildren() const
             {

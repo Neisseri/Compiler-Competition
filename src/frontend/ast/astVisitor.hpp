@@ -44,16 +44,25 @@ public:
 
   antlrcpp::Any visitFuncRParam(SysYParser::FuncRParamContext *ctx) override
   {
-    std::cerr << "visitFuncRParam unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    auto const exp_ = ctx->exp()->accept(this).as<Expression *>();
+    return exp_;
   }
 
   antlrcpp::Any visitFuncRParams(SysYParser::FuncRParamsContext *ctx) override
   {
-    std::cerr << "visitFuncRParams unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::vector<std::unique_ptr<Expression>> args;
+    for (auto arg : ctx->funcRParam())
+    {
+      if (auto exp = arg->exp()){
+        auto const exp_ = exp->accept(this).as<Expression *>();
+        args.push_back(std::unique_ptr<Expression>(exp_));
+      }else{
+        std::cerr<<"unimplemented param type"<<std::endl;
+        assert(false);
+      }
+    }
+    return new ExpressionList(std::move(args));
+
   }
 
   antlrcpp::Any visitConstDecl(SysYParser::ConstDeclContext *ctx) override
@@ -66,7 +75,6 @@ public:
       std::unique_ptr<Expression> init(item->initVal()->accept(this).as<Expression *>());
       decls.push_back(new Declaration(std::move(type), std::move(ident), std::move(init)));
     }
-
     return decls;
   }
 
@@ -138,22 +146,14 @@ public:
     auto const type_ = (ctx->funcType()->accept(this)).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    std::vector<Declaration *> params;
-    if (ctx->funcFParams())
+    std::unique_ptr<ParameterList> params_list= nullptr;
+    if (auto params = ctx->funcFParams())
     {
-      auto const params_ = (ctx->funcFParams()->accept(this)).as<std::vector<Declaration *>>();
-      params = std::move(params_);
+      auto const params_list_ = params->accept(this).as<ParameterList *>();
+      params_list.reset(params_list_);
+    }else{
+      params_list.reset(new ParameterList());
     }
-    std::vector<std::unique_ptr<Parameter>> params_children;
-    if (auto params_ = ctx->funcFParams())
-    {
-      for (auto param_ : params_->funcFParam())
-      {
-        auto const param = param_->accept(this).as<Parameter *>();
-        params_children.push_back(std::unique_ptr<Parameter>(param));
-      }
-    }
-    std::unique_ptr<ParameterList> params_list(new ParameterList(std::move(params_children)));
     std::cerr<<"construct funct block: "<<ctx->Ident()->getText()<<std::endl;
 
     auto const body_ = (ctx->block()->accept(this)).as<Block *>();
@@ -172,16 +172,22 @@ public:
 
   antlrcpp::Any visitFuncFParams(SysYParser::FuncFParamsContext *ctx) override
   {
-    std::cerr << "visitFuncFParams unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+    std::vector<std::unique_ptr<Parameter>> params;
+    for (auto param : ctx->funcFParam())
+    {
+      auto const param_ = param->accept(this).as<Parameter *>();
+      params.push_back(std::unique_ptr<Parameter>(param_));
+    }
+    return new ParameterList(std::move(params));
   }
 
-  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext *ctx) override
+
+  antlrcpp::Any visitScalarParam(SysYParser::ScalarParamContext * ctx) override
   {
-    std::cerr << "visitScalarParam unimplemented" << std::endl;
-    assert(false);
-    return visitChildren(ctx);
+      auto const type_ = ctx->bType()->accept(this).as<Type *>();
+      std::unique_ptr<Type> type(type_);
+      std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
+      return new Parameter(std::move(type), std::move(ident));
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
@@ -379,18 +385,9 @@ public:
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
     auto const ident = ctx->Ident()->getText();
-    std::vector<std::unique_ptr<Expression>> args;
-    if (auto args_ = ctx->funcRParams())
-    {
-      for (auto arg_ : args_->funcRParam())
-      {
-        auto const arg = arg_->accept(this).as<Expression *>();
-        args.push_back(std::unique_ptr<Expression>(arg));
-      }
-    }
-    std::unique_ptr<ExpressionList> args_list(new ExpressionList(std::move(args)));
+    auto const args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
     std::unique_ptr<Identifier> ident_(new Identifier(ident));
-    auto const ret = new Call(std::move(ident_), std::move(args_list));
+    auto const ret = new Call(std::move(ident_), std::unique_ptr<ExpressionList>(args_list));
     return static_cast<Expression *>(ret);
   }
 

@@ -1,4 +1,4 @@
-int bar()
+int bar(int b,int c)
 {
     int a = 0;
     while(a < 10)
@@ -7,10 +7,10 @@ int bar()
         continue;
         break;
     }
-    return a;
+    return 1;
 }
 
 int main() {
-    int a= bar();
-    return 0;
+    int c = bar(1, 2);
+    return c;
 }
