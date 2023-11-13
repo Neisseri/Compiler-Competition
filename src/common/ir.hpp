@@ -2,6 +2,11 @@
 #include "const.hpp"
 namespace ir {
 
+    
+struct BasicBlock;
+struct Function;
+
+
 struct Reg {
     int type; // ScalarType
     int id;
@@ -17,8 +22,6 @@ struct Instruction {
     InstType type;
     Instruction(InstType type): type(type) {}
     ~Instruction() {}
-    virtual void emit(std::ostream &os) const {}
-    virtual std::vector<Reg*> reg_ptrs() {return {};}
 
     virtual std::string toString() = 0;
 
@@ -27,17 +30,65 @@ struct Instruction {
     }
 };
 
-struct Mark : Instruction {
-    std::string label_name;
+struct Mark {
+    int label_id;
 
-    Mark(std::string name) : Instruction(InstType::LABEL), label_name(name) {}
+    Mark(int label_id) : label_id(label_id) {}
+    Mark() : label_id(-1) {}
 
-    virtual std::string toString() override {
-        return label_name;
+    std::string toString() {
+        return "B" + std::to_string(label_id);
     }
 
-    virtual void print(std::ostream &os, int indent) override{
+    void print(std::ostream &os, int indent) {
         os << toString() + ":" << std::endl;
+    }
+};
+
+struct Alloca: Instruction {
+    Type type;
+    int size;
+    Reg ret_val;
+    Alloca(Reg ret_val, Type type, int size) : Instruction(InstType::ALLOCA), ret_val(ret_val), type(type), size(size) {};
+
+    std::string toString() {
+        return ret_val.toString() + " = alloca " + type.toString() + ", " + std::to_string(size);
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+struct Store: Instruction {
+    Reg src_val;
+    Reg ptr;
+    Type type;
+
+    Store(Type type, Reg src_val, Reg ptr) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr) {}
+    
+    std::string toString() {
+        return "store " + type.toString() + " " + src_val.toString() + ", ptr " + ptr.toString();
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+struct Load: Instruction {
+    Reg ret_val;
+    Reg ptr;
+    Type type;
+
+    Load(Reg ret_val, Type type, Reg ptr) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr) {}
+    
+    std::string toString() {
+        return ret_val.toString() + " = load " + type.toString() + ", ptr " + ptr.toString();
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
     }
 };
 
@@ -246,12 +297,36 @@ struct CondBranch : Instruction {
 };
 
 
+struct BasicBlock {
+    Mark label;
+    std::list<std::unique_ptr<Instruction>> instrs;
+
+    Function* func;
+
+    std::list<std::shared_ptr<BasicBlock>> prevs;
+    std::list<std::shared_ptr<BasicBlock>> succs;
+
+    BasicBlock(int id, Function* func) : label(id), func(func) {}
+
+    std::string toString(){
+        return "BasicBlock has no String!";
+    }
+
+    void print(std::ostream &os, int indent){
+        label.print(os, indent);
+        for (auto &i : instrs){
+            i->print(os, indent + 2);
+        }
+        os << std::endl;
+    }
+};
+
+
 struct Function {
     std::string name;
     Type ret_type;
     std::vector<Type> param_types;
-    std::vector<std::unique_ptr<Instruction>> instrs;
-    int num_regs;
+    std::list<std::shared_ptr<BasicBlock>> bbs;
 
     std::string toString(){
         std::string ret = " @" + name + "(";
@@ -269,7 +344,7 @@ struct Function {
         os << std::string(indent, ' ')  << "define " + ret_type.toString(1);
         os << toString() << '{' << std::endl;
 
-        for (auto &i : instrs){
+        for (auto i : bbs){
             i->print(os, indent);
         }
 

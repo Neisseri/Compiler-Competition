@@ -452,7 +452,7 @@ public:
   antlrcpp::Any visitUnaryAdd(SysYParser::UnaryAddContext *ctx) override
   {
     auto const operand = ctx->unaryExp()->accept(this).as<Expression *>();
-    auto const op = new UnaryOp(UnaryOpEnum::UNARYADD);
+    auto const op = new UnaryOp(UnaryOpEnum::POS);
     auto const ret =
         new Unary(std::unique_ptr<UnaryOp>(op), std::unique_ptr<Expression>(operand));
     return static_cast<Expression *>(ret);
@@ -461,7 +461,7 @@ public:
   antlrcpp::Any visitUnarySub(SysYParser::UnarySubContext *ctx) override
   {
     auto const operand = ctx->unaryExp()->accept(this).as<Expression *>();
-    auto const op = new UnaryOp(UnaryOpEnum::UNARYSUB);
+    auto const op = new UnaryOp(UnaryOpEnum::NEG);
     auto const ret =
         new Unary(std::unique_ptr<UnaryOp>(op), std::unique_ptr<Expression>(operand));
     return static_cast<Expression *>(ret);
