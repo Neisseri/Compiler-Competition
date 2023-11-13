@@ -1,3 +1,5 @@
+#pragma once
+
 #include "common.hpp"
 #include "const.hpp"
 namespace ir {
@@ -34,7 +36,6 @@ struct Mark {
     int label_id;
 
     Mark(int label_id) : label_id(label_id) {}
-    Mark() : label_id(-1) {}
 
     std::string toString() {
         return "B" + std::to_string(label_id);
@@ -44,6 +45,33 @@ struct Mark {
         os << toString() + ":" << std::endl;
     }
 };
+
+
+struct BasicBlock {
+    Mark label;
+    std::list<std::unique_ptr<Instruction>> instrs;
+
+    Function* func;
+
+    std::set<std::shared_ptr<BasicBlock>> prevs;
+    std::set<std::shared_ptr<BasicBlock>> succs;
+    bool reachable;
+
+    BasicBlock(int id, Function* func) : label(id), func(func) {}
+
+    std::string toString(){
+        return "BasicBlock has no String!";
+    }
+
+    void print(std::ostream &os, int indent){
+        label.print(os, indent);
+        for (auto &i : instrs){
+            i->print(os, indent + 2);
+        }
+        os << std::endl;
+    }
+};
+
 
 struct Alloca: Instruction {
     Type type;
@@ -260,12 +288,12 @@ struct Call: Instruction {
 
 
 struct Branch : Instruction {
-    Mark label;
+    std::shared_ptr<BasicBlock> bb_dst;
 
-    Branch(Mark label) : label(label), Instruction(BRANCH) {}
+    Branch(std::shared_ptr<BasicBlock> bb_dst) : bb_dst(bb_dst), Instruction(BRANCH) {}
 
     std::string toString(){
-        return "br label " + label.toString();
+        return "br label " + bb_dst->label.toString();
     }
 
     void print(std::ostream &os, int indent){
@@ -274,11 +302,12 @@ struct Branch : Instruction {
 };
 
 struct CondBranch : Instruction {
-    Mark label_true;
-    Mark label_false;
+    std::shared_ptr<BasicBlock> bb_true;
+    std::shared_ptr<BasicBlock> bb_false;
+
     Reg cond;
 
-    CondBranch(Reg cond, Mark label_true, Mark label_false) : label_true(label_true), label_false(label_false), cond(cond), Instruction(BRANCH) {}
+    CondBranch(Reg cond, std::shared_ptr<BasicBlock> bb_true, std::shared_ptr<BasicBlock> bb_false) : bb_true(bb_true), bb_false(bb_false), cond(cond), Instruction(BRANCH) {}
     
     std::string toString(){
         std::string cond_type_str;
@@ -288,36 +317,11 @@ struct CondBranch : Instruction {
         else if (cond.type == static_cast<int>(TypeEnum::FLOAT)){
             cond_type_str += "float";
         }
-        return "br " + cond_type_str + " " + cond.toString() + ", label " + label_true.toString() + ", label " + label_false.toString();
+        return "br " + cond_type_str + " " + cond.toString() + ", label " + bb_true->label.toString() + ", label " + bb_false->label.toString();
     }
 
     void print(std::ostream &os, int indent){
         os << std::string(indent, ' ')  << toString() << std::endl;
-    }
-};
-
-
-struct BasicBlock {
-    Mark label;
-    std::list<std::unique_ptr<Instruction>> instrs;
-
-    Function* func;
-
-    std::list<std::shared_ptr<BasicBlock>> prevs;
-    std::list<std::shared_ptr<BasicBlock>> succs;
-
-    BasicBlock(int id, Function* func) : label(id), func(func) {}
-
-    std::string toString(){
-        return "BasicBlock has no String!";
-    }
-
-    void print(std::ostream &os, int indent){
-        label.print(os, indent);
-        for (auto &i : instrs){
-            i->print(os, indent + 2);
-        }
-        os << std::endl;
     }
 };
 

@@ -6,6 +6,7 @@
 
 #include "../ast/tree.hpp"
 #include "../ast/astVisitor.hpp"
+#include "CFGbuilder.hpp"
 
 class IRGenerator{
 public:
@@ -59,6 +60,12 @@ public:
         std::shared_ptr<ir::BasicBlock> ir_bb(get_new_bb_ptr(&ir_function));
         ir_function.bbs.push_back(ir_bb);
         visitBlock(*(func.body.get()), ir_bb);
+
+        CFGbuilder cfg_builder(&ir_function);
+        cfg_builder.CFG_build();
+        cfg_builder.CFG_print(std::cout, 0);
+        cfg_builder.remove_unreachable_bb();
+        cfg_builder.CFG_print(std::cout, 0);
 
         ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(func.ident->name), std::move(ir_function)));
     }
@@ -157,14 +164,14 @@ public:
                 }
                 else if (auto ifelse = dynamic_cast<ast::IfElse *>(child.get())){
                     std::shared_ptr<ir::BasicBlock> bb_cond(get_new_bb_ptr(ir_bb->func));
-                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond->label));
+                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond));
                     ir_bb->instrs.push_back(std::move(br_instr));
                     ir::Reg cond = visitExpression(ifelse->cond, bb_cond);
                     ir_bb->func->bbs.push_back(bb_cond);
                     if(auto other = dynamic_cast<ast::Block *>(ifelse->other.get())){
                         std::shared_ptr<ir::BasicBlock> bb_true(get_new_bb_ptr(ir_bb->func));
                         std::shared_ptr<ir::BasicBlock> bb_false(get_new_bb_ptr(ir_bb->func));
-                        std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, bb_true->label, bb_false->label));
+                        std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, bb_true, bb_false));
                         bb_cond->instrs.push_back(std::move(condbr_instr));
                         
                         ir_bb->func->bbs.push_back(bb_true);
@@ -177,10 +184,10 @@ public:
                         auto then = dynamic_cast<ast::Block *>(ifelse->then.get());
                         assert(then);
                         visitBlock(*then, bb_true);
-                        std::unique_ptr<ir::Branch> br_true_instr(new ir::Branch(ir_new_bb->label));
+                        std::unique_ptr<ir::Branch> br_true_instr(new ir::Branch(ir_new_bb));
                         bb_true->instrs.push_back(std::move(br_true_instr));
                         visitBlock(*other, bb_false);
-                        std::unique_ptr<ir::Branch> br_false_instr(new ir::Branch(ir_new_bb->label));
+                        std::unique_ptr<ir::Branch> br_false_instr(new ir::Branch(ir_new_bb));
                         bb_false->instrs.push_back(std::move(br_false_instr));
                     }
                     else {
@@ -191,13 +198,13 @@ public:
                         ir_bb->func->bbs.push_back(ir_new_bb);
                         ir_bb = ir_new_bb;
 
-                        std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, bb_true->label, ir_new_bb->label));
+                        std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, bb_true, ir_new_bb));
                         bb_cond->instrs.push_back(std::move(condbr_instr));
 
                         auto then = dynamic_cast<ast::Block *>(ifelse->then.get());
                         assert(then);
                         visitBlock(*then, bb_true);
-                        std::unique_ptr<ir::Branch> br_instr(new ir::Branch(ir_new_bb->label));
+                        std::unique_ptr<ir::Branch> br_instr(new ir::Branch(ir_new_bb));
                         bb_true->instrs.push_back(std::move(br_instr));
                     }
                 }
@@ -212,32 +219,32 @@ public:
                     break_to_stack.push_back(ir_new_bb);
                     continue_to_stack.push_back(bb_cond);
 
-                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond->label));
+                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond));
                     ir_bb->instrs.push_back(std::move(br_instr));
                     ir_bb = ir_new_bb;
 
                     ir::Reg cond_reg = visitExpression(whileloop->cond, bb_cond);
-                    std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond_reg, bb_body->label, ir_new_bb->label));
+                    std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond_reg, bb_body, ir_new_bb));
                     bb_cond->instrs.push_back(std::move(condbr_instr));
 
                     auto body = dynamic_cast<ast::Block *>(whileloop->body.get());
                     assert(body);
                     visitBlock(*body, bb_body);
-                    std::unique_ptr<ir::Branch> br_back_instr(new ir::Branch(bb_cond->label));
+                    std::unique_ptr<ir::Branch> br_back_instr(new ir::Branch(bb_cond));
                     bb_body->instrs.push_back(std::move(br_back_instr));
 
                     break_to_stack.pop_back();
                     continue_to_stack.pop_back();
                 }
                 else if (auto break_stmt = dynamic_cast<ast::Break *>(child.get())){
-                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(break_to_stack.back()->label));
+                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(break_to_stack.back()));
                     ir_bb->instrs.push_back(std::move(br_instr));
                     std::shared_ptr<ir::BasicBlock> ir_new_bb(get_new_bb_ptr(ir_bb->func));
                     ir_bb->func->bbs.push_back(ir_new_bb);
                     ir_bb = ir_new_bb;
                 }
                 else if (auto continue_stmt = dynamic_cast<ast::Continue *>(child.get())){
-                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(continue_to_stack.back()->label));
+                    std::unique_ptr<ir::Branch> br_instr(new ir::Branch(continue_to_stack.back()));
                     ir_bb->instrs.push_back(std::move(br_instr));
                     std::shared_ptr<ir::BasicBlock> ir_new_bb(get_new_bb_ptr(ir_bb->func));
                     ir_bb->func->bbs.push_back(ir_new_bb);
