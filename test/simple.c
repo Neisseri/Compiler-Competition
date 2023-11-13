@@ -1,5 +1,9 @@
-void main(int a[][123][123])
-{
-    const int a[10]=1;
+int main (){
+    int a;
+    int b;
+    {
+        a = 2;
+        b=3;
+    }
     return a;
 }

@@ -243,10 +243,12 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
+                os << std::string(indent, ' ') << "{" << std::endl;
                 for (auto &child : children)
                 {
                     child->print(os, indent + 2);
                 }
+                os << std::string(indent, ' ') << "}" << std::endl;
             }
             std::vector<std::unique_ptr<AstNode>> children;
         };

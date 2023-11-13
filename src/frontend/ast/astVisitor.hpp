@@ -305,6 +305,7 @@ public:
 
   antlrcpp::Any visitBlockStmt(SysYParser::BlockStmtContext *ctx) override
   {
+    std::cerr << "visit block stmt" << std::endl;
     auto const block = ctx->block()->accept(this).as<Block *>();
     return static_cast<Statement *>(block);
   }
