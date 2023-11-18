@@ -52,8 +52,11 @@ struct Type
         case static_cast<int>(TypeEnum::FLOAT):
             s = "float";
             break;
+        case static_cast<int>(TypeEnum::VOID):
+            s = "void";
+            break;
         default:
-            s = ir?"void":"unknown";
+            s = "unknown";
             break;
         }
         if (is_const && !ir)
@@ -62,8 +65,9 @@ struct Type
         if (dim.size() > 0 && !ir){
             s += " [";
             for (int i : dim){
-                s += std::to_string(i) + ", ";
+                s += std::to_string(i) + ",";
             }
+            s.pop_back();
             s += "]";
         }
         return s;

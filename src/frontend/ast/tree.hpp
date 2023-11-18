@@ -1,7 +1,6 @@
 #pragma once
 #include "../../common/common.hpp"
 #include "../../common/const.hpp"
-
 namespace frontend
 {
 
@@ -31,12 +30,12 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
-                os << std::string(indent, ' ') << toString()<<std::endl;
+                os << std::string(indent, ' ') << toString() << std::endl;
                 for (auto &child : children)
                 {
                     child->print(os, indent + 2);
                 }
-                os << std::string(indent, ' ')<<"End of Program"<<std::endl;
+                os << std::string(indent, ' ') << "End of Program" << std::endl;
             }
 
             std::vector<std::unique_ptr<AstNode>> children;
@@ -135,12 +134,20 @@ namespace frontend
             std::string name;
         };
 
-        class Call : public AstNode
+        class Call : public Expression
         {
-            // TODO:这个类是函数调用
         public:
             Call(std::unique_ptr<Identifier> ident, std::unique_ptr<ExpressionList> argument_list) : ident(std::move(ident)), argument_list(std::move(argument_list)) {}
-
+            ~Call() = default;
+            std::string toString() const override
+            {
+                return "Call " + ident->toString() + "(" + argument_list->toString() + ")";
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << "Call " << ident->toString() << std::endl;
+                argument_list->print(os, indent + 2);
+            }
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<ExpressionList> argument_list;
         };
@@ -155,7 +162,6 @@ namespace frontend
             virtual void print(std::ostream &os, int indent) const override = 0;
         };
 
-
         class Return : public Statement
         {
         public:
@@ -163,111 +169,13 @@ namespace frontend
             ~Return() = default;
             std::string toString() const override
             {
-                return "Return "+expr->toString();
+                return "Return " + expr->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
-                os<<std::string(indent, ' ') << toString() << std::endl;
+                os << std::string(indent, ' ') << toString() << std::endl;
             }
             std::unique_ptr<Expression> expr;
-        };
-
-        class If : public Statement
-        {
-        public:
-            If(std::unique_ptr<Expression> cond, std::unique_ptr<Statement> then, std::unique_ptr<Statement> other) : cond(std::move(cond)), then(std::move(then)), other(std::move(other)), has_otherwise(true) {}
-            If(std::unique_ptr<Expression> cond, std::unique_ptr<Statement> then) : cond(std::move(cond)), then(std::move(then)), has_otherwise(false) {}
-            ~If() = default;
-            std::string toString() const override
-            {
-                return "If";
-            }
-            void print(std::ostream &os, int indent) const override
-            {
-                os << std::string(indent, ' ') << "If" << std::endl;
-                cond->print(os, indent + 2);
-                then->print(os, indent + 2);
-                if (has_otherwise)
-                    other->print(os, indent + 2);
-            }
-            std::unique_ptr<Expression> cond;
-            std::unique_ptr<Statement> then;
-            std::unique_ptr<Statement> other;
-            bool has_otherwise;
-        };
-
-        class While : public Statement
-        {
-        public:
-            While(std::unique_ptr<Expression> cond, std::unique_ptr<Statement> body) : cond(std::move(cond)), body(std::move(body)) {}
-            ~While() = default;
-            std::string toString() const override
-            {
-                return "While";
-            }
-            void print(std::ostream &os, int indent) const override
-            {
-                os << std::string(indent, ' ') << "While" << std::endl;
-                cond->print(os, indent + 2);
-                body->print(os, indent + 2);
-            }
-            std::unique_ptr<Expression> cond;
-            std::unique_ptr<Statement> body;
-        };
-
-        class For : public Statement
-        {
-        public:
-            For(std::unique_ptr<Statement> init, std::unique_ptr<Expression> cond, std::unique_ptr<Statement> update, std::unique_ptr<Statement> body) : init(std::move(init)), cond(std::move(cond)), update(std::move(update)), body(std::move(body)) {}
-            ~For() = default;
-            std::string toString() const override
-            {
-                std::string ret = "For";
-                return ret;
-            }
-            void print(std::ostream &os, int indent) const override
-            {
-                os << std::string(indent, ' ') << "For" << std::endl;
-                init->print(os, indent + 2);
-                cond->print(os, indent + 2);
-                update->print(os, indent + 2);
-                body->print(os, indent + 2);
-            }
-
-            std::unique_ptr<Statement> init;
-            std::unique_ptr<Expression> cond;
-            std::unique_ptr<Statement> update;
-            std::unique_ptr<Statement> body;
-        };
-
-        class Break : public Statement
-        {
-        public:
-            Break() = default;
-            ~Break() = default;
-            std::string toString() const override
-            {
-                return "Break";
-            }
-            void print(std::ostream &os, int indent) const override
-            {
-                os << std::string(indent, ' ') << toString() << std::endl;
-            }
-        };
-
-        class Continue : public Statement
-        {
-        public:
-            Continue() = default;
-            ~Continue() = default;
-            std::string toString() const override
-            {
-                return "Continue";
-            }
-            void print(std::ostream &os, int indent) const override
-            {
-                os << std::string(indent, ' ') << toString() << std::endl;
-            }
         };
 
         class Parameter : public AstNode
@@ -291,6 +199,7 @@ namespace frontend
         {
         public:
             ParameterList(std::vector<std::unique_ptr<Parameter>> children) : children(std::move(children)) {}
+            ParameterList() = default;
             ~ParameterList() = default;
             const std::vector<std::unique_ptr<Parameter>> &getChildren() const
             {
@@ -345,15 +254,29 @@ namespace frontend
         class Declaration : public AstNode
         {
         public:
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> init_expr) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(init_expr)), has_init(true) {}
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident) : var_type(std::move(var_type)), ident(std::move(ident)), has_init(false) {}
+            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr))
+            {
+                // check if init_expr is Expression
+                if (init_expr != nullptr)
+                    has_init = true;
+                else
+                    has_init = false;
+            }
+            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr, bool is_const) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr)), is_const(is_const)
+            {
+                if (init_expr != nullptr)
+                    has_init = true;
+                else
+                    has_init = false;
+            }
+
             ~Declaration() = default;
             std::string toString() const override
             {
                 if (!has_init)
-                    return var_type->toString() + " " + ident->toString();
+                    return (is_const ?"const ":"")+var_type->toString() + " " + ident->toString();
                 else
-                    return var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
+                    return (is_const ? "const " : "")+var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
@@ -363,6 +286,7 @@ namespace frontend
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<Expression> init_expr = nullptr;
             bool has_init;
+            bool is_const = false;
         };
 
         class Operator : public AstNode
@@ -446,16 +370,16 @@ namespace frontend
                 case static_cast<int>(BinaryOpEnum::OR):
                     ret = "||";
                     break;
-                case static_cast<int>(BinaryOpEnum::GT):
+                case static_cast<int>(BinaryOpEnum::SGT):
                     ret = ">";
                     break;
-                case static_cast<int>(BinaryOpEnum::LT):
+                case static_cast<int>(BinaryOpEnum::SLT):
                     ret = "<";
                     break;
-                case static_cast<int>(BinaryOpEnum::GE):
+                case static_cast<int>(BinaryOpEnum::SGE):
                     ret = ">=";
                     break;
-                case static_cast<int>(BinaryOpEnum::LE):
+                case static_cast<int>(BinaryOpEnum::SLE):
                     ret = "<=";
                     break;
                 case static_cast<int>(BinaryOpEnum::EQ):
@@ -514,11 +438,10 @@ namespace frontend
         };
 
         class LValue : public Expression
-        {//lvalue,当前只支持标量
+        { // lvalue,当前只支持标量
         public:
-
             // LValue(std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> index) : ident(std::move(ident)), index(std::move(index)), has_index(true) {}
-            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(0)) {}
+            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(TypeEnum::INT)) {}
             ~LValue() = default;
             std::string toString() const override
             {
@@ -540,7 +463,7 @@ namespace frontend
 
             // TODO:set type of lvalue. current default int.
             std::unique_ptr<Type> var_type;
-            
+
             bool has_index;
         };
 
@@ -551,31 +474,147 @@ namespace frontend
             ~Assign() = default;
             std::string toString() const override
             {
-                return "Assign"+lvalue->toString() + " = " + expr->toString();
+                return "Assign" + lvalue->toString() + " = " + expr->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
-                os << std::string(indent, ' ') << toString()<<std::endl;
+                os << std::string(indent, ' ') << toString() << std::endl;
             }
             std::unique_ptr<LValue> lvalue;
             std::unique_ptr<Expression> expr;
         };
 
         class Assignment : public Expression
-        {//TODO：这里只实现了对标量的赋值，对数组的赋值还没实现
+        { // TODO：这里你可以简单的通过判断value是否为空来判断是单个赋值还是多个赋值
         public:
             Assignment(std::unique_ptr<Expression> value)
                 : value{std::move(value)} {}
+            Assignment(std::vector<std::unique_ptr<Expression>> values)
+                : values{std::move(values)} {}
+
             ~Assignment() = default;
             std::string toString() const override
             {
-                return value->toString();
+                if (value)
+                    return value->toString();
+                else
+                    {
+                        std::string ret;
+                        ret+="{";
+                        for (auto &child : values)
+                        {
+                            ret += child->toString() + ", ";
+                        }
+                        if (!values.empty())
+                        {
+                            ret.pop_back();
+                            ret.pop_back();
+                        }
+                        ret+="}";
+                        return ret;
+
+                    }
             }
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
             }
-            std::unique_ptr<Expression> value;
+            std::unique_ptr<Expression> value = nullptr;
+            std::vector<std::unique_ptr<Expression>> values = {};
+        };
+
+        class ExprStmt : public Statement
+        { // expression statement, e.g. a+b;
+        public:
+            ExprStmt(std::unique_ptr<Expression> expr) : expr(std::move(expr)) {}
+            ~ExprStmt() = default;
+            std::string toString() const override
+            {
+                return expr->toString();
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << expr->toString() << std::endl;
+            }
+            std::unique_ptr<Expression> expr;
+        };
+
+        class IfElse : public Statement
+        {
+        public:
+            IfElse(std::unique_ptr<Expression> cond, std::unique_ptr<Statement> then, std::unique_ptr<Statement> other) : cond(std::move(cond)), then(std::move(then)), other(std::move(other)) {}
+            ~IfElse() = default;
+            std::string toString() const override
+            {
+                return "IfElse";
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << "If";
+                cond->print(os, indent + 2);
+                then->print(os, indent + 2);
+                if (other != nullptr)
+                {
+                    os << std::string(indent, ' ') << "Else" << std::endl;
+                    other->print(os, indent + 2);
+                }
+            }
+            bool has_else() const
+            {
+                return other != nullptr;
+            }
+            std::unique_ptr<Expression> cond;
+            std::unique_ptr<Statement> then;
+            std::unique_ptr<Statement> other;
+        };
+
+        class While : public Statement
+        {
+        public:
+            While(std::unique_ptr<Expression> cond, std::unique_ptr<Statement> body) : cond(std::move(cond)), body(std::move(body)) {}
+            ~While() = default;
+            std::string toString() const override
+            {
+                return "While";
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << "While";
+                cond->print(os, indent + 2);
+                body->print(os, indent + 2);
+            }
+            std::unique_ptr<Expression> cond;
+            std::unique_ptr<Statement> body;
+        };
+
+        class Break : public Statement
+        {
+        public:
+            Break() = default;
+            ~Break() = default;
+            std::string toString() const override
+            {
+                return "Break";
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << toString() << std::endl;
+            }
+        };
+
+        class Continue : public Statement
+        {
+        public:
+            Continue() = default;
+            ~Continue() = default;
+            std::string toString() const override
+            {
+                return "Continue";
+            }
+            void print(std::ostream &os, int indent) const override
+            {
+                os << std::string(indent, ' ') << toString() << std::endl;
+            }
         };
 
         class FunctionDeclaration : public AstNode
