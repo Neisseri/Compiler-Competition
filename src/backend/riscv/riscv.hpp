@@ -89,6 +89,7 @@ struct Instruction {
     virtual std::set<Reg> use() const { return {}; }
     virtual bool is_sequential() const { return type == InstType::SEQ; }
     virtual bool is_label() const { return type == InstType::LABEL; }
+    virtual bool is_func_label() { return false; }
 };
 
 struct Function {
@@ -96,7 +97,6 @@ struct Function {
     ir::Label label;
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
-    void cfg_build();
     void do_liveness_analysis();
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
@@ -105,13 +105,16 @@ struct Function {
 };
 
 struct Program {
+    void cfg_build();
+    std::vector<std::unique_ptr<Instruction>> instrs;
+    std::list<BasicBlock*> bbs;
     std::unordered_map<std::string, Function> functions;
     int label_cnt;
     std::string new_label() {
         return ".L" + std::to_string(label_cnt++);
     }
     std::vector<std::string> buffer;
-    Program();
+    Program() {}
     void emit(std::ostream &os);
     void emitEnd(std::ostream &os);
 };

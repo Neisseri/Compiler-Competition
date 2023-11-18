@@ -37,16 +37,15 @@ void BasicBlock::get_def_use_set() {
   live_out.clear();
 }
 
-void Function::cfg_build() {
+void Program::cfg_build() {
   std::list<std::unique_ptr<Instruction>> buf;
   ir::Label* label;
   std::unordered_map<ir::Label*, BasicBlock*> label_to_bb({});
   for (auto &i: instrs) {
     if (i->is_label()) {
-      // auto mark = dynamic_cast<Mark*>(i.get());
-      // if (mark->is_func_label()) 
-      //   continue;
-      // else {
+      if (i->is_func_label()) 
+        continue;
+      else {
         // close BasicBlock when met with Block labels
         BasicBlock* bb(new BasicBlock(BBType::CONTINUOUS, bbs.size(), label));
         for (auto &i: buf)
@@ -54,8 +53,7 @@ void Function::cfg_build() {
         bbs.push_back(bb);
         label_to_bb[label] = bb;
         label = i->label;
-      // }
-      // continue;
+      }
     }
     buf.push_back(std::move(i));
     BBType bbtype = BBType::UNDEFINED;

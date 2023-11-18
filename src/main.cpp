@@ -6,6 +6,8 @@
 #include "frontend/ast/astVisitor.hpp"
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
+#include "backend/riscv.hpp"
+#include "backend/translate.cpp"
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -64,7 +66,12 @@ int main(int argc, const char *argv[])
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
-
+    riscv::Program rv_program = riscv::Program()
+    riscv::translate(rv_program, ir_generator.ir_program);
+    build_basic_blocks(rv_prg);
+    liveness_analyze();
+    reg_alloc();
+    emit_end();
 
     return 0;
 }

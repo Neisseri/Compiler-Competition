@@ -1,13 +1,17 @@
-// #include "riscv.hpp"
-// #include "../../common/common.hpp"
+#include "riscv.hpp"
+#include "../../common/common.hpp"
 
-// namespace riscv {
-//   void translate(Program dst, ir::Program src) {
-//     for (auto &[name, func] : src.functions) {
-//       dst.functions[name].name = name;
-//       translate_function(dst.functions[name], func);
-//     }
-//   }
+namespace riscv {
+  void translate_function(Function dst, ir::Function src) {};
+  void translate_instruction(ir::Instruction* instr, BasicBlock* bb) {};
+  void translate(Program dst, ir::Program src) {
+    for (auto &[name, func] : src.functions) {
+      dst.functions[name].name = name;
+      translate_function(dst.functions[name], func);
+    }
+  }
+
+}
 
 //   void translate_function(Function dst, ir::Function src) {
 //     // call `translate_instruction`
