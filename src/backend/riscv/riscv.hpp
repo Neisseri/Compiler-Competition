@@ -1,3 +1,5 @@
+#include <string>
+
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
 #include "../../common/label.hpp"
@@ -64,11 +66,11 @@ struct Riscv {
 struct BasicBlock {
     BBType type;
     int id;
-    ir::Label* label;
+    std::string label;
     std::list<std::unique_ptr<Instruction>> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, ir::Label* label):
+    BasicBlock(BBType type, int id, std::string label):
         type(type), label(label), id(id) {}
     void push(std::unique_ptr<Instruction> insn) {
         instructions.push_back(std::move(insn));

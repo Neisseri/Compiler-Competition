@@ -7,6 +7,9 @@
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
 
+// backend
+#include "backend/riscv/riscv.hpp"
+
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
@@ -64,7 +67,11 @@ int main(int argc, const char *argv[])
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
-
+    if (step == 4) {
+        cout << "riscv: " << endl;
+        auto program = riscv::translate(ir_generator.ir_program);
+        // program.emit(cout);
+    }
 
     return 0;
 }

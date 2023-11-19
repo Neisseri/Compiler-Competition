@@ -1,17 +1,33 @@
-// #include "riscv.hpp"
-// #include "../../common/common.hpp"
+#include <unordered_map>
 
-// namespace riscv {
-//   void translate(Program dst, ir::Program src) {
-//     for (auto &[name, func] : src.functions) {
-//       dst.functions[name].name = name;
-//       translate_function(dst.functions[name], func);
-//     }
-//   }
+#include "riscv.hpp"
+#include "../../common/common.hpp"
+#include "../../common/ir.hpp"
 
-//   void translate_function(Function dst, ir::Function src) {
-//     // call `translate_instruction`
-//   }
+namespace riscv {
+
+class Translator {
+public:
+    Translator() = default;
+
+    void translate_function(Function &dst, ir::Function &src) {
+        bb_map.clear();
+
+        // entry block
+        auto entry_bb = new BasicBlock(BBType::END_BY_RETURN, 0, );
+    }
+
+    void translate(Program dst, ir::Program src) {
+        for (auto &[name, func] : src.functions) {
+            dst.functions[name].name = name;
+            translate_function(dst.functions[name], func);
+        }
+    }
+private:
+    std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
+    // Basic Block Map: ir -> riscv 
+};
+  
 
 //   void translate_instruction(ir::Instruction* instr, BasicBlock* bb) {
 
@@ -102,7 +118,7 @@
 
 //     }
 //   }
-// }
+}
 
 //   // void translate_instruction(armv7::Function &fn, BasicBlock *bb,
 //   //                            ir::Instruction *ins, BasicBlock *next_bb) {
