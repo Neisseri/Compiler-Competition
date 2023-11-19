@@ -1,4 +1,5 @@
 #include <unordered_map>
+#include <string>
 
 #include "riscv.hpp"
 #include "../../common/common.hpp"
@@ -14,10 +15,11 @@ public:
         bb_map.clear();
 
         // entry block
-        // auto entry_bb = new BasicBlock(BBType::END_BY_RETURN, 0, );
+        auto entry_bb = new BasicBlock();
+
     }
 
-    void translate(Program dst, ir::Program src) {
+    void translate(Program &dst, ir::Program src) {
         for (auto &[name, func] : src.functions) {
             dst.functions[name].name = name;
             translate_function(dst.functions[name], func);

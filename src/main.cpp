@@ -9,6 +9,7 @@
 
 // backend
 #include "backend/riscv/riscv.hpp"
+#include "backend/riscv/translate.hpp"
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -69,7 +70,9 @@ int main(int argc, const char *argv[])
     // TODO:生成riscv代码并优化
     if (step == 4) {
         cout << "riscv: " << endl;
-        auto program = riscv::translate(ir_generator.ir_program);
+        riscv::Translator translator;
+        riscv::Program program;
+        translator.translate(program, ir_generator.ir_program);
         // program.emit(cout);
     }
 

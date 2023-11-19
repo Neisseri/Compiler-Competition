@@ -1,4 +1,4 @@
-#include <string>
+#pragma once
 
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
@@ -66,12 +66,15 @@ struct Riscv {
 struct BasicBlock {
     BBType type;
     int id;
-    std::string label;
+    ir::Label* label;
     std::list<std::unique_ptr<Instruction>> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, std::string label):
+    BasicBlock(BBType type, int id, ir::Label* label):
         type(type), label(label), id(id) {}
+    // TODO: parameters?
+    BasicBlock() = default;
+
     void push(std::unique_ptr<Instruction> insn) {
         instructions.push_back(std::move(insn));
     }
