@@ -14,7 +14,7 @@ public:
         bb_map.clear();
 
         // entry block
-        auto entry_bb = new BasicBlock(BBType::END_BY_RETURN, 0, );
+        // auto entry_bb = new BasicBlock(BBType::END_BY_RETURN, 0, );
     }
 
     void translate(Program dst, ir::Program src) {
