@@ -29,7 +29,7 @@ void BasicBlock::get_def_use_set() {
     auto use = inst->use();
     for (auto &u: use)
       if (!def.count(u))
-        live_use.insert(u.id);
+        live_use.insert(u);
     for (auto &d: def)
       def.insert(d);
   }
@@ -53,7 +53,7 @@ void Function::do_liveness_analysis() {
   while (changed) {
     changed = false;
     for (auto bb: order) {
-      std::set<int> new_out;
+      std::set<Reg> new_out;
       for (auto succ: bb->succ)
         new_out.insert(succ->live_in.begin(), succ->live_in.end());
       if (bb->live_out != new_out) {
@@ -69,14 +69,14 @@ void Function::do_liveness_analysis() {
   }
   // compute livein & liveout for each inst in bb
   for (auto& bb: bbs) {
-    std::set<int> liveout = std::move(bb->live_out);
+    std::set<Reg> liveout = std::move(bb->live_out);
     for (auto i = bb->instructions.rbegin(); i != bb->instructions.rend(); i++) {
       auto inst = *i;
       inst->liveout = std::move(liveout);
       for (auto j: inst->def())
-        liveout.erase(j.id);
+        liveout.erase(j);
       for (auto j: inst->use())
-        liveout.insert(j.id);
+        liveout.insert(j);
       inst->livein = std::move(liveout);
     }
   }

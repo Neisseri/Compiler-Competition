@@ -32,7 +32,7 @@ struct BasicBlock {
     std::string label;
     std::list<Instruction*> instructions;
     std::set<BasicBlock*> pred, succ;
-    std::set<int> def, live_use, live_in, live_out;
+    std::set<Reg> def, live_use, live_in, live_out;
     BasicBlock(BBType type, int id, std::string label):
         type(type), label(label), id(id) {}
     BasicBlock() = default;
@@ -43,17 +43,13 @@ struct BasicBlock {
 };
 
 struct Instruction {
-    InstType type;
-    ir::Label* label;
-    Instruction(InstType type): type(type) {}
+    Instruction() {}
     virtual ~Instruction() = default;
     virtual void emit(std::ostream &os) const {}
     virtual std::set<Reg> def() const { return {}; }
     virtual std::set<Reg> use() const { return {}; }
-    virtual bool is_sequential() const { return type == InstType::SEQ; }
-    virtual bool is_label() const { return type == InstType::LABEL; }
-    virtual bool is_func_label() { return false; }
-    std::set<int> livein, liveout;
+    std::set<Reg> livein, liveout;
+    virtual std::vector<Reg*> reg_ptrs() { return {}; }
 };
 
 struct Function {
@@ -66,12 +62,15 @@ struct Function {
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
-    int alloc_reg_for(Reg i, bool is_read, std::set<int>);
-    void emit_prologue_epilogue() {}
+    bool alloc_reg_for(Reg i, bool is_read, std::set<Reg> livein, 
+        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
+    void emitend();
     std::vector<int> allocable_regs;
     std::map<Reg, int> bindings;
+    std::map<int, Reg> reg_to_tmp;
     int temps[32];
-    int available_reg_num;
+    void replace_regs(std::map<Reg, int> reg_map);
+    int offsets[32];
 };
 
 struct Program {
@@ -94,33 +93,59 @@ void emit_global(std::ostream &os, const ir::Program &ir_prg);
 struct Unary: Instruction {
     Reg dst, src;
     RiscvUnaryOp op;
-    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction(InstType::SEQ) {}
+    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
 };
 
 struct Binary: Instruction {
     Reg dst, src1, src2;
     RiscvUnaryOp op;
-    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction(InstType::SEQ) {}
+    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src1, src2}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src1, &src2}; }
 };
 
 struct Return: Instruction {
     int ret_val;
-    Return(int ret_val): ret_val(ret_val), Instruction(InstType::RET) {}
+    Return(int ret_val): ret_val(ret_val), Instruction() {}
+    Return() = default;
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {}; }
     std::set<Reg> use() const override { return {}; }
 };
 
-struct Mark: Instruction {
-    Mark(ir::Label* label): Instruction(InstType::LABEL) {}
+struct StoretoStack: Instruction {
+    Reg src;
+    int offset;
+    StoretoStack(Reg src, int offset): src(src), offset(offset), Instruction() {}
     void emit(std::ostream &os) const override;
-    bool is_func_label() { return label->type == LabelType::FuncLabel; }
+    std::set<Reg> def() const override { return {}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src}; }
 };
+
+struct LoadfromStack: Instruction {
+    Reg dst;
+    int offset;
+    LoadfromStack(Reg dst, int offset): dst(dst), offset(offset), Instruction() {}
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+};
+
+struct SPAdd: Instruction {
+    int offset;
+    void emit(std::ostream &os) const override;
+    SPAdd(int offset): offset(offset) {}
+    std::set<Reg> def() const override { return {}; }
+    std::set<Reg> use() const override { return {}; }
+};
+
 
 }
