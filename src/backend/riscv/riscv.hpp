@@ -25,50 +25,14 @@ struct Reg {
     }
 };
 
-struct Riscv {
-    Riscv() {}
-    Reg ZERO = Reg(RegType::General, 0, "x0");
-    Reg RA = Reg(RegType::General, 1, "ra");
-    Reg SP = Reg(RegType::General, 2, "sp");
-    Reg GP = Reg(RegType::General, 3, "gp");
-    Reg TP = Reg(RegType::General, 4, "tp");
-    Reg T0 = Reg(RegType::General, 5, "t1");
-    Reg T1 = Reg(RegType::General, 6, "t2");
-    Reg T2 = Reg(RegType::General, 7, "t2");
-    Reg FP = Reg(RegType::General, 8, "fp");
-    Reg S1 = Reg(RegType::General, 9, "s1");
-    Reg A0 = Reg(RegType::General, 10, "a0");
-    Reg A1 = Reg(RegType::General, 11, "a1");
-    Reg A2 = Reg(RegType::General, 12, "a2");
-    Reg A3 = Reg(RegType::General, 13, "a3");
-    Reg A4 = Reg(RegType::General, 14, "a4");
-    Reg A5 = Reg(RegType::General, 15, "a5");
-    Reg A6 = Reg(RegType::General, 16, "a6");
-    Reg A7 = Reg(RegType::General, 17, "a7");
-    Reg S2 = Reg(RegType::General, 18, "s2");
-    Reg S3 = Reg(RegType::General, 19, "s3");
-    Reg S4 = Reg(RegType::General, 20, "s4");
-    Reg S5 = Reg(RegType::General, 21, "s5");
-    Reg S6 = Reg(RegType::General, 22, "s6");
-    Reg S7 = Reg(RegType::General, 23, "s7");
-    Reg S8 = Reg(RegType::General, 24, "s8");
-    Reg S9 = Reg(RegType::General, 25, "s9");
-    Reg S10 = Reg(RegType::General, 26, "s10");
-    Reg S11 = Reg(RegType::General, 27, "s11");
-    Reg T3 = Reg(RegType::General, 28, "t3");
-    Reg T4 = Reg(RegType::General, 29, "t4");
-    Reg T5 = Reg(RegType::General, 30, "t5");
-    Reg T6 = Reg(RegType::General, 31, "t6");
-};
-
 struct BasicBlock {
     BBType type;
     int id;
-    ir::Label* label;
+    std::string label;
     std::list<std::unique_ptr<Instruction>> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, ir::Label* label):
+    BasicBlock(BBType type, int id, std::string label):
         type(type), label(label), id(id) {}
     void push(std::unique_ptr<Instruction> insn) {
         instructions.push_back(std::move(insn));

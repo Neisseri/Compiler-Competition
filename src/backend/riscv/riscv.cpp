@@ -2,7 +2,7 @@
 
 namespace riscv {
 
-Program::Program(): label_cnt(0) {
+// Program::Program(): label_cnt(0) {
     // print label
 //     buffer.emplace_back(".text\n");
 //     buffer.emplace_back(".global_main\n");
@@ -53,7 +53,7 @@ Program::Program(): label_cnt(0) {
 //     self.printer.printInstr(Riscv.NativeReturn())
 //     self.printer.println("")
 
-}
+// }
 
 
 // void Function::emit_prologue_epilogue() {
