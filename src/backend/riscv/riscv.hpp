@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
 #include "../../common/label.hpp"
@@ -34,6 +36,9 @@ struct BasicBlock {
     std::set<Reg> def, live_use, live_in, live_out;
     BasicBlock(BBType type, int id, std::string label):
         type(type), label(label), id(id) {}
+    // TODO: parameters?
+    BasicBlock() = default;
+
     void push(std::unique_ptr<Instruction> insn) {
         instructions.push_back(std::move(insn));
     }

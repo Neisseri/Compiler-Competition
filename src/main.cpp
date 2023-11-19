@@ -9,6 +9,10 @@
 #include "backend/riscv/riscv.hpp"
 #include "backend/riscv/translate.cpp"
 
+// backend
+#include "backend/riscv/riscv.hpp"
+#include "backend/riscv/translate.hpp"
+
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
@@ -66,12 +70,13 @@ int main(int argc, const char *argv[])
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
-    // riscv::Program rv_program = riscv::Program()
-    // riscv::translate(rv_program, ir_generator.ir_program);
-    // build_basic_blocks(rv_prg);
-    // liveness_analyze();
-    // reg_alloc();
-    // emit_end();
+    if (step == 4) {
+        cout << "riscv: " << endl;
+        riscv::Translator translator;
+        riscv::Program program;
+        translator.translate(program, ir_generator.ir_program);
+        // program.emit(cout);
+    }
 
     return 0;
 }
