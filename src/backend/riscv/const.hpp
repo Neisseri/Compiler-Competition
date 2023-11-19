@@ -1,3 +1,4 @@
+#pragma once
 namespace riscv {
     constexpr int x0 = 0;
     constexpr int ra = 1;
@@ -40,7 +41,7 @@ namespace riscv {
         CalleeSaved
     };
 
-    constexpr RegisterAttr GPRS_ATTR[NUM_REGS] = {
+    constexpr RegisterAttr REG_ATTR[NUM_REGS] = {
         Other, Other, Other, Other, Other, CallerSaved, CallerSaved, CallerSaved, 
         Other, CalleeSaved, CallerSaved, CallerSaved, CallerSaved, CallerSaved, CallerSaved, CallerSaved, 
         CallerSaved, CallerSaved, CalleeSaved, CalleeSaved, CalleeSaved, CalleeSaved, CalleeSaved, CalleeSaved, 
@@ -55,7 +56,7 @@ namespace riscv {
     };
 
     constexpr bool is_allocable(int reg) {
-        return GPRS_ATTR[reg] == CalleeSaved || GPRS_ATTR[reg] == CallerSaved;
+        return REG_ATTR[reg] == CalleeSaved || REG_ATTR[reg] == CallerSaved;
     };
 
     enum class RiscvUnaryOp {

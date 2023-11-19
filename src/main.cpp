@@ -7,7 +7,6 @@
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
 #include "backend/riscv/riscv.hpp"
-#include "backend/riscv/translate.cpp"
 
 // backend
 #include "backend/riscv/riscv.hpp"

@@ -1,26 +1,9 @@
-<<<<<<< HEAD:src/backend/riscv/translate.cpp
-#include "riscv.hpp"
-#include "../../common/common.hpp"
-
-namespace riscv {
-  void translate_function(Function dst, ir::Function src) {};
-  void translate_instruction(ir::Instruction* instr, BasicBlock* bb) {};
-  void translate(Program dst, ir::Program src) {
-    for (auto &[name, func] : src.functions) {
-      dst.functions[name].name = name;
-      translate_function(dst.functions[name], func);
-    }
-  }
-
-}
-=======
 #include <unordered_map>
 #include <string>
 
 #include "riscv.hpp"
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
->>>>>>> 01f269acc84c446e72876054fb324ec27c0f2cdd:src/backend/riscv/translate.hpp
 
 namespace riscv {
 

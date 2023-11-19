@@ -11,9 +11,8 @@ struct Instruction;
 struct Reg {
     RegType type;
     int id;
-    std::string name;
-    Reg() {}
-    Reg(RegType type, int id, std::string name): type(type), id(id), name(name) {}
+    Reg(RegType type, int id): type(type), id(id) {}
+    Reg() = default;
     bool operator==(const Reg &other) const {
         return type == other.type && id == other.id;
     }
@@ -31,17 +30,12 @@ struct BasicBlock {
     BBType type;
     int id;
     std::string label;
-    std::list<std::unique_ptr<Instruction>> instructions;
+    std::list<Instruction*> instructions;
     std::set<BasicBlock*> pred, succ;
-    std::set<Reg> def, live_use, live_in, live_out;
+    std::set<int> def, live_use, live_in, live_out;
     BasicBlock(BBType type, int id, std::string label):
         type(type), label(label), id(id) {}
-    // TODO: parameters?
     BasicBlock() = default;
-
-    void push(std::unique_ptr<Instruction> insn) {
-        instructions.push_back(std::move(insn));
-    }
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
     void get_def_use_set();
@@ -59,18 +53,25 @@ struct Instruction {
     virtual bool is_sequential() const { return type == InstType::SEQ; }
     virtual bool is_label() const { return type == InstType::LABEL; }
     virtual bool is_func_label() { return false; }
+    std::set<int> livein, liveout;
 };
 
 struct Function {
     std::string name;
     ir::Label label;
+    int reg_used[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
     void do_liveness_analysis();
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
+    int alloc_reg_for(Reg i, bool is_read, std::set<int>);
     void emit_prologue_epilogue() {}
+    std::vector<int> allocable_regs;
+    std::map<Reg, int> bindings;
+    int temps[32];
+    int available_reg_num;
 };
 
 struct Program {

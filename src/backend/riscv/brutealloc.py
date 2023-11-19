@@ -128,3 +128,14 @@ class BruteRegAlloc(RegAlloc):
         if isRead:
             subEmitter.emitLoadFromStack(reg, temp)
         return reg
+
+    def analyzeLivenessForEachLocIn(self, bb: BasicBlock):
+        liveOut = bb.liveOut.copy()
+        for loc in bb.backwardIterator():
+            loc.liveOut = liveOut.copy()
+
+            for v in loc.instr.getWritten():
+                liveOut.discard(v)
+
+            liveOut.update(loc.instr.getRead())
+            loc.liveIn = liveOut.copy()
