@@ -11,19 +11,55 @@ class Translator {
 public:
     Translator() = default;
 
-    void translate_function(Function &dst, ir::Function &src) {
+    void translate_function(Function &dst_fn, ir::Function &src_fn) {
         bb_map.clear();
-        
+
         // entry block
         auto entry_bb = new BasicBlock();
-        dst.bbs.emplace_back(entry_bb);
+        dst_fn.bbs.emplace_back(entry_bb);
 
-        auto &params = src.param_types;
-        
-        for (int i = 0; i < params.size(); i++) {
-            // TODO: just consider `int` now
-            // auto type = params[i].type;
+        auto &params = src_fn.param_types;
+
+        int nr_params = params.size();
+        int nr_gp_params, nr_fp_params;
+        nr_gp_params = nr_fp_params = 0;
+        std::vector<int> stack_params;
+
+        // Translate function parameters
+        /*for (int i = 0; i < nr_params; ++i) {
+            auto type = machine_reg_type(params[i]); // Assuming machine_reg_type is implemented
+
+            // TODO: Translate parameters to RISC-V registers or stack
+            if (type == RegType::General) {
+                if (nr_gp_params++ < 4) {
+                    // Translate to RISC-V registers
+                } else {
+                    // Translate to stack
+                }
+            } else {
+                if (nr_fp_params++ < 8) {
+                    // Translate to RISC-V registers
+                } else {
+                    // Translate to stack
+                }
+            }
         }
+
+        for (auto &ir_bb : src_fn.bbs) {
+            auto bb = new BasicBlock;
+            bb_map[ir_bb.get()] = bb;
+            dst_fn.bbs.emplace_back(bb);
+        }
+
+        // Translate each basic block
+        for (auto &ir_bb : src_fn.bbs) {
+            auto bb = bb_map[ir_bb.get()];
+            // TODO: Translate basic block contents using translate_instruction function
+            for (auto &instr : ir_bb->instrs) {
+                translate_instruction(instr, bb);
+            }
+        }*/
+
     }
 
     void translate(Program &dst, ir::Program src) {
@@ -37,97 +73,97 @@ private:
     // Basic Block Map: ir -> riscv 
 };
   
+/*
+void translate_instruction(ir::Instruction* instr, BasicBlock* bb) {
 
-//   void translate_instruction(ir::Instruction* instr, BasicBlock* bb) {
-
-//     if (auto result = dynamic_cast<ir::Alloca*>(instr)) {
+    if (auto result = dynamic_cast<ir::Alloca*>(instr)) {
       
-//     } else if (auto result = dynamic_cast<ir::Load*>(instr)) {
+    } else if (auto result = dynamic_cast<ir::Load*>(instr)) {
       
-//     } else if (auto unary = dynamic_cast<ir::Unary*>(instr)) {
-//       Reg dst = Reg::fromIRReg(unary->dst);
-//       Reg src = Reg::fromIRReg(unary->src);
+    } else if (auto unary = dynamic_cast<ir::Unary*>(instr)) {
+      Reg dst = Reg::fromIRReg(unary->dst);
+      Reg src = Reg::fromIRReg(unary->src);
       
-//       switch (unary->op) // although there is single unary instr in llvm, use switch-case in case of adding new instrs
-//       {
-//         case ir::UnaryOp::FNeg: {
-//           // TODO
-//           // li	a5,-2147483648
-//           // xor	a0,a5,a0
-//           break;
-//         }
-//       }
-//     } else if (auto binary = dynamic_cast<ir::Binary*>(instr)) {
-//       Reg dst = Reg::fromIRReg(binary->dst);
-//       Reg src1 = Reg::fromIRReg(binary->src1);
-//       Reg src2 = Reg::fromIRReg(binary->src2);
+      switch (unary->op) // although there is single unary instr in llvm, use switch-case in case of adding new instrs
+      {
+        case ir::UnaryOp::FNeg: {
+          // TODO
+          // li	a5,-2147483648
+          // xor	a0,a5,a0
+          break;
+        }
+      }
+    } else if (auto binary = dynamic_cast<ir::Binary*>(instr)) {
+      Reg dst = Reg::fromIRReg(binary->dst);
+      Reg src1 = Reg::fromIRReg(binary->src1);
+      Reg src2 = Reg::fromIRReg(binary->src2);
       
-//       switch (binary->op)
-//       {
-//         case ir::BinaryOp::Add: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::ADD, src1, src2));
-//           break;
-//         }
+      switch (binary->op)
+      {
+        case ir::BinaryOp::Add: {
+          bb->push(new Binary(dst, RiscvBinaryOp::ADD, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::Sub: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::Sub: {
+          bb->push(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::Mul: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::MUL, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::Mul: {
+          bb->push(new Binary(dst, RiscvBinaryOp::MUL, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::SDiv: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::DIV, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::SDiv: {
+          bb->push(new Binary(dst, RiscvBinaryOp::DIV, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::SRem: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::REM, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::SRem: {
+          bb->push(new Binary(dst, RiscvBinaryOp::REM, src1, src2));
+          break;
+        }
         
-//         case ir::BinaryOp::Shl: { // <<
-//           bb->push(new Binary(dst, RiscvBinaryOp::SLL, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::Shl: { // <<
+          bb->push(new Binary(dst, RiscvBinaryOp::SLL, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::LShr: { // Logic Shift Right
-//           bb->push(new Binary(dst, RiscvBinaryOp::SRL, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::LShr: { // Logic Shift Right
+          bb->push(new Binary(dst, RiscvBinaryOp::SRL, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::AShr: { // Arithmetic Shift Right
-//           bb->push(new Binary(dst, RiscvBinaryOp::SRA, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::AShr: { // Arithmetic Shift Right
+          bb->push(new Binary(dst, RiscvBinaryOp::SRA, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::And: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::AND, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::And: {
+          bb->push(new Binary(dst, RiscvBinaryOp::AND, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::Or: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::OR, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::Or: {
+          bb->push(new Binary(dst, RiscvBinaryOp::OR, src1, src2));
+          break;
+        }
 
-//         case ir::BinaryOp::Xor: {
-//           bb->push(new Binary(dst, RiscvBinaryOp::XOR, src1, src2));
-//           break;
-//         }
+        case ir::BinaryOp::Xor: {
+          bb->push(new Binary(dst, RiscvBinaryOp::XOR, src1, src2));
+          break;
+        }
       
-//         default:
-//           break;
-//       }
+        default:
+          break;
+      }
 
-//     } else if (auto result = dynamic_cast<ir::Return*>(instr)) {
+    } else if (auto result = dynamic_cast<ir::Return*>(instr)) {
 
-//     }
-//   }
-}
+    }
+  }
+}*/
 
 //   // void translate_instruction(armv7::Function &fn, BasicBlock *bb,
 //   //                            ir::Instruction *ins, BasicBlock *next_bb) {
