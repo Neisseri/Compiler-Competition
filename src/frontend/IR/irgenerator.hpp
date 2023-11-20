@@ -61,6 +61,10 @@ public:
         ir_function.bbs.push_back(ir_bb);
         visitBlock(*(func.body.get()), ir_bb);
 
+        ir_function.num_regs = reg_num;
+
+        std::cout << "function " << ir_function.name << " has " << ir_function.num_regs << " regs" << std::endl;
+
         CFGbuilder cfg_builder(&ir_function);
         cfg_builder.CFG_build();
         cfg_builder.CFG_print(std::cout, 0);
