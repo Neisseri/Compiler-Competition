@@ -16,7 +16,14 @@ public:
 
         // entry block
         auto entry_bb = new BasicBlock();
+        dst.bbs.emplace_back(entry_bb);
 
+        auto &params = src.param_types;
+        
+        for (int i = 0; i < params.size(); i++) {
+            // TODO: just consider `int` now
+            // auto type = params[i].type;
+        }
     }
 
     void translate(Program &dst, ir::Program src) {
