@@ -44,7 +44,7 @@ struct BasicBlock {
 
 struct Instruction {
     Instruction() {}
-    ~Instruction() = default;
+    virtual ~Instruction() = default;
     void emit(std::ostream &os) const {}
     std::set<Reg> def() const { return {}; }
     std::set<Reg> use() const { return {}; }
@@ -72,7 +72,7 @@ struct Function {
     std::map<int, Reg> reg_to_tmp;
     int temps[32];
     void replace_regs(std::map<Reg, int> reg_map);
-    int offsets[32];
+    std::map<int, int> offsets;
 };
 
 struct Program {
@@ -149,5 +149,11 @@ struct SPAdd: Instruction {
     std::set<Reg> use() const { return {}; }
 };
 
+
+struct Branch: Instruction {
+    BasicBlock* target;
+    Branch(BasicBlock* target): target(target) {}
+    void emit(std::ostream &os) const;
+};
 
 }

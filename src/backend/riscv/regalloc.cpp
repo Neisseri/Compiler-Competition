@@ -17,13 +17,12 @@ void Function::replace_regs(std::map<Reg, int> reg_map) {
 }
 
 void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein, 
-    std::list<Instruction*>::iterator it,
-    std::list<Instruction*> instructions) {
-    // if there's vacancy in allocable regs
-    // alloc
+    std::list<Instruction*>::iterator it, std::list<Instruction*> instructions) {
     if (bindings[temp]) return;
     for (auto r: allocable_regs) {
         if (!reg_occupied[r] || livein.count(reg_to_tmp[r])) {
+            if (is_read) // emit load from stack
+                instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp.id]));
             bindings[temp] = r;
             reg_occupied[r] = true;
             reg_to_tmp[r] = temp;
@@ -31,21 +30,17 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
         }
     }
     
-    // spill to stack
     int r = rand() % 26;
-    // store Reg r to stack
-    if (offsets[r] == -1) {
-        offsets[r] = frame_size;
+    if (!offsets[reg_to_tmp[r].id]) { // store Reg r to stack
+        offsets[reg_to_tmp[r].id] = frame_size;
         frame_size += 4;
     }
-    instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[r]));
+    instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[reg_to_tmp[r].id]));
     bindings[temp] = r;
     reg_occupied[r] = false;
     reg_to_tmp[r] = temp;
-    // difference between read & write
-    if (is_read) 
-        // emit load from stack
-        instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[r]));
+    if (is_read) // emit load from stack
+        instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp.id]));
     return;
 }
 
@@ -58,14 +53,13 @@ void Function::do_reg_alloc() {
             if (is_allocable(i)) {
                 allocable_regs.push_back(i);
                 reg_occupied[i] = false;
-                offsets[i] = -1;
             }
         }
         for (auto it = bb->instructions.begin(); it != bb->instructions.end(); ++it) {
             auto inst = *it;
             auto def = inst->def();
             for (auto i: def) {
-                if (i.id < 0)
+                if (i.id < 0) // is virtual reg
                     alloc_reg_for(i, true, inst->livein, it, bb->instructions);
             }
             auto use = inst->use();
@@ -75,9 +69,11 @@ void Function::do_reg_alloc() {
         }
         for (auto reg: bb->live_out) {
             if (bindings.count(reg)) {
-                // store tmp to stack
-                // decide offsets
-                bb->instructions.emplace_back(new StoretoStack(reg, offsets[reg.id]));
+                if (!offsets[reg.id]) {
+                    offsets[reg.id] = frame_size;
+                    frame_size += 4;
+                }
+                bb->instructions.emplace_back(new StoretoStack(Reg(General, bindings[reg]), offsets[reg.id]));
             }
         }
         // for the last instruction
@@ -124,22 +120,20 @@ void Function::emitend() {
             prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, i), 4 * id));
         id++;
     }
-    prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, ra), 44));
+    epilogue.emplace(epilogue.end(), new LoadfromStack(Reg(General, ra), 44));
     epilogue.emplace(epilogue.end(), new Return);
 
     for (auto &bb : bbs) {
         auto &insns = bb->instructions;
             if (!insns.empty()) {
                 auto it = std::prev(insns.end());
-                //   TypeCase(ret, Return*, it->get()) {
-                //     BasicBlock::add_edge(bb, exit);
-                //     it->reset(new Branch{exit});
-                //   }
+                if (auto ret = dynamic_cast<Return*>(*it)) {
+                    BasicBlock::add_edge(bb, exit);
+                    *it = new Branch(exit);
+                }
         }
     }
     bbs.emplace_back(exit);
-
-    //   resolve_stack_ops(frame_size);
 }
 
 
