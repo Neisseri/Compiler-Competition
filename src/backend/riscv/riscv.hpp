@@ -72,7 +72,7 @@ struct Function {
     std::map<int, Reg> reg_to_tmp;
     int temps[32];
     void replace_regs(std::map<Reg, int> reg_map);
-    std::map<int, int> offsets;
+    std::map<Reg, int> offsets; // virtual reg -> stack offset
 };
 
 struct Program {

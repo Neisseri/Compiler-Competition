@@ -20,9 +20,9 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     std::list<Instruction*>::iterator it, std::list<Instruction*> instructions) {
     if (bindings[temp]) return;
     for (auto r: allocable_regs) {
-        if (!reg_occupied[r] || livein.count(reg_to_tmp[r])) {
+        if (!reg_occupied[r] || !livein.count(reg_to_tmp[r])) {
             if (is_read) // emit load from stack
-                instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp.id]));
+                instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp]));
             bindings[temp] = r;
             reg_occupied[r] = true;
             reg_to_tmp[r] = temp;
@@ -31,21 +31,21 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     }
     
     int r = rand() % 26;
-    if (!offsets[reg_to_tmp[r].id]) { // store Reg r to stack
-        offsets[reg_to_tmp[r].id] = frame_size;
+    if (!offsets[reg_to_tmp[r]]) { // store Reg r to stack
+        offsets[reg_to_tmp[r]] = frame_size;
         frame_size += 4;
     }
-    instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[reg_to_tmp[r].id]));
+    instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[reg_to_tmp[r]]));
     bindings[temp] = r;
     reg_occupied[r] = false;
     reg_to_tmp[r] = temp;
     if (is_read) // emit load from stack
-        instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp.id]));
+        instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp]));
     return;
 }
 
 void Function::do_reg_alloc() {
-    frame_size = 4 * 11 + 4;
+    frame_size = 4 * 11 + 4; // callee-saved regs + ra
     do_liveness_analysis();
     for (auto &bb: bbs) {
         bindings.clear();
@@ -58,26 +58,23 @@ void Function::do_reg_alloc() {
         for (auto it = bb->instructions.begin(); it != bb->instructions.end(); ++it) {
             auto inst = *it;
             auto def = inst->def();
-            for (auto i: def) {
-                if (i.id < 0) // is virtual reg
-                    alloc_reg_for(i, true, inst->livein, it, bb->instructions);
-            }
             auto use = inst->use();
-            for (auto i: use) 
-                if (i.id < 0)
-                    alloc_reg_for(i, true, inst->livein, it, bb->instructions);
+            for (auto temp: def)
+                if (temp.id < 0) // is virtual reg
+                    alloc_reg_for(temp, true, inst->livein, it, bb->instructions);
+            for (auto temp: use)
+                if (temp.id < 0)
+                    alloc_reg_for(temp, false, inst->livein, it, bb->instructions);
         }
-        for (auto reg: bb->live_out) {
-            if (bindings.count(reg)) {
-                if (!offsets[reg.id]) {
-                    offsets[reg.id] = frame_size;
+        for (auto temp: bb->live_out) {
+            if (bindings.count(temp)) {
+                if (!offsets[temp]) {
+                    offsets[temp] = frame_size;
                     frame_size += 4;
                 }
-                bb->instructions.emplace_back(new StoretoStack(Reg(General, bindings[reg]), offsets[reg.id]));
+                bb->instructions.emplace_back(new StoretoStack(Reg(General, bindings[temp]), offsets[temp]));
             }
         }
-        // for the last instruction
-        // if (not bb.isEmpty) and (bb.kind is not BB.CONTINUE): self.allocForLoc(bb.locs[len(bb.locs)-1])
     }
 }
 
@@ -98,36 +95,34 @@ void Function::emitend() {
 
     // emit prologue
     auto &prologue = entry->instructions;
-    prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
     int id = 0;
-    for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
+    for (int i = 0; i < NUM_REGS; i++) { // callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
             prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, i), 4 * id));
         id++;
     }
-    // store ra
-    prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, ra), 44));
+    prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, ra), 44)); // store ra
     // store spilled regs
-    for (int i = 0; i < NUM_REGS; i++) // callee saved registers
-        if (is_allocable(i) && offsets[i] != -1)
-            prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, i), offsets[i]));
+    for (auto [temp, offset]: offsets)
+        prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, bindings[temp]), offset));
+    prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
 
     // emit epilogue
     auto &epilogue = exit->instructions;
-    epilogue.emplace(epilogue.end(), new SPAdd(frame_size));
     for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
             prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, i), 4 * id));
         id++;
     }
     epilogue.emplace(epilogue.end(), new LoadfromStack(Reg(General, ra), 44));
+    epilogue.emplace(epilogue.end(), new SPAdd(frame_size));
     epilogue.emplace(epilogue.end(), new Return);
 
     for (auto &bb : bbs) {
         auto &insns = bb->instructions;
             if (!insns.empty()) {
                 auto it = std::prev(insns.end());
-                if (auto ret = dynamic_cast<Return*>(*it)) {
+                if (auto ret = dynamic_cast<Return*>(*it)) { // epilogue for all bbs that end with return
                     BasicBlock::add_edge(bb, exit);
                     *it = new Branch(exit);
                 }
