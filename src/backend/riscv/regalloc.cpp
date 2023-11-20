@@ -2,6 +2,7 @@
 #include "const.hpp"
 namespace riscv {
 
+
 void Function::replace_regs(std::map<Reg, int> reg_map) {
     for (auto &bb : bbs) {
         for (auto &inst: bb->instructions) {
@@ -15,24 +16,28 @@ void Function::replace_regs(std::map<Reg, int> reg_map) {
     }
 }
 
-bool Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein, 
+void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein, 
     std::list<Instruction*>::iterator it,
     std::list<Instruction*> instructions) {
     // if there's vacancy in allocable regs
     // alloc
-    if (bindings[temp]) return bindings[temp];
+    if (bindings[temp]) return;
     for (auto r: allocable_regs) {
         if (!reg_occupied[r] || livein.count(reg_to_tmp[r])) {
             bindings[temp] = r;
             reg_occupied[r] = true;
             reg_to_tmp[r] = temp;
-            return false;
+            return;
         }
     }
     
     // spill to stack
     int r = rand() % 26;
     // store Reg r to stack
+    if (offsets[r] == -1) {
+        offsets[r] = frame_size;
+        frame_size += 4;
+    }
     instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[r]));
     bindings[temp] = r;
     reg_occupied[r] = false;
@@ -41,10 +46,11 @@ bool Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     if (is_read) 
         // emit load from stack
         instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[r]));
-    return true;
+    return;
 }
 
 void Function::do_reg_alloc() {
+    frame_size = 4 * 11 + 4;
     do_liveness_analysis();
     for (auto &bb: bbs) {
         bindings.clear();
@@ -52,6 +58,7 @@ void Function::do_reg_alloc() {
             if (is_allocable(i)) {
                 allocable_regs.push_back(i);
                 reg_occupied[i] = false;
+                offsets[i] = -1;
             }
         }
         for (auto it = bb->instructions.begin(); it != bb->instructions.end(); ++it) {
@@ -93,10 +100,6 @@ void Function::emitend() {
     auto exit = new BasicBlock;
     exit->label = name + "_exit";
 
-    int frame_size = 4 * 11 + 4;  // callee-saved regs + ra
-    // add saved regs to frame_size
-    // frame_size += reg_to_tmp.size() * 4;
-
     // emit prologue
     auto &prologue = entry->instructions;
     prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
@@ -109,6 +112,9 @@ void Function::emitend() {
     // store ra
     prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, ra), 44));
     // store spilled regs
+    for (int i = 0; i < NUM_REGS; i++) // callee saved registers
+        if (is_allocable(i) && offsets[i] != -1)
+            prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, i), offsets[i]));
 
     // emit epilogue
     auto &epilogue = exit->instructions;
