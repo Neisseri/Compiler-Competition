@@ -71,12 +71,12 @@ int main(int argc, const char *argv[])
     // TODO:生成riscv代码并优化
     if (step == 4) {
         cout << "riscv: " << endl;
-        // riscv::Program program(ir_generator.ir_program);
-        // for (auto [name, func]: program.functions) {
-        //     func.do_reg_alloc();
-        //     func.emitend();
-        // }
-        // program.emit(std::cout);
+        riscv::Program program(ir_generator.ir_program);
+        for (auto [name, func]: program.functions) {
+            func->do_reg_alloc();
+            func->emitend();
+        }
+        program.emit(std::cout);
     }
 
     return 0;

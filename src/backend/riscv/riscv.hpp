@@ -13,7 +13,7 @@ struct Reg {
     int id;
     Reg(RegType type, int id): type(type), id(id) {}
     Reg() = default;
-    Reg(ir::Reg ir_reg): type(General), id(ir_reg.id) {}
+    Reg(ir::Reg ir_reg): type(General), id(-ir_reg.id) {}
     bool operator==(const Reg &other) const {
         return type == other.type && id == other.id;
     }
@@ -30,13 +30,12 @@ struct Reg {
 struct BasicBlock {
     BBType type;
     int id;
+    static int total_blks;
     std::string label;
     std::list<Instruction*> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, std::string label):
-        type(type), label(label), id(id) {}
-    BasicBlock() = default;
+    BasicBlock() { id = ++total_blks; }
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
     void get_def_use_set();
@@ -83,9 +82,8 @@ struct Function {
 
 struct Program {
     void cfg_build();
-    std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
-    std::unordered_map<std::string, Function> functions;
+    std::unordered_map<std::string, Function*> functions;
     int label_cnt;
     std::string new_label() {
         return ".L" + std::to_string(label_cnt++);
@@ -174,6 +172,7 @@ struct ADDI: Instruction {
     std::set<Reg> def() const { return {dst}; }
     std::set<Reg> use() const { return {src}; }
     std::vector<Reg*> reg_ptrs() { return {&dst, &src}; }
+    void emit(std::ostream &os) const;
 };
 
 }

@@ -329,6 +329,7 @@ struct CondBranch : Instruction {
 struct Function {
     std::string name;
     Type ret_type;
+    int num_regs;
     std::vector<Type> param_types;
     std::list<std::shared_ptr<BasicBlock>> bbs;
 

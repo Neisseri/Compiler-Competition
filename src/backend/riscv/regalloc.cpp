@@ -2,6 +2,8 @@
 #include "const.hpp"
 namespace riscv {
 
+int BasicBlock::total_blks = 0;
+
 void Function::replace_regs(std::map<Reg, int> reg_map) {
     for (auto &bb : bbs) {
         for (auto &inst: bb->instructions) {
