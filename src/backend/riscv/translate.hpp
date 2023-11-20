@@ -13,7 +13,7 @@ public:
 
     void translate_function(Function &dst, ir::Function &src) {
         bb_map.clear();
-
+        
         // entry block
         auto entry_bb = new BasicBlock();
         dst.bbs.emplace_back(entry_bb);
