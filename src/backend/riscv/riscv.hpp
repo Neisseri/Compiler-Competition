@@ -13,6 +13,7 @@ struct Reg {
     int id;
     Reg(RegType type, int id): type(type), id(id) {}
     Reg() = default;
+    Reg(ir::Reg ir_reg): type(General), id(ir_reg.id) {}
     bool operator==(const Reg &other) const {
         return type == other.type && id == other.id;
     }
@@ -73,7 +74,11 @@ struct Function {
     int temps[32];
     void replace_regs(std::map<Reg, int> reg_map);
     std::map<Reg, int> offsets; // virtual reg -> stack offset
+    std::map<Reg, int> alloca_offsets; // virtual regs are ptr to stack objs
+    std::map<Reg, int> alloca_sizes;
     void emit(std::ostream &os);
+    Function(ir::Function& ir_function, const std::string& name);
+    void translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb);
 };
 
 struct Program {
@@ -89,6 +94,7 @@ struct Program {
     Program() {}
     void emit(std::ostream &os);
     void emitEnd(std::ostream &os);
+    Program(ir::Program ir_program);
 };
 
 std::unique_ptr<Program> translate(const ir::Program &ir_prg);
@@ -105,8 +111,8 @@ struct Unary: Instruction {
 
 struct Binary: Instruction {
     Reg dst, src1, src2;
-    RiscvUnaryOp op;
-    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction() {}
+    RiscvBinaryOp op;
+    Binary(Reg dst, RiscvBinaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction() {}
     void emit(std::ostream &os) const;
     std::set<Reg> def() const { return {dst}; }
     std::set<Reg> use() const { return {src1, src2}; }
@@ -115,11 +121,14 @@ struct Binary: Instruction {
 
 struct Return: Instruction {
     int ret_val;
+    Reg src;
     Return(int ret_val): ret_val(ret_val), Instruction() {}
+    Return(Reg src): src(src), Instruction() {}
     Return() = default;
     void emit(std::ostream &os) const;
     std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {}; }
+    std::set<Reg> use() const { return {src}; }
+    std::vector<Reg*> reg_ptrs() { return {&src}; }
 };
 
 struct StoreWord: Instruction {
@@ -156,6 +165,15 @@ struct Branch: Instruction {
     BasicBlock* target;
     Branch(Reg src, BasicBlock* target): src(src), target(target) {}
     void emit(std::ostream &os) const;
+};
+
+struct ADDI: Instruction {
+    Reg dst, src;
+    int offset;
+    ADDI(Reg dst, Reg src, int offset): offset(offset), dst(dst), src(src) {}
+    std::set<Reg> def() const { return {dst}; }
+    std::set<Reg> use() const { return {src}; }
+    std::vector<Reg*> reg_ptrs() { return {&dst, &src}; }
 };
 
 }

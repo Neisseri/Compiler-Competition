@@ -44,7 +44,6 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
 }
 
 void Function::do_reg_alloc() {
-    frame_size = 4 * 11 + 4; // callee-saved regs + ra
     do_liveness_analysis();
     for (auto &bb: bbs) {
         bindings.clear();

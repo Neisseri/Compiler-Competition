@@ -74,7 +74,10 @@ namespace riscv {
         MUL,
         DIV,
         AND,
-        SLT
+        SLT,
+        SHL,
+        SRL,
+        SRA
     };
 
     enum RegType {
