@@ -22,9 +22,9 @@ bool Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     // alloc
     if (bindings[temp]) return bindings[temp];
     for (auto r: allocable_regs) {
-        if (!reg_used[r] || livein.count(reg_to_tmp[r])) {
+        if (!reg_occupied[r] || livein.count(reg_to_tmp[r])) {
             bindings[temp] = r;
-            reg_used[r] = true;
+            reg_occupied[r] = true;
             reg_to_tmp[r] = temp;
             return false;
         }
@@ -35,7 +35,7 @@ bool Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     // store Reg r to stack
     instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[r]));
     bindings[temp] = r;
-    reg_used[r] = false;
+    reg_occupied[r] = false;
     reg_to_tmp[r] = temp;
     // difference between read & write
     if (is_read) 
@@ -51,7 +51,7 @@ void Function::do_reg_alloc() {
         for (int i = 0; i < 32; i++) {
             if (is_allocable(i)) {
                 allocable_regs.push_back(i);
-                reg_used[i] = false;
+                reg_occupied[i] = false;
             }
         }
         for (auto it = bb->instructions.begin(); it != bb->instructions.end(); ++it) {
@@ -80,57 +80,61 @@ void Function::do_reg_alloc() {
 
 
 void Function::emitend() {
-  for (auto &bb : bbs) {
-    for (auto &insn : bb->instructions) {
-      auto def = insn->def();
-      for (Reg r : def)
-        reg_used[r.id] = true;
+    int reg_used[32];
+    for (auto &bb : bbs) {
+        for (auto &insn : bb->instructions) {
+            auto def = insn->def();
+            for (Reg r : def)
+                reg_used[r.id] = true;
+        }
     }
-  }
 
-  std::vector<Reg> saved_regs;
-  for (int i = 0; i < NUM_REGS; ++i)
-    if (REG_ATTR[i] == CalleeSaved && reg_used[i])
-      saved_regs.push_back(Reg(General, i));
+    auto entry = *bbs.begin();
+    auto exit = new BasicBlock;
+    exit->label = name + "_exit";
 
-  auto entry = *bbs.begin();
-  auto exit = new BasicBlock;
-  exit->label = ".exit." + name;
+    int frame_size = 4 * 11 + 4;  // callee-saved regs + ra
+    // add saved regs to frame_size
+    // frame_size += reg_to_tmp.size() * 4;
 
-  int stack_obj_size = 0;
-  int frame_size = stack_obj_size + 4 * (saved_regs.size());
-
-  // emit prologue
-  auto &prologue = entry->instructions;
-  if (stack_obj_size)
-    prologue.emplace(prologue.begin(), new SPAdd(-stack_obj_size));
-  if (!saved_regs.empty())
-    for (auto i: saved_regs) // callee saved registers
-        prologue.emplace(prologue.begin(), new StoretoStack(i, offsets[i.id]));
-
-  // emit epilogue
-  auto &epilogue = exit->instructions;
-  if (stack_obj_size)
-    epilogue.emplace(epilogue.end(), new SPAdd(stack_obj_size));
-  for (auto i: saved_regs)
-        prologue.emplace(prologue.begin(), new LoadfromStack(i, offsets[i.id]));
-  epilogue.emplace(epilogue.end(), new Return);
-
-  for (auto &bb : bbs) {
-    auto &insns = bb->instructions;
-    if (!insns.empty()) {
-      auto it = std::prev(insns.end());
-    //   TypeCase(ret, Return*, it->get()) {
-    //     BasicBlock::add_edge(bb, exit);
-    //     it->reset(new Branch{exit});
-    //   }
+    // emit prologue
+    auto &prologue = entry->instructions;
+    prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
+    int id = 0;
+    for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
+        if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
+            prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, i), 4 * id));
+        id++;
     }
-  }
-  bbs.emplace_back(exit);
+    // store ra
+    prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, ra), 44));
+    // store spilled regs
 
-//   resolve_stack_ops(frame_size);
+    // emit epilogue
+    auto &epilogue = exit->instructions;
+    epilogue.emplace(epilogue.end(), new SPAdd(frame_size));
+    for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
+        if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
+            prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, i), 4 * id));
+        id++;
+    }
+    prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, ra), 44));
+    epilogue.emplace(epilogue.end(), new Return);
+
+    for (auto &bb : bbs) {
+        auto &insns = bb->instructions;
+            if (!insns.empty()) {
+                auto it = std::prev(insns.end());
+                //   TypeCase(ret, Return*, it->get()) {
+                //     BasicBlock::add_edge(bb, exit);
+                //     it->reset(new Branch{exit});
+                //   }
+        }
+    }
+    bbs.emplace_back(exit);
+
+    //   resolve_stack_ops(frame_size);
 }
-
 
 
 }

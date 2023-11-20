@@ -55,7 +55,7 @@ struct Instruction {
 struct Function {
     std::string name;
     ir::Label label;
-    int reg_used[32];
+    int reg_occupied[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
     void do_liveness_analysis();
@@ -66,6 +66,7 @@ struct Function {
         std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
     void emitend();
     std::vector<int> allocable_regs;
+    std::vector<int> callee_saved_regs;
     std::map<Reg, int> bindings;
     std::map<int, Reg> reg_to_tmp;
     int temps[32];
