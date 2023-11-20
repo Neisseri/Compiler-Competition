@@ -2,7 +2,6 @@
 #include "const.hpp"
 namespace riscv {
 
-
 void Function::replace_regs(std::map<Reg, int> reg_map) {
     for (auto &bb : bbs) {
         for (auto &inst: bb->instructions) {

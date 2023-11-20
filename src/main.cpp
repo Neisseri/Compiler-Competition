@@ -74,7 +74,11 @@ int main(int argc, const char *argv[])
         riscv::Translator translator;
         riscv::Program program;
         translator.translate(program, ir_generator.ir_program);
-        // program.emit(cout);
+        for (auto [name, func]: program.functions) {
+            func.do_reg_alloc();
+            func.emitend();
+        }
+        program.emit(std::cout);
     }
 
     return 0;

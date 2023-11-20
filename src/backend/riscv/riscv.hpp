@@ -73,6 +73,7 @@ struct Function {
     int temps[32];
     void replace_regs(std::map<Reg, int> reg_map);
     std::map<Reg, int> offsets; // virtual reg -> stack offset
+    void emit(std::ostream &os);
 };
 
 struct Program {
