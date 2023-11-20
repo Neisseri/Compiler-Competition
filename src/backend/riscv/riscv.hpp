@@ -122,24 +122,24 @@ struct Return: Instruction {
     std::set<Reg> use() const { return {}; }
 };
 
-struct StoretoStack: Instruction {
-    Reg src;
+struct StoreWord: Instruction {
+    Reg src, base;
     int offset;
-    StoretoStack(Reg src, int offset): src(src), offset(offset), Instruction() {}
+    StoreWord(Reg src, Reg base, int offset): src(src), base(base), offset(offset), Instruction() {}
     void emit(std::ostream &os) const;
     std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {src}; }
-    std::vector<Reg*> reg_ptrs() { return {&src}; }
+    std::set<Reg> use() const { return {src, base}; }
+    std::vector<Reg*> reg_ptrs() { return {&src, &base}; }
 };
 
-struct LoadfromStack: Instruction {
-    Reg dst;
+struct LoadWord: Instruction {
+    Reg dst, base;
     int offset;
-    LoadfromStack(Reg dst, int offset): dst(dst), offset(offset), Instruction() {}
+    LoadWord(Reg dst, Reg base, int offset): dst(dst), base(base), offset(offset), Instruction() {}
     void emit(std::ostream &os) const;
     std::set<Reg> def() const { return {dst}; }
-    std::set<Reg> use() const { return {}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst}; }
+    std::set<Reg> use() const { return {base}; }
+    std::vector<Reg*> reg_ptrs() { return {&dst, &base}; }
 };
 
 struct SPAdd: Instruction {
@@ -150,10 +150,11 @@ struct SPAdd: Instruction {
     std::set<Reg> use() const { return {}; }
 };
 
-
+// conditional branch (beq zero, src, target)
 struct Branch: Instruction {
+    Reg src;
     BasicBlock* target;
-    Branch(BasicBlock* target): target(target) {}
+    Branch(Reg src, BasicBlock* target): src(src), target(target) {}
     void emit(std::ostream &os) const;
 };
 

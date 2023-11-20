@@ -21,7 +21,7 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
     for (auto r: allocable_regs) {
         if (!reg_occupied[r] || !livein.count(reg_to_tmp[r])) {
             if (is_read) // emit load from stack
-                instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp]));
+                instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
             bindings[temp] = r;
             reg_occupied[r] = true;
             reg_to_tmp[r] = temp;
@@ -34,12 +34,12 @@ void Function::alloc_reg_for(Reg temp, bool is_read, std::set<Reg> livein,
         offsets[reg_to_tmp[r]] = frame_size;
         frame_size += 4;
     }
-    instructions.emplace(it, new StoretoStack(Reg(General, r), offsets[reg_to_tmp[r]]));
+    instructions.emplace(it, new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]));
     bindings[temp] = r;
     reg_occupied[r] = false;
     reg_to_tmp[r] = temp;
     if (is_read) // emit load from stack
-        instructions.emplace(it, new LoadfromStack(Reg(General, r), offsets[temp]));
+        instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
     return;
 }
 
@@ -71,7 +71,7 @@ void Function::do_reg_alloc() {
                     offsets[temp] = frame_size;
                     frame_size += 4;
                 }
-                bb->instructions.emplace_back(new StoretoStack(Reg(General, bindings[temp]), offsets[temp]));
+                bb->instructions.emplace_back(new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offsets[temp]));
             }
         }
     }
@@ -97,23 +97,23 @@ void Function::emitend() {
     int id = 0;
     for (int i = 0; i < NUM_REGS; i++) { // callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
-            prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, i), 4 * id));
+            prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id));
         id++;
     }
-    prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, ra), 44)); // store ra
+    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44)); // store ra
     // store spilled regs
     for (auto [temp, offset]: offsets)
-        prologue.emplace(prologue.begin(), new StoretoStack(Reg(General, bindings[temp]), offset));
+        prologue.emplace(prologue.begin(), new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offset));
     prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
 
     // emit epilogue
     auto &epilogue = exit->instructions;
     for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
-            prologue.emplace(prologue.begin(), new LoadfromStack(Reg(General, i), 4 * id));
+            prologue.emplace(prologue.begin(), new LoadWord(Reg(General, i), Reg(General, sp), 4 * id));
         id++;
     }
-    epilogue.emplace(epilogue.end(), new LoadfromStack(Reg(General, ra), 44));
+    epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, ra), Reg(General, sp), 44));
     epilogue.emplace(epilogue.end(), new SPAdd(frame_size));
     epilogue.emplace(epilogue.end(), new Return);
 
@@ -123,7 +123,7 @@ void Function::emitend() {
                 auto it = std::prev(insns.end());
                 if (auto ret = dynamic_cast<Return*>(*it)) { // epilogue for all bbs that end with return
                     BasicBlock::add_edge(bb, exit);
-                    *it = new Branch(exit);
+                    *it = new Branch(Reg(General, x0), exit); // unconditional branch
                 }
         }
     }
