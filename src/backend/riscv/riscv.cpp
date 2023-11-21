@@ -4,10 +4,16 @@ namespace riscv {
 
   int BasicBlock::total_blks = 0;
 
+  void Instruction::replace_reg(Reg src, Reg dst) {
+    for (auto r: reg_ptrs())
+      if (*r == src)
+        *r = dst;
+  }
+
   void Function::emit(std::ostream &os) {
     os << name << ":\n";
     for (auto bb: bbs) {
-      os << bb->label << ":\n";
+      os << print_bb(bb) << ":\n";
       for (auto &inst: bb->instructions)
         inst->emit(os);
       os << "\n";

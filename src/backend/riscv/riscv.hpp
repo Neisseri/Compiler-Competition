@@ -51,6 +51,7 @@ struct Instruction {
     virtual std::set<Reg> use() const { return {}; }
     std::set<Reg> livein, liveout;
     virtual std::vector<Reg*> reg_ptrs() { return {}; }
+    void replace_reg(Reg src, Reg dst);
 };
 
 struct Function {
@@ -63,7 +64,7 @@ struct Function {
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
-    void alloc_reg_for(Reg i, bool is_read, std::set<Reg> livein, 
+    void alloc_reg_for(Reg i, bool is_read,
         std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
     void emitend();
     int frame_size;
