@@ -77,7 +77,8 @@ struct Function {
     std::map<Reg, int> alloca_sizes;
     void emit(std::ostream &os);
     Function(ir::Function& ir_function, const std::string& name);
-    void translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb);
+    void translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb,
+        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
 };
 
 struct Program {
@@ -174,5 +175,23 @@ struct ADDI: Instruction {
     std::vector<Reg*> reg_ptrs() { return {&dst, &src}; }
     void emit(std::ostream &os) const;
 };
+
+
+struct Jump: Instruction {
+    BasicBlock* target;
+    Jump(BasicBlock* target): target(target) {}
+    void emit(std::ostream &os) const;
+};
+
+
+struct LoadImm: Instruction {
+    int imm;
+    Reg dst;
+    LoadImm(Reg dst, int imm): imm(imm), dst(dst) {}
+    std::set<Reg> def() const { return {dst}; }
+    std::vector<Reg*> reg_ptrs() { return {&dst}; }
+    void emit(std::ostream &os) const;
+};
+
 
 }

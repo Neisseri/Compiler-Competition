@@ -20,18 +20,16 @@ namespace riscv {
       func->emit(os);
   }
 
+  std::string print_reg(Reg src) {
+    return src.id < 0 ? ("T[" + std::to_string(src.id) + "]") : REG_NAMES[src.id];
+  }
+
   void StoreWord::emit(std::ostream &os) const {
-    if (src.id < 0) 
-      os << "sw " << "T" << src.id << ", " << offset << "(" << "T" << base.id << ")\n";
-    else
-      os << "sw " << REG_NAMES[src.id] << ", " << offset << "(" << REG_NAMES[base.id] << ")\n";
+    os << "sw " << print_reg(src) << ", " << offset << "(" << print_reg(base) << ")\n";
   }
 
   void LoadWord::emit(std::ostream &os) const {
-    if (dst.id < 0)
-      os << "lw " << "T" << dst.id << ", " << offset << "(" << "T" << base.id << ")\n";
-    else
-      os << "lw " << REG_NAMES[dst.id] << ", " << offset << "(" << REG_NAMES[base.id] << ")\n";
+    os << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
   }
 
   void SPAdd::emit(std::ostream &os) const {
@@ -39,28 +37,46 @@ namespace riscv {
   }
 
   void ADDI::emit(std::ostream &os) const {
-    if (dst.id < 0)
-      os << "addi " << "T" << dst.id << ", " << "T" << src.id << ", " << offset << "\n";
-    else
-      os << "addi " << REG_NAMES[dst.id] << ", " << REG_NAMES[src.id] << ", " << offset << "\n";
+    os << "addi " << print_reg(dst) << ", " << print_reg(src) << ", " << offset << "\n";
   }
 
   void Return::emit(std::ostream &os) const {
-    if (src.id < 0)
-      os << "ret " << "T" << src.id << "\n";
-    else
-      os << "ret " << REG_NAMES[src.id] << "\n";
+    os << "ret " << print_reg(src) << "\n";
   }
 
   void Branch::emit(std::ostream &os) const {
-    if (src.id < 0)
-      os << "beq zero, " << "T" << src.id << ", B" << target->id << "\n";
-    else
-      os << "beq zero, " << REG_NAMES[src.id] << ", B" << target->id << "\n";
+    os << "beq zero, " << print_reg(src) << ", B" << target->id << "\n";
   }
 
   void Binary::emit(std::ostream &os) const {
-    os << "binary\n";
+    switch (op) {
+      case RiscvBinaryOp::ADD: {
+        os << "add " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SUB: {
+        os << "sub " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      default: os << "unkown binary op\n";
+    }
+  }
+
+  void Unary::emit(std::ostream &os) const {
+    switch (op) {
+      case RiscvUnaryOp::SEQZ: {
+        os << "seqz " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        break;
+      }
+      default: os << "unkown unary op\n";
+    }
   }
   
+  void LoadImm::emit(std::ostream &os) const {
+    os << "li " << print_reg(dst) << ", " << imm << "\n";
+  }
+
+  void Jump::emit(std::ostream &os) const {
+    os << "j " << target->label << "\n";
+  }
 }

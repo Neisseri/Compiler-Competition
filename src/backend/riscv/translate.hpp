@@ -7,7 +7,8 @@
 
 namespace riscv {
   
-  void Function::translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb) {
+  void Function::translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb,
+    std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map) {
     ir_inst->print(std::cout, 4);
     if (auto alloca = dynamic_cast<ir::Alloca*>(ir_inst)) {
       Reg r = Reg(alloca->ret_val);
@@ -15,9 +16,10 @@ namespace riscv {
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
       std::cout << "alloca" << "\n";
-      auto n = new ADDI(r, Reg(General, sp), alloca->size);
+      // think more about the offset
+      auto n = new ADDI(r, Reg(General, sp), alloca_offsets[r]);
       n->emit(std::cout);
-      bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca->size));
+      bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
@@ -42,6 +44,16 @@ namespace riscv {
           auto n = new Binary(dst, RiscvBinaryOp::ADD, src1, src2);
           n->emit(std::cout);
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::ADD, src1, src2));
+          break;
+        } case BinaryOpEnum::EQ: {
+          // sub d, s1, s2; seqz d, d;
+          std::cout << "icmp eq" << "\n";
+          auto n = new Binary(dst, RiscvBinaryOp::SUB, src1, src2);
+          n->emit(std::cout);
+          auto n2 = new Unary(dst, RiscvUnaryOp::SEQZ, dst);
+          n2->emit(std::cout);
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
+          bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
           break;
         } case BinaryOpEnum::SUB: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
@@ -79,12 +91,33 @@ namespace riscv {
       auto n = new Return(src);
       n->emit(std::cout);
       bb->instructions.emplace_back(new Return(src));
+    } else if (auto cond_branch = dynamic_cast<ir::CondBranch*>(ir_inst)) {
+      // br int %3, label B1, label B2
+      // beq %3, B1; jmp B2;
+      Reg src = Reg(cond_branch->cond);
+      auto true_target = bb_map[cond_branch->bb_true.get()];
+      auto false_target = bb_map[cond_branch->bb_false.get()];
+      BasicBlock::add_edge(bb, true_target);
+      BasicBlock::add_edge(bb, false_target);
+      std::cout << "cond branch" << "\n";
+      auto n = new Branch(src, true_target);
+      n->emit(std::cout);
+      auto n2 = new Jump(false_target);
+      n2->emit(std::cout);
+      bb->instructions.emplace_back(new Branch(src, true_target));
+      bb->instructions.emplace_back(new Jump(false_target));
+    } else if (auto loadint = dynamic_cast<ir::LoadInt*>(ir_inst)) {
+      Reg dst = Reg(loadint->dst);
+      std::cout << "load int" << "\n";
+      auto n = new LoadImm(dst, loadint->val);
+      n->emit(std::cout);
+      bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     }
   }
 
   Program::Program(ir::Program ir_program) {
     for (auto &[name, func]: ir_program.functions) {
-      std::cout << "build function " << name << std::endl;
+      // std::cout << "build function " << name << std::endl;
       functions[name] = new Function(func, name);
     }
   }
@@ -95,6 +128,7 @@ namespace riscv {
     int num_params = ir_function.param_types.size();
     std::vector<int> stack_params;
     frame_size = 4 * 11 + 4; // callee-saved regs + ra
+    std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
     for (int i = 0; i < num_params; i++) {
       Reg param_reg = Reg(General, -(i + 1 + ir_function.num_regs));
       offsets[param_reg] = frame_size;
@@ -104,8 +138,12 @@ namespace riscv {
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = new BasicBlock;
         bbs.emplace_back(bb);
+        bb_map[ir_bb.get()] = bb;
+    }
+    for (auto &ir_bb: ir_function.bbs) {
+        auto bb = bb_map[ir_bb.get()];
         for (auto &inst: ir_bb->instrs)
-          translate_instruction(inst.get(), bb);
+          translate_instruction(inst.get(), bb, bb_map);
     }
   }
 
