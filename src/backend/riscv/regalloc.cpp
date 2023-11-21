@@ -122,6 +122,7 @@ void Function::emitend() {
 
     // emit epilogue
     auto &epilogue = exit->instructions;
+    id = 0;
     for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
             epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, i), Reg(General, sp), 4 * id));
