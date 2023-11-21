@@ -32,13 +32,14 @@ struct BasicBlock {
     int id;
     static int total_blks;
     std::string label;
-    std::list<Instruction*> instructions;
+    std::list<std::unique_ptr<Instruction>> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock() { id = ++total_blks; }
+    BasicBlock() { id = total_blks++; }
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
     void get_def_use_set();
+    void add_inst(Instruction* inst);
     void post_order_dfs(std::unordered_set<BasicBlock*> &visited, std::vector<BasicBlock*> &rst); 
 };
 
@@ -63,7 +64,7 @@ struct Function {
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
     void alloc_reg_for(Reg i, bool is_read, std::set<Reg> livein, 
-        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
+        std::list<std::unique_ptr<Instruction>>::iterator it, std::list<std::unique_ptr<Instruction>> instructions);
     void emitend();
     int frame_size;
     std::vector<int> allocable_regs;
@@ -77,7 +78,7 @@ struct Function {
     std::map<Reg, int> alloca_sizes;
     void emit(std::ostream &os);
     Function(ir::Function& ir_function, const std::string& name);
-    void translate_instruction(ir::Instruction* ir_inst, BasicBlock* bb,
+    void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
         std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
 };
 
@@ -96,8 +97,9 @@ struct Program {
     Program(ir::Program ir_program);
 };
 
-std::unique_ptr<Program> translate(const ir::Program &ir_prg);
-void emit_global(std::ostream &os, const ir::Program &ir_prg);
+std::string print_reg(Reg src);
+std::string print_bb(BasicBlock* bb);
+
 struct Unary: Instruction {
     Reg dst, src;
     RiscvUnaryOp op;

@@ -72,11 +72,12 @@ int main(int argc, const char *argv[])
     if (step == 4) {
         cout << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
-        for (auto [name, func]: program.functions) {
-            func->do_reg_alloc();
-            func->emitend();
-        }
-        program.emit(std::cout);
+        // for (auto [name, func]: program.functions) {
+        //     std::cout << name << "\n";
+        //     func->do_reg_alloc();
+        //     func->emitend();
+        // }
+        // program.emit(std::cout);
     }
 
     return 0;

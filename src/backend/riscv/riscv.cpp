@@ -2,6 +2,8 @@
 
 namespace riscv {
 
+  int BasicBlock::total_blks = 0;
+
   void Function::emit(std::ostream &os) {
     os << name << ":\n";
     for (auto bb: bbs) {
@@ -19,9 +21,17 @@ namespace riscv {
     for (auto &[name, func]: functions)
       func->emit(os);
   }
+  
+  void BasicBlock::add_inst(Instruction* inst) {
+    instructions.emplace_back(inst);
+  }
 
   std::string print_reg(Reg src) {
     return src.id < 0 ? ("T[" + std::to_string(src.id) + "]") : REG_NAMES[src.id];
+  }
+
+  std::string print_bb(BasicBlock* bb) {
+    return "B" + std::to_string(bb->id);
   }
 
   void StoreWord::emit(std::ostream &os) const {
@@ -45,7 +55,7 @@ namespace riscv {
   }
 
   void Branch::emit(std::ostream &os) const {
-    os << "beq zero, " << print_reg(src) << ", B" << target->id << "\n";
+    os << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
   }
 
   void Binary::emit(std::ostream &os) const {
@@ -53,8 +63,7 @@ namespace riscv {
       case RiscvBinaryOp::ADD: {
         os << "add " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
-      }
-      case RiscvBinaryOp::SUB: {
+      } case RiscvBinaryOp::SUB: {
         os << "sub " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
@@ -67,6 +76,9 @@ namespace riscv {
       case RiscvUnaryOp::SEQZ: {
         os << "seqz " << print_reg(dst) << ", " << print_reg(src) << "\n";
         break;
+      } case RiscvUnaryOp::SNEZ: {
+        os << "snez " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        break;
       }
       default: os << "unkown unary op\n";
     }
@@ -77,6 +89,6 @@ namespace riscv {
   }
 
   void Jump::emit(std::ostream &os) const {
-    os << "j " << target->label << "\n";
+    os << "j " << print_bb(target) << "\n";
   }
 }
