@@ -25,17 +25,17 @@ void BasicBlock::get_def_use_set() {
   live_use.clear();
   def.clear();
   for (auto &inst: instructions) {
-    inst->emit(std::cout);
+    // inst->emit(std::cout);
     auto inst_def = inst->def();
     auto inst_use = inst->use();
-    std::cout << "def set: ";
-    for (auto& i: inst_def)
-      std::cout << print_reg(i) << " ";
-    std::cout << "\n";
-    std::cout << "use set: ";
-    for (auto& i: inst_use)
-      std::cout << print_reg(i) << " ";
-    std::cout << "\n";
+    // std::cout << "def set: ";
+    // for (auto& i: inst_def)
+    //   std::cout << print_reg(i) << " ";
+    // std::cout << "\n";
+    // std::cout << "use set: ";
+    // for (auto& i: inst_use)
+    //   std::cout << print_reg(i) << " ";
+    // std::cout << "\n";
     for (auto &u: inst_use)
       if (!inst_def.count(u))
         live_use.insert(u);
@@ -91,7 +91,7 @@ void Function::do_liveness_analysis() {
   for (auto& bb: bbs) {
     std::set<Reg> liveout = std::move(bb->live_out);
     for (auto i = bb->instructions.rbegin(); i != bb->instructions.rend(); i++) {
-      auto inst = i->get();
+      auto inst = *i;
       inst->liveout = std::move(liveout);
       for (auto j: inst->def())
         liveout.erase(j);

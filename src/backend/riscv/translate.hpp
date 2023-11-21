@@ -20,22 +20,19 @@ namespace riscv {
       // auto n = new ADDI(r, Reg(General, sp), alloca_offsets[r]);
       // n->emit(std::cout);
       bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
-      std::cout << "???\n";
-      for (auto &inst: bb->instructions) 
-        inst->emit(std::cout);
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
       // std::cout << "load" << "\n";
-      auto n = new LoadWord(dst, src, 0);
-      n->emit(std::cout);
+      // auto n = new LoadWord(dst, src, 0);
+      // n->emit(std::cout);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
       Reg dst = Reg(store->ptr);
       Reg src = Reg(store->src_val);
       // std::cout << "store" << "\n";
-      auto n = new StoreWord(src, dst, 0);
-      n->emit(std::cout);
+      // auto n = new StoreWord(src, dst, 0);
+      // n->emit(std::cout);
       bb->instructions.emplace_back(new StoreWord(src, dst, 0));
     } else if (auto binary = dynamic_cast<ir::Binary*>(ir_inst)) {
       Reg dst = Reg(binary->dst);
@@ -44,17 +41,17 @@ namespace riscv {
       switch (binary->op) {
         case BinaryOpEnum::ADD: {
           // std::cout << "add" << "\n";
-          auto n = new Binary(dst, RiscvBinaryOp::ADD, src1, src2);
-          n->emit(std::cout);
+          // auto n = new Binary(dst, RiscvBinaryOp::ADD, src1, src2);
+          // n->emit(std::cout);
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::ADD, src1, src2));
           break;
         } case BinaryOpEnum::EQ: {
           // sub d, s1, s2; seqz d, d;
           // std::cout << "icmp eq" << "\n";
-          auto n = new Binary(dst, RiscvBinaryOp::SUB, src1, src2);
-          n->emit(std::cout);
-          auto n2 = new Unary(dst, RiscvUnaryOp::SEQZ, dst);
-          n2->emit(std::cout);
+          // auto n = new Binary(dst, RiscvBinaryOp::SUB, src1, src2);
+          // n->emit(std::cout);
+          // auto n2 = new Unary(dst, RiscvUnaryOp::SEQZ, dst);
+          // n2->emit(std::cout);
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
           bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
           break;
@@ -91,16 +88,16 @@ namespace riscv {
     } else if (auto ret = dynamic_cast<ir::Return*>(ir_inst)) {
       Reg src = Reg(ret->ret_val);
       // std::cout << "return" << "\n";
-      auto n = new Return(src);
-      n->emit(std::cout);
+      // auto n = new Return(src);
+      // n->emit(std::cout);
       bb->instructions.emplace_back(new Return(src));
     } else if (auto branch = dynamic_cast<ir::Branch*>(ir_inst)) {
       // br label B1
       // beq zero, zero, B1
       auto targ = bb_map[branch->bb_dst.get()];
       // std::cout << "branch" << "\n";
-      auto n = new Branch(Reg(General, x0), targ);
-      n->emit(std::cout);
+      // auto n = new Branch(Reg(General, x0), targ);
+      // n->emit(std::cout);
       bb->instructions.emplace_back(new Branch(Reg(General, x0), targ));
     } else if (auto cond_branch = dynamic_cast<ir::CondBranch*>(ir_inst)) {
       // br int %3, label B1, label B2
@@ -111,21 +108,22 @@ namespace riscv {
       BasicBlock::add_edge(bb, true_target);
       BasicBlock::add_edge(bb, false_target);
       // std::cout << "cond branch" << "\n";
-      auto n = new Branch(src, true_target);
-      n->emit(std::cout);
-      auto n2 = new Jump(false_target);
-      n2->emit(std::cout);
+      // auto n = new Branch(src, true_target);
+      // n->emit(std::cout);
+      // auto n2 = new Jump(false_target);
+      // n2->emit(std::cout);
       bb->instructions.emplace_back(new Branch(src, true_target));
       bb->instructions.emplace_back(new Jump(false_target));
     } else if (auto loadint = dynamic_cast<ir::LoadInt*>(ir_inst)) {
       Reg dst = Reg(loadint->dst);
       // std::cout << "load int" << "\n";
-      auto n = new LoadImm(dst, loadint->val);
-      n->emit(std::cout);
+      // auto n = new LoadImm(dst, loadint->val);
+      // n->emit(std::cout);
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     }
-    for (auto &inst: bb->instructions) 
-      inst->emit(std::cout);
+    // std::cout << bb->instructions.size() << "\n";
+    // for (auto &inst: bb->instructions)
+    //   inst->emit(std::cout);
   }
 
   Program::Program(ir::Program ir_program) {

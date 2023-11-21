@@ -32,7 +32,7 @@ struct BasicBlock {
     int id;
     static int total_blks;
     std::string label;
-    std::list<std::unique_ptr<Instruction>> instructions;
+    std::list<Instruction*> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
     BasicBlock() { id = total_blks++; }
@@ -46,11 +46,11 @@ struct BasicBlock {
 struct Instruction {
     Instruction() {}
     virtual ~Instruction() = default;
-    void emit(std::ostream &os) const {}
-    std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {}; }
+    virtual void emit(std::ostream &os) const {}
+    virtual std::set<Reg> def() const { return {}; }
+    virtual std::set<Reg> use() const { return {}; }
     std::set<Reg> livein, liveout;
-    std::vector<Reg*> reg_ptrs() { return {}; }
+    virtual std::vector<Reg*> reg_ptrs() { return {}; }
 };
 
 struct Function {
@@ -64,7 +64,7 @@ struct Function {
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
     void alloc_reg_for(Reg i, bool is_read, std::set<Reg> livein, 
-        std::list<std::unique_ptr<Instruction>>::iterator it, std::list<std::unique_ptr<Instruction>> instructions);
+        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
     void emitend();
     int frame_size;
     std::vector<int> allocable_regs;
@@ -104,20 +104,20 @@ struct Unary: Instruction {
     Reg dst, src;
     RiscvUnaryOp op;
     Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction() {}
-    void emit(std::ostream &os) const;
-    std::set<Reg> def() const { return {dst}; }
-    std::set<Reg> use() const { return {src}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst, &src}; }
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
 };
 
 struct Binary: Instruction {
     Reg dst, src1, src2;
     RiscvBinaryOp op;
     Binary(Reg dst, RiscvBinaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction() {}
-    void emit(std::ostream &os) const;
-    std::set<Reg> def() const { return {dst}; }
-    std::set<Reg> use() const { return {src1, src2}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst, &src1, &src2}; }
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src1, src2}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src1, &src2}; }
 };
 
 struct Return: Instruction {
@@ -126,38 +126,36 @@ struct Return: Instruction {
     Return(int ret_val): ret_val(ret_val), Instruction() {}
     Return(Reg src): src(src), Instruction() {}
     Return() = default;
-    void emit(std::ostream &os) const;
-    std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {src}; }
-    std::vector<Reg*> reg_ptrs() { return {&src}; }
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src}; }
 };
 
 struct StoreWord: Instruction {
     Reg src, base;
     int offset;
     StoreWord(Reg src, Reg base, int offset): src(src), base(base), offset(offset), Instruction() {}
-    void emit(std::ostream &os) const;
-    std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {src, base}; }
-    std::vector<Reg*> reg_ptrs() { return {&src, &base}; }
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {}; }
+    std::set<Reg> use() const override { return {src, base}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src, &base}; }
 };
 
 struct LoadWord: Instruction {
     Reg dst, base;
     int offset;
     LoadWord(Reg dst, Reg base, int offset): dst(dst), base(base), offset(offset), Instruction() {}
-    void emit(std::ostream &os) const;
-    std::set<Reg> def() const { return {dst}; }
-    std::set<Reg> use() const { return {base}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst, &base}; }
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {base}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &base}; }
 };
 
 struct SPAdd: Instruction {
     int offset;
-    void emit(std::ostream &os) const;
+    void emit(std::ostream &os) const override;
     SPAdd(int offset): offset(offset) {}
-    std::set<Reg> def() const { return {}; }
-    std::set<Reg> use() const { return {}; }
 };
 
 // conditional branch (beq zero, src, target)
@@ -165,24 +163,26 @@ struct Branch: Instruction {
     Reg src;
     BasicBlock* target;
     Branch(Reg src, BasicBlock* target): src(src), target(target) {}
-    void emit(std::ostream &os) const;
+    void emit(std::ostream &os) const override;
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src}; }
 };
 
 struct ADDI: Instruction {
     Reg dst, src;
     int offset;
     ADDI(Reg dst, Reg src, int offset): offset(offset), dst(dst), src(src) {}
-    std::set<Reg> def() const { return {dst}; }
-    std::set<Reg> use() const { return {src}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst, &src}; }
-    void emit(std::ostream &os) const;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    void emit(std::ostream &os) const override;
 };
 
 
 struct Jump: Instruction {
     BasicBlock* target;
     Jump(BasicBlock* target): target(target) {}
-    void emit(std::ostream &os) const;
+    void emit(std::ostream &os) const override;
 };
 
 
@@ -190,9 +190,9 @@ struct LoadImm: Instruction {
     int imm;
     Reg dst;
     LoadImm(Reg dst, int imm): imm(imm), dst(dst) {}
-    std::set<Reg> def() const { return {dst}; }
-    std::vector<Reg*> reg_ptrs() { return {&dst}; }
-    void emit(std::ostream &os) const;
+    std::set<Reg> def() const override { return {dst}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    void emit(std::ostream &os) const override;
 };
 
 
