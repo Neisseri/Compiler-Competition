@@ -69,6 +69,7 @@ namespace riscv {
       }
     } else if (auto ret = dynamic_cast<ir::Return*>(ir_inst)) {
       Reg src = Reg(ret->ret_val);
+      bb->instructions.emplace_back(new Move(src, Reg(General, a0)));
       bb->instructions.emplace_back(new Return(src));
     } else if (auto branch = dynamic_cast<ir::Branch*>(ir_inst)) {
       // br label B1
@@ -84,8 +85,8 @@ namespace riscv {
       auto false_target = bb_map[cond_branch->bb_false.get()];
       BasicBlock::add_edge(bb, true_target);
       BasicBlock::add_edge(bb, false_target);
-      bb->instructions.emplace_back(new Branch(src, true_target));
-      bb->instructions.emplace_back(new Jump(false_target));
+      bb->instructions.emplace_back(new Branch(src, false_target));
+      bb->instructions.emplace_back(new Jump(true_target));
     } else if (auto loadint = dynamic_cast<ir::LoadInt*>(ir_inst)) {
       Reg dst = Reg(loadint->dst);
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));

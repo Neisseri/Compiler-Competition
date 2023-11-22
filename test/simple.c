@@ -5,5 +5,5 @@ void main()
         return a;
     }
     a = a + 1;
-    return a;
+    return 4;
 }

@@ -47,10 +47,10 @@ void Function::do_liveness_analysis() {
     bb->get_def_use_set();
   std::vector<BasicBlock*> order = do_post_order_tranverse();
   std::reverse(order.begin(), order.end());
-  std::cout << "\nreverse post order: ";
-  for (auto i: order)
-    std::cout << print_bb(i) << " ";
-  std::cout << "\n";
+  // std::cout << "\nreverse post order: ";
+  // for (auto i: order)
+  //   std::cout << print_bb(i) << " ";
+  // std::cout << "\n";
   bool changed = true;
   while (changed) {
     changed = false;

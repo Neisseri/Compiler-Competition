@@ -57,7 +57,7 @@ namespace riscv {
   }
 
   void Return::emit(std::ostream &os) const {
-    os << "ret " << print_reg(src) << "\n";
+    os << "ret\n";
   }
 
   void Branch::emit(std::ostream &os) const {
@@ -96,5 +96,9 @@ namespace riscv {
 
   void Jump::emit(std::ostream &os) const {
     os << "j " << print_bb(target) << "\n";
+  }
+
+  void Move::emit(std::ostream &os) const {
+    os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
   }
 }

@@ -159,7 +159,7 @@ struct SPAdd: Instruction {
     SPAdd(int offset): offset(offset) {}
 };
 
-// conditional branch (beq zero, src, target)
+// conditional branch (beq x0, src, target)
 struct Branch: Instruction {
     Reg src;
     BasicBlock* target;
@@ -196,5 +196,14 @@ struct LoadImm: Instruction {
     void emit(std::ostream &os) const override;
 };
 
+
+struct Move: Instruction {
+    Reg src, dst;
+    Move(Reg src, Reg dst): src(src), dst(dst) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    void emit(std::ostream &os) const override;
+};
 
 }

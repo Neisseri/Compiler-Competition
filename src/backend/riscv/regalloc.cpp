@@ -38,8 +38,8 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
         offsets[reg_to_tmp[r]] = frame_size;
         frame_size += 4;
     }
-    auto n = new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]);
-    n->emit(std::cout);
+    // auto n = new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]);
+    // n->emit(std::cout);
     instructions.emplace(it, new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]));
     bindings[temp] = r;
     reg_occupied[r] = true;
@@ -85,7 +85,11 @@ void Function::do_reg_alloc() {
                     frame_size += 4;
                 }
                 // 这里的插入位置还需要调整
-                bb->instructions.emplace(std::prev(bb->instructions.end()), new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offsets[temp]));
+                auto last_inst = std::prev(bb->instructions.end());
+                if (dynamic_cast<Branch*>(*std::prev(last_inst))) // 倒数第二条为beq时，插入到branch之前
+                    bb->instructions.emplace(std::prev(last_inst), new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offsets[temp]));
+                else
+                    bb->instructions.emplace(last_inst, new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offsets[temp]));
             }
         }
     }
