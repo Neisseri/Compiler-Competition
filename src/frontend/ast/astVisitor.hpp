@@ -368,7 +368,15 @@ public:
       auto const index = exp->accept(this).as<Expression *>();
       indices.emplace_back(index);
     }
-    return new LValue(std::unique_ptr<Identifier>(lval_ident));
+    if (indices.empty())
+    {
+      return new LValue(std::unique_ptr<Identifier>(lval_ident));
+    }
+    else
+    {
+      return new LValue(std::unique_ptr<Identifier>(lval_ident),
+                        std::move(indices));
+    }
   }
 
   antlrcpp::Any visitPrimaryExp_(SysYParser::PrimaryExp_Context *ctx) override
