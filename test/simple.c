@@ -1,7 +1,6 @@
-int func(int a, int b){
-    return a - b+ 1;
-}
-
-int main() { 
-    return func(2);
+int main (){
+    int a[10]={1,2,3,4,5,6,7,8,9,10};
+    int b[10]={1,2,3,4,5,6,7,8,9,10};
+    int c = a[0] + b[2][1];
+    return c;
 }

@@ -243,10 +243,12 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
+                os << std::string(indent, ' ') << "{" << std::endl;
                 for (auto &child : children)
                 {
                     child->print(os, indent + 2);
                 }
+                os << std::string(indent, ' ') << "}" << std::endl;
             }
             std::vector<std::unique_ptr<AstNode>> children;
         };
@@ -438,28 +440,30 @@ namespace frontend
         };
 
         class LValue : public Expression
-        { // lvalue,当前只支持标量
+        {
         public:
-            // LValue(std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> index) : ident(std::move(ident)), index(std::move(index)), has_index(true) {}
-            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(TypeEnum::INT)) {}
+            LValue(std::unique_ptr<Identifier> ident, std::vector<std::unique_ptr<Expression>> indices) : ident(std::move(ident)), indices(std::move(indices)), has_index(true), var_type(new Type(0)) {}
+            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(0)) {}
             ~LValue() = default;
             std::string toString() const override
             {
-                if (has_index)
-                    return ident->toString() + "[" + index->toString() + "]";
+                if (has_index){
+                    std::string ret;
+                    for (auto &index : indices)
+                    {
+                        ret += "[" + index->toString() + "]";
+                    }
+                    return ident->toString() + ret;
+                }
                 else
                     return ident->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString();
-                if (has_index)
-                    index->print(os, indent + 2);
-                else
-                    os << std::endl;
             }
             std::unique_ptr<Identifier> ident;
-            std::unique_ptr<Expression> index;
+            std::vector<std::unique_ptr<Expression>> indices;
 
             // TODO:set type of lvalue. current default int.
             std::unique_ptr<Type> var_type;

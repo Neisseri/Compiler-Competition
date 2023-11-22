@@ -305,6 +305,7 @@ public:
 
   antlrcpp::Any visitBlockStmt(SysYParser::BlockStmtContext *ctx) override
   {
+    std::cerr << "visit block stmt" << std::endl;
     auto const block = ctx->block()->accept(this).as<Block *>();
     return static_cast<Statement *>(block);
   }
@@ -367,7 +368,15 @@ public:
       auto const index = exp->accept(this).as<Expression *>();
       indices.emplace_back(index);
     }
-    return new LValue(std::unique_ptr<Identifier>(lval_ident));
+    if (indices.empty())
+    {
+      return new LValue(std::unique_ptr<Identifier>(lval_ident));
+    }
+    else
+    {
+      return new LValue(std::unique_ptr<Identifier>(lval_ident),
+                        std::move(indices));
+    }
   }
 
   antlrcpp::Any visitPrimaryExp_(SysYParser::PrimaryExp_Context *ctx) override
