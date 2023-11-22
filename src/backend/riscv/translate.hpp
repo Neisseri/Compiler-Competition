@@ -64,6 +64,24 @@ namespace riscv {
         } case BinaryOpEnum::XOR: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::XOR, src1, src2));
           break;
+        } case BinaryOpEnum::SGT: { // signed greater than
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SGT, src1, src2));
+          break;
+        } case BinaryOpEnum::SLT: { // signed less than
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SLT, src1, src2));
+          break;
+        } case BinaryOpEnum::SGE: { // signed greater or equal
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SLT, src1, src2));
+          bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
+          break;
+        } case BinaryOpEnum::SLE: { // signed less or equal
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SGT, src1, src2));
+          bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
+          break;
+        } case BinaryOpEnum::NE: {
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
+          bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SNEZ, dst));
+          break;
         }
         default: break;
       }

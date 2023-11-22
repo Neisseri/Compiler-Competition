@@ -77,7 +77,9 @@ namespace riscv {
         SLT,
         SHL,
         SRL,
-        SRA
+        SRA,
+        SGT,
+        SLT
     };
 
     enum RegType {
