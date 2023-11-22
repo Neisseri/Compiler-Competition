@@ -447,11 +447,14 @@ namespace frontend
             ~LValue() = default;
             std::string toString() const override
             {
-                if (has_index)
+                if (has_index){
+                    std::string ret;
                     for (auto &index : indices)
                     {
-                        return ident->toString() + "[" + index->toString() + "]";
+                        ret += "[" + index->toString() + "]";
                     }
+                    return ident->toString() + ret;
+                }
                 else
                     return ident->toString();
             }
