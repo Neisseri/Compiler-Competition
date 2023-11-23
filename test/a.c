@@ -1,6 +1,7 @@
-void main()
-{
-    int a = 1;
-    a = a + 1;
-    return a;
+int func(int a) {
+    return a+1;
+}
+
+int main() {
+    return func(2);
 }

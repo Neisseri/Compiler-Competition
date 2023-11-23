@@ -90,6 +90,16 @@ namespace riscv {
     } else if (auto loadint = dynamic_cast<ir::LoadInt*>(ir_inst)) {
       Reg dst = Reg(loadint->dst);
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
+    } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
+      Reg ret_val = Reg(call->ret_val);
+      int num_args = call->params.size();
+      for (int i = 0; i < num_args; i++) {
+        if (i < 8) {
+          Reg src_reg = Reg(call->params[i]);
+          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+        }
+      }
+      bb->instructions.emplace_back(new Call(call->func_name, num_args));
     }
   }
 
