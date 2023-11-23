@@ -59,7 +59,26 @@ public:
 
         std::shared_ptr<ir::BasicBlock> ir_bb(get_new_bb_ptr(&ir_function));
         ir_function.bbs.push_back(ir_bb);
+
+        for (auto &i : func.params->children){
+            ir::Reg init_reg = get_new_reg(i->var_type->type);
+        }
+        int param_id = 0;
+        for (auto &i : func.params->children){
+            ir::Reg init_reg(i->var_type->type, ++param_id);
+            ir::Reg dst_ptr = get_new_reg(i->var_type->type);
+            std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, i->var_type->type ,4));
+            ir_bb->instrs.push_back(std::move(alloca_instr));
+            var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(i->ident->name), std::move(dst_ptr)));
+            std::unique_ptr<ir::Store> store_instr(new ir::Store(i->var_type->type, init_reg, dst_ptr));
+            ir_bb->instrs.push_back(std::move(store_instr));
+        }
+
         visitBlock(*(func.body.get()), ir_bb);
+
+        ir_function.num_regs = reg_num;
+
+        std::cout << "function " << ir_function.name << " has " << ir_function.num_regs << " regs" << std::endl;
 
         CFGbuilder cfg_builder(&ir_function);
         cfg_builder.CFG_build();
