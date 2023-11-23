@@ -206,4 +206,26 @@ struct Move: Instruction {
     void emit(std::ostream &os) const override;
 };
 
+struct Call: Instruction {
+    std::string func_name;
+    int num_params;
+    Call(std::string func_name, int num_params): func_name(func_name), num_params(num_params), Instruction() {}
+    std::set<Reg> def() const override {
+        std::set<Reg> def_set;
+        for (int i = 0; i < NUM_REGS; i++) 
+            if (REG_ATTR[i] == CallerSaved)
+                def_set.insert(Reg(General, i));
+        return def_set;
+    }
+    std::set<Reg> use() const override {
+        int num_reg_used = num_params < 8 ? num_params : 8;
+        std::set<Reg> use_set;
+        for (int i = 0; i < num_reg_used; i++) 
+            use_set.insert(Reg(General, argregs[i]));
+        return use_set;
+    }
+    std::vector<Reg*> reg_ptrs() override { return {}; }
+    void emit(std::ostream &os) const override;
+};
+
 }

@@ -55,6 +55,8 @@ namespace riscv {
         "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
     };
 
+    constexpr const int argregs[8] = {a0, a1, a2, a3, a4, a5, a6, a7};
+
     constexpr bool is_allocable(int reg) {
         return REG_ATTR[reg] == CalleeSaved || REG_ATTR[reg] == CallerSaved;
     };
