@@ -24,15 +24,17 @@ namespace riscv {
       // debug
       std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
       
-      if (num_params > 0) {
-        Reg dst = Reg(store->ptr);
-        Reg src = Reg(General, argregs[store->src_val.id - 1]);
-        bb->instructions.emplace_back(new StoreWord(src, dst, 0));
-      } else {
+      // TODO: 目前参数全放栈上
+      // if (num_params > 0 && store->src_val.id <= num_params) {
+      //     Reg dst = Reg(store->ptr);
+      //     Reg a0 = Reg(General, argregs[0]);
+      //     bb->instructions.emplace_back(new LoadWord(a0, Reg(General, sp), 4 * (store->src_val.id - 1) + frame_size));
+      //     bb->instructions.emplace_back(new StoreWord(a0, dst, 0));
+      // } else { // no params
         Reg dst = Reg(store->ptr);
         Reg src = Reg(store->src_val);
         bb->instructions.emplace_back(new StoreWord(src, dst, 0));
-      }
+      //}
     } else if (auto binary = dynamic_cast<ir::Binary*>(ir_inst)) {
       Reg dst = Reg(binary->dst);
       Reg src1 = Reg(binary->src1);
@@ -123,11 +125,26 @@ namespace riscv {
 
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
+      // 这里遇到个问题，如果参数数量较多，li 指令赋值的时候会用到参数寄存器
+      // 但是参数寄存器的值在函数调用之后会被覆盖
+      // 这部分涉及寄存器分配，还没搞懂，所以先全放到栈上
+      // for (int i = 0; i < num_args; i++) {
+      //   if (i < 8) {
+      //     Reg src_reg = Reg(call->params[i]);
+      //     bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+      //   }
+      // }
+      // if (num_args > 8) {
+      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), -4 * (num_args - 8)));
+      //   for (int i = 8; i < num_args; i++) {
+      //     Reg src_reg = Reg(call->params[i]);
+      //     bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * (i - 8)));
+      //   }
+      // }
+      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), -4 * num_args));
       for (int i = 0; i < num_args; i++) {
-        if (i < 8) {
-          Reg src_reg = Reg(call->params[i]);
-          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
-        }
+        Reg src_reg = Reg(call->params[i]);
+        bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));
       }
       bb->instructions.emplace_back(new Call(call->func_name, num_args));
       bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
@@ -150,7 +167,7 @@ namespace riscv {
       Reg param_reg = Reg(General, -(i + 1 + ir_function.num_regs)); // allocate regs for function parameters
       offsets[param_reg] = frame_size; // load all parameters from stack
       frame_size += 4;
-      entry_bb->instructions.emplace_back(new LoadWord(param_reg, Reg(General, sp), offsets[param_reg]));
+      //entry_bb->instructions.emplace_back(new LoadWord(param_reg, Reg(General, sp), offsets[param_reg]));
     }
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = new BasicBlock;

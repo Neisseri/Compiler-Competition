@@ -21,7 +21,7 @@ namespace riscv {
   }
 
   void Program::emit(std::ostream &os) {
-    os << ".text\n";
+    os << "\n.text\n";
     os << ".global main\n";
     os << "\n";
     for (auto &[name, func]: functions)
