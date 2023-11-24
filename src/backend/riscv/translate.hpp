@@ -22,11 +22,11 @@ namespace riscv {
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
       // debug
-      std::cout << "store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
+      std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
       
       if (num_params > 0) {
         Reg dst = Reg(store->ptr);
-        Reg src = Reg(General, argregs[store->src_val.id]);
+        Reg src = Reg(General, argregs[store->src_val.id - 1]);
         bb->instructions.emplace_back(new StoreWord(src, dst, 0));
       } else {
         Reg dst = Reg(store->ptr);
@@ -119,7 +119,7 @@ namespace riscv {
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
       // debug
-      std::cout << "call " << call->func_name << "----------------------------\n";
+      std::cout << "# call " << call->func_name << "----------------------------\n";
 
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
