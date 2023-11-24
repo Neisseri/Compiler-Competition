@@ -1,53 +1,68 @@
 #pragma once
 
-#include "../../common/commom.hpp"
+#include "../../common/const.hpp"
 #include "../type/type.hpp"
 
 struct Value{
 //TODO
 };
 
-struct Symbol
+class Symbol
 {
-    
+    //a virtual class
+    public:
+    std::string name;
+    Type* type;
+    int scope_id;
+    virtual std::string toString() = 0;
+    virtual ~Symbol() = default;
 };
 
+class VarSymbol : public Symbol{
+    public:
 
-struct VarSymbol : Symbol{
-    std::string name;
-    Type type;
     bool is_global;
-    Value init_value;
-
-    VarSymbol(std::string name, Type type, bool is_global) : name{name}, type{type}, is_global{is_global}{}
-
-    void set_init_value(Value value){
-        init_value = value;
+    VarSymbol(std::string name, Type* type, bool is_global){
+        this->name = name;
+        this->type = type;
+        this->is_global = is_global;
     }
-    
-    std::string toString(){} // TODO
+
+    std::string toString(){
+        std::string s;
+        s += "VarSymbol: " + name + "(" + "int" + ") ";//TODO: type->toString()
+        return s;
+    }
 };
 
-
-struct FuncSymbol : Symbol{
-    std::string name;
-    Type type;
-    std::vector<Type> param_type_list;
+class FuncSymbol : public Symbol{
+    public:
+    std::vector<Type*> param_type_list;
     bool is_define;
 
-    FuncSymbol(std::string name, Type type, bool is_define) : name{name}, type{type}, is_define{is_define}{}
+    FuncSymbol(std::string name, Type* type, bool is_define){
+        this->name = name;
+        this->type = type;
+        this->is_define = is_define;
+    }
 
-    void add_param_type(Type type){
-        param_type_list.push_back(type);
+    void add_param_type(Type* type)
+    {
+        param_type_list.push_back(std::move(type));
     }
 
     int num_param(){
         return param_type_list.size();
     }
 
-    Type get_param_type(int idx){
-        return param_type_list[idx];
+    Type* get_param_type(int idx)
+    {
+        return std::move(param_type_list[idx]);
     }
 
-    std::string toString(){} // TODO
+    std::string toString(){
+        std::string s;
+        s += "FuncSymbol: " + name + "(" + type->toString() + ") " ;
+        return s;
+    }
 };

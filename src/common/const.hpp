@@ -39,8 +39,27 @@ enum class UnaryOpEnum : int
     UNARYSUB,
 };
 
-enum class LabelType {
+enum class LabelType : int
+{
     FuncLabel,
     BlockLabel,
     TMP,
+};
+
+enum class ScopeType : int
+{
+    GlobalScope,
+    FuncScope,
+    BlockScope,
+    LoopScope,
+    ErrorScope,
+};
+
+enum class ErrorTypeEnum : int
+{
+    UnimplementedError,
+    SyntaxError,
+    TypeError,
+    SemanticError,
+    InternalError,
 };

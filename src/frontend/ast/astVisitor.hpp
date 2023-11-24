@@ -16,13 +16,18 @@ public:
     {
       if (item->funcDef())
       {
+        std::cerr<<"visitCompUnit: funcDef"<<std::endl;
         auto function = item->funcDef()->accept(this).as<Function *>();
         children.push_back(std::unique_ptr<Function>(function));
       }
       else if (item->decl())
       {
-        auto decl = item->decl()->accept(this).as<Declaration *>();
-        children.push_back(std::unique_ptr<Declaration>(decl));
+        auto const decls =
+            item->decl()->accept(this).as<std::shared_ptr<std::vector<Declaration *>>>();
+        for (auto d : *decls)
+        {
+          children.push_back(std::unique_ptr<Declaration>(d));
+        }
       }
       else
       {

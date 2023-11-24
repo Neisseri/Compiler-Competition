@@ -4,6 +4,7 @@
 #include "frontend/lexer_parser/SysYLexer.h"
 #include "frontend/lexer_parser/SysYParser.h"
 #include "frontend/ast/astVisitor.hpp"
+#include "frontend/type_check/typer.hpp"
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
 #include "midend/iroptimizer.hpp"
@@ -73,6 +74,8 @@ int main(int argc, char *argv[])
     // ast构建
     ASTVisitor ast_visitor;
     auto AST = ast_visitor.visit(tree).as<ast::Program *>();
+    TyperVisitor typer;
+    typer.visitPromgram(AST);
 
     if (out_stage == 1)
     {

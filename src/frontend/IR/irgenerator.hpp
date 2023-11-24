@@ -329,6 +329,15 @@ public:
                     ir_bb->func->bbs.push_back(ir_new_bb);
                     ir_bb = ir_new_bb;
                 }
+                else if (auto block = dynamic_cast<ast::Block *>(child.get())){
+                    visitBlock(*block, ir_bb);
+                }
+                else if (auto exprstmt = dynamic_cast<ast::ExprStmt *>(child.get())){
+                }
+                else {
+                    child->print(std::cout, 0);
+                    assert(false);
+                }
             }
             else if (auto decl = dynamic_cast<ast::Declaration *>(child.get())){
                 ir::Reg dst_ptr = get_new_reg(decl->var_type->type);
@@ -391,6 +400,9 @@ public:
                         ir_bb->instrs.push_back(std::move(store_instr));
                     }
                 }
+            }
+            else {
+                assert(false);
             }
         }
     }
