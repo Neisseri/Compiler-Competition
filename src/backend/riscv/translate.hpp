@@ -130,6 +130,7 @@ namespace riscv {
         }
       }
       bb->instructions.emplace_back(new Call(call->func_name, num_args));
+      bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
     }
   }
 
