@@ -14,6 +14,8 @@ public:
     int reg_num = 0;
     int label_num = 0;
 
+    std::set<std::string> var_name_set;
+    std::unordered_map<std::string, std::set<std::shared_ptr<ir::BasicBlock>>> Defs;
     std::unordered_map<std::string, ir::Reg> var_ptr_table;
     std::unordered_map<std::string, Type> var_type_table;
     std::vector<std::shared_ptr<ir::BasicBlock>> break_to_stack;
@@ -102,9 +104,14 @@ public:
             ir::Reg init_reg(i->var_type->type, ++param_id);
             ir::Reg dst_ptr = get_new_reg(i->var_type->type);
             std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, i->var_type->type ,4));
+            alloca_instr->is_local_var = 1;
             ir_bb->instrs.push_back(std::move(alloca_instr));
-            var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(i->ident->name), std::move(dst_ptr)));
-            std::unique_ptr<ir::Store> store_instr(new ir::Store(i->var_type->type, init_reg, dst_ptr));
+            std::string tem_name = i->ident->name;
+            ir::Reg temp_reg = dst_ptr;
+            var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
+            std::unique_ptr<ir::Store> store_instr(new ir::Store(i->var_type->type, init_reg, dst_ptr, i->ident->name));
+            store_instr->is_local_var = 1;
+            Defs[i->ident->name].insert(ir_bb);
             ir_bb->instrs.push_back(std::move(store_instr));
         }
 
@@ -119,8 +126,13 @@ public:
         cfg_builder.CFG_print(std::cout, 0);
         cfg_builder.remove_unreachable_bb();
         cfg_builder.CFG_print(std::cout, 0);
+        cfg_builder.build_dominator_tree();
+        cfg_builder.compute_dom_fro();
+        cfg_builder.dom_tree_print(std::cout, 0);
+        cfg_builder.dom_fro_print(std::cout, 0);
 
-        ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(func.ident->name), std::move(ir_function)));
+        std::string temp_name = func.ident->name;
+        ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(temp_name), std::move(ir_function)));
     }
 
     ir::Reg visitExpression(std::unique_ptr<ast::Expression> &expr, std::shared_ptr<ir::BasicBlock> &ir_bb){
@@ -177,7 +189,10 @@ public:
             if (lvalue->has_index) {
                 val_ptr = visitIndex(lvalue, ir_bb);
             }
-            std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr));
+            std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
+            if (!lvalue->has_index){
+                load_instr->is_local_var = 1;
+            }
             ir_bb->instrs.push_back(std::move(load_instr));
             return ret;
         }
@@ -209,8 +224,13 @@ public:
                     ir::Reg dst_ptr = var_ptr_table[assign->lvalue->ident->name];
                     if (assign->lvalue->has_index) { // 数组
                         dst_ptr = visitIndex(assign->lvalue.get(), ir_bb);
+                    }else {
+                        Defs[assign->lvalue->ident->name].insert(ir_bb);
                     }
-                    std::unique_ptr<ir::Store> store_instr(new ir::Store(assign->lvalue->var_type->type, src, dst_ptr));
+                    std::unique_ptr<ir::Store> store_instr(new ir::Store(assign->lvalue->var_type->type, src, dst_ptr, assign->lvalue->ident->name));
+                    if (!assign->lvalue->has_index){
+                        store_instr->is_local_var = 1;
+                    }
                     ir_bb->instrs.push_back(std::move(store_instr));
                 }
                 else if (auto ret = dynamic_cast<ast::Return *>(child.get())){
@@ -316,10 +336,12 @@ public:
                     std::cout << "visit decl array" << std::endl;
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type, decl->var_type->get_size()));
                     ir_bb->instrs.push_back(std::move(alloca_instr));
-                    std::string name = decl->ident->name;
-                    var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(name), std::move(dst_ptr)));
+                    std::string temp_name = decl->ident->name;
+                    ir::Reg temp_reg = dst_ptr;
+                    var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(temp_name), std::move(temp_reg)));
                     Type array_type = *decl->var_type;
-                    var_type_table.insert(std::make_pair<std::string, Type>(std::move(decl->ident->name), std::move(array_type)));
+                    std::string temp_name2 = decl->ident->name;
+                    var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
                     if (decl->has_init){
                         auto assignment = dynamic_cast<ast::Assignment *>(decl->init_expr.get());
                         assert(assignment);
@@ -330,7 +352,7 @@ public:
                             ir::Reg offset = get_new_reg(decl->var_type->type);
                             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
                             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
-                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr));
+                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
                             ir_bb->instrs.push_back(std::move(loadint_instr));
                             ir_bb->instrs.push_back(std::move(add_instr));
                             ir_bb->instrs.push_back(std::move(store_instr));
@@ -342,7 +364,7 @@ public:
                             std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(init_reg, 0));
                             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
                             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
-                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr));
+                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
                             ir_bb->instrs.push_back(std::move(loadzero_instr));
                             ir_bb->instrs.push_back(std::move(loadint_instr));
                             ir_bb->instrs.push_back(std::move(add_instr));
@@ -352,11 +374,20 @@ public:
                     std::cout << "visit decl array done" << std::endl;
                 } else {
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type ,4));
+                    alloca_instr->is_local_var = 1;
                     ir_bb->instrs.push_back(std::move(alloca_instr));
-                    var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(decl->ident->name), std::move(dst_ptr)));
+                    var_name_set.insert(decl->ident->name);
+                    std::string temp_name = decl->ident->name;
+                    ir::Reg temp_reg = dst_ptr;
+                    var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(temp_name), std::move(temp_reg)));
+                    Type var_type = *decl->var_type;
+                    std::string temp_name2 = decl->ident->name;
+                    var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(var_type)));
                     if (decl->has_init){
                         ir::Reg init_reg = visitExpression(decl->init_expr, ir_bb);
-                        std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_ptr));
+                        std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_ptr, decl->ident->name));
+                        store_instr->is_local_var = 1;
+                        Defs[decl->ident->name].insert(ir_bb);
                         ir_bb->instrs.push_back(std::move(store_instr));
                     }
                 }

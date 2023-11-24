@@ -443,7 +443,7 @@ namespace frontend
         {
         public:
             LValue(std::unique_ptr<Identifier> ident, std::vector<std::unique_ptr<Expression>> indices) : ident(std::move(ident)), indices(std::move(indices)), has_index(true), var_type(new Type(1)) {}
-            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(0)) {}
+            LValue(std::unique_ptr<Identifier> ident) : ident(std::move(ident)), has_index(false), var_type(new Type(1)) {}
             ~LValue() = default;
             std::string toString() const override
             {

@@ -6,6 +6,7 @@
 #include "frontend/ast/astVisitor.hpp"
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
+#include "midend/iroptimizer.hpp"
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -22,7 +23,7 @@ int main(int argc, const char *argv[])
     CommonTokenStream tokens(&lexer);
     frontend::SysYParser parser(&tokens);
     ParseTree *tree = parser.compUnit();
-    int step = *(argv[2]) - '0';
+    float step = stof(argv[2]);
     //输出parse tree，这里的visit的作用是什么？
     cout<<"parse tree: "<<endl;
     frontend::SysYBaseVisitor parse_visitor;
@@ -47,6 +48,14 @@ int main(int argc, const char *argv[])
         cout <<"ir: "<<endl;
         ir_generator.ir_program.print(cout, 0);
     }
+
+    if (step == 3){
+        IROptimizer ir_optimizer(&ir_generator);
+        ir_optimizer.mem_to_reg();
+        cout <<"ir_3.1: "<<endl;
+        ir_generator.ir_program.print(cout, 0);
+    }
+
 
     // TODO:对ast作符号检查
     // NamerVisitor namer;

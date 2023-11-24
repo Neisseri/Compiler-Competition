@@ -57,6 +57,13 @@ struct BasicBlock {
     std::set<std::shared_ptr<BasicBlock>> succs;
     bool reachable;
 
+    int postorder_id;
+    bool visited;
+    std::set<std::shared_ptr<BasicBlock>> dom;
+    std::shared_ptr<BasicBlock> idom;
+    std::set<std::shared_ptr<BasicBlock>> doms;
+    std::set<std::shared_ptr<BasicBlock>> DF;
+
     BasicBlock(int id, Function* func) : label(id), func(func) {}
 
     std::string toString(){
@@ -73,10 +80,36 @@ struct BasicBlock {
 };
 
 
+struct Phi: Instruction {
+    std::string var_name;
+    Type type;
+    Reg dst;
+    std::vector<std::pair<Reg, std::shared_ptr<ir::BasicBlock>>> srcs;
+
+    Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name){}
+    
+    std::string toString() {
+        std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
+        for (auto i = srcs.begin(); i != srcs.end(); i ++){
+            ret += "[ " + i->first.toString() + ", " + i->second->label.toString() + " ]";
+            if (i + 1 != srcs.end()){
+                ret += ", ";
+            }
+        }
+        return ret;
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+
 struct Alloca: Instruction {
     Type type;
     int size;
     Reg ret_val;
+    bool is_local_var = 0;
     Alloca(Reg ret_val, Type type, int size) : Instruction(InstType::ALLOCA), ret_val(ret_val), type(type), size(size) {};
 
     std::string toString() {
@@ -92,8 +125,10 @@ struct Store: Instruction {
     Reg src_val;
     Reg ptr;
     Type type;
+    std::string var_name;
+    bool is_local_var = 0;
 
-    Store(Type type, Reg src_val, Reg ptr) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr) {}
+    Store(Type type, Reg src_val, Reg ptr, std::string var_name) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
         return "store " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
@@ -108,8 +143,10 @@ struct Load: Instruction {
     Reg ret_val;
     Reg ptr;
     Type type;
+    std::string var_name;
+    bool is_local_var = 0;
 
-    Load(Reg ret_val, Type type, Reg ptr) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr) {}
+    Load(Reg ret_val, Type type, Reg ptr, std::string var_name) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
         return ret_val.toString() + " = load " + type.toString(1) + ", ptr " + ptr.toString();
