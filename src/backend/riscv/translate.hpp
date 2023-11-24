@@ -21,9 +21,18 @@ namespace riscv {
       Reg src = Reg(load->ptr);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
-      Reg dst = Reg(store->ptr);
-      Reg src = Reg(store->src_val);
-      bb->instructions.emplace_back(new StoreWord(src, dst, 0));
+      // debug
+      std::cout << "store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
+      
+      if (num_params > 0) {
+        Reg dst = Reg(store->ptr);
+        Reg src = Reg(General, argregs[store->src_val.id]);
+        bb->instructions.emplace_back(new StoreWord(src, dst, 0));
+      } else {
+        Reg dst = Reg(store->ptr);
+        Reg src = Reg(store->src_val);
+        bb->instructions.emplace_back(new StoreWord(src, dst, 0));
+      }
     } else if (auto binary = dynamic_cast<ir::Binary*>(ir_inst)) {
       Reg dst = Reg(binary->dst);
       Reg src1 = Reg(binary->src1);
@@ -109,6 +118,9 @@ namespace riscv {
       Reg dst = Reg(loadint->dst);
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
+      // debug
+      std::cout << "call " << call->func_name << "----------------------------\n";
+
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
       for (int i = 0; i < num_args; i++) {
@@ -129,7 +141,7 @@ namespace riscv {
   Function::Function(ir::Function& ir_function, const std::string& name): name(name) {
     auto entry_bb = new BasicBlock;
     bbs.emplace_back(entry_bb);
-    int num_params = ir_function.param_types.size();
+    num_params = ir_function.param_types.size();
     std::vector<int> stack_params;
     frame_size = 4 * 11 + 4; // callee-saved regs + ra
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;

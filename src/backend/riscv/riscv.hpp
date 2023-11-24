@@ -60,6 +60,7 @@ struct Function {
     int reg_occupied[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
+    int num_params;
     void do_liveness_analysis();
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
