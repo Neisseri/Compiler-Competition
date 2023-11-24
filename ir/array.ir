@@ -1,0 +1,32 @@
+; module
+define i32 @main(){
+B0:
+  %1 = alloca int, 24
+  %2 = 0
+  %4 = 0
+  %3 = add i32 %1, %4
+  store i32 %2, ptr %3
+  %5 = 0
+  %7 = 4
+  %6 = add i32 %1, %7
+  store i32 %5, ptr %6
+  %8 = 0
+  %10 = 8
+  %9 = add i32 %1, %10
+  store i32 %8, ptr %9
+  %11 = 0
+  %13 = 12
+  %12 = add i32 %1, %13
+  store i32 %11, ptr %12
+  %14 = 0
+  %16 = 16
+  %15 = add i32 %1, %16
+  store i32 %14, ptr %15
+  %17 = 0
+  %19 = 20
+  %18 = add i32 %1, %19
+  store i32 %17, ptr %18
+  %20 = 0
+  ret i32 %20
+
+}

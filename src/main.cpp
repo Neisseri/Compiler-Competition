@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "frontend/lexer_parser/SysYBaseVisitor.h"
 #include "frontend/lexer_parser/SysYLexer.h"
 #include "frontend/lexer_parser/SysYParser.h"
@@ -22,6 +23,9 @@ int main(int argc, const char *argv[])
 {
     ifstream f_stream;
     f_stream.open(argv[1]);
+    string s = argv[1];
+    std::string tag = s.substr(5, s.length() - 7);
+    std::cout << tag << "-------------------" << std::endl;
     ANTLRInputStream input(f_stream);
     frontend::SysYLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
@@ -50,7 +54,11 @@ int main(int argc, const char *argv[])
 
     if (step == 3){
         cout <<"ir: "<<endl;
-        ir_generator.ir_program.print(cout, 0);
+        ofstream output_file;
+        output_file.open("ir/" + tag + ".ir");
+        std::cout << "ir/" + tag + ".ir" << std::endl;
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
     }
 
     // TODO:对ast作符号检查
@@ -76,7 +84,11 @@ int main(int argc, const char *argv[])
             func->do_reg_alloc();
             func->emitend();
         }
-        program.emit(std::cout);
+        // output to file
+        ofstream output_file;
+        output_file.open("riscv/" + tag + ".s");
+        program.emit(output_file);
+        output_file.close();
     }
 
     return 0;
