@@ -26,16 +26,19 @@ namespace riscv {
       std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
       
       // TODO: 目前参数全放栈上
-      // if (num_params > 0 && store->src_val.id <= num_params) {
-      //     Reg dst = Reg(store->ptr);
-      //     Reg a0 = Reg(General, argregs[0]);
-      //     bb->instructions.emplace_back(new LoadWord(a0, Reg(General, sp), 4 * (store->src_val.id - 1) + frame_size));
-      //     bb->instructions.emplace_back(new StoreWord(a0, dst, 0));
-      // } else { // no params
+      if (num_params > 0 && store->src_val.id <= num_params) {
+          Reg dst = Reg(store->ptr);
+          Reg a0 = Reg(General, argregs[0]);
+          // debug
+          std::cout << "# " << name << " frame_size " << frame_size << "\n";
+          //bb->instructions.emplace_back(new LoadWord(a0, Reg(General, sp), 4 * (store->src_val.id - 1) + frame_size));
+          bb->instructions.emplace_back(new LoadWord(Reg(General, 30), Reg(General, 31), 4 * (store->src_val.id - 1)));
+          bb->instructions.emplace_back(new StoreWord(Reg(General, 30), dst, 0));
+      } else { // no params
         Reg dst = Reg(store->ptr);
         Reg src = Reg(store->src_val);
         bb->instructions.emplace_back(new StoreWord(src, dst, 0));
-      //}
+      }
     } else if (auto binary = dynamic_cast<ir::Binary*>(ir_inst)) {
       Reg dst = Reg(binary->dst);
       Reg src1 = Reg(binary->src1);
@@ -147,8 +150,10 @@ namespace riscv {
         Reg src_reg = Reg(call->params[i]);
         bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));
       }
+      bb->instructions.emplace_back(new Move(Reg(General, sp), Reg(General, 31)));
       bb->instructions.emplace_back(new Call(call->func_name, num_args));
       bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
+      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), 4 * num_args));
     }
   }
 

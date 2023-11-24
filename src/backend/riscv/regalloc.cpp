@@ -23,7 +23,8 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
             if (is_read) { // emit load from stack
                 // auto n = new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]);
                 // n->emit(std::cout);
-                instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
+                // TODO: 测试，可能需要恢复
+                //instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
             }
             bindings[temp] = r;
             reg_occupied[r] = true;
@@ -40,13 +41,16 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
     }
     // auto n = new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]);
     // n->emit(std::cout);
-    instructions.emplace(it, new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]));
+    // TODO: 测试，可能需要恢复
+    //instructions.emplace(it, new StoreWord(Reg(General, r), Reg(General, sp), offsets[reg_to_tmp[r]]));
     bindings[temp] = r;
     reg_occupied[r] = true;
     reg_to_tmp[r] = temp;
     // std::cout << "(case2) allocate reg for " << print_reg(temp) << " to " << print_reg(Reg(General, r)) << "\n";
     if (is_read) { // emit load from stack 
-        instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
+        // TODO: 测试，可能需要恢复
+        //instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
+        
         // auto n = new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]);
         // n->emit(std::cout);
     }
