@@ -158,17 +158,26 @@ namespace frontend
     void TyperVisitor::visitWhileStmt(const ast::While *while_stmt)
     {
         auto cond_type = visitExpr(while_stmt->cond.get());
+        auto scope = std::make_unique<Scope>(ScopeType::LoopScope);
+        scope_stack->scope_push(std::move(scope));
         visitStatement(while_stmt->body.get());
+        scope_stack->scope_pop();
     }
 
     void TyperVisitor::visitBreakStmt(const ast::Break *break_stmt)
     {
-        SyError().throw_error(ErrorTypeEnum::UnimplementedError, "break statement not implemented");
+        if (!scope_stack->is_in_loop())
+        {
+            SyError().throw_error(ErrorTypeEnum::SemanticError, "break statement not in loop");
+        }
     }
 
     void TyperVisitor::visitContinueStmt(const ast::Continue *continue_stmt)
     {
-        SyError().throw_error(ErrorTypeEnum::UnimplementedError, "continue statement not implemented");
+        if (!scope_stack->is_in_loop())
+        {
+            SyError().throw_error(ErrorTypeEnum::SemanticError, "continue statement not in loop");
+        }
     }
 
     void TyperVisitor::visitReturnStmt(const ast::Return *return_stmt)
