@@ -96,7 +96,7 @@ struct Store: Instruction {
     Store(Type type, Reg src_val, Reg ptr) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr) {}
     
     std::string toString() {
-        return "store " + type.toString() + " " + src_val.toString() + ", ptr " + ptr.toString();
+        return "store " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
@@ -112,7 +112,7 @@ struct Load: Instruction {
     Load(Reg ret_val, Type type, Reg ptr) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr) {}
     
     std::string toString() {
-        return ret_val.toString() + " = load " + type.toString() + ", ptr " + ptr.toString();
+        return ret_val.toString() + " = load " + type.toString(1) + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
