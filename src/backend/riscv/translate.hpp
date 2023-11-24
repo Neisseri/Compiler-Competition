@@ -16,6 +16,7 @@ namespace riscv {
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
       bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
+      std::cout << "# alloca_offsets[r]" << alloca_offsets[r] << "\n";
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
