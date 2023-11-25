@@ -16,6 +16,7 @@ sw t0, 52(sp)
 j B2
 
 B2:
+lw t1, 52(sp)
 lw t0, 0(t1)
 li t2, 1
 sub s1, t0, t2

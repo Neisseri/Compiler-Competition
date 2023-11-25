@@ -65,8 +65,11 @@ add t3, s10, s11
 lw t4, 0(a3)
 add t5, t3, t4
 lw t6, 0(a4)
+sw a3, 128(sp)
 add a3, t5, t6
+sw s6, 132(sp)
 lw s6, 0(a5)
+sw a1, 136(sp)
 mul a1, a3, s6
 mv a0, a1
 j B4

@@ -16,6 +16,7 @@ sw t0, 52(sp)
 j B2
 
 B2:
+lw t1, 52(sp)
 lw t0, 0(t1)
 li t2, 10
 slt s1, t0, t2
@@ -24,6 +25,7 @@ beq x0, s1, B4
 j B3
 
 B3:
+lw t1, 52(sp)
 lw t0, 0(t1)
 li t2, 1
 add s1, t0, t2
@@ -32,6 +34,7 @@ sw t1, 52(sp)
 j B2
 
 B4:
+lw t1, 52(sp)
 lw t0, 0(t1)
 mv a0, t0
 j B5

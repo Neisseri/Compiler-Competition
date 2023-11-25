@@ -6,7 +6,8 @@ main:
 B0:
 addi sp, sp, -64
 sw ra, 44(sp)
-sw s10, 32(sp)
+sw s10, 36(sp)
+sw s9, 32(sp)
 sw s8, 28(sp)
 sw s7, 24(sp)
 sw s6, 20(sp)
@@ -38,6 +39,7 @@ mul s4, s2, s3
 sub s5, a7, s4
 lw s6, 0(t2)
 lw s7, 0(t0)
+lw s9, 0(sp)
 sub s8, s5, s9
 sw s8, 0(a4)
 lw s10, 0(a4)
@@ -53,6 +55,7 @@ lw s5, 84(sp)
 lw s6, 88(sp)
 lw s7, 92(sp)
 lw s8, 96(sp)
+lw s9, 100(sp)
 lw s10, 104(sp)
 lw ra, 44(sp)
 addi sp, sp, 64
