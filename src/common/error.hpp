@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include "const.hpp"
+#define DEBUG 0
 
 class SyError
 {
@@ -29,7 +30,22 @@ public:
     }
     static void throw_warning(std::string msg)
     {
+        if(!DEBUG) return;
         std::cerr << "Warning: ";
+        std::cerr << msg << std::endl;
+    }
+    static void throw_unimplemented(std::string msg)
+    {
+        std::cerr << "Unimplemented: ";
+        std::cerr << msg << std::endl;
+        exit(1);
+    }
+
+    static void throw_info(std::string msg)
+    {
+        if (!DEBUG)
+            return;
+        std::cerr << "Info: ";
         std::cerr << msg << std::endl;
     }
 };

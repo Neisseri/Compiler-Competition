@@ -40,7 +40,7 @@ int main(int argc, const char *argv[])
     }
     TyperVisitor typer;
     typer.visitPromgram(AST);
-
+    AST->print(cout, 0);
     cout << "building ir ---------------------------" << endl;
 
     IRGenerator ir_generator;

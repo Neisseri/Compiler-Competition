@@ -464,6 +464,12 @@ namespace frontend
             {
                 os << std::string(indent, ' ') << toString();
             }
+
+            void rename(std::string new_name)
+            {
+                ident.get()->name = new_name;
+            }
+
             std::unique_ptr<Identifier> ident;
             std::vector<std::unique_ptr<Expression>> indices;
 

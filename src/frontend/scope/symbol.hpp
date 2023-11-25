@@ -13,6 +13,7 @@ class Symbol
     public:
     std::string name;
     Type* type;
+    int scope_id;
     virtual std::string toString() = 0;
     virtual ~Symbol() = default;
 };

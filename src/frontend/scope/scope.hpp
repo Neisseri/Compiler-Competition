@@ -7,16 +7,14 @@
 class Scope
 {
 public:
-    ScopeType type;
+    ScopeType type=ScopeType::ErrorScope;
     Type *ret_type; // only for func scope
     int scope_id;
     Scope() = default;
-    Scope(bool is_global) : is_global(is_global) { type = ScopeType::GlobalScope; }
-    Scope(ScopeType type, bool is_global) : type(type), is_global(is_global) {}
-    Scope(ScopeType type, Type *ret_type) : type(type), ret_type(ret_type) { is_global = true; }
+    Scope(ScopeType type) : type(type) {}
+    Scope(ScopeType type, Type *ret_type) : type(type), ret_type(ret_type) {}
     ~Scope() = default;
     std::map<std::string, std::shared_ptr<Symbol>> symbols;
-    bool is_global = false;
 
     std::shared_ptr<Symbol> lookup(const std::string name)
     {
@@ -25,15 +23,12 @@ public:
         {
             return iter->second;
         }
-        else
-        {
-            return nullptr;
-        }
         return nullptr;
     }
 
     void declare_symbol(const std::string name, const std::shared_ptr<Symbol> symbol)
     {
+        symbol.get()->scope_id = scope_id;
         symbols[name] = symbol;
     }
 
@@ -68,17 +63,13 @@ class ScopeStack
 public:
     std::vector<std::unique_ptr<Scope>> stack;
     int loop_cnt = 0;
+    int scope_cnt = 0;
 
-    void
-    scope_push(std::unique_ptr<Scope> scope)
+    void scope_push(std::unique_ptr<Scope> scope)
     {
-        int scope_id = stack.size();
+        int scope_id = scope_cnt++;
         scope->scope_id = scope_id;
         stack.push_back(std::move(scope));
-        if (stack.back()->type == ScopeType::LoopScope)
-        {
-            loop_cnt++;
-        }
         return;
     }
 
