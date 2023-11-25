@@ -6,7 +6,7 @@ main:
 B0:
 addi sp, sp, -56
 sw ra, 44(sp)
-sw s1, 36(sp)
+sw s1, 0(sp)
 
 B1:
 addi t0, sp, 48

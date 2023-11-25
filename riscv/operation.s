@@ -6,15 +6,15 @@ main:
 B0:
 addi sp, sp, -64
 sw ra, 44(sp)
-sw s10, 104(sp)
-sw s8, 96(sp)
-sw s7, 92(sp)
-sw s6, 88(sp)
-sw s5, 84(sp)
-sw s4, 80(sp)
-sw s3, 76(sp)
-sw s2, 72(sp)
-sw s1, 36(sp)
+sw s10, 32(sp)
+sw s8, 28(sp)
+sw s7, 24(sp)
+sw s6, 20(sp)
+sw s5, 16(sp)
+sw s4, 12(sp)
+sw s3, 8(sp)
+sw s2, 4(sp)
+sw s1, 0(sp)
 
 B1:
 addi t0, sp, 48

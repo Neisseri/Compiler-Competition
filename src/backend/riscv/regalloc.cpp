@@ -119,8 +119,10 @@ void Function::emitend() {
     int id = 0;
     for (int i = 0; i < NUM_REGS; i++) { // callee saved registers
         if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
+        {
             prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id));
-        id++;
+            id++;
+        }    
     }
     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44)); // store ra
     // store spilled regs
