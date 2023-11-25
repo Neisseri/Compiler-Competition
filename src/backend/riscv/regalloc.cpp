@@ -117,8 +117,7 @@ void Function::emitend() {
     auto &prologue = entry->instructions;
     int id = 0;
     for (int i = 0; i < NUM_REGS; i++) { // callee saved registers
-        if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
-        {
+        if (reg_used[i] && REG_ATTR[i] == CalleeSaved) {
             prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id));
             id++;
         }    
@@ -133,9 +132,10 @@ void Function::emitend() {
     auto &epilogue = exit->instructions;
     id = 0;
     for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
-        if (reg_used[i] && REG_ATTR[i] == CalleeSaved)
+        if (reg_used[i] && REG_ATTR[i] == CalleeSaved) {
             epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, i), Reg(General, sp), 4 * id));
-        id++;
+            id++;
+        }
     }
     epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, ra), Reg(General, sp), 44));
     epilogue.emplace(epilogue.end(), new SPAdd(frame_size));
