@@ -50,6 +50,7 @@ enum class ScopeType {
 };
 
 enum class ErrorTypeEnum {
+    UnimplementedError,
     SyntaxError,
     TypeError,
     SemanticError,

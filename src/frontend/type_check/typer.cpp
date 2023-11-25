@@ -26,13 +26,12 @@ namespace frontend
 
     void TyperVisitor::visitFuncDef(const ast::Function *func_def)
     {
-        std::cerr << "visitFuncDef" << func_def->toString() << std::endl;
         auto func_symbol = std::make_shared<FuncSymbol>(func_def->ident.get()->name, std::move(func_def->ret_type.get()), true);
         for (auto &param : func_def->params->children)
         {
             func_symbol->add_param_type(param->var_type.get());
         }
-        this->scope_stack->declare_symbol(func_def->ident->name, func_symbol.get());
+        this->scope_stack->declare_symbol(func_def->ident->name, func_symbol);
         scope_stack->scope_push(std::make_unique<Scope>(ScopeType::FuncScope, func_def->ret_type.get()));
         for (auto &param : func_def->params->children)
         {
@@ -44,25 +43,23 @@ namespace frontend
 
     void TyperVisitor::visitVarDef(const ast::Declaration *var_def)
     {
-        std::cerr << "visitVarDef" << var_def->toString() << std::endl;
         auto name = var_def->ident.get()->name;
         if (scope_stack->lookup_stack(name) != nullptr)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "redeclaration of variable " + name);
         }
         auto var_symbol = std::make_shared<VarSymbol>(var_def->ident.get()->name, std::move(var_def->var_type.get()), scope_stack->stack.back()->is_global);
-        scope_stack->declare_symbol(var_def->ident.get()->name, var_symbol.get());
+        scope_stack->declare_symbol(var_def->ident.get()->name, var_symbol);
     }
 
     void TyperVisitor::visitParamDef(const ast::Parameter *param_def)
     {
         auto var_symbol = std::make_shared<VarSymbol>(param_def->ident.get()->name, std::move(param_def->var_type.get()), false);
-        scope_stack->declare_symbol(param_def->ident.get()->name, var_symbol.get());
+        scope_stack->declare_symbol(param_def->ident.get()->name, var_symbol);
     }
 
     void TyperVisitor::visitBlock(const ast::Block *block)
     {
-        std::cerr << "visitBlock" << block->toString() << std::endl;
         for (auto &child : block->children)
         {
             if (auto decl = dynamic_cast<const ast::Declaration *>(child.get()))
@@ -78,7 +75,6 @@ namespace frontend
 
     void TyperVisitor::visitAssignStmt(const ast::Assign *assign_stmt)
     {
-        std::cerr << "visitAssignStmt" << assign_stmt->toString() << std::endl;
         auto lval = assign_stmt->lvalue.get();
         auto rval = assign_stmt->expr.get();
         auto lval_type = visitExpr(lval);
@@ -91,8 +87,6 @@ namespace frontend
 
     void TyperVisitor::visitStatement(const ast::Statement *statement)
     {
-        std::cerr << "visitStatement" << statement->toString() << std::endl;
-        scope_stack->printStack(std::cerr);
         if (auto assign_stmt = dynamic_cast<const ast::Assign *>(statement))
         {
             visitAssignStmt(assign_stmt);
@@ -111,7 +105,6 @@ namespace frontend
         }
         else if (auto return_stmt = dynamic_cast<const ast::Return *>(statement))
         {
-            scope_stack->printStack(std::cerr);
             visitReturnStmt(return_stmt);
         }
         else if (auto expr_stmt = dynamic_cast<const ast::ExprStmt *>(statement))
@@ -122,7 +115,6 @@ namespace frontend
 
     void TyperVisitor::visitIfElseStmt(const ast::IfElse *ifelse_stmt)
     {
-        std::cerr << "visitIfElseStmt" << ifelse_stmt->toString() << std::endl;
         auto cond_type = visitExpr(ifelse_stmt->cond.get());
         visitStatement(ifelse_stmt->then.get());
         if (ifelse_stmt->other != nullptr)
@@ -133,24 +125,22 @@ namespace frontend
 
     void TyperVisitor::visitWhileStmt(const ast::While *while_stmt)
     {
-        std::cerr << "visitWhileStmt" << while_stmt->toString() << std::endl;
         auto cond_type = visitExpr(while_stmt->cond.get());
         visitStatement(while_stmt->body.get());
     }
 
     void TyperVisitor::visitBreakStmt(const ast::Break *break_stmt)
     {
-        std::cerr << "visitBreakStmt " << break_stmt->toString() << std::endl;
+        SyError().throw_error(ErrorTypeEnum::UnimplementedError, "break statement not implemented");
     }
 
     void TyperVisitor::visitContinueStmt(const ast::Continue *continue_stmt)
     {
-        std::cerr << "visitContinueStmt " << continue_stmt->toString() << std::endl;
+        SyError().throw_error(ErrorTypeEnum::UnimplementedError, "continue statement not implemented");
     }
 
     void TyperVisitor::visitReturnStmt(const ast::Return *return_stmt)
     {
-        std::cerr << "visitReturnStmt " << return_stmt->toString() << std::endl;
         auto cur_func_scope = scope_stack->get_cur_func_scope();
         if (cur_func_scope == nullptr)
         {
@@ -171,17 +161,15 @@ namespace frontend
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "return value required in non-void function");
             }
-            scope_stack->lookup_stack("a");
-            // auto expr_type = visitExpr(return_stmt->expr.get());
-            // if(expr_type->type != ret_type->type){
-            //     SyError().throw_error(ErrorTypeEnum::SemanticError, "return type mismatch");
-            // }
+            auto expr_type = visitExpr(return_stmt->expr.get());
+            if(expr_type->type != ret_type->type){
+                SyError().throw_error(ErrorTypeEnum::SemanticError, "return type mismatch");
+            }
         }
     }
 
     void TyperVisitor::visitLVal(const ast::LValue *lval)
     {
-        std::cerr << "visitLVal" << lval->toString() << std::endl;
         auto symbol = scope_stack->lookup_stack(lval->ident->name);
         if (symbol == nullptr)
         {
@@ -191,7 +179,6 @@ namespace frontend
 
     Type *TyperVisitor::visitExpr(const ast::Expression *expr)
     {
-        std::cerr << "visitExpr" << expr->toString() << std::endl;
         if (auto lval = dynamic_cast<const ast::LValue *>(expr))
         {
             visitLVal(lval);
@@ -228,7 +215,7 @@ namespace frontend
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "use of undeclared function " + func_call->ident->name);
             }
-            if (auto func_symbol = dynamic_cast<FuncSymbol *>(symbol))
+            if (auto func_symbol = dynamic_cast<FuncSymbol *>(symbol.get()))
             {
                 if (func_symbol->num_param() != func_call->argument_list->children.size())
                 {
@@ -253,7 +240,6 @@ namespace frontend
 
     void TyperVisitor::visitExprStmt(const ast::ExprStmt *expr_stmt)
     {
-        std::cerr << "visitExprStmt" << expr_stmt->toString() << std::endl;
         visitExpr(expr_stmt->expr.get());
     }
 }
