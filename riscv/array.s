@@ -89,17 +89,17 @@ mv a0, t3
 j B2
 
 B2:
-lw s1, 36(sp)
-lw s2, 72(sp)
-lw s3, 76(sp)
-lw s4, 80(sp)
-lw s5, 84(sp)
-lw s6, 88(sp)
-lw s7, 92(sp)
-lw s8, 96(sp)
-lw s9, 100(sp)
-lw s10, 104(sp)
-lw s11, 108(sp)
+lw s1, 0(sp)
+lw s2, 4(sp)
+lw s3, 8(sp)
+lw s4, 12(sp)
+lw s5, 16(sp)
+lw s6, 20(sp)
+lw s7, 24(sp)
+lw s8, 28(sp)
+lw s9, 32(sp)
+lw s10, 36(sp)
+lw s11, 40(sp)
 lw ra, 44(sp)
 addi sp, sp, 144
 ret

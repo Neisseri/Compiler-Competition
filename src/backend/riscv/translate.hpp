@@ -16,24 +16,24 @@ namespace riscv {
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
       bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
-      std::cout << "# alloca_offsets[r]" << alloca_offsets[r] << "\n";
+      // std::cout << "# alloca_offsets[r]" << alloca_offsets[r] << "\n";
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
       // debug
-      std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
+      // std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
       
       // TODO: 目前参数全放栈上
       if (num_params > 0 && store->src_val.id <= num_params) {
           Reg dst = Reg(store->ptr);
-          Reg a0 = Reg(General, argregs[0]);
+          // Reg a0 = Reg(General, argregs[0]);
           // debug
           std::cout << "# " << name << " frame_size " << frame_size << "\n";
           //bb->instructions.emplace_back(new LoadWord(a0, Reg(General, sp), 4 * (store->src_val.id - 1) + frame_size));
-          bb->instructions.emplace_back(new LoadWord(Reg(General, 30), Reg(General, 31), 4 * (store->src_val.id - 1)));
-          bb->instructions.emplace_back(new StoreWord(Reg(General, 30), dst, 0));
+          bb->instructions.emplace_back(new LoadWord(Reg(General, t5), Reg(General, t6), 4 * (store->src_val.id - 1)));
+          bb->instructions.emplace_back(new StoreWord(Reg(General, t5), dst, 0));
       } else { // no params
         Reg dst = Reg(store->ptr);
         Reg src = Reg(store->src_val);
@@ -125,7 +125,7 @@ namespace riscv {
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
       // debug
-      std::cout << "# call " << call->func_name << "----------------------------\n";
+      // std::cout << "# call " << call->func_name << "----------------------------\n";
 
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
@@ -145,7 +145,7 @@ namespace riscv {
       //     bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * (i - 8)));
       //   }
       // }
-      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), -4 * num_args));
+      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), - 4 * num_args));
       for (int i = 0; i < num_args; i++) {
         Reg src_reg = Reg(call->params[i]);
         bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));

@@ -31,7 +31,7 @@ namespace riscv {
     constexpr int t3 = 28;
     constexpr int t4 = 29;
     constexpr int t5 = 30;
-    constexpr int t6 = 21;
+    constexpr int t6 = 31;
 
     constexpr int NUM_REGS = 32;
 
