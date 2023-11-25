@@ -38,8 +38,10 @@ int main(int argc, const char *argv[])
         cout<<"ast: "<<endl;
         AST->print(cout, 0);
     }
+    
     TyperVisitor typer;
     typer.visitPromgram(AST);
+
     AST->print(cout, 0);
     cout << "building ir ---------------------------" << endl;
 

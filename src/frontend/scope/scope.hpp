@@ -70,6 +70,10 @@ public:
         int scope_id = scope_cnt++;
         scope->scope_id = scope_id;
         stack.push_back(std::move(scope));
+        if (stack.back()->type == ScopeType::LoopScope)
+        {
+            loop_cnt++;
+        }
         return;
     }
 
@@ -122,6 +126,11 @@ public:
             }
         }
         return nullptr;
+    }
+
+    bool is_in_loop()
+    {
+        return loop_cnt > 0;
     }
 
     void printStack(std::ostream &os)
