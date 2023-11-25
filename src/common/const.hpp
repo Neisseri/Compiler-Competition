@@ -40,3 +40,18 @@ enum class LabelType {
     BlockLabel,
     TMP,
 };
+
+
+enum class ScopeType {
+    GlobalScope,
+    FuncScope,
+    BlockScope,
+    LoopScope,
+};
+
+enum class ErrorTypeEnum {
+    SyntaxError,
+    TypeError,
+    SemanticError,
+    InternalError,
+};

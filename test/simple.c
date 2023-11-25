@@ -1,6 +1,10 @@
 int main (){
-    int a[10]={1,2,3,4,5,6,7,8,9,10};
-    int b[10]={1,2,3,4,5,6,7,8,9,10};
-    int c = a[0] + b[2][1];
+    int a=1;
+    int b=2;
+    int c=a+b;
+    a + 1;
     return c;
 }
+int d=1;
+int e=2;
+int e=3;

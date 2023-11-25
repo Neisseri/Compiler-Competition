@@ -1,6 +1,8 @@
 #pragma once
 #include "../../common/common.hpp"
 #include "../../common/const.hpp"
+#include "../type/type.hpp"
+
 namespace frontend
 {
 

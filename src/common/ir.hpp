@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "const.hpp"
+#include "../frontend/type/type.hpp"
 namespace ir {
 
 struct Reg {

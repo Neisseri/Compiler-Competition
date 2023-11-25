@@ -4,6 +4,7 @@
 #include "frontend/lexer_parser/SysYLexer.h"
 #include "frontend/lexer_parser/SysYParser.h"
 #include "frontend/ast/astVisitor.hpp"
+#include "frontend/type_check/typer.hpp"
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
 
@@ -37,6 +38,8 @@ int main(int argc, const char *argv[])
         cout<<"ast: "<<endl;
         AST->print(cout, 0);
     }
+    TyperVisitor typer;
+    typer.visitPromgram(AST);
 
     cout << "building ir ---------------------------" << endl;
 
