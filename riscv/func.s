@@ -4,7 +4,7 @@
 
 func:
 B2:
-addi sp, sp, -140
+addi sp, sp, -144
 sw ra, 44(sp)
 sw s11, 40(sp)
 sw s10, 36(sp)
@@ -64,14 +64,15 @@ lw s11, 0(a2)
 add t3, s10, s11
 lw t4, 0(a3)
 add t5, t3, t4
-lw t6, 0(a4)
-sw a3, 128(sp)
-add a3, t5, t6
-sw s6, 132(sp)
-lw s6, 0(a5)
-sw a1, 136(sp)
-mul a1, a3, s6
-mv a0, a1
+sw s3, 128(sp)
+lw s3, 0(a4)
+sw t3, 132(sp)
+add t3, t5, s3
+sw a7, 136(sp)
+lw a7, 0(a5)
+sw s7, 140(sp)
+mul s7, t3, a7
+mv a0, s7
 j B4
 
 B4:
@@ -87,7 +88,7 @@ lw s9, 100(sp)
 lw s10, 104(sp)
 lw s11, 108(sp)
 lw ra, 44(sp)
-addi sp, sp, 140
+addi sp, sp, 144
 ret
 
 main:

@@ -18,7 +18,8 @@ void Function::replace_regs(std::map<Reg, int> reg_map) {
 void Function::alloc_reg_for(Reg temp, bool is_read,
     std::list<Instruction*>::iterator it, std::list<Instruction*> instructions) {
     if (bindings[temp]) return;
-    for (auto r: allocable_regs) {
+    for (int i=0; i<26; i++) {
+        int r = allocable_regs[i];
         if (!reg_occupied[r]) {
             if (is_read) { // emit load from stack
                 // auto n = new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]);
@@ -33,7 +34,8 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
         }
     }
     
-    int r = rand() % 26;
+    int i = rand() % 26;
+    int r = allocable_regs[i];
     if (!offsets[reg_to_tmp[r]]) { // store Reg r to stack
         offsets[reg_to_tmp[r]] = frame_size;
         frame_size += 4;
@@ -61,7 +63,7 @@ void Function::do_reg_alloc() {
         bindings.clear();
         for (int i = 0; i < 32; i++) {
             if (is_allocable(i)) {
-                allocable_regs.push_back(i);
+                // allocable_regs.push_back(i);
                 reg_occupied[i] = false;
             }
         }

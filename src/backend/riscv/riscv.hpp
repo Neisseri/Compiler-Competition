@@ -69,7 +69,7 @@ struct Function {
         std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
     void emitend();
     int frame_size;
-    std::vector<int> allocable_regs;
+    // std::vector<int> allocable_regs;
     std::vector<int> callee_saved_regs;
     std::map<Reg, int> bindings;
     std::map<int, Reg> reg_to_tmp;
