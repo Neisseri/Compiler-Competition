@@ -47,17 +47,18 @@ int main(int argc, char *argv[])
     options.add_options()
     ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
     ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
-    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name))
-    ("f,file", "input file path", cxxopts::value<std::string>(input_file_path))
+    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test.out"))
+    ("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))
     ("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))
     ("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))
-    ("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"));
+    ("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))
+    ("h,help", "Print usage");
 
     // usage:
     // ("short_name,long_name", "description", cxxopts::value<type>()->default_value("default_value"))
 
     options.positional_help("[options] <input_file_path>");
-    options.parse_positional({"input_file_path"});
+    // options.parse_positional({"input_file_path"});
 
     try
     {
@@ -95,20 +96,19 @@ int main(int argc, char *argv[])
     // ast构建
     ASTVisitor ast_visitor;
     auto AST = ast_visitor.visit(tree).as<ast::Program *>();
-    TyperVisitor typer;
-    typer.visitPromgram(AST);
 
     if (out_ast_flag)
     {
         cout << "ast: " << endl;
         AST->print(cout, 0);
-
         ofstream output_file= openOrCreateFile("ast", output_file_name);
         AST->print(output_file, 0);
         output_file.close();
-
-        return 0;
     }
+
+    // TyperVisitor typer;
+    // typer.visitPromgram(AST);
+
 
     cout << "--------------------------- building ir ---------------------------" << endl;
 
@@ -126,8 +126,6 @@ int main(int argc, char *argv[])
         ofstream output_file= openOrCreateFile("ir", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
-
-        return 0;
     }
 
     cout << "--------------------------- building riscv ---------------------------" << endl;
