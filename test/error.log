@@ -1,0 +1,74 @@
+compile error: functional/04_arr_defn3.sy
+Command '['../build/compiler', '-r', '-f', 'functional/04_arr_defn3.sy', '-o', '04_arr_defn3']' died with <Signals.SIGSEGV: 11>.compile error: functional/05_arr_defn4.sy
+Command '['../build/compiler', '-r', '-f', 'functional/05_arr_defn4.sy', '-o', '05_arr_defn4']' died with <Signals.SIGABRT: 6>.compile error: functional/08_const_array_defn.sy
+Command '['../build/compiler', '-r', '-f', 'functional/08_const_array_defn.sy', '-o', '08_const_array_defn']' died with <Signals.SIGSEGV: 11>.compile error: functional/10_var_defn_func.sy
+Command '['../build/compiler', '-r', '-f', 'functional/10_var_defn_func.sy', '-o', '10_var_defn_func']' died with <Signals.SIGSEGV: 11>.compile error: functional/21_if_test2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/21_if_test2.sy', '-o', '21_if_test2']' died with <Signals.SIGSEGV: 11>.compile error: functional/22_if_test3.sy
+Command '['../build/compiler', '-r', '-f', 'functional/22_if_test3.sy', '-o', '22_if_test3']' died with <Signals.SIGSEGV: 11>.compile error: functional/23_if_test4.sy
+Command '['../build/compiler', '-r', '-f', 'functional/23_if_test4.sy', '-o', '23_if_test4']' died with <Signals.SIGSEGV: 11>.compile error: functional/24_if_test5.sy
+Command '['../build/compiler', '-r', '-f', 'functional/24_if_test5.sy', '-o', '24_if_test5']' died with <Signals.SIGSEGV: 11>.compile error: functional/25_while_if.sy
+Command '['../build/compiler', '-r', '-f', 'functional/25_while_if.sy', '-o', '25_while_if']' returned non-zero exit status 1.compile error: functional/26_while_test1.sy
+Command '['../build/compiler', '-r', '-f', 'functional/26_while_test1.sy', '-o', '26_while_test1']' died with <Signals.SIGSEGV: 11>.compile error: functional/27_while_test2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/27_while_test2.sy', '-o', '27_while_test2']' died with <Signals.SIGSEGV: 11>.compile error: functional/28_while_test3.sy
+Command '['../build/compiler', '-r', '-f', 'functional/28_while_test3.sy', '-o', '28_while_test3']' died with <Signals.SIGSEGV: 11>.compile error: functional/31_while_if_test1.sy
+Command '['../build/compiler', '-r', '-f', 'functional/31_while_if_test1.sy', '-o', '31_while_if_test1']' died with <Signals.SIGSEGV: 11>.compile error: functional/32_while_if_test2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/32_while_if_test2.sy', '-o', '32_while_if_test2']' died with <Signals.SIGSEGV: 11>.compile error: functional/34_arr_expr_len.sy
+Command '['../build/compiler', '-r', '-f', 'functional/34_arr_expr_len.sy', '-o', '34_arr_expr_len']' died with <Signals.SIGABRT: 6>.compile error: functional/38_op_priority4.sy
+Command '['../build/compiler', '-r', '-f', 'functional/38_op_priority4.sy', '-o', '38_op_priority4']' died with <Signals.SIGSEGV: 11>.compile error: functional/39_op_priority5.sy
+Command '['../build/compiler', '-r', '-f', 'functional/39_op_priority5.sy', '-o', '39_op_priority5']' returned non-zero exit status 1.compile error: functional/41_unary_op2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/41_unary_op2.sy', '-o', '41_unary_op2']' returned non-zero exit status 1.compile error: functional/42_empty_stmt.sy
+Command '['../build/compiler', '-r', '-f', 'functional/42_empty_stmt.sy', '-o', '42_empty_stmt']' died with <Signals.SIGSEGV: 11>.compile error: functional/43_logi_assign.sy
+Command '['../build/compiler', '-r', '-f', 'functional/43_logi_assign.sy', '-o', '43_logi_assign']' died with <Signals.SIGSEGV: 11>.compile error: functional/44_stmt_expr.sy
+Command '['../build/compiler', '-r', '-f', 'functional/44_stmt_expr.sy', '-o', '44_stmt_expr']' returned non-zero exit status 1.compile error: functional/48_assign_complex_expr.sy
+Command '['../build/compiler', '-r', '-f', 'functional/48_assign_complex_expr.sy', '-o', '48_assign_complex_expr']' returned non-zero exit status 1.compile error: functional/49_if_complex_expr.sy
+Command '['../build/compiler', '-r', '-f', 'functional/49_if_complex_expr.sy', '-o', '49_if_complex_expr']' returned non-zero exit status 1.compile error: functional/50_short_circuit.sy
+Command '['../build/compiler', '-r', '-f', 'functional/50_short_circuit.sy', '-o', '50_short_circuit']' died with <Signals.SIGSEGV: 11>.compile error: functional/51_short_circuit3.sy
+Command '['../build/compiler', '-r', '-f', 'functional/51_short_circuit3.sy', '-o', '51_short_circuit3']' died with <Signals.SIGSEGV: 11>.compile error: functional/52_scope.sy
+Command '['../build/compiler', '-r', '-f', 'functional/52_scope.sy', '-o', '52_scope']' died with <Signals.SIGSEGV: 11>.compile error: functional/53_scope2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/53_scope2.sy', '-o', '53_scope2']' returned non-zero exit status 1.compile error: functional/54_hidden_var.sy
+Command '['../build/compiler', '-r', '-f', 'functional/54_hidden_var.sy', '-o', '54_hidden_var']' died with <Signals.SIGSEGV: 11>.compile error: functional/55_sort_test1.sy
+Command '['../build/compiler', '-r', '-f', 'functional/55_sort_test1.sy', '-o', '55_sort_test1']' returned non-zero exit status 1.compile error: functional/56_sort_test2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/56_sort_test2.sy', '-o', '56_sort_test2']' returned non-zero exit status 1.compile error: functional/57_sort_test3.sy
+Command '['../build/compiler', '-r', '-f', 'functional/57_sort_test3.sy', '-o', '57_sort_test3']' returned non-zero exit status 1.compile error: functional/58_sort_test4.sy
+Command '['../build/compiler', '-r', '-f', 'functional/58_sort_test4.sy', '-o', '58_sort_test4']' returned non-zero exit status 1.compile error: functional/59_sort_test5.sy
+Command '['../build/compiler', '-r', '-f', 'functional/59_sort_test5.sy', '-o', '59_sort_test5']' returned non-zero exit status 1.compile error: functional/60_sort_test6.sy
+Command '['../build/compiler', '-r', '-f', 'functional/60_sort_test6.sy', '-o', '60_sort_test6']' returned non-zero exit status 1.compile error: functional/61_sort_test7.sy
+Command '['../build/compiler', '-r', '-f', 'functional/61_sort_test7.sy', '-o', '61_sort_test7']' died with <Signals.SIGSEGV: 11>.compile error: functional/62_percolation.sy
+Command '['../build/compiler', '-r', '-f', 'functional/62_percolation.sy', '-o', '62_percolation']' died with <Signals.SIGSEGV: 11>.compile error: functional/63_big_int_mul.sy
+Command '['../build/compiler', '-r', '-f', 'functional/63_big_int_mul.sy', '-o', '63_big_int_mul']' died with <Signals.SIGABRT: 6>.compile error: functional/64_calculator.sy
+Command '['../build/compiler', '-r', '-f', 'functional/64_calculator.sy', '-o', '64_calculator']' died with <Signals.SIGSEGV: 11>.compile error: functional/65_color.sy
+Command '['../build/compiler', '-r', '-f', 'functional/65_color.sy', '-o', '65_color']' died with <Signals.SIGABRT: 6>.compile error: functional/66_exgcd.sy
+Command '['../build/compiler', '-r', '-f', 'functional/66_exgcd.sy', '-o', '66_exgcd']' died with <Signals.SIGSEGV: 11>.compile error: functional/67_reverse_output.sy
+Command '['../build/compiler', '-r', '-f', 'functional/67_reverse_output.sy', '-o', '67_reverse_output']' died with <Signals.SIGSEGV: 11>.compile error: functional/68_brainfk.sy
+Command '['../build/compiler', '-r', '-f', 'functional/68_brainfk.sy', '-o', '68_brainfk']' died with <Signals.SIGABRT: 6>.compile error: functional/69_expr_eval.sy
+Command '['../build/compiler', '-r', '-f', 'functional/69_expr_eval.sy', '-o', '69_expr_eval']' died with <Signals.SIGSEGV: 11>.compile error: functional/70_dijkstra.sy
+Command '['../build/compiler', '-r', '-f', 'functional/70_dijkstra.sy', '-o', '70_dijkstra']' died with <Signals.SIGSEGV: 11>.compile error: functional/71_full_conn.sy
+Command '['../build/compiler', '-r', '-f', 'functional/71_full_conn.sy', '-o', '71_full_conn']' died with <Signals.SIGSEGV: 11>.compile error: functional/72_hanoi.sy
+Command '['../build/compiler', '-r', '-f', 'functional/72_hanoi.sy', '-o', '72_hanoi']' died with <Signals.SIGSEGV: 11>.compile error: functional/73_int_io.sy
+Command '['../build/compiler', '-r', '-f', 'functional/73_int_io.sy', '-o', '73_int_io']' died with <Signals.SIGSEGV: 11>.compile error: functional/74_kmp.sy
+Command '['../build/compiler', '-r', '-f', 'functional/74_kmp.sy', '-o', '74_kmp']' died with <Signals.SIGSEGV: 11>.compile error: functional/75_max_flow.sy
+Command '['../build/compiler', '-r', '-f', 'functional/75_max_flow.sy', '-o', '75_max_flow']' died with <Signals.SIGSEGV: 11>.compile error: functional/76_n_queens.sy
+Command '['../build/compiler', '-r', '-f', 'functional/76_n_queens.sy', '-o', '76_n_queens']' died with <Signals.SIGSEGV: 11>.compile error: functional/77_substr.sy
+Command '['../build/compiler', '-r', '-f', 'functional/77_substr.sy', '-o', '77_substr']' died with <Signals.SIGSEGV: 11>.compile error: functional/78_side_effect.sy
+Command '['../build/compiler', '-r', '-f', 'functional/78_side_effect.sy', '-o', '78_side_effect']' died with <Signals.SIGSEGV: 11>.compile error: functional/79_var_name.sy
+Command '['../build/compiler', '-r', '-f', 'functional/79_var_name.sy', '-o', '79_var_name']' died with <Signals.SIGABRT: 6>.compile error: functional/80_chaos_token.sy
+Command '['../build/compiler', '-r', '-f', 'functional/80_chaos_token.sy', '-o', '80_chaos_token']' died with <Signals.SIGSEGV: 11>.compile error: functional/81_skip_spaces.sy
+Command '['../build/compiler', '-r', '-f', 'functional/81_skip_spaces.sy', '-o', '81_skip_spaces']' died with <Signals.SIGSEGV: 11>.compile error: functional/82_long_func.sy
+Command '['../build/compiler', '-r', '-f', 'functional/82_long_func.sy', '-o', '82_long_func']' died with <Signals.SIGSEGV: 11>.compile error: functional/83_long_array.sy
+Command '['../build/compiler', '-r', '-f', 'functional/83_long_array.sy', '-o', '83_long_array']' died with <Signals.SIGABRT: 6>.compile error: functional/84_long_array2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/84_long_array2.sy', '-o', '84_long_array2']' died with <Signals.SIGSEGV: 11>.compile error: functional/85_long_code.sy
+Command '['../build/compiler', '-r', '-f', 'functional/85_long_code.sy', '-o', '85_long_code']' returned non-zero exit status 1.compile timeout: functional/86_long_code2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/86_long_code2.sy', '-o', '86_long_code2']' timed out after 5 secondscompile error: functional/87_many_params.sy
+Command '['../build/compiler', '-r', '-f', 'functional/87_many_params.sy', '-o', '87_many_params']' died with <Signals.SIGSEGV: 11>.compile error: functional/88_many_params2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/88_many_params2.sy', '-o', '88_many_params2']' returned non-zero exit status 1.compile error: functional/89_many_globals.sy
+Command '['../build/compiler', '-r', '-f', 'functional/89_many_globals.sy', '-o', '89_many_globals']' returned non-zero exit status 1.compile error: functional/90_many_locals.sy
+Command '['../build/compiler', '-r', '-f', 'functional/90_many_locals.sy', '-o', '90_many_locals']' died with <Signals.SIGSEGV: 11>.compile error: functional/91_many_locals2.sy
+Command '['../build/compiler', '-r', '-f', 'functional/91_many_locals2.sy', '-o', '91_many_locals2']' died with <Signals.SIGSEGV: 11>.compile error: functional/92_register_alloc.sy
+Command '['../build/compiler', '-r', '-f', 'functional/92_register_alloc.sy', '-o', '92_register_alloc']' died with <Signals.SIGSEGV: 11>.compile error: functional/93_nested_calls.sy
+Command '['../build/compiler', '-r', '-f', 'functional/93_nested_calls.sy', '-o', '93_nested_calls']' died with <Signals.SIGSEGV: 11>.compile error: functional/94_nested_loops.sy
+Command '['../build/compiler', '-r', '-f', 'functional/94_nested_loops.sy', '-o', '94_nested_loops']' died with <Signals.SIGSEGV: 11>.compile error: functional/95_float.sy
+Command '['../build/compiler', '-r', '-f', 'functional/95_float.sy', '-o', '95_float']' died with <Signals.SIGSEGV: 11>.compile error: functional/96_matrix_add.sy
+Command '['../build/compiler', '-r', '-f', 'functional/96_matrix_add.sy', '-o', '96_matrix_add']' returned non-zero exit status 1.compile error: functional/97_matrix_sub.sy
+Command '['../build/compiler', '-r', '-f', 'functional/97_matrix_sub.sy', '-o', '97_matrix_sub']' returned non-zero exit status 1.compile error: functional/98_matrix_mul.sy
+Command '['../build/compiler', '-r', '-f', 'functional/98_matrix_mul.sy', '-o', '98_matrix_mul']' returned non-zero exit status 1.compile error: functional/99_matrix_tran.sy
+Command '['../build/compiler', '-r', '-f', 'functional/99_matrix_tran.sy', '-o', '99_matrix_tran']' returned non-zero exit status 1.

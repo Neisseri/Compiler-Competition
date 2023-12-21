@@ -1,3 +1,7 @@
 build/
 
 temp/
+
+test/excutable/
+test/output/
+test/riscv/

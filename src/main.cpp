@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <filesystem>
 
 // our own
 #include "frontend/lexer_parser/SysYBaseVisitor.h"
@@ -20,11 +21,15 @@
 #include "backend/riscv/riscv.hpp"
 #include "backend/riscv/translate.hpp"
 
+//utils , some tools
+#include "common/utils.hpp"
+
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
 using namespace tree;
 using namespace std;
+
 
 int main(int argc, char *argv[])
 {
@@ -32,18 +37,24 @@ int main(int argc, char *argv[])
 
     bool mem_to_reg_flag = false;
     bool o2_flag = false;
+    bool out_ast_flag = false;
+    bool out_ir_flag = false;
+    bool out_riscv_flag = false;
+
     std::string input_file_path;
-    std::string output_file_path = "./a.out";
-    int out_stage = 3;
+    std::string output_file_name;
 
     options.add_options()
     ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
     ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
-    ("o,output", "output file path", cxxopts::value<std::string>(output_file_path))
+    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name))
     ("f,file", "input file path", cxxopts::value<std::string>(input_file_path))
-    ("a,ast", "output ast", cxxopts::value<bool>()->default_value("false"))
-    ("i,ir", "output ir", cxxopts::value<bool>()->default_value("false"))
-    ("r,riscv", "output riscv", cxxopts::value<bool>()->default_value("false"));
+    ("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))
+    ("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))
+    ("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"));
+
+    // usage:
+    // ("short_name,long_name", "description", cxxopts::value<type>()->default_value("default_value"))
 
     options.positional_help("[options] <input_file_path>");
     options.parse_positional({"input_file_path"});
@@ -59,20 +70,6 @@ int main(int argc, char *argv[])
             return 0;
         }
 
-        if (result["a"].as<bool>())
-        {
-            out_stage = 1;
-        }
-
-        if (result["i"].as<bool>())
-        {
-            out_stage = 2;
-        }
-
-        if (result["r"].as<bool>())
-        {
-            out_stage = 3;
-        }
     }
     catch (const std::exception &e)
     {
@@ -101,13 +98,12 @@ int main(int argc, char *argv[])
     TyperVisitor typer;
     typer.visitPromgram(AST);
 
-    if (out_stage == 1)
+    if (out_ast_flag)
     {
         cout << "ast: " << endl;
         AST->print(cout, 0);
 
-        ofstream output_file;
-        output_file.open(output_file_path);
+        ofstream output_file= openOrCreateFile("ast", output_file_name);
         AST->print(output_file, 0);
         output_file.close();
 
@@ -123,12 +119,11 @@ int main(int argc, char *argv[])
         ir_optimizer.mem_to_reg();
     }
 
-    if (out_stage == 2){
+    if (out_ir_flag){
         cout << "ir:" << endl;
         ir_generator.ir_program.print(cout, 0);
 
-        ofstream output_file;
-        output_file.open(output_file_path);
+        ofstream output_file= openOrCreateFile("ir", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
 
@@ -140,7 +135,7 @@ int main(int argc, char *argv[])
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
-    if (out_stage == 3)
+    if (out_riscv_flag)
     {
         cout << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
@@ -149,8 +144,7 @@ int main(int argc, char *argv[])
             func->emitend();
         }
         // output to file
-        ofstream output_file;
-        output_file.open("riscv/" + output_file_path + ".s");
+        ofstream output_file= openOrCreateFile("riscv", output_file_name);
         program.emit(output_file);
         output_file.close();
     }
