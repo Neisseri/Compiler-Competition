@@ -32,7 +32,7 @@ public:
     ir::Reg visitIndex(LValue *lvalue, std::shared_ptr<ir::BasicBlock> &ir_bb){ // get index of array.
         std::cout << "visitIndex" << std::endl;
         assert(lvalue->has_index);
-        
+
         ir::Reg dst_adr_ptr;
         ir::Reg dst_ptr = var_ptr_table[lvalue->ident->name];
         ir::Reg block_size = get_new_reg(lvalue->var_type->type);
@@ -64,7 +64,6 @@ public:
 
     void visitPromgram(ast::Program * ast_program){
         std::cout << "visitProgram" << std::endl;
-
         std::unique_ptr<ir::Program> ir_program(new ir::Program);
         for (auto &i : ast_program->children){
             if (auto child = dynamic_cast<ast::Declaration *>(i.get())){
@@ -252,10 +251,10 @@ public:
                         std::shared_ptr<ir::BasicBlock> bb_false(get_new_bb_ptr(ir_bb->func));
                         std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond, bb_true, bb_false));
                         bb_cond->instrs.push_back(std::move(condbr_instr));
-                        
+
                         ir_bb->func->bbs.push_back(bb_true);
                         ir_bb->func->bbs.push_back(bb_false);
-                        
+
                         std::shared_ptr<ir::BasicBlock> ir_new_bb(get_new_bb_ptr(ir_bb->func));
                         ir_bb->func->bbs.push_back(ir_new_bb);
                         ir_bb = ir_new_bb;
@@ -272,7 +271,7 @@ public:
                     else {
                         std::shared_ptr<ir::BasicBlock> bb_true(get_new_bb_ptr(ir_bb->func));
                         ir_bb->func->bbs.push_back(bb_true);
-                        
+
                         std::shared_ptr<ir::BasicBlock> ir_new_bb(get_new_bb_ptr(ir_bb->func));
                         ir_bb->func->bbs.push_back(ir_new_bb);
                         ir_bb = ir_new_bb;

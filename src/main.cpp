@@ -9,6 +9,7 @@
 #include "antlr4-runtime.h"
 #include "midend/iroptimizer.hpp"
 #include <getopt.h>
+#include <cxxopts.hpp>
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -18,43 +19,57 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    bool mem_to_reg_flag = 0;
-    bool o2_flag = 0;
-    std::string input_file_path = argv[1];
+    cxxopts::Options options("compiler", "it's a compiler for SysY language made by us with love <3");
+
+    bool mem_to_reg_flag = false;
+    bool o2_flag = false;
+    std::string input_file_path;
     std::string output_file_path = "./a.out";
     int out_stage = 3;
 
-    int opt;
-    int digit_optind = 0;
-    int option_index = 0;
-    char *string = "o:f:";
-    static struct option long_options[] =
-    {  
-        {"m2r", no_argument, NULL, 'm'},
-        {"o2", no_argument, NULL, 'O'},
-        {"ast", no_argument, NULL, 'a'},
-        {"ir", no_argument, NULL, 'i'},
-        {"riscv", no_argument, NULL, 'r'},
-        {NULL, 0, NULL, 0},
-    }; 
-    while((opt =getopt_long_only(argc, argv, string, long_options, &option_index))!= -1)
-    {  
-        if (opt == 'm'){
-            mem_to_reg_flag = 1;
-        }else if (opt == 'O'){
-            o2_flag = 1;
-        }else if (opt == 'o'){
-            output_file_path = optarg;
-        }else if (opt == 'f'){
-            input_file_path = optarg;
-        }else if (opt == 'a'){
+    options.add_options()
+    ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
+    ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
+    ("o,output", "output file path", cxxopts::value<std::string>(output_file_path))
+    ("f,file", "input file path", cxxopts::value<std::string>(input_file_path))
+    ("a,ast", "output ast", cxxopts::value<bool>()->default_value("false"))
+    ("i,ir", "output ir", cxxopts::value<bool>()->default_value("false"))
+    ("r,riscv", "output riscv", cxxopts::value<bool>()->default_value("false"));
+
+    options.positional_help("[options] <input_file_path>");
+    options.parse_positional({"input_file_path"});
+
+    try
+    {
+        auto result = options.parse(argc, argv);
+
+        // Display help if requested or if no input file is provided
+        if (result.count("file") == 0 || result.count("help") > 0)
+        {
+            std::cout << options.help() << std::endl;
+            return 0;
+        }
+
+        if (result["a"].as<bool>())
+        {
             out_stage = 1;
-        }else if (opt == 'i'){
+        }
+
+        if (result["i"].as<bool>())
+        {
             out_stage = 2;
-        }else if (opt == 'r'){
+        }
+
+        if (result["r"].as<bool>())
+        {
             out_stage = 3;
         }
-    }  
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error parsing options: " << e.what() << std::endl;
+        return 1;
+    }
 
     ifstream f_stream;
     f_stream.open(input_file_path);
@@ -81,7 +96,7 @@ int main(int argc, char *argv[])
     {
         cout << "ast: " << endl;
         AST->print(cout, 0);
-        
+
         ofstream output_file;
         output_file.open(output_file_path);
         AST->print(output_file, 0);
