@@ -25,78 +25,14 @@ void BasicBlock::get_def_use_set() {
   live_use.clear();
   def.clear();
   for (auto &inst: instructions) {
-    auto def = inst->def();
-    auto use = inst->use();
-    for (auto &u: use)
+    for (auto &u: inst->use())
       if (!def.count(u))
         live_use.insert(u);
-    for (auto &d: def)
+    for (auto &d: inst->def())
       def.insert(d);
   }
   live_in = live_use;
   live_out.clear();
-}
-
-void Function::cfg_build() {
-  std::list<std::unique_ptr<Instruction>> buf;
-  ir::Label* label;
-  std::unordered_map<ir::Label*, BasicBlock*> label_to_bb({});
-  for (auto &i: instrs) {
-    if (i->is_label()) {
-      // auto mark = dynamic_cast<Mark*>(i.get());
-      // if (mark->is_func_label()) 
-      //   continue;
-      // else {
-        // close BasicBlock when met with Block labels
-        BasicBlock* bb(new BasicBlock(BBType::CONTINUOUS, bbs.size(), label));
-        for (auto &i: buf)
-          bb->push(std::move(i));
-        bbs.push_back(bb);
-        label_to_bb[label] = bb;
-        label = i->label;
-      // }
-      // continue;
-    }
-    buf.push_back(std::move(i));
-    BBType bbtype = BBType::UNDEFINED;
-    if (!i->is_sequential()) {
-      if (i->type == InstType::JMP)
-        bbtype = BBType::END_BY_JUMP;
-      else if (i->type == InstType::COND_JMP)
-        bbtype = BBType::END_BY_COND_JUMP;
-      else if (i->type == InstType::RET)
-        bbtype = BBType::END_BY_RETURN;
-      BasicBlock* bb(new BasicBlock(bbtype, bbs.size(), label));
-      for (auto &i: buf)
-        bb->push(std::move(i));
-      bbs.push_back(bb);
-      label_to_bb[label] = bb;
-    }
-  }
-  for (auto &bb: bbs) {
-    bb->pred.clear();
-    bb->succ.clear();
-  }
-  for (auto &bb: bbs) {
-    if (bb->instructions.size() == 0)
-      continue;
-    if (bb->type == BBType::END_BY_JUMP) {
-      auto dst_bb = label_to_bb[bb->instructions.back()->label];
-      bb->succ.insert(dst_bb);
-      dst_bb->pred.insert(bb);
-    }
-    else if (bb->type == BBType::END_BY_COND_JUMP) {
-      auto dst_bb = label_to_bb[bb->instructions.back()->label];
-      bb->succ.insert(dst_bb);
-      dst_bb->pred.insert(bb);
-      if (bb != bbs.back()) {
-        bb->succ.insert(std::next(bb));
-        std::next(bb)->pred.insert(bb);
-      }
-    }
-    else if (bb->type == BBType::END_BY_RETURN) 
-      continue;
-  }
 }
 
 std::vector<BasicBlock*> Function::do_post_order_tranverse() {
@@ -111,24 +47,64 @@ void Function::do_liveness_analysis() {
     bb->get_def_use_set();
   std::vector<BasicBlock*> order = do_post_order_tranverse();
   std::reverse(order.begin(), order.end());
+  // std::cout << "\nreverse post order: ";
+  // for (auto i: order)
+  //   std::cout << print_bb(i) << " ";
+  // std::cout << "\n";
   bool changed = true;
   while (changed) {
     changed = false;
     for (auto bb: order) {
       std::set<Reg> new_out;
+      new_out.clear();
       for (auto succ: bb->succ)
         new_out.insert(succ->live_in.begin(), succ->live_in.end());
       if (bb->live_out != new_out) {
-        bb->live_out = std::move(new_out);
         changed = true;
+        bb->live_out = new_out;
         auto new_in = bb->live_use;
         for (auto &e: bb->live_out)
           if (!bb->def.count(e))
             new_in.insert(e);
-        bb->live_in = std::move(new_in);
+        bb->live_in = new_in;
       }
     }
   }
+  // compute livein & liveout for each inst in bb
+  // for (auto& bb: bbs) {
+  //   std::set<Reg> liveout = bb->live_out;
+  //   for (auto i = bb->instructions.rbegin(); i != bb->instructions.rend(); i++) {
+  //     auto inst = *i;
+  //     inst->liveout = liveout;
+  //     for (auto j: inst->def())
+  //       liveout.erase(j);
+  //     for (auto j: inst->use())
+  //       liveout.insert(j);
+  //     inst->livein = liveout;
+  //   }
+  // }
+
+  // std::cout << "\nafter liveness analysis\n";
+  // for (auto& bb: bbs) {
+  //   std::cout << print_bb(bb) << "\n";
+  //   std::cout << "def: ";
+  //   for (auto& i: bb->def)
+  //     std::cout << print_reg(i) << " ";
+  //   std::cout << "\n";
+  //   std::cout << "live_use: ";
+  //   for (auto& i: bb->live_use)
+  //     std::cout << print_reg(i) << " ";
+  //   std::cout << "\n";
+  //   std::cout << "live_in: ";
+  //   for (auto& i: bb->live_in)
+  //     std::cout << print_reg(i) << " ";
+  //   std::cout << "\n";
+  //   std::cout << "live_out: ";
+  //   for (auto& i: bb->live_out)
+  //     std::cout << print_reg(i) << " ";
+  //   std::cout << "\n\n";
+  // }
+
 }
 
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
 #include "../../common/label.hpp"
@@ -9,9 +11,9 @@ struct Instruction;
 struct Reg {
     RegType type;
     int id;
-    std::string name;
-    Reg() {}
-    Reg(RegType type, int id, std::string name): type(type), id(id), name(name) {}
+    Reg(RegType type, int id): type(type), id(id) {}
+    Reg() = default;
+    Reg(ir::Reg ir_reg): type(General), id(-ir_reg.id) {}
     bool operator==(const Reg &other) const {
         return type == other.type && id == other.id;
     }
@@ -25,129 +27,206 @@ struct Reg {
     }
 };
 
-struct Riscv {
-    Riscv() {}
-    Reg ZERO = Reg(RegType::General, 0, "x0");
-    Reg RA = Reg(RegType::General, 1, "ra");
-    Reg SP = Reg(RegType::General, 2, "sp");
-    Reg GP = Reg(RegType::General, 3, "gp");
-    Reg TP = Reg(RegType::General, 4, "tp");
-    Reg T0 = Reg(RegType::General, 5, "t1");
-    Reg T1 = Reg(RegType::General, 6, "t2");
-    Reg T2 = Reg(RegType::General, 7, "t2");
-    Reg FP = Reg(RegType::General, 8, "fp");
-    Reg S1 = Reg(RegType::General, 9, "s1");
-    Reg A0 = Reg(RegType::General, 10, "a0");
-    Reg A1 = Reg(RegType::General, 11, "a1");
-    Reg A2 = Reg(RegType::General, 12, "a2");
-    Reg A3 = Reg(RegType::General, 13, "a3");
-    Reg A4 = Reg(RegType::General, 14, "a4");
-    Reg A5 = Reg(RegType::General, 15, "a5");
-    Reg A6 = Reg(RegType::General, 16, "a6");
-    Reg A7 = Reg(RegType::General, 17, "a7");
-    Reg S2 = Reg(RegType::General, 18, "s2");
-    Reg S3 = Reg(RegType::General, 19, "s3");
-    Reg S4 = Reg(RegType::General, 20, "s4");
-    Reg S5 = Reg(RegType::General, 21, "s5");
-    Reg S6 = Reg(RegType::General, 22, "s6");
-    Reg S7 = Reg(RegType::General, 23, "s7");
-    Reg S8 = Reg(RegType::General, 24, "s8");
-    Reg S9 = Reg(RegType::General, 25, "s9");
-    Reg S10 = Reg(RegType::General, 26, "s10");
-    Reg S11 = Reg(RegType::General, 27, "s11");
-    Reg T3 = Reg(RegType::General, 28, "t3");
-    Reg T4 = Reg(RegType::General, 29, "t4");
-    Reg T5 = Reg(RegType::General, 30, "t5");
-    Reg T6 = Reg(RegType::General, 31, "t6");
-};
-
 struct BasicBlock {
     BBType type;
     int id;
-    ir::Label* label;
-    std::list<std::unique_ptr<Instruction>> instructions;
+    static int total_blks;
+    std::string label;
+    std::list<Instruction*> instructions;
     std::set<BasicBlock*> pred, succ;
     std::set<Reg> def, live_use, live_in, live_out;
-    BasicBlock(BBType type, int id, ir::Label* label):
-        type(type), label(label), id(id) {}
-    void push(std::unique_ptr<Instruction> insn) {
-        instructions.push_back(std::move(insn));
-    }
+    BasicBlock() { id = total_blks++; }
     static void add_edge(BasicBlock *from, BasicBlock *to);
     static void remove_edge(BasicBlock *from, BasicBlock *to);
     void get_def_use_set();
+    void add_inst(Instruction* inst);
     void post_order_dfs(std::unordered_set<BasicBlock*> &visited, std::vector<BasicBlock*> &rst); 
 };
 
 struct Instruction {
-    InstType type;
-    ir::Label* label;
-    Instruction(InstType type): type(type) {}
+    Instruction() {}
     virtual ~Instruction() = default;
     virtual void emit(std::ostream &os) const {}
     virtual std::set<Reg> def() const { return {}; }
     virtual std::set<Reg> use() const { return {}; }
-    virtual bool is_sequential() const { return type == InstType::SEQ; }
-    virtual bool is_label() const { return type == InstType::LABEL; }
+    std::set<Reg> livein, liveout;
+    virtual std::vector<Reg*> reg_ptrs() { return {}; }
+    void replace_reg(Reg src, Reg dst);
 };
 
 struct Function {
     std::string name;
     ir::Label label;
+    int reg_occupied[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
-    void cfg_build();
+    int num_params;
     void do_liveness_analysis();
     std::vector<BasicBlock*> do_post_order_tranverse();
     std::vector<BasicBlock*> compute_post_order() const;
     void do_reg_alloc();
-    void emit_prologue_epilogue() {}
+    void alloc_reg_for(Reg i, bool is_read,
+        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
+    void emitend();
+    int frame_size;
+    // std::vector<int> allocable_regs;
+    std::vector<int> callee_saved_regs;
+    std::map<Reg, int> bindings;
+    std::map<int, Reg> reg_to_tmp;
+    int temps[32];
+    void replace_regs(std::map<Reg, int> reg_map);
+    std::map<Reg, int> offsets; // virtual reg -> stack offset
+    std::map<Reg, int> alloca_offsets; // virtual regs are ptr to stack objs
+    std::map<Reg, int> alloca_sizes;
+    void emit(std::ostream &os);
+    Function(ir::Function& ir_function, const std::string& name);
+    void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
+        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
 };
 
 struct Program {
-    std::unordered_map<std::string, Function> functions;
+    void cfg_build();
+    std::list<BasicBlock*> bbs;
+    std::unordered_map<std::string, Function*> functions;
     int label_cnt;
     std::string new_label() {
         return ".L" + std::to_string(label_cnt++);
     }
     std::vector<std::string> buffer;
-    Program();
+    Program() {}
     void emit(std::ostream &os);
     void emitEnd(std::ostream &os);
+    Program(ir::Program ir_program);
 };
 
-std::unique_ptr<Program> translate(const ir::Program &ir_prg);
-void emit_global(std::ostream &os, const ir::Program &ir_prg);
+std::string print_reg(Reg src);
+std::string print_bb(BasicBlock* bb);
+
 struct Unary: Instruction {
     Reg dst, src;
     RiscvUnaryOp op;
-    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction(InstType::SEQ) {}
+    Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
 };
 
 struct Binary: Instruction {
     Reg dst, src1, src2;
-    RiscvUnaryOp op;
-    Binary(Reg dst, RiscvUnaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction(InstType::SEQ) {}
+    RiscvBinaryOp op;
+    Binary(Reg dst, RiscvBinaryOp op, Reg src1, Reg src2): dst(dst), op(op), src1(src1), src2(src2), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src1, src2}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src1, &src2}; }
 };
 
 struct Return: Instruction {
     int ret_val;
-    Return(int ret_val): ret_val(ret_val), Instruction(InstType::RET) {}
+    Reg src;
+    Return(int ret_val): ret_val(ret_val), Instruction() {}
+    Return(Reg src): src(src), Instruction() {}
+    Return() = default;
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {}; }
-    std::set<Reg> use() const override { return {}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src}; }
 };
 
-struct Mark: Instruction {
-    Mark(ir::Label* label): Instruction(InstType::LABEL) {}
+struct StoreWord: Instruction {
+    Reg src, base;
+    int offset;
+    StoreWord(Reg src, Reg base, int offset): src(src), base(base), offset(offset), Instruction() {}
     void emit(std::ostream &os) const override;
-    bool is_func_label() { return label->type == LabelType::FuncLabel; }
+    std::set<Reg> def() const override { return {}; }
+    std::set<Reg> use() const override { return {src, base}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src, &base}; }
+};
+
+struct LoadWord: Instruction {
+    Reg dst, base;
+    int offset;
+    LoadWord(Reg dst, Reg base, int offset): dst(dst), base(base), offset(offset), Instruction() {}
+    void emit(std::ostream &os) const override;
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {base}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &base}; }
+};
+
+struct SPAdd: Instruction {
+    int offset;
+    void emit(std::ostream &os) const override;
+    SPAdd(int offset): offset(offset) {}
+};
+
+// conditional branch (beq x0, src, target)
+struct Branch: Instruction {
+    Reg src;
+    BasicBlock* target;
+    Branch(Reg src, BasicBlock* target): src(src), target(target) {}
+    void emit(std::ostream &os) const override;
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&src}; }
+};
+
+struct ADDI: Instruction {
+    Reg dst, src;
+    int offset;
+    ADDI(Reg dst, Reg src, int offset): offset(offset), dst(dst), src(src) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    void emit(std::ostream &os) const override;
+};
+
+
+struct Jump: Instruction {
+    BasicBlock* target;
+    Jump(BasicBlock* target): target(target) {}
+    void emit(std::ostream &os) const override;
+};
+
+
+struct LoadImm: Instruction {
+    int imm;
+    Reg dst;
+    LoadImm(Reg dst, int imm): imm(imm), dst(dst) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    void emit(std::ostream &os) const override;
+};
+
+
+struct Move: Instruction {
+    Reg src, dst;
+    Move(Reg src, Reg dst): src(src), dst(dst) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    void emit(std::ostream &os) const override;
+};
+
+struct Call: Instruction {
+    std::string func_name;
+    int num_params;
+    Call(std::string func_name, int num_params): func_name(func_name), num_params(num_params), Instruction() {}
+    std::set<Reg> def() const override {
+        std::set<Reg> def_set;
+        for (int i = 0; i < NUM_REGS; i++) 
+            if (REG_ATTR[i] == CallerSaved)
+                def_set.insert(Reg(General, i));
+        return def_set;
+    }
+    std::set<Reg> use() const override {
+        int num_reg_used = num_params < 8 ? num_params : 8;
+        std::set<Reg> use_set;
+        for (int i = 0; i < num_reg_used; i++) 
+            use_set.insert(Reg(General, argregs[i]));
+        return use_set;
+    }
+    std::vector<Reg*> reg_ptrs() override { return {}; }
+    void emit(std::ostream &os) const override;
 };
 
 }

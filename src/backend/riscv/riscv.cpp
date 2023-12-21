@@ -2,147 +2,149 @@
 
 namespace riscv {
 
-Program::Program(): label_cnt(0) {
-    // print label
-//     buffer.emplace_back(".text\n");
-//     buffer.emplace_back(".global_main\n");
-//     buffer.emplace_back("\n");
+  int BasicBlock::total_blks = 0;
 
+  void Instruction::replace_reg(Reg src, Reg dst) {
+    for (auto r: reg_ptrs())
+      if (*r == src)
+        *r = dst;
+  }
 
-//     self.printer.printComment("start of prologue")
-//     self.printer.printInstr(Riscv.SPAdd(-self.nextLocalOffset))
+  void Function::emit(std::ostream &os) {
+    os << name << ":\n";
+    for (auto bb: bbs) {
+      os << print_bb(bb) << ":\n";
+      for (auto &inst: bb->instructions)
+        inst->emit(os);
+      os << "\n";
+    }
+  }
 
-//     # in step9, you need to think about how to store RA here
-//     # you can get some ideas from how to save CalleeSaved regs
-//     for i in range(len(Riscv.CalleeSaved)):
-//         if Riscv.CalleeSaved[i].isUsed():
-//             self.printer.printInstr(
-//                 Riscv.NativeStoreWord(Riscv.CalleeSaved[i], Riscv.SP, 4 * i)
-//             )
+  void Program::emit(std::ostream &os) {
+    os << "\n.text\n";
+    os << ".global main\n";
+    os << "\n";
+    for (auto &[name, func]: functions)
+      func->emit(os);
+  }
+  
+  void BasicBlock::add_inst(Instruction* inst) {
+    instructions.emplace_back(inst);
+  }
 
-//     self.printer.printComment("end of prologue")
-//     self.printer.println("")
+  std::string print_reg(Reg src) {
+    return src.id < 0 ? ("T[" + std::to_string(src.id) + "]") : REG_NAMES[src.id];
+  }
 
-//     self.printer.printComment("start of body")
+  std::string print_bb(BasicBlock* bb) {
+    return "B" + std::to_string(bb->id);
+  }
 
-//     # in step9, you need to think about how to pass the parameters here
-//     # you can use the stack or regs
+  void StoreWord::emit(std::ostream &os) const {
+    os << "sw " << print_reg(src) << ", " << offset << "(" << print_reg(base) << ")\n";
+  }
 
-//     # using asmcodeprinter to output the RiscV code
-//     for instr in self.buf:
-//         self.printer.printInstr(instr)
+  void LoadWord::emit(std::ostream &os) const {
+    os << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
+  }
 
-//     self.printer.printComment("end of body")
-//     self.printer.println("")
+  void SPAdd::emit(std::ostream &os) const {
+    os << "addi " << REG_NAMES[sp] << ", " << REG_NAMES[sp] << ", " << offset << "\n";
+  }
 
-//     self.printer.printLabel(
-//         Label(LabelKind.TEMP, self.info.funcLabel.name + Riscv.EPILOGUE_SUFFIX)
-//     )
-//     self.printer.printComment("start of epilogue")
+  void ADDI::emit(std::ostream &os) const {
+    os << "addi " << print_reg(dst) << ", " << print_reg(src) << ", " << offset << "\n";
+  }
 
-//     for i in range(len(Riscv.CalleeSaved)):
-//         if Riscv.CalleeSaved[i].isUsed():
-//             self.printer.printInstr(
-//                 Riscv.NativeLoadWord(Riscv.CalleeSaved[i], Riscv.SP, 4 * i)
-//             )
+  void Return::emit(std::ostream &os) const {
+    os << "ret\n";
+  }
 
-//     self.printer.printInstr(Riscv.SPAdd(self.nextLocalOffset))
-//     self.printer.printComment("end of epilogue")
-//     self.printer.println("")
+  void Branch::emit(std::ostream &os) const {
+    os << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
+  }
 
-//     self.printer.printInstr(Riscv.NativeReturn())
-//     self.printer.println("")
+  void Binary::emit(std::ostream &os) const {
+    // ADD OR XOR SUB MUL DIV AND SLT SHL SRL SRA SGT
+    switch (op) {
+      case RiscvBinaryOp::ADD: {
+        os << "add " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      } 
+      case RiscvBinaryOp::OR: {
+        os << "or " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      } 
+      case RiscvBinaryOp::XOR: {
+        os << "xor " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      } 
+      case RiscvBinaryOp::SUB: {
+        os << "sub " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      } 
+      case RiscvBinaryOp::MUL: {
+        os << "mul " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::DIV: {
+        os << "div " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::AND: {
+        os << "and " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SLT: {
+        os << "slt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SHL: {
+        os << "shl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SRL: {
+        os << "srl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SRA: {
+        os << "sra " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      case RiscvBinaryOp::SGT: {
+        os << "sgt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        break;
+      }
+      default: os << "unkown binary op\n";
+    }
+  }
 
-}
+  void Unary::emit(std::ostream &os) const {
+    switch (op) {
+      case RiscvUnaryOp::SEQZ: {
+        os << "seqz " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        break;
+      } case RiscvUnaryOp::SNEZ: {
+        os << "snez " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        break;
+      }
+      default: os << "unkown unary op\n";
+    }
+  }
+  
+  void LoadImm::emit(std::ostream &os) const {
+    os << "li " << print_reg(dst) << ", " << imm << "\n";
+  }
 
+  void Jump::emit(std::ostream &os) const {
+    os << "j " << print_bb(target) << "\n";
+  }
 
-// void Function::emit_prologue_epilogue() {
-  // bool gpr_used[NR_GPRS], fpr_used[NR_FPRS];
-  // std::fill_n(gpr_used, NR_GPRS, false);
-  // std::fill_n(fpr_used, NR_FPRS, false);
+  void Move::emit(std::ostream &os) const {
+    os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
+  }
 
-  // for (auto &bb : bbs) {
-  //   for (auto &insn : bb->insns) {
-  //     auto def = insn->def();
-  //     for (Reg r : def) {
-  //       if (!r.is_float())
-  //         gpr_used[r.id] = true;
-  //       else
-  //         fpr_used[r.id] = true;
-  //     }
-  //   }
-  // }
-
-  // bool save_lr = gpr_used[lr];
-  // std::vector<Reg> saved_gprs, saved_fprs;
-  // for (int i = 0; i < NR_GPRS; ++i)
-  //   if (GPRS_ATTR[i] == NonVolatile && gpr_used[i] && i != lr)
-  //     saved_gprs.push_back(Reg{General, i});
-  // if (save_lr)
-  //   saved_gprs.push_back(Reg{General, lr});
-  // for (int i = NR_VOLATILE_FPRS; i < NR_FPRS; ++i)
-  //   if (fpr_used[i])
-  //     saved_fprs.push_back(Reg{Fp, i});
-
-  // auto entry = bbs.begin()->get();
-  // auto exit = new BasicBlock;
-  // exit->label = ".exit." + name;
-
-  // int stack_obj_size = 0;
-  // for (auto obj : normal_objs)
-  //   stack_obj_size += obj->size;
-  // stack_obj_size = round_up_to_imm8m(stack_obj_size);
-
-  // // NOTE: 调用约定要求函数边界的sp按照8字节对齐
-  // int frame_size = stack_obj_size + 4 * (saved_gprs.size() + saved_fprs.size());
-  // if ((frame_size & 7) != 0) {
-  //   frame_size += 4;
-  //   saved_gprs.insert(saved_gprs.begin(), Reg{General, r3});
-  // }
-
-  // // emit prologue
-  // auto &prologue = entry->insns;
-  // // 每次都插入在头部，先生成后面的
-  // if (stack_obj_size)
-  //   prologue.emplace(prologue.begin(), new AdjustSp{-stack_obj_size});
-  // if (!saved_fprs.empty())
-  //   prologue.emplace(prologue.begin(), new Push{saved_fprs});
-  // if (!saved_gprs.empty())
-  //   prologue.emplace(prologue.begin(), new Push{saved_gprs});
-
-  // // emit epilogue
-  // auto &epilogue = exit->insns;
-  // if (stack_obj_size)
-  //   epilogue.emplace(epilogue.end(), new AdjustSp{stack_obj_size});
-  // if (!saved_fprs.empty())
-  //   epilogue.emplace(epilogue.end(), new Pop{saved_fprs});
-  // if (!saved_gprs.empty()) {
-  //   if (save_lr)
-  //     saved_gprs.back().id = pc;
-  //   epilogue.emplace(epilogue.end(), new Pop{saved_gprs});
-  // }
-  // if (!save_lr)
-  //   epilogue.emplace(epilogue.end(), new Return);
-
-  // bool trivial_return =
-  //     !stack_obj_size && saved_fprs.empty() && saved_gprs.empty();
-  // for (auto &bb_ptr : bbs) {
-  //   auto bb = bb_ptr.get();
-  //   auto &insns = bb->insns;
-  //   if (!insns.empty()) {
-  //     auto it = std::prev(insns.end());
-  //     TypeCase(ret, Return *, it->get()) {
-  //       if (!trivial_return) {
-  //         BasicBlock::add_edge(bb, exit);
-  //         it->reset(new Branch{exit});
-  //       }
-  //     }
-  //   }
-  // }
-  // bbs.emplace_back(exit);
-
-  // resolve_stack_ops(frame_size);
-// }
-
-
+  void Call::emit(std::ostream &os) const {
+    os << "call " << func_name << "\n";
+  }
 }

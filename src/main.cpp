@@ -1,15 +1,24 @@
+// 3rd party
+#include <cxxopts.hpp>
+#include "antlr4-runtime.h"
+
+// std lib
 #include <iostream>
 #include <fstream>
+#include <string>
+
+// our own
 #include "frontend/lexer_parser/SysYBaseVisitor.h"
 #include "frontend/lexer_parser/SysYLexer.h"
 #include "frontend/lexer_parser/SysYParser.h"
 #include "frontend/ast/astVisitor.hpp"
 #include "frontend/type_check/typer.hpp"
 #include "frontend/IR/irgenerator.hpp"
-#include "antlr4-runtime.h"
 #include "midend/iroptimizer.hpp"
-#include <getopt.h>
-#include <cxxopts.hpp>
+
+// backend
+#include "backend/riscv/riscv.hpp"
+#include "backend/riscv/translate.hpp"
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -128,20 +137,23 @@ int main(int argc, char *argv[])
 
     cout << "--------------------------- building riscv ---------------------------" << endl;
 
-    // riscv::Program program(ir_generator.ir_program);
-    // for (auto [name, func]: program.functions) {
-    //     func->do_reg_alloc();
-    //     func->emitend();
-    // }
+    // TODO:优化ir
 
-    // if (out_stage == 3){
-    //     cout << "riscv: " << endl;
-    //     program.emit(cout);
-    //     ofstream output_file;
-    //     output_file.open(output_file_path);
-    //     program.emit(output_file);
-    //     output_file.close();
-    // }
+    // TODO:生成riscv代码并优化
+    if (out_stage == 3)
+    {
+        cout << "riscv: " << endl;
+        riscv::Program program(ir_generator.ir_program);
+        for (auto [name, func]: program.functions) {
+            func->do_reg_alloc();
+            func->emitend();
+        }
+        // output to file
+        ofstream output_file;
+        output_file.open("riscv/" + output_file_path + ".s");
+        program.emit(output_file);
+        output_file.close();
+    }
 
     return 0;
 }
