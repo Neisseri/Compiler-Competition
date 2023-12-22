@@ -10,6 +10,7 @@ file(GLOB_RECURSE SRC "src/*.cpp")
 
 include_directories(src)
 include_directories(3rd_party/antlr4-runtime)
+include_directories(3rd_party/cxxopts)
 
 add_subdirectory(3rd_party/antlr4-runtime)
 
