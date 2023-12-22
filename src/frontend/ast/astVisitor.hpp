@@ -53,6 +53,7 @@ public:
 
   antlrcpp::Any visitFuncRParams(SysYParser::FuncRParamsContext *ctx) override
   {
+    std::cerr<<"visitFuncRParams"<<std::endl;
     std::vector<std::unique_ptr<Expression>> args;
     for (auto arg : ctx->funcRParam())
     {
@@ -128,7 +129,7 @@ public:
   {
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
-    std::cerr << "visitVarDecl: " << ctx->bType()->getText() << std::endl;
+    std::cerr << "visitVarDecl: " << ctx->bType()->getText() << "start" << std::endl;
     for (auto item : ctx->varDef())
     {
       auto dimensions = item->exp();
@@ -156,6 +157,7 @@ public:
         temp_type->dim = std::move(dim_list);
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
+      std::cerr<<"visitVarDecl: ident: "<<item->Ident()->getText()<<std::endl;
       std::unique_ptr<Assignment> init = nullptr;
       if (auto init_ = item->initVal())
       {
@@ -168,8 +170,11 @@ public:
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));
   }
 
+
+
   antlrcpp::Any visitInit(SysYParser::InitContext *ctx) override
   {
+    std::cerr << "visitInit" << std::endl;
     auto expr_ = ctx->exp()->accept(this).as<Expression *>();
     std::unique_ptr<Expression> expr(std::move(expr_));
     return new Assignment(std::move(expr));
@@ -457,9 +462,17 @@ public:
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
     auto const ident = ctx->Ident()->getText();
-    auto const args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
+    std::cerr<<"visitCall "<<"ident: "<<ident<<std::endl;
+    ExpressionList *args_list = nullptr;
+    if (ctx->funcRParams())
+      args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
+    else
+      args_list = new ExpressionList();
+
+    std::cerr<<"visitCall args_list size: "<<args_list->children.size()<<std::endl;
     std::unique_ptr<Identifier> ident_(new Identifier(ident));
     auto const ret = new Call(std::move(ident_), std::unique_ptr<ExpressionList>(args_list));
+
     return static_cast<Expression *>(ret);
   }
 

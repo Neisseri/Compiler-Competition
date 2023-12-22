@@ -5,7 +5,8 @@
 #include <string>
 #include <cstdlib>
 #include "const.hpp"
-#define DEBUG 0
+
+static const bool DEBUG_PRINT = true;
 
 class SyError
 {
@@ -30,7 +31,7 @@ public:
     }
     static void throw_warning(std::string msg)
     {
-        if(!DEBUG) return;
+        if(!DEBUG_PRINT) return;
         std::cerr << "Warning: ";
         std::cerr << msg << std::endl;
     }
@@ -43,7 +44,7 @@ public:
 
     static void throw_info(std::string msg)
     {
-        if (!DEBUG)
+        if (!DEBUG_PRINT)
             return;
         std::cerr << "Info: ";
         std::cerr << msg << std::endl;

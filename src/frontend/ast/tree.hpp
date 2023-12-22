@@ -54,6 +54,7 @@ namespace frontend
         class ExpressionList : public AstNode
         {
         public:
+            ExpressionList() : children() {}
             ExpressionList(std::vector<std::unique_ptr<Expression>> children) : children(std::move(children)) {}
             ~ExpressionList()
             {

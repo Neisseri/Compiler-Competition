@@ -199,268 +199,41 @@ parse tree:
                                                                     (number 
                                                                         (intConst 8)))))))) }) })) ;))) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef d [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 1)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 2)))))))) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 3)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 5)))))))) }) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 7)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 8)))))))) })) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef e [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal d [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 2))))))) ] [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 1))))))) ]))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal c [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 2))))))) ] [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 1))))))) ]))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 3)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 4)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 5)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 6)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 7)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 8)))))))) }) })) ;))) 
-                    (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
-                                    (addExp 
-                                        (addExp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (lVal e [ 
-                                                                (exp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (number 
-                                                                                        (intConst 3))))))) ] [ 
-                                                                (exp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (number 
-                                                                                        (intConst 1))))))) ]))))) + 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (lVal e [ 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 0))))))) ] [ 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 0))))))) ]))))) + 
-                                        (mulExp 
-                                            (unaryExp 
-                                                (primaryExp 
-                                                    (lVal e [ 
-                                                        (exp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (number 
-                                                                                (intConst 0))))))) ] [ 
-                                                        (exp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (number 
-                                                                                (intConst 1))))))) ]))))) + 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (lVal a [ 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 2))))))) ] [ 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 0))))))) ])))))) ;)) }))) <EOF>)
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
 visitCompUnit end create new program
 visitCompUnit end create new program end
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction main
+visitBlock 
+visit decl array
+visit decl array done
+visit decl array
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visit decl array done
+visit decl array
+visitExpression
+visitExpression

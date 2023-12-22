@@ -6,7 +6,7 @@ namespace frontend
 {
     void TyperVisitor::visitPromgram(const ast::Program *program)
     {
-        std::cerr << "TYPER-->visitProgram" << std::endl;
+        SyError().throw_info("visitProgram" + program->toString());
         this->global_scope = std::make_unique<Scope>(ScopeType::GlobalScope);
         this->scope_stack = std::make_unique<ScopeStack>();
         scope_stack->scope_push(std::move(global_scope));
@@ -60,6 +60,10 @@ namespace frontend
         if (var_def->init_expr != nullptr)
         {
             Type *expr_type = visitExpr(var_def->init_expr.get());
+            if(!expr_type){
+                SyError().throw_info("expr_type is nullptr , its an array ,return");
+                return;
+            }
             if (expr_type->type != var_symbol.get()->type->type)
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in variable declaration");
@@ -98,10 +102,16 @@ namespace frontend
 
     void TyperVisitor::visitAssignStmt(const ast::Assign *assign_stmt)
     {
+        SyError().throw_info("visitAssignStmt" + assign_stmt->toString());
         auto lval = assign_stmt->lvalue.get();
         auto rval = assign_stmt->expr.get();
         auto lval_type = visitExpr(lval);
+        SyError().throw_info("visitAssignStmt" + lval_type->toString());
         auto rval_type = visitExpr(rval);
+        if(!rval_type){
+            SyError().throw_info("rval_type is nullptr , its an array ,return");
+            return;
+        }
         if (lval_type->type != rval_type->type)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in assignment");
@@ -222,7 +232,7 @@ namespace frontend
 
     Type *TyperVisitor::visitExpr(const ast::Expression *expr)
     {
-        std::cerr << "TYPER-->visitExpr" << expr->toString() << std::endl;
+        SyError().throw_info("visitExpr" + expr->toString());
         if (auto lval = dynamic_cast<const ast::LValue *>(expr))
         {
             SyError().throw_info("visitLvalExpr" + lval->toString());
@@ -266,7 +276,8 @@ namespace frontend
             auto symbol = scope_stack->lookup_stack(func_call->ident->name);
             if (symbol == nullptr)
             {
-                SyError().throw_error(ErrorTypeEnum::SemanticError, "use of undeclared function " + func_call->ident->name);
+                SyError().throw_info("use of undeclared function " + func_call->ident->name);
+                return nullptr;
             }
             if (auto func_symbol = dynamic_cast<FuncSymbol *>(symbol.get()))
             {
@@ -286,18 +297,29 @@ namespace frontend
             }
             else
             {
-                SyError().throw_error(ErrorTypeEnum::SemanticError, "use of undeclared function " + func_call->ident->name);
+                SyError().throw_info("use of undeclared function " + func_call->ident->name);
             }
         }
         else if (auto assignment = dynamic_cast<const ast::Assignment *>(expr))
         {
             SyError().throw_info("visitAssignmentExpr" + assignment->toString());
-            auto lval_type = visitExpr(assignment->value.get());
+            if (assignment->value)
+            {
+                auto rval_type = visitExpr(assignment->value.get());
+                return rval_type;
+            }
+            else
+            {
+                SyError().throw_info("assignment->value is nullptr , its an array ,return nullptr");
+                return nullptr;
+            }
         }
         else
         {
             SyError().throw_error(ErrorTypeEnum::UnimplementedError, "expression not implemented");
         }
+
+        return nullptr;
     }
 
     void TyperVisitor::visitExprStmt(const ast::ExprStmt *expr_stmt)
