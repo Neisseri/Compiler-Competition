@@ -7,7 +7,11 @@ int main()
         if (a == 3) {
             a = 3;
         } else {
-            a = 4;
+            if (1) {
+                a = 4;
+            } else {
+                a = 5;
+            }
         }
     }
     return a;
