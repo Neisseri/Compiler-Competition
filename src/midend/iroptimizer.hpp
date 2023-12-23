@@ -108,6 +108,11 @@ public:
                 ir::Reg used = reaching_def[name];
                 ir::Reg new_used = ir_generator->get_new_reg(used.type);
                 phi->dst = new_used;
+                
+                std::string res_name = phi->var_name;
+                ir::Reg res_reg = reaching_def[phi->var_name];
+                restore_stack.push_back(std::make_pair<std::string, ir::Reg>(std::move(res_name), std::move(res_reg)));
+                reaching_def[phi->var_name] = phi->dst;
                 for (auto later = it; later != ir_bb->instrs.end(); later ++){
                     auto &later_instr = *later;
                     if (auto store = dynamic_cast<ir::Store *>(later_instr.get())){
