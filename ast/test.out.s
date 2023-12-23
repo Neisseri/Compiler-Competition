@@ -1,15 +1,15 @@
 Program
   int @ifElseIf()
     {
-      int @a
-      Assign@a = 5
-      int @b
-      Assign@b = 10
-      Return @a
+      int @a#2
+      Assign@a#2 = 5
+      int @b#2
+      Assign@b#2 = 10
+      Return @a#2
     }
   int @main()
     {
-      int @a = Call @putint(1)
+      Call @putint(Call @ifElseIf())
       Return 0
     }
 End of Program

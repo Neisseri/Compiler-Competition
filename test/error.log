@@ -44,9 +44,4 @@ Command '['../build/compiler', '-r', '-f', 'functional/88_many_params2.sy', '-o'
 Command '['../build/compiler', '-r', '-f', 'functional/91_many_locals2.sy', '-o', '91_many_locals2']' died with <Signals.SIGSEGV: 11>.compile error: functional/92_register_alloc.sy
 Command '['../build/compiler', '-r', '-f', 'functional/92_register_alloc.sy', '-o', '92_register_alloc']' died with <Signals.SIGSEGV: 11>.compile error: functional/93_nested_calls.sy
 Command '['../build/compiler', '-r', '-f', 'functional/93_nested_calls.sy', '-o', '93_nested_calls']' died with <Signals.SIGSEGV: 11>.compile error: functional/94_nested_loops.sy
-Command '['../build/compiler', '-r', '-f', 'functional/94_nested_loops.sy', '-o', '94_nested_loops']' died with <Signals.SIGSEGV: 11>.compile error: functional/95_float.sy
-Command '['../build/compiler', '-r', '-f', 'functional/95_float.sy', '-o', '95_float']' returned non-zero exit status 1.compile error: functional/96_matrix_add.sy
-Command '['../build/compiler', '-r', '-f', 'functional/96_matrix_add.sy', '-o', '96_matrix_add']' returned non-zero exit status 1.compile error: functional/97_matrix_sub.sy
-Command '['../build/compiler', '-r', '-f', 'functional/97_matrix_sub.sy', '-o', '97_matrix_sub']' returned non-zero exit status 1.compile error: functional/98_matrix_mul.sy
-Command '['../build/compiler', '-r', '-f', 'functional/98_matrix_mul.sy', '-o', '98_matrix_mul']' returned non-zero exit status 1.compile error: functional/99_matrix_tran.sy
-Command '['../build/compiler', '-r', '-f', 'functional/99_matrix_tran.sy', '-o', '99_matrix_tran']' returned non-zero exit status 1.
+Command '['../build/compiler', '-r', '-f', 'functional/94_nested_loops.sy', '-o', '94_nested_loops']' died with <Signals.SIGSEGV: 11>.

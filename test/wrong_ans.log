@@ -180,8 +180,3 @@ output/91_many_locals2.ans not found
 output/92_register_alloc.ans not found 
 output/93_nested_calls.ans not found 
 output/94_nested_loops.ans not found 
-output/95_float.ans not found 
-output/96_matrix_add.ans not found 
-output/97_matrix_sub.ans not found 
-output/98_matrix_mul.ans not found 
-output/99_matrix_tran.ans not found 

@@ -10,7 +10,7 @@ class ASTVisitor : public SysYBaseVisitor
 public:
   antlrcpp::Any visitCompUnit(SysYParser::CompUnitContext *ctx) override
   {
-    std::cout << "visitCompUnit" << std::endl;
+    std::cerr << "visitCompUnit" << std::endl;
     std::vector<std::unique_ptr<AstNode>> children;
     for (auto item : ctx->compUnitItem())
     {
@@ -34,9 +34,9 @@ public:
         assert(false);
       }
     }
-    std::cout << "visitCompUnit end create new program" << std::endl;
+    std::cerr << "visitCompUnit end create new program" << std::endl;
     auto program = new Program(std::move(children));
-    std::cout << "visitCompUnit end create new program end" << std::endl;
+    std::cerr << "visitCompUnit end create new program end" << std::endl;
     return program;
   }
 

@@ -2,7 +2,7 @@ build/
 
 temp/
 
-test/executable/*
+test/executable/
 test/output/
 test/riscv/
 

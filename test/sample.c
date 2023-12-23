@@ -5,11 +5,12 @@ int ifElseIf()
     a = 5;
     int b;
     b = 10;
+
     return a;
 }
 
 int main()
 {
-    int a = putint(ifElseIf());
+    putint(ifElseIf());
     return 0;
 }

@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     bool out_ast_flag = false;
     bool out_ir_flag = false;
     bool out_riscv_flag = false;
+    bool out_all_flag = false;
 
     std::string input_file_path;
     std::string output_file_name;
@@ -47,11 +48,12 @@ int main(int argc, char *argv[])
     options.add_options()
     ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
     ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
-    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test.out"))
+    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))
     ("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))
     ("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))
     ("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))
     ("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))
+    ("A,all", "output all", cxxopts::value<bool>(out_all_flag)->default_value("false"))
     ("h,help", "Print usage");
 
     // usage:
@@ -67,7 +69,7 @@ int main(int argc, char *argv[])
         // Display help if requested or if no input file is provided
         if (result.count("file") == 0 || result.count("help") > 0)
         {
-            std::cout << options.help() << std::endl;
+            std::cerr << options.help() << std::endl;
             return 0;
         }
 
@@ -77,11 +79,17 @@ int main(int argc, char *argv[])
         std::cerr << "Error parsing options: " << e.what() << std::endl;
         return 1;
     }
+    if (out_all_flag){
+        out_ast_flag = true;
+        out_ir_flag = true;
+        out_riscv_flag = true;
+    }
+
 
     ifstream f_stream;
     f_stream.open(input_file_path);
 
-    cout << "--------------------------- building ast ---------------------------" << endl;
+    cerr << "--------------------------- building ast ---------------------------" << endl;
 
     ANTLRInputStream input(f_stream);
     frontend::SysYLexer lexer(&input);
@@ -89,28 +97,30 @@ int main(int argc, char *argv[])
     frontend::SysYParser parser(&tokens);
     ParseTree *tree = parser.compUnit();
     //输出parse tree，这里的visit的作用是什么？
-    cout<<"parse tree: "<<endl;
+    cerr<<"parse tree: "<<endl;
     frontend::SysYBaseVisitor parse_visitor;
     parse_visitor.visit(tree);
-    cout << tree->toStringTree(&parser, true) << endl;
+    cerr << tree->toStringTree(&parser, true) << endl;
     // ast构建
     ASTVisitor ast_visitor;
     auto AST = ast_visitor.visit(tree).as<ast::Program *>();
+    cerr<< "------------------------------type check------------------------------"<<endl;
+
+    TyperVisitor typer;
+    typer.visitPromgram(AST);
 
     if (out_ast_flag)
     {
-        cout << "ast: " << endl;
-        AST->print(cout, 0);
+        cerr << "ast: " << endl;
+        AST->print(cerr, 0);
         ofstream output_file= openOrCreateFile("ast", output_file_name);
         AST->print(output_file, 0);
         output_file.close();
     }
 
-    TyperVisitor typer;
-    typer.visitPromgram(AST);
 
 
-    cout << "--------------------------- building ir ---------------------------" << endl;
+    cerr << "--------------------------- building ir ---------------------------" << endl;
 
     IRGenerator ir_generator;
     ir_generator.visitPromgram(AST);
@@ -120,22 +130,22 @@ int main(int argc, char *argv[])
     }
 
     if (out_ir_flag){
-        cout << "ir:" << endl;
-        ir_generator.ir_program.print(cout, 0);
+        cerr << "ir:" << endl;
+        ir_generator.ir_program.print(cerr, 0);
 
         ofstream output_file= openOrCreateFile("ir", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
     }
 
-    cout << "--------------------------- building riscv ---------------------------" << endl;
+    cerr << "--------------------------- building riscv ---------------------------" << endl;
 
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
     if (out_riscv_flag)
     {
-        cout << "riscv: " << endl;
+        cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
             func->do_reg_alloc();
