@@ -30,7 +30,7 @@ public:
     }
 
     ir::Reg visitIndex(LValue *lvalue, std::shared_ptr<ir::BasicBlock> &ir_bb){ // get index of array.
-        std::cout << "visitIndex" << std::endl;
+        std::cerr << "visitIndex" << std::endl;
         assert(lvalue->has_index);
 
         ir::Reg dst_adr_ptr;
@@ -63,7 +63,7 @@ public:
     }
 
     void visitPromgram(ast::Program * ast_program){
-        std::cout << "visitProgram" << std::endl;
+        std::cerr << "visitProgram" << std::endl;
         std::unique_ptr<ir::Program> ir_program(new ir::Program);
         for (auto &i : ast_program->children){
             if (auto child = dynamic_cast<ast::Declaration *>(i.get())){
@@ -81,7 +81,7 @@ public:
     }
 
     void visitFunction(ast::Function &func){
-        std::cout << "visitFunction " << func.ident->name << std::endl;
+        std::cerr << "visitFunction " << func.ident->name << std::endl;
 
         reg_num = 0;
         ir::Function ir_function;
@@ -118,24 +118,24 @@ public:
 
         ir_function.num_regs = reg_num;
 
-        std::cout << "function " << ir_function.name << " has " << ir_function.num_regs << " regs" << std::endl;
+        std::cerr << "function " << ir_function.name << " has " << ir_function.num_regs << " regs" << std::endl;
 
         CFGbuilder cfg_builder(&ir_function);
         cfg_builder.CFG_build();
-        cfg_builder.CFG_print(std::cout, 0);
+        cfg_builder.CFG_print(std::cerr, 0);
         cfg_builder.remove_unreachable_bb();
-        cfg_builder.CFG_print(std::cout, 0);
+        cfg_builder.CFG_print(std::cerr, 0);
         cfg_builder.build_dominator_tree();
         cfg_builder.compute_dom_fro();
-        cfg_builder.dom_tree_print(std::cout, 0);
-        cfg_builder.dom_fro_print(std::cout, 0);
+        cfg_builder.dom_tree_print(std::cerr, 0);
+        cfg_builder.dom_fro_print(std::cerr, 0);
 
         std::string temp_name = func.ident->name;
         ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(temp_name), std::move(ir_function)));
     }
 
     ir::Reg visitExpression(std::unique_ptr<ast::Expression> &expr, std::shared_ptr<ir::BasicBlock> &ir_bb){
-        std::cout << "visitExpression" << std::endl;
+        std::cerr << "visitExpression" << std::endl;
 
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get())){
             ir::Reg lhs = visitExpression(binary->lhs, ir_bb);
@@ -208,13 +208,13 @@ public:
             return ret;
         }
         else{
-            expr->print(std::cout,0);
+            expr->print(std::cerr,0);
             assert(false);
         }
     }
 
     void visitBlock(const ast::Block &block, std::shared_ptr<ir::BasicBlock> &ir_bb){
-        std::cout << "visitBlock " << std::endl;
+        std::cerr << "visitBlock " << std::endl;
 
         for (auto &child : block.children){
             if (auto stmt = dynamic_cast<ast::Statement *>(child.get())){
@@ -334,14 +334,14 @@ public:
                 else if (auto exprstmt = dynamic_cast<ast::ExprStmt *>(child.get())){
                 }
                 else {
-                    child->print(std::cout, 0);
+                    child->print(std::cerr, 0);
                     assert(false);
                 }
             }
             else if (auto decl = dynamic_cast<ast::Declaration *>(child.get())){
                 ir::Reg dst_ptr = get_new_reg(decl->var_type->type);
                 if (decl->var_type->n_dim() > 0){ // 数组
-                    std::cout << "visit decl array" << std::endl;
+                    std::cerr << "visit decl array" << std::endl;
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type, decl->var_type->get_size()));
                     ir_bb->instrs.push_back(std::move(alloca_instr));
                     std::string temp_name = decl->ident->name;
@@ -379,7 +379,7 @@ public:
                             ir_bb->instrs.push_back(std::move(store_instr));
                         }
                     }
-                    std::cout << "visit decl array done" << std::endl;
+                    std::cerr << "visit decl array done" << std::endl;
                 } else {
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type ,4));
                     alloca_instr->is_local_var = 1;

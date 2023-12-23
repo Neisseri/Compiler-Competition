@@ -139,12 +139,12 @@ public:
     void build_dominator_tree(){
         std::shared_ptr<ir::BasicBlock> entry = ir_function->bbs.front();
         entry->dom.insert(entry);
-        std::cout << "entry" << entry->label.toString() << std::endl;
+        std::cerr << "entry" << entry->label.toString() << std::endl;
         for (auto i = std::next(ir_function->bbs.begin()); i != ir_function->bbs.end(); i ++){
             for (auto j : ir_function->bbs){
                 i->get()->dom.insert(j);
             }
-        std::cout << (*i)->label.toString() << std::endl;
+        std::cerr << (*i)->label.toString() << std::endl;
         }
 
         std::vector<std::shared_ptr<ir::BasicBlock>> reverse_postorder = get_reverse_postorder();
@@ -152,7 +152,7 @@ public:
         while (changed) {
             changed = false;
             for (auto &i : reverse_postorder){
-                std::cout << "reverse_postorder" << i->label.toString() << std::endl;
+                std::cerr << "reverse_postorder" << i->label.toString() << std::endl;
                 std::set<std::shared_ptr<ir::BasicBlock>> new_set;
                 if (i->prevs.size() > 0){
                     for(auto j : ir_function->bbs){

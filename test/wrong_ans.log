@@ -1,0 +1,182 @@
+output/00_main.ans correct
+output/01_var_defn2.ans wrong our answer: -11 std answer: 10
+output/02_var_defn3.ans correct
+output/03_arr_defn2.ans correct
+output/04_arr_defn3.ans not found 
+output/05_arr_defn4.ans not found 
+output/06_const_var_defn2.ans wrong our answer: -11 std answer: 5
+output/07_const_var_defn3.ans correct
+output/08_const_array_defn.ans wrong our answer: -11 std answer: 4
+output/09_func_defn.ans wrong our answer: -11 std answer: 9
+output/10_var_defn_func.ans wrong our answer: -11 std answer: 4
+output/11_add2.ans correct
+output/12_addc.ans wrong our answer: -11 std answer: 15
+output/13_sub2.ans wrong our answer: -11 std answer: 248
+output/14_subc.ans correct
+output/15_mul.ans correct
+output/16_mulc.ans wrong our answer: -11 std answer: 25
+output/17_div.ans correct
+output/18_divc.ans wrong our answer: -11 std answer: 2
+output/19_mod.ans correct
+output/20_rem.ans wrong our answer: 0 std answer: 1
+output/21_if_test2.ans not found 
+output/22_if_test3.ans not found 
+output/23_if_test4.ans not found 
+output/24_if_test5.ans not found 
+output/25_while_if.ans wrong our answer: -11 std answer: 88
+0
+output/26_while_test1.ans correct
+output/27_while_test2.ans correct
+output/28_while_test3.ans wrong our answer: -11 std answer: 23
+output/29_break.ans correct
+output/30_continue.ans correct
+output/31_while_if_test1.ans wrong our answer: 25 std answer: 198
+output/32_while_if_test2.ans wrong our answer: 3 std answer: 96
+output/33_while_if_test3.ans correct
+output/34_arr_expr_len.ans not found 
+output/35_op_priority1.ans correct
+output/36_op_priority2.ans correct
+output/37_op_priority3.ans correct
+output/38_op_priority4.ans not found 
+output/39_op_priority5.ans wrong our answer: -11 std answer: 1
+1
+output/40_unary_op.ans correct
+output/41_unary_op2.ans wrong our answer: 0 std answer: 4
+0
+output/42_empty_stmt.ans not found 
+output/43_logi_assign.ans not found 
+output/44_stmt_expr.ans wrong our answer: -11 std answer: 1024
+0
+output/45_comment1.ans correct
+output/46_hex_defn.ans correct
+output/47_hex_oct_add.ans correct
+output/48_assign_complex_expr.ans wrong our answer: -11 std answer: -171
+0
+output/49_if_complex_expr.ans wrong our answer: 0 std answer: 2
+0
+output/50_short_circuit.ans not found 
+output/51_short_circuit3.ans not found 
+output/52_scope.ans not found 
+output/53_scope2.ans wrong our answer: -11 std answer: -40
+62
+output/54_hidden_var.ans not found 
+output/55_sort_test1.ans wrong our answer: -11 std answer: 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+output/56_sort_test2.ans wrong our answer: -11 std answer: 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+output/57_sort_test3.ans not found 
+output/58_sort_test4.ans wrong our answer: -11 std answer: 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+output/59_sort_test5.ans not found 
+output/60_sort_test6.ans wrong our answer: -11 std answer: 0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+0
+output/61_sort_test7.ans not found 
+output/62_percolation.ans not found 
+output/63_big_int_mul.ans not found 
+output/64_calculator.ans not found 
+output/65_color.ans not found 
+output/66_exgcd.ans not found 
+output/67_reverse_output.ans not found 
+output/68_brainfk.ans not found 
+output/69_expr_eval.ans not found 
+output/70_dijkstra.ans not found 
+output/71_full_conn.ans not found 
+output/72_hanoi.ans not found 
+output/73_int_io.ans not found 
+output/74_kmp.ans not found 
+output/75_max_flow.ans not found 
+output/76_n_queens.ans not found 
+output/77_substr.ans not found 
+output/78_side_effect.ans wrong our answer: -11 std answer: 1
+4 2
+5
+8 4
+9
+12 8
+13
+16 16
+24 16
+29 16
+29
+output/79_var_name.ans not found 
+output/80_chaos_token.ans wrong our answer: 0 std answer: Welcome to the Japari Park!
+Araiguma says hello to Tairiku Ookami
+Tairiku Ookami says hello to Saabaru
+Araiguma says hello to Kaban
+Hunboruto Pengin says hello to Hashibirokou
+Hashibirokou says hello to Tairiku Ookami
+Hunboruto Pengin says hello to Saabaru
+Hashibirokou says hello to Araiguma
+Araiguma says hello to Hunboruto Pengin
+Hashibirokou says hello to Kaban
+Araiguma says hello to Hashibirokou
+Kaban says hello to Tairiku Ookami
+Araiguma says hello to Saabaru
+Kaban says hello to Araiguma
+Hashibirokou says hello to Hunboruto Pengin
+Saabaru says hello to Tairiku Ookami
+Hashibirokou says hello to Saabaru
+Saabaru says hello to Araiguma
+Kaban says hello to Hunboruto Pengin
+Saabaru says hello to Kaban
+Kaban says hello to Hashibirokou
+Tairiku Ookami says hello to Kaban
+Kaban says hello to Saabaru
+Hunboruto Pengin says hello to Tairiku Ookami
+Saabaru says hello to Hunboruto Pengin
+Hunboruto Pengin says hello to Araiguma
+Saabaru says hello to Hashibirokou
+Hunboruto Pengin says hello to Kaban
+0
+output/81_skip_spaces.ans not found 
+output/82_long_func.ans not found 
+output/83_long_array.ans not found 
+output/84_long_array2.ans not found 
+output/85_long_code.ans not found 
+output/86_long_code2.ans not found 
+output/87_many_params.ans not found 
+output/88_many_params2.ans not found 
+output/89_many_globals.ans wrong our answer: -11 std answer: 2822118
+0
+output/90_many_locals.ans wrong our answer: -11 std answer: 254
+0
+output/91_many_locals2.ans not found 
+output/92_register_alloc.ans not found 
+output/93_nested_calls.ans not found 
+output/94_nested_loops.ans not found 
