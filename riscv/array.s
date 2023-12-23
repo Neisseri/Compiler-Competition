@@ -4,7 +4,7 @@
 
 main:
 B0:
-addi sp, sp, -144
+addi sp, sp, -140
 sw ra, 44(sp)
 sw s11, 40(sp)
 sw s10, 36(sp)
@@ -50,42 +50,41 @@ li s11, 1
 mul t3, s11, s10
 add t4, t0, t3
 li t5, 2
+mul t6, s10, t5
 sw s3, 76(sp)
-mul s3, s10, t5
+li s3, 0
 sw t3, 80(sp)
-li t3, 0
+mul t3, s3, t6
 sw a7, 84(sp)
-mul a7, t3, s3
+add a7, t4, t3
 sw s7, 88(sp)
-add s7, t4, a7
+lw s7, 0(a7)
 sw t1, 92(sp)
-lw t1, 0(s7)
-sw t1, 96(sp)
 li t1, 4
+sw t1, 96(sp)
+li t1, 1
 sw s2, 100(sp)
-li s2, 1
+mul s2, t1, t1
 sw s6, 104(sp)
-mul s6, s2, t1
+add s6, t0, s2
 sw t1, 108(sp)
-add t1, t0, s6
+li t1, 2
 sw a3, 112(sp)
-li a3, 2
+mul a3, t1, t1
 sw t2, 116(sp)
-mul t2, t1, a3
+li t2, 1
 sw s1, 120(sp)
-li s1, 1
+mul s1, t2, a3
 sw t0, 124(sp)
-mul t0, s1, t2
+add t0, s6, s1
 sw s7, 128(sp)
-add s7, t1, t0
-sw s5, 132(sp)
-lw s5, 0(s7)
+lw s7, 0(t0)
+sw t6, 132(sp)
+add t6, s7, s7
+sw t6, 0(s9)
 sw s4, 136(sp)
-add s4, t1, s5
-sw s4, 0(s9)
-sw t3, 140(sp)
-lw t3, 0(s9)
-mv a0, t3
+lw s4, 0(s9)
+mv a0, s4
 j B2
 
 B2:
@@ -101,6 +100,6 @@ lw s9, 32(sp)
 lw s10, 36(sp)
 lw s11, 40(sp)
 lw ra, 44(sp)
-addi sp, sp, 144
+addi sp, sp, 140
 ret
 

@@ -28,7 +28,7 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
             }
             bindings[temp] = r;
             reg_occupied[r] = true;
-            // std::cout << "(case1) allocate reg for " << print_reg(temp) << " to " << print_reg(Reg(General, r)) << "\n";
+            std::cout << "(case1) allocate reg for " << print_reg(temp) << " to " << print_reg(Reg(General, r)) << "\n";
             reg_to_tmp[r] = temp;
             return;
         }
@@ -46,7 +46,7 @@ void Function::alloc_reg_for(Reg temp, bool is_read,
     bindings[temp] = r;
     reg_occupied[r] = true;
     reg_to_tmp[r] = temp;
-    // std::cout << "(case2) allocate reg for " << print_reg(temp) << " to " << print_reg(Reg(General, r)) << "\n";
+    std::cout << "(case2) allocate reg for " << print_reg(temp) << " to " << print_reg(Reg(General, r)) << "\n";
     if (is_read) { // emit load from stack 
         instructions.emplace(it, new LoadWord(Reg(General, r), Reg(General, sp), offsets[temp]));
         
