@@ -323,27 +323,35 @@ public:
         }
     }
 
-    void visit_array_init(ast::Declaration *decl, std::shared_ptr<ir::BasicBlock> &ir_bb, ir::Reg dst_ptr, int &ele_cnt){
-        Expression *exp = decl->init_expr.get();
+    void visit_array_init(ast::Declaration *decl, std::shared_ptr<ir::BasicBlock> &ir_bb, ir::Reg dst_ptr, ast::Expression *exp, int dim_len, int dim, int ele_start){
+        int ele_cnt = 0;
         auto assignment = dynamic_cast<ast::Assignment *>(exp);
         assert(assignment);
         for (auto &i : assignment->values){
+            if (auto sub_assignment = dynamic_cast<ast::Assignment *>(i.get())){
+                if (sub_assignment->value == nullptr){
+                    int sub_dim_len = dim_len / decl->var_type->dim[dim];
+                    visit_array_init(decl, ir_bb, dst_ptr, i.get(), sub_dim_len, dim + 1, ele_cnt);
+                    ele_cnt += sub_dim_len;
+                    continue;
+                }
+            }
             ir::Reg init_reg = visitExpression(i, ir_bb);
             ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
             ir::Reg offset = get_new_reg(decl->var_type->type);
-            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
+            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_start + ele_cnt++) * 4));
             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
             std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
             ir_bb->instrs.push_back(std::move(loadint_instr));
             ir_bb->instrs.push_back(std::move(add_instr));
             ir_bb->instrs.push_back(std::move(store_instr));
         }
-        while (ele_cnt < decl->var_type->get_array_size()){
+        while (ele_cnt < dim_len){
             ir::Reg init_reg = get_new_reg(decl->var_type->type);
             ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
             ir::Reg offset = get_new_reg(decl->var_type->type);
             std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(init_reg, 0));
-            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
+            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_start + ele_cnt++) * 4));
             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
             std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
             ir_bb->instrs.push_back(std::move(loadzero_instr));
@@ -494,8 +502,7 @@ public:
                     std::string temp_name2 = decl->ident->name;
                     var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
                     if (decl->has_init){
-                        int ele_cnt = 0;
-                        visit_array_init(decl, ir_bb, dst_ptr, ele_cnt);
+                        visit_array_init(decl, ir_bb, dst_ptr, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
                     }
                     std::cerr << "visit decl array done" << std::endl;
                 } else {

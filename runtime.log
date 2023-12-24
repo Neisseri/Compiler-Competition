@@ -44,38 +44,33 @@ parse tree:
                                                         (number 
                                                             (intConst 2))))))) ] = 
                                     (initVal { 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 1)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 2)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 3)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 4)))))))) , 
+                                        (initVal { 
+                                            (initVal 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 1)))))))) }) , 
+                                        (initVal { 
+                                            (initVal 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 2)))))))) , 
+                                            (initVal 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 3)))))))) }) , 
+                                        (initVal { }) , 
                                         (initVal 
                                             (exp 
                                                 (addExp 
@@ -115,8 +110,6 @@ visitInit
 visitPrimaryExp_ number
 visitInit
 visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
 visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
@@ -131,8 +124,8 @@ Info: visitExpr3
 Info: visitAssignmentExpr3
 Info: visitExpr3
 Info: visitIntLiteralExpr3
-ret->type 0x5640f68f09e0
-Info: visitVarDef const int @a = {1, 2, 3, 4, 7}
+ret->type 0x55f7b1bee9b0
+Info: visitVarDef const int @a = {{1}, {2, 3}, {}, 7}
 Info: visitDims @N+1
 Info: visitExpr@N+1
 Info: visitBinopExpr@N+1
@@ -140,25 +133,25 @@ Info: visitExpr@N
 Info: visitLvalExpr@N
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x5640f68efed0
+ret->type 0x55f7b1c02fd0
 Info: visitDims 2
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x5640f69045b0
-Info: visitExpr{1, 2, 3, 4, 7}
-Info: visitAssignmentExpr{1, 2, 3, 4, 7}
+ret->type 0x55f7b1bee9e0
+Info: visitExpr{{1}, {2, 3}, {}, 7}
+Info: visitAssignmentExpr{{1}, {2, 3}, {}, 7}
 Info: assignment->value is nullptr , its an array ,return nullptr
 Info: expr_type is nullptr , its an array ,return
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x5640f69045e0
+ret->type 0x55f7b1c03000
 ast: 
 Program
   int @main()
     {
       const int @N#2 = 3
-      const int @a#2 = {1, 2, 3, 4, 7}
+      const int @a#2 = {{1}, {2, 3}, {}, 7}
       Return 0
     }
 End of Program
@@ -175,8 +168,6 @@ visitExpressionVal
 visitExpressionVal
 visitExpressionVal
 visitExpressionVal
-visitExpression
-visitExpression
 visitExpression
 visitExpression
 visitExpression
@@ -220,19 +211,19 @@ B0:
   %6 = 0
   %5 = add i32 %3, %6
   store i32 %4, ptr %5
-  %7 = 2
+  %7 = 0
   %9 = 4
   %8 = add i32 %3, %9
   store i32 %7, ptr %8
-  %10 = 3
+  %10 = 2
   %12 = 8
   %11 = add i32 %3, %12
   store i32 %10, ptr %11
-  %13 = 4
+  %13 = 3
   %15 = 12
   %14 = add i32 %3, %15
   store i32 %13, ptr %14
-  %16 = 7
+  %16 = 0
   %18 = 16
   %17 = add i32 %3, %18
   store i32 %16, ptr %17
@@ -240,7 +231,7 @@ B0:
   %21 = 20
   %20 = add i32 %3, %21
   store i32 %19, ptr %20
-  %22 = 0
+  %22 = 7
   %24 = 24
   %23 = add i32 %3, %24
   store i32 %22, ptr %23
@@ -264,19 +255,19 @@ li T[-4], 1
 li T[-6], 0
 add T[-5], T[-3], T[-6]
 sw T[-4], 0(T[-5])
-li T[-7], 2
+li T[-7], 0
 li T[-9], 4
 add T[-8], T[-3], T[-9]
 sw T[-7], 0(T[-8])
-li T[-10], 3
+li T[-10], 2
 li T[-12], 8
 add T[-11], T[-3], T[-12]
 sw T[-10], 0(T[-11])
-li T[-13], 4
+li T[-13], 3
 li T[-15], 12
 add T[-14], T[-3], T[-15]
 sw T[-13], 0(T[-14])
-li T[-16], 7
+li T[-16], 0
 li T[-18], 16
 add T[-17], T[-3], T[-18]
 sw T[-16], 0(T[-17])
@@ -284,7 +275,7 @@ li T[-19], 0
 li T[-21], 20
 add T[-20], T[-3], T[-21]
 sw T[-19], 0(T[-20])
-li T[-22], 0
+li T[-22], 7
 li T[-24], 24
 add T[-23], T[-3], T[-24]
 sw T[-22], 0(T[-23])
