@@ -81,6 +81,7 @@ namespace frontend
                 }
                 return ret;
             }
+
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
@@ -259,37 +260,37 @@ namespace frontend
         class Declaration : public AstNode
         {
         public:
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr))
-            {
-                // check if init_expr is Expression
-                if (init_expr != nullptr)
-                    has_init = true;
-                else
-                    has_init = false;
-            }
-            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr, bool is_const) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr)), is_const(is_const)
+            Declaration(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<Expression> t_init_expr, std::unique_ptr<ExpressionList> indices, bool is_const) : var_type(std::move(var_type)), ident(std::move(ident)), init_expr(std::move(t_init_expr)), indices(std::move(indices)), is_const(is_const)
             {
                 if (init_expr != nullptr)
                     has_init = true;
                 else
                     has_init = false;
             }
+            Declaration() = default;
 
             ~Declaration() = default;
             std::string toString() const override
             {
-                if (!has_init)
-                    return (is_const ?"const ":"")+var_type->toString() + " " + ident->toString();
+                if (has_init)
+                    return var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
                 else
-                    return (is_const ? "const " : "")+var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
+                    return var_type->toString() + " " + ident->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
             }
+
+            bool is_array() const
+            {
+                return !indices->is_empty();
+            }
+
             std::unique_ptr<Type> var_type;
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<Expression> init_expr = nullptr;
+            std::unique_ptr<ExpressionList> indices;
             bool has_init;
             bool is_const = false;
         };
@@ -450,7 +451,8 @@ namespace frontend
             ~LValue() = default;
             std::string toString() const override
             {
-                if (has_index){
+                if (has_index)
+                {
                     std::string ret;
                     for (auto &index : indices)
                     {
@@ -511,22 +513,21 @@ namespace frontend
                 if (value)
                     return value->toString();
                 else
+                {
+                    std::string ret;
+                    ret += "{";
+                    for (auto &child : values)
                     {
-                        std::string ret;
-                        ret+="{";
-                        for (auto &child : values)
-                        {
-                            ret += child->toString() + ", ";
-                        }
-                        if (!values.empty())
-                        {
-                            ret.pop_back();
-                            ret.pop_back();
-                        }
-                        ret+="}";
-                        return ret;
-
+                        ret += child->toString() + ", ";
                     }
+                    if (!values.empty())
+                    {
+                        ret.pop_back();
+                        ret.pop_back();
+                    }
+                    ret += "}";
+                    return ret;
+                }
             }
             void print(std::ostream &os, int indent) const override
             {
