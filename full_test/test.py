@@ -122,6 +122,7 @@ def run(
             return Result.TIME_LIMIT_EXCEEDED
         # output_content = [line.strip() for line in open(output).read().splitlines()]
         if proc.returncode != answer_exitcode:
+            print("expected ", answer_exitcode, ", got ", proc.returncode)
                 # or output_content != answer_content:
             return Result.WRONG_ANSWER
         if round > 1:
@@ -147,7 +148,7 @@ def test(config: Config, testcase: str) -> bool:
     assembly = os.path.join(f'{testcase}-{ident}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
     command = (f'{config.compiler} {config.compiler_args} {source}'
-                f' -o {assembly}')
+                f' -A -o {assembly}')
 
     proc = subprocess.Popen(command, shell=True,stderr=open(error_log, 'w'))
     try:
