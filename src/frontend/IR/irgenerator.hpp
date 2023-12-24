@@ -14,10 +14,12 @@ public:
     int reg_num = 0;
     int label_num = 0;
 
-    std::set<std::string> var_name_set;
-    std::unordered_map<std::string, std::set<std::shared_ptr<ir::BasicBlock>>> Defs;
-    std::unordered_map<std::string, ir::Reg> var_ptr_table;
-    std::unordered_map<std::string, Type> var_type_table;
+    std::set<std::string> var_name_set; // set of variable names
+    std::unordered_map<std::string, std::set<std::shared_ptr<ir::BasicBlock>>> Defs; // bbs where the var defined
+    std::unordered_map<std::string, ir::Reg> var_ptr_table; // the table of var ptr
+    std::unordered_map<std::string, Type> var_type_table; // the table of var type
+    std::unordered_map<std::string, int> const_val_table; // the table of const val(int)
+
     std::vector<std::shared_ptr<ir::BasicBlock>> break_to_stack;
     std::vector<std::shared_ptr<ir::BasicBlock>> continue_to_stack;
 
@@ -134,6 +136,114 @@ public:
         ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(temp_name), std::move(ir_function)));
     }
 
+    int visitBinaryVal(BinaryOpEnum binaryop, int lhs, int rhs) {
+        switch (binaryop)
+        {
+        case BinaryOpEnum::ADD:
+            return lhs + rhs;
+            break;
+        case BinaryOpEnum::SUB:
+            return lhs - rhs;
+            break;
+        case BinaryOpEnum::MUL:
+            return lhs * rhs;
+            break;
+        case BinaryOpEnum::DIV:
+            return lhs * rhs;
+            break;
+        case BinaryOpEnum::MOD:
+            return lhs % rhs;
+            break;
+        case BinaryOpEnum::AND:
+            return lhs & rhs;
+            break;
+        case BinaryOpEnum::OR:
+            return lhs | rhs;
+            break;
+        case BinaryOpEnum::XOR:
+            return lhs ^ rhs;
+            break;
+        case BinaryOpEnum::SGT:
+            return lhs > rhs;
+            break;
+        case BinaryOpEnum::SLT:
+            return lhs < rhs;
+            break;
+        case BinaryOpEnum::SGE:
+            return lhs >= rhs;
+            break;
+        case BinaryOpEnum::SLE:
+            return lhs <= rhs;
+            break;
+        case BinaryOpEnum::EQ:
+            return lhs == rhs;
+            break;
+        case BinaryOpEnum::NE:
+            return lhs != rhs;
+            break;
+        case BinaryOpEnum::SHL:
+            return lhs << rhs;
+            break;
+        default: // TODO:no support for shr
+            assert(false);
+            return -1;
+            break;
+        }
+    }
+
+    int visitExpressionVal(std::unique_ptr<ast::Expression> &expr){ // only int type (for decl of array type)
+        std::cerr << "visitExpressionVal" << std::endl;
+
+        if (auto binary = dynamic_cast<ast::Binary *>(expr.get())){
+            int lhs = visitExpressionVal(binary->lhs);
+            int rhs = visitExpressionVal(binary->rhs);
+            int dst = visitBinaryVal(static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs);
+            return dst;
+        }
+        else if (auto unary = dynamic_cast<ast::Unary *>(expr.get())){
+            int oprand = visitExpressionVal(unary->oprand);
+            if (unary->op->unary_op_type == static_cast<int>(UnaryOpEnum::POS)){
+                return oprand;
+            }
+            else if (unary->op->unary_op_type == static_cast<int>(UnaryOpEnum::NEG)){
+                return -oprand;
+            }
+            else if (unary->op->unary_op_type == static_cast<int>(UnaryOpEnum::NOT)){
+                return oprand == 0;
+            }
+            else {
+                assert(false);
+            }
+        }
+        else if (auto intliteral = dynamic_cast<ast::IntLiteral *>(expr.get())){
+            return intliteral->value;
+        }
+        else if (auto assignment = dynamic_cast<ast::Assignment *>(expr.get())){
+            return visitExpressionVal(assignment->value);
+        }
+        else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get())){ // TODO:consider the case of const array
+            std::string name = lvalue->ident->name;
+            int ret = const_val_table[name];
+            return ret;
+        }
+        // else if (auto call = dynamic_cast<ast::Call *>(expr.get())){ // no case of func call
+        //     std::string name = call->ident->name;
+        //     Type ret_type = ir_program.functions[name].ret_type;
+        //     ir::Reg ret = get_new_reg(ret_type.type);
+        //     std::vector<ir::Reg> params;
+        //     for (auto &i : call->argument_list->children) {
+        //         params.push_back(visitExpression(i, ir_bb));
+        //     }
+        //     std::unique_ptr<ir::Call> call_instr(new ir::Call(ret, name, std::move(params)));
+        //     ir_bb->instrs.push_back(std::move(call_instr));
+        //     return ret;
+        // }
+        else{
+            expr->print(std::cerr,0);
+            assert(false);
+        }
+    }
+
     ir::Reg visitExpression(std::unique_ptr<ast::Expression> &expr, std::shared_ptr<ir::BasicBlock> &ir_bb){
         std::cerr << "visitExpression" << std::endl;
 
@@ -210,6 +320,36 @@ public:
         else{
             expr->print(std::cerr,0);
             assert(false);
+        }
+    }
+
+    void visit_array_init(ast::Declaration *decl, std::shared_ptr<ir::BasicBlock> &ir_bb, ir::Reg dst_ptr, int &ele_cnt){
+        Expression *exp = decl->init_expr.get();
+        auto assignment = dynamic_cast<ast::Assignment *>(exp);
+        assert(assignment);
+        for (auto &i : assignment->values){
+            ir::Reg init_reg = visitExpression(i, ir_bb);
+            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
+            ir::Reg offset = get_new_reg(decl->var_type->type);
+            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
+            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
+            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
+            ir_bb->instrs.push_back(std::move(loadint_instr));
+            ir_bb->instrs.push_back(std::move(add_instr));
+            ir_bb->instrs.push_back(std::move(store_instr));
+        }
+        while (ele_cnt < decl->var_type->get_array_size()){
+            ir::Reg init_reg = get_new_reg(decl->var_type->type);
+            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
+            ir::Reg offset = get_new_reg(decl->var_type->type);
+            std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(init_reg, 0));
+            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
+            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
+            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
+            ir_bb->instrs.push_back(std::move(loadzero_instr));
+            ir_bb->instrs.push_back(std::move(loadint_instr));
+            ir_bb->instrs.push_back(std::move(add_instr));
+            ir_bb->instrs.push_back(std::move(store_instr));
         }
     }
 
@@ -338,10 +478,13 @@ public:
                     assert(false);
                 }
             }
-            else if (auto decl = dynamic_cast<ast::Declaration *>(child.get())){
+            else if (auto decl = dynamic_cast<ast::Declaration *>(child.get())){ // TODO:consider the const val
                 ir::Reg dst_ptr = get_new_reg(decl->var_type->type);
-                if (decl->var_type->n_dim() > 0){ // 数组
+                if (decl->var_type->is_array){ // 数组
                     std::cerr << "visit decl array" << std::endl;
+                    for (auto &exp: decl->indices->children) {
+                        decl->var_type->dim.push_back(visitExpressionVal(exp));
+                    }
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type, decl->var_type->get_size()));
                     ir_bb->instrs.push_back(std::move(alloca_instr));
                     std::string temp_name = decl->ident->name;
@@ -351,33 +494,8 @@ public:
                     std::string temp_name2 = decl->ident->name;
                     var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
                     if (decl->has_init){
-                        auto assignment = dynamic_cast<ast::Assignment *>(decl->init_expr.get());
-                        assert(assignment);
                         int ele_cnt = 0;
-                        for (auto &i : assignment->values){
-                            ir::Reg init_reg = visitExpression(i, ir_bb);
-                            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
-                            ir::Reg offset = get_new_reg(decl->var_type->type);
-                            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
-                            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
-                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
-                            ir_bb->instrs.push_back(std::move(loadint_instr));
-                            ir_bb->instrs.push_back(std::move(add_instr));
-                            ir_bb->instrs.push_back(std::move(store_instr));
-                        }
-                        while (ele_cnt < decl->var_type->get_array_size()){
-                            ir::Reg init_reg = get_new_reg(decl->var_type->type);
-                            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
-                            ir::Reg offset = get_new_reg(decl->var_type->type);
-                            std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(init_reg, 0));
-                            std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_cnt++) * 4));
-                            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
-                            std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
-                            ir_bb->instrs.push_back(std::move(loadzero_instr));
-                            ir_bb->instrs.push_back(std::move(loadint_instr));
-                            ir_bb->instrs.push_back(std::move(add_instr));
-                            ir_bb->instrs.push_back(std::move(store_instr));
-                        }
+                        visit_array_init(decl, ir_bb, dst_ptr, ele_cnt);
                     }
                     std::cerr << "visit decl array done" << std::endl;
                 } else {
@@ -397,6 +515,10 @@ public:
                         store_instr->is_local_var = 1;
                         Defs[decl->ident->name].insert(ir_bb);
                         ir_bb->instrs.push_back(std::move(store_instr));
+                    }
+                    if (decl->is_const){
+                        std::string temp_name = decl->ident->name;
+                        const_val_table.insert(std::make_pair<std::string, int>(std::move(temp_name), visitExpressionVal(decl->init_expr)));
                     }
                 }
             }
