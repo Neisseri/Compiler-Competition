@@ -16,7 +16,7 @@ public:
     {
       if (item->funcDef())
       {
-        std::cerr<<"visitCompUnit: funcDef"<<std::endl;
+        std::cerr << "visitCompUnit: funcDef" << std::endl;
         auto function = item->funcDef()->accept(this).as<Function *>();
         children.push_back(std::unique_ptr<Function>(function));
       }
@@ -53,7 +53,7 @@ public:
 
   antlrcpp::Any visitFuncRParams(SysYParser::FuncRParamsContext *ctx) override
   {
-    std::cerr<<"visitFuncRParams"<<std::endl;
+    std::cerr << "visitFuncRParams" << std::endl;
     std::vector<std::unique_ptr<Expression>> args;
     for (auto arg : ctx->funcRParam())
     {
@@ -75,41 +75,39 @@ public:
   {
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
-    std::cerr << "visitconstDecl: " << ctx->bType()->getText() << std::endl;
+    std::cerr << "visitConstDecl: " << ctx->bType()->getText() << " start" << std::endl;
     for (auto item : ctx->constDef())
     {
       auto dimensions = item->exp();
       std::unique_ptr<Type> temp_type;
+      std::vector<std::unique_ptr<Expression>> dim_list;
       if (dimensions.empty())
       {
         temp_type = std::make_unique<Type>(*type);
       }
       else
       {
-        std::cerr << "visitconstDecl: array dim_size=" << dimensions.size() << std::endl;
-        std::vector<int> dim_list;
+        std::cerr << "visitConstDecl: array dim_size=" << dimensions.size() << std::endl;
         for (auto dim_ : dimensions)
         {
           auto const dim = dim_->accept(this).as<Expression *>();
-          std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
-          if (!dim_literal)
-          {
-            std::cerr << "visitconstecl: array dim is not int literal" << std::endl;
-            assert(false);
-          }
-          dim_list.push_back(dim_literal->value);
+          dim_list.push_back(std::unique_ptr<Expression>(dim));
         }
         temp_type = std::make_unique<Type>(*type);
-        temp_type->dim = std::move(dim_list);
+        temp_type->is_array = true;
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
+      std::cerr << "visitConstDecl: ident: " << item->Ident()->getText() << std::endl;
       std::unique_ptr<Assignment> init = nullptr;
+      temp_type->is_const = true;
       if (auto init_ = item->initVal())
       {
-        std::cerr << "visitconstDecl: initVal" << std::endl;
+        std::cerr << "visitConstDecl: initVal" << std::endl;
         init.reset(init_->accept(this).as<Assignment *>());
       }
-      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr),true);
+      auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
+      //check dim_list_ length
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), true);
       decls.push_back(decl);
     }
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));
@@ -129,11 +127,12 @@ public:
   {
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
-    std::cerr << "visitVarDecl: " << ctx->bType()->getText() << "start" << std::endl;
+    std::cerr << "visitVarDecl: " << ctx->bType()->getText() << " start" << std::endl;
     for (auto item : ctx->varDef())
     {
       auto dimensions = item->exp();
       std::unique_ptr<Type> temp_type;
+      std::vector<std::unique_ptr<Expression>> dim_list;
       if (dimensions.empty())
       {
         temp_type = std::make_unique<Type>(*type);
@@ -141,36 +140,28 @@ public:
       else
       {
         std::cerr << "visitVarDecl: array dim_size=" << dimensions.size() << std::endl;
-        std::vector<int> dim_list;
         for (auto dim_ : dimensions)
         {
           auto const dim = dim_->accept(this).as<Expression *>();
-          std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
-          if (!dim_literal)
-          {
-            std::cerr << "visitVarDecl: array dim is not int literal" << std::endl;
-            assert(false);
-          }
-          dim_list.push_back(dim_literal->value);
+          dim_list.push_back(std::unique_ptr<Expression>(dim));
         }
         temp_type = std::make_unique<Type>(*type);
-        temp_type->dim = std::move(dim_list);
+        temp_type->is_array = true;
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
-      std::cerr<<"visitVarDecl: ident: "<<item->Ident()->getText()<<std::endl;
+      std::cerr << "visitVarDecl: ident: " << item->Ident()->getText() << std::endl;
       std::unique_ptr<Assignment> init = nullptr;
       if (auto init_ = item->initVal())
       {
         std::cerr << "visitVarDecl: initVal" << std::endl;
         init.reset(init_->accept(this).as<Assignment *>());
       }
-      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr));
+      auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), false);
       decls.push_back(decl);
     }
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));
   }
-
-
 
   antlrcpp::Any visitInit(SysYParser::InitContext *ctx) override
   {
@@ -241,7 +232,7 @@ public:
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
   {
-    std::cerr<<"visitArrayParam"<<std::endl;
+    std::cerr << "visitArrayParam" << std::endl;
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
@@ -259,7 +250,7 @@ public:
       dim_list.push_back(dim_literal->value);
     }
     type->dim = std::move(dim_list);
-    std::cerr<<"dims: "<<type->dim.size()<<std::endl;
+    std::cerr << "dims: " << type->dim.size() << std::endl;
     for (auto i : type->dim)
     {
       std::cerr << i << " ";
@@ -462,14 +453,15 @@ public:
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
     auto const ident = ctx->Ident()->getText();
-    std::cerr<<"visitCall "<<"ident: "<<ident<<std::endl;
+    std::cerr << "visitCall "
+              << "ident: " << ident << std::endl;
     ExpressionList *args_list = nullptr;
     if (ctx->funcRParams())
       args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
     else
       args_list = new ExpressionList();
 
-    std::cerr<<"visitCall args_list size: "<<args_list->children.size()<<std::endl;
+    std::cerr << "visitCall args_list size: " << args_list->children.size() << std::endl;
     std::unique_ptr<Identifier> ident_(new Identifier(ident));
     auto const ret = new Call(std::move(ident_), std::unique_ptr<ExpressionList>(args_list));
 

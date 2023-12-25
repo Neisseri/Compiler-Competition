@@ -49,7 +49,7 @@ namespace frontend
 
     void TyperVisitor::visitVarDef(const ast::Declaration *var_def)
     {
-        SyError().throw_info("visitVarDef" + var_def->toString());
+        SyError().throw_info("visitVarDef " + var_def->toString());
         auto name = var_def->ident.get()->name;
         if (scope_stack->lookup_top(name) != nullptr)
         {
@@ -60,18 +60,17 @@ namespace frontend
         if (var_def->init_expr != nullptr)
         {
             Type *expr_type = visitExpr(var_def->init_expr.get());
-            if(!expr_type){
+            if (!expr_type)
+            {
                 SyError().throw_info("expr_type is nullptr , its an array ,return");
-                return;
             }
-            if (expr_type->type != var_symbol.get()->type->type)
+            if (expr_type && expr_type->type != var_symbol.get()->type->type)
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in variable declaration");
             }
         }
-        //rename var by adding scope_id
+        // rename var by adding scope_id
         var_def->ident->name = name + "#" + std::to_string(scope_stack->stack.back()->scope_id);
-
     }
 
     void TyperVisitor::visitParamDef(const ast::Parameter *param_def)
@@ -108,11 +107,11 @@ namespace frontend
         auto lval_type = visitExpr(lval);
         SyError().throw_info("visitAssignStmt" + lval_type->toString());
         auto rval_type = visitExpr(rval);
-        if(!rval_type){
+        if (!rval_type)
+        {
             SyError().throw_info("rval_type is nullptr , its an array ,return");
-            return;
         }
-        if (lval_type->type != rval_type->type)
+        if (rval_type && lval_type->type != rval_type->type)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in assignment");
         }
