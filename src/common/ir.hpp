@@ -106,6 +106,57 @@ struct Phi: Instruction {
 };
 
 
+struct GlobalDef: Instruction {
+    std::string var_name;
+    Type type;
+    std::vector<int> init_val; // TODO:support float type
+    bool is_array;
+    bool has_init;
+    GlobalDef(std::string var_name, Type type, std::vector<int> init_val, bool has_init, bool is_array) : Instruction(InstType::GLOBALDEF), var_name(var_name), type(type), init_val(init_val), has_init(has_init), is_array(is_array) {}
+
+    std::string toString() {
+        std::string ret = "";
+        ret += "@" + var_name + " = global " + type.toString();
+        if (has_init) {
+            if (is_array){
+                ret += " [";
+                for (int i = 0; i < init_val.size(); i++){
+                    ret += "i32 " + std::to_string(init_val[i]);
+                    if (i + 1 < init_val.size()){
+                        ret += ", ";
+                    }
+                }
+                ret += "]";
+            }
+            else{
+                ret += " " + std::to_string(init_val[0]);
+            }
+        }
+        ret += ", " + std::to_string(type.get_array_size() * 4);
+        return ret;
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+
+struct LoadAddr: Instruction { // load address of global variable
+    Reg ret_val;
+    std::string var_name;
+    LoadAddr(Reg ret_val, std::string var_name) : Instruction(InstType::LOADADDR), ret_val(ret_val), var_name(var_name) {}
+
+    std::string toString() {
+        return ret_val.toString() + " = loadaddr @" + var_name;
+    }
+
+    void print(std::ostream &os, int indent) {
+        os << std::string(indent, ' ') << toString() << std::endl;
+    }
+};
+
+
 struct Alloca: Instruction {
     Type type;
     int size;
@@ -398,6 +449,8 @@ struct Function {
 
 struct Program {
     std::unordered_map<std::string, Function> functions;
+    // std::unordered_map<std::string, std::unique_ptr<GlobalDef>> global_defs;
+    std::list<Instruction*> global_defs; // TODO:change here to unique_ptr
 
     std::string toString(){
         return "; module";
@@ -405,6 +458,9 @@ struct Program {
 
     void print(std::ostream &os, int indent){
         os << std::string(indent, ' ') << toString() << std::endl;
+        for (auto &child : global_defs){
+            child->print(os, indent);
+        }
         for (auto &child : functions){
             child.second.print(os, indent);
         }

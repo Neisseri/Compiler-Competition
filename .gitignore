@@ -10,3 +10,4 @@ ast/
 ir/
 riscv/
 
+runtime.log
