@@ -276,7 +276,7 @@ Info: visitLvalExpr@a
 Info: visitAssignStmtint
 Info: visitExpr5
 Info: visitIntLiteralExpr5
-ret->type 0x5555aeb13330
+ret->type 0x5638ddc22330
 Info: visitVarDef int @b
 Info: visitStatementAssign@b = 10
 Info: visitAssignStmtAssign@b = 10
@@ -285,7 +285,7 @@ Info: visitLvalExpr@b
 Info: visitAssignStmtint
 Info: visitExpr10
 Info: visitIntLiteralExpr10
-ret->type 0x5555aeb13360
+ret->type 0x5638ddc22360
 Info: visitStatementIfElse
 Info: visitExpr@a==6||@b==11
 Info: visitBinopExpr@a==6||@b==11
@@ -295,14 +295,14 @@ Info: visitExpr@a
 Info: visitLvalExpr@a
 Info: visitExpr6
 Info: visitIntLiteralExpr6
-ret->type 0x5555aeb133e0
+ret->type 0x5638ddc223e0
 Info: visitExpr@b==11
 Info: visitBinopExpr@b==11
 Info: visitExpr@b
 Info: visitLvalExpr@b
 Info: visitExpr11
 Info: visitIntLiteralExpr11
-ret->type 0x5555aeb13410
+ret->type 0x5638ddc22410
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementReturn @a
@@ -319,14 +319,14 @@ Info: visitExpr@b
 Info: visitLvalExpr@b
 Info: visitExpr10
 Info: visitIntLiteralExpr10
-ret->type 0x5555aeb13490
+ret->type 0x5638ddc22490
 Info: visitExpr@a==1
 Info: visitBinopExpr@a==1
 Info: visitExpr@a
 Info: visitLvalExpr@a
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x5555aeb134c0
+ret->type 0x5638ddc224c0
 Info: visitStatementAssign@a = 25
 Info: visitAssignStmtAssign@a = 25
 Info: visitExpr@a
@@ -334,7 +334,7 @@ Info: visitLvalExpr@a
 Info: visitAssignStmtint
 Info: visitExpr25
 Info: visitIntLiteralExpr25
-ret->type 0x5555aeb134f0
+ret->type 0x5638ddc224f0
 Info: visitStatementIfElse
 Info: visitExpr@b==10&&@a==-5
 Info: visitBinopExpr@b==10&&@a==-5
@@ -344,7 +344,7 @@ Info: visitExpr@b
 Info: visitLvalExpr@b
 Info: visitExpr10
 Info: visitIntLiteralExpr10
-ret->type 0x5555aeb13520
+ret->type 0x5638ddc22520
 Info: visitExpr@a==-5
 Info: visitBinopExpr@a==-5
 Info: visitExpr@a
@@ -353,7 +353,7 @@ Info: visitExpr-5
 Info: visitUnonExpr-5
 Info: visitExpr5
 Info: visitIntLiteralExpr5
-ret->type 0x5555aeb13550
+ret->type 0x5638ddc22550
 Info: visitStatementAssign@a = @a+15
 Info: visitAssignStmtAssign@a = @a+15
 Info: visitExpr@a
@@ -365,7 +365,7 @@ Info: visitExpr@a
 Info: visitLvalExpr@a
 Info: visitExpr15
 Info: visitIntLiteralExpr15
-ret->type 0x5555aeb13580
+ret->type 0x5638ddc22580
 Info: visitStatementAssign@a = -+@a
 Info: visitAssignStmtAssign@a = -+@a
 Info: visitExpr@a
@@ -389,7 +389,7 @@ Info: use of undeclared function putint
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x5555aeb13630
+ret->type 0x5638ddc22630
 ast: 
 Program
   int @ifElseIf()
@@ -729,12 +729,10 @@ ir:
 define i32 @main(){
 B15:
   %2 = call i32 @ifElseIf()
-  %1 = call@putint(i32 %2)
+  %1 = call i32 @putint(i32 %2)
   %3 = 0
   ret i32 %3
 
-}
-define void @(){
 }
 define i32 @ifElseIf(){
 B0:
