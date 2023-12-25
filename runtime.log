@@ -4,565 +4,261 @@ parse tree:
         (compUnitItem 
             (funcDef 
                 (funcType 
-                    (bType int)) main ( ) 
+                    (bType int)) ifElseIf ( ) 
                 (block { 
                     (blockItem 
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef a [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { })) ;))) 
+                                (varDef a) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (lVal a) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 5))))))) ;)) 
                     (blockItem 
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef b [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 1)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 2)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 3)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 4)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 5)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 6)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 7)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 8)))))))) })) ;))) 
+                                (varDef b) ;))) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef c [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 1)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 2)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 3)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 4)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 5)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 6)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 7)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 8)))))))) }) })) ;))) 
+                        (stmt 
+                            (lVal b) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 10))))))) ;)) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef d [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal 
-                                            (exp 
+                        (stmt if ( 
+                            (cond 
+                                (lOrExp 
+                                    (lOrExp 
+                                        (lAndExp 
+                                            (eqExp 
+                                                (eqExp 
+                                                    (relExp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal a))))))) == 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 6)))))))))) || 
+                                    (lAndExp 
+                                        (eqExp 
+                                            (eqExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal b))))))) == 
+                                            (relExp 
                                                 (addExp 
                                                     (mulExp 
                                                         (unaryExp 
                                                             (primaryExp 
                                                                 (number 
-                                                                    (intConst 1)))))))) , 
-                                        (initVal 
+                                                                    (intConst 0xb))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt return 
                                             (exp 
                                                 (addExp 
                                                     (mulExp 
                                                         (unaryExp 
                                                             (primaryExp 
-                                                                (number 
-                                                                    (intConst 2)))))))) , 
-                                        (initVal { 
-                                            (initVal 
+                                                                (lVal a)))))) ;)) })) else 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt if ( 
+                                            (cond 
+                                                (lOrExp 
+                                                    (lAndExp 
+                                                        (lAndExp 
+                                                            (eqExp 
+                                                                (eqExp 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (lVal b))))))) == 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (number 
+                                                                                        (intConst 10))))))))) && 
+                                                        (eqExp 
+                                                            (eqExp 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal a))))))) == 
+                                                            (relExp 
+                                                                (addExp 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 1))))))))))) ) 
+                                            (stmt 
+                                                (lVal a) = 
                                                 (exp 
                                                     (addExp 
                                                         (mulExp 
                                                             (unaryExp 
                                                                 (primaryExp 
                                                                     (number 
-                                                                        (intConst 3)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 5)))))))) }) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 7)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 8)))))))) })) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef e [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 4))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal d [ 
-                                                                        (exp 
+                                                                        (intConst 25))))))) ;) else 
+                                            (stmt if ( 
+                                                (cond 
+                                                    (lOrExp 
+                                                        (lAndExp 
+                                                            (lAndExp 
+                                                                (eqExp 
+                                                                    (eqExp 
+                                                                        (relExp 
                                                                             (addExp 
                                                                                 (mulExp 
                                                                                     (unaryExp 
                                                                                         (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 2))))))) ] [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 1))))))) ]))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal c [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 2))))))) ] [ 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (number 
-                                                                                                (intConst 1))))))) ]))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 3)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 4)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 5)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 6)))))))) }) , 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 7)))))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 8)))))))) }) })) ;))) 
+                                                                                            (lVal b))))))) == 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (number 
+                                                                                            (intConst 10))))))))) && 
+                                                            (eqExp 
+                                                                (eqExp 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (lVal a))))))) == 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp - 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (number 
+                                                                                            (intConst 5)))))))))))) ) 
+                                                (stmt 
+                                                    (lVal a) = 
+                                                    (exp 
+                                                        (addExp 
+                                                            (addExp 
+                                                                (mulExp 
+                                                                    (unaryExp 
+                                                                        (primaryExp 
+                                                                            (lVal a))))) + 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 15))))))) ;) else 
+                                                (stmt 
+                                                    (lVal a) = 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp - 
+                                                                    (unaryExp + 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (lVal a)))))))) ;)))) })))) 
                     (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
-                                    (addExp 
-                                        (addExp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (lVal e [ 
-                                                                (exp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (number 
-                                                                                        (intConst 3))))))) ] [ 
-                                                                (exp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (number 
-                                                                                        (intConst 1))))))) ]))))) + 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (lVal e [ 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 0))))))) ] [ 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 0))))))) ]))))) + 
-                                        (mulExp 
-                                            (unaryExp 
-                                                (primaryExp 
-                                                    (lVal e [ 
-                                                        (exp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (number 
-                                                                                (intConst 0))))))) ] [ 
-                                                        (exp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (number 
-                                                                                (intConst 1))))))) ]))))) + 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (lVal a [ 
+                                                (lVal a)))))) ;)) }))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp putint ( 
+                                            (funcRParams 
+                                                (funcRParam 
                                                     (exp 
                                                         (addExp 
                                                             (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 2))))))) ] [ 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 0))))))) ])))))) ;)) }))) <EOF>)
+                                                                (unaryExp ifElseIf ( ))))))) ))))) ;)) 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
 visitCompUnit: funcDef
-construct funct block: main
+construct funct block: ifElseIf
 visitVarDecl: int start
-visitVarDecl: array dim_size=2
-visitPrimaryExp_ number
-visitPrimaryExp_ number
 visitVarDecl: ident: a
-visitVarDecl: initVal
+visitPrimaryExp_ number
+visitAssign done!
 visitVarDecl: int start
-visitVarDecl: array dim_size=2
-visitPrimaryExp_ number
-visitPrimaryExp_ number
 visitVarDecl: ident: b
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: array dim_size=2
+visitAssign done!
 visitPrimaryExp_ number
 visitPrimaryExp_ number
-visitVarDecl: ident: c
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: array dim_size=2
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitVarDecl: ident: d
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: array dim_size=2
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitVarDecl: ident: e
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
+visit block stmt
+visitBlock done!
+visit block stmt
 visitPrimaryExp_ number
 visitPrimaryExp_ number
 visitPrimaryExp_ number
+visitAssign done!
 visitPrimaryExp_ number
 visitPrimaryExp_ number
 visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitPrimaryExp_ number
+visitAssign done!
+visitAssign done!
+visitBlock done!
+visitBlock done!
+construct funct block done!
+visitCompUnit: funcDef
+construct funct block: main
+visitCall ident: putint
+visitFuncRParams
+visitCall ident: ifElseIf
+visitCall args_list size: 0
+visitCall args_list size: 1
 visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
@@ -570,944 +266,557 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
+Info: visitFuncDefint @ifElseIf()
+Info: visitBlock
+Info: visitVarDef int @a
+Info: visitStatementAssign@a = 5
+Info: visitAssignStmtAssign@a = 5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5555aeb13330
+Info: visitVarDef int @b
+Info: visitStatementAssign@b = 10
+Info: visitAssignStmtAssign@b = 10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitAssignStmtint
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5555aeb13360
+Info: visitStatementIfElse
+Info: visitExpr@a==6||@b==11
+Info: visitBinopExpr@a==6||@b==11
+Info: visitExpr@a==6
+Info: visitBinopExpr@a==6
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr6
+Info: visitIntLiteralExpr6
+ret->type 0x5555aeb133e0
+Info: visitExpr@b==11
+Info: visitBinopExpr@b==11
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr11
+Info: visitIntLiteralExpr11
+ret->type 0x5555aeb13410
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==1
+Info: visitBinopExpr@b==10&&@a==1
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5555aeb13490
+Info: visitExpr@a==1
+Info: visitBinopExpr@a==1
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x5555aeb134c0
+Info: visitStatementAssign@a = 25
+Info: visitAssignStmtAssign@a = 25
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr25
+Info: visitIntLiteralExpr25
+ret->type 0x5555aeb134f0
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==-5
+Info: visitBinopExpr@b==10&&@a==-5
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5555aeb13520
+Info: visitExpr@a==-5
+Info: visitBinopExpr@a==-5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr-5
+Info: visitUnonExpr-5
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5555aeb13550
+Info: visitStatementAssign@a = @a+15
+Info: visitAssignStmtAssign@a = @a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr@a+15
+Info: visitBinopExpr@a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr15
+Info: visitIntLiteralExpr15
+ret->type 0x5555aeb13580
+Info: visitStatementAssign@a = -+@a
+Info: visitAssignStmtAssign@a = -+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr-+@a
+Info: visitUnonExpr-+@a
+Info: visitExpr+@a
+Info: visitUnonExpr+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
 Info: visitFuncDefint @main()
 Info: visitBlock
-Info: visitVarDef int @a = {}
-Info: visitDims 4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4620
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4650
-Info: visitExpr{}
-Info: visitAssignmentExpr{}
-Info: expr_type is nullptr , its an array ,return
-Info: visitVarDef int @b = {1, 2, 3, 4, 5, 6, 7, 8}
-Info: visitDims 4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f46f0
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4680
-Info: visitExpr{1, 2, 3, 4, 5, 6, 7, 8}
-Info: visitAssignmentExpr{1, 2, 3, 4, 5, 6, 7, 8}
-Info: visitExpr1
-Info: visitAssignmentExpr1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x5635568f4770
-Info: visitExpr2
-Info: visitAssignmentExpr2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f47f0
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x5635568f4820
-Info: visitExpr4
-Info: visitAssignmentExpr4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4850
-Info: visitExpr5
-Info: visitAssignmentExpr5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x5635568f4880
-Info: visitExpr6
-Info: visitAssignmentExpr6
-Info: visitExpr6
-Info: visitIntLiteralExpr6
-ret->type 0x5635568f48b0
-Info: visitExpr7
-Info: visitAssignmentExpr7
-Info: visitExpr7
-Info: visitIntLiteralExpr7
-ret->type 0x5635568f48e0
-Info: visitExpr8
-Info: visitAssignmentExpr8
-Info: visitExpr8
-Info: visitIntLiteralExpr8
-ret->type 0x5635568f4910
-Info: expr_type is nullptr , its an array ,return
-Info: visitVarDef int @c = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitDims 4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4940
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4970
-Info: visitExpr{{1, 2}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitAssignmentExpr{{1, 2}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitExpr{1, 2}
-Info: visitAssignmentExpr{1, 2}
-Info: visitExpr1
-Info: visitAssignmentExpr1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x5635568f49a0
-Info: visitExpr2
-Info: visitAssignmentExpr2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4a20
-Info: visitExpr{3, 4}
-Info: visitAssignmentExpr{3, 4}
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x5635568f4a50
-Info: visitExpr4
-Info: visitAssignmentExpr4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4a80
-Info: visitExpr{5, 6}
-Info: visitAssignmentExpr{5, 6}
-Info: visitExpr5
-Info: visitAssignmentExpr5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x5635568f4ab0
-Info: visitExpr6
-Info: visitAssignmentExpr6
-Info: visitExpr6
-Info: visitIntLiteralExpr6
-ret->type 0x5635568f4ae0
-Info: visitExpr{7, 8}
-Info: visitAssignmentExpr{7, 8}
-Info: visitExpr7
-Info: visitAssignmentExpr7
-Info: visitExpr7
-Info: visitIntLiteralExpr7
-ret->type 0x5635568f4b10
-Info: visitExpr8
-Info: visitAssignmentExpr8
-Info: visitExpr8
-Info: visitIntLiteralExpr8
-ret->type 0x5635568f4b40
-Info: expr_type is nullptr , its an array ,return
-Info: visitVarDef int @d = {1, 2, {3}, {5}, 7, 8}
-Info: visitDims 4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4ba0
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4b70
-Info: visitExpr{1, 2, {3}, {5}, 7, 8}
-Info: visitAssignmentExpr{1, 2, {3}, {5}, 7, 8}
-Info: visitExpr1
-Info: visitAssignmentExpr1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x5635568f4bd0
-Info: visitExpr2
-Info: visitAssignmentExpr2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4c50
-Info: visitExpr{3}
-Info: visitAssignmentExpr{3}
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x5635568f4c80
-Info: visitExpr{5}
-Info: visitAssignmentExpr{5}
-Info: visitExpr5
-Info: visitAssignmentExpr5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x5635568f4cb0
-Info: visitExpr7
-Info: visitAssignmentExpr7
-Info: visitExpr7
-Info: visitIntLiteralExpr7
-ret->type 0x5635568f4ce0
-Info: visitExpr8
-Info: visitAssignmentExpr8
-Info: visitExpr8
-Info: visitIntLiteralExpr8
-ret->type 0x5635568f4d10
-Info: expr_type is nullptr , its an array ,return
-Info: visitVarDef int @e = {{@d[2][1], @c[2][1]}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitDims 4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4d70
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5635568f4d40
-Info: visitExpr{{@d[2][1], @c[2][1]}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitAssignmentExpr{{@d[2][1], @c[2][1]}, {3, 4}, {5, 6}, {7, 8}}
-Info: visitExpr{@d[2][1], @c[2][1]}
-Info: visitAssignmentExpr{@d[2][1], @c[2][1]}
-Info: visitExpr@d[2][1]
-Info: visitAssignmentExpr@d[2][1]
-Info: visitExpr@d[2][1]
-Info: visitLvalExpr@d[2][1]
-Info: visitExpr@c[2][1]
-Info: visitAssignmentExpr@c[2][1]
-Info: visitExpr@c[2][1]
-Info: visitLvalExpr@c[2][1]
-Info: visitExpr{3, 4}
-Info: visitAssignmentExpr{3, 4}
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x5635568f4da0
-Info: visitExpr4
-Info: visitAssignmentExpr4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5635568f4dd0
-Info: visitExpr{5, 6}
-Info: visitAssignmentExpr{5, 6}
-Info: visitExpr5
-Info: visitAssignmentExpr5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x5635568f4e50
-Info: visitExpr6
-Info: visitAssignmentExpr6
-Info: visitExpr6
-Info: visitIntLiteralExpr6
-ret->type 0x5635568f4e80
-Info: visitExpr{7, 8}
-Info: visitAssignmentExpr{7, 8}
-Info: visitExpr7
-Info: visitAssignmentExpr7
-Info: visitExpr7
-Info: visitIntLiteralExpr7
-ret->type 0x5635568f4eb0
-Info: visitExpr8
-Info: visitAssignmentExpr8
-Info: visitExpr8
-Info: visitIntLiteralExpr8
-ret->type 0x5635568f4ee0
-Info: expr_type is nullptr , its an array ,return
-Info: visitStatementReturn @e[3][1]+@e[0][0]+@e[0][1]+@a[2][0]
-Info: visitExpr@e[3][1]+@e[0][0]+@e[0][1]+@a[2][0]
-Info: visitBinopExpr@e[3][1]+@e[0][0]+@e[0][1]+@a[2][0]
-Info: visitExpr@e[3][1]+@e[0][0]+@e[0][1]
-Info: visitBinopExpr@e[3][1]+@e[0][0]+@e[0][1]
-Info: visitExpr@e[3][1]+@e[0][0]
-Info: visitBinopExpr@e[3][1]+@e[0][0]
-Info: visitExpr@e[3][1]
-Info: visitLvalExpr@e[3][1]
-Info: visitExpr@e[0][0]
-Info: visitLvalExpr@e[0][0]
-Info: visitExpr@e[0][1]
-Info: visitLvalExpr@e[0][1]
-Info: visitExpr@a[2][0]
-Info: visitLvalExpr@a[2][0]
+Info: visitStatementCall @putint(Call @ifElseIf())
+Info: visitExprCall @putint(Call @ifElseIf())
+Info: visiCalltExprCall @putint(Call @ifElseIf())
+Info: use of undeclared function putint
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5555aeb13630
 ast: 
 Program
+  int @ifElseIf()
+    {
+      int @a#2
+      Assign@a#2 = 5
+      int @b#2
+      Assign@b#2 = 10
+      If        @a#2==6||@b#2==11
+        {
+          Return @a#2
+        }
+      Else
+        {
+          If            @b#2==10&&@a#2==1
+            Assign@a#2 = 25
+          Else
+            If              @b#2==10&&@a#2==-5
+              Assign@a#2 = @a#2+15
+            Else
+              Assign@a#2 = -+@a#2
+        }
+      Return @a#2
+    }
   int @main()
     {
-      int @a#2 = {}
-      int @b#2 = {1, 2, 3, 4, 5, 6, 7, 8}
-      int @c#2 = {{1, 2}, {3, 4}, {5, 6}, {7, 8}}
-      int @d#2 = {1, 2, {3}, {5}, 7, 8}
-      int @e#2 = {{@d#2[2][1], @c#2[2][1]}, {3, 4}, {5, 6}, {7, 8}}
-      Return @e#2[3][1]+@e#2[0][0]+@e#2[0][1]+@a#2[2][0]
+      Call @putint(Call @ifElseIf())
+      Return 0
     }
 End of Program
 --------------------------- building ir ---------------------------
 visitProgram
-visitFunction main
+visitFunction ifElseIf
 visitBlock 
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visit decl array done
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visitExpression
+visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
+visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visit decl array done
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visit decl array done
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visit decl array done
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visitExpression
-visitExpression
-visitExpressionLValue
-visitIndex
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionLValue
-visitIndex
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visit decl array done
 visitStatement
 visitExpression
 visitExpression
 visitExpression
+visitExpressionLValue
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
 visitExpression
 visitExpressionLValue
-visitIndex
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
 visitExpression
 visitExpressionLValue
-visitIndex
+visitStatement
+visitBlock 
+visitStatement
 visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
 visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
 visitExpression
 visitExpressionLValue
-visitIndex
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
 visitExpression
 visitExpressionLValue
-visitIndex
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
+visitExpression
+visitExpressionLValue
+visitExpression
+visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-function main has 186 regs
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue
+visitStatement
+visitExpression
+visitExpressionLValue
+function ifElseIf has 36 regs
 B0:
   prev: 
-  succ: 
+  succ: B1 
 B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: 
+B3:
+  prev: B1 
+  succ: B6 
+B4:
+  prev: B5 B9 
+  succ: 
+B5:
+  prev: 
+  succ: B4 
+B6:
+  prev: B3 
+  succ: B7 B8 
+B7:
+  prev: B6 
+  succ: B9 
+B8:
+  prev: B6 
+  succ: B10 
+B9:
+  prev: B7 B13 
+  succ: B4 
+B10:
+  prev: B8 
+  succ: B11 B12 
+B11:
+  prev: B10 
+  succ: B13 
+B12:
+  prev: B10 
+  succ: B13 
+B13:
+  prev: B11 B12 
+  succ: B9 
+B14:
   prev: 
   succ: 
 
 B0:
   prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
   succ: 
+B3:
+  prev: B1 
+  succ: B6 
+B4:
+  prev: B9 
+  succ: 
+B6:
+  prev: B3 
+  succ: B7 B8 
+B7:
+  prev: B6 
+  succ: B9 
+B8:
+  prev: B6 
+  succ: B10 
+B9:
+  prev: B7 B13 
+  succ: B4 
+B10:
+  prev: B8 
+  succ: B11 B12 
+B11:
+  prev: B10 
+  succ: B13 
+B12:
+  prev: B10 
+  succ: B13 
+B13:
+  prev: B11 B12 
+  succ: B9 
 
 entryB0
+B1
+B2
+B3
+B4
+B6
+B7
+B8
+B9
+B10
+B11
+B12
+B13
 reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB6
+reverse_postorderB8
+reverse_postorderB10
+reverse_postorderB12
+reverse_postorderB11
+reverse_postorderB13
+reverse_postorderB7
+reverse_postorderB9
+reverse_postorderB4
+reverse_postorderB2
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB6
+reverse_postorderB8
+reverse_postorderB10
+reverse_postorderB12
+reverse_postorderB11
+reverse_postorderB13
+reverse_postorderB7
+reverse_postorderB9
+reverse_postorderB4
+reverse_postorderB2
 B0:
-  doms: 
+  doms: B1 
   domed_by: B0 
+B1:
+  doms: B2 B3 
+  domed_by: B0 B1 
+B2:
+  doms: 
+  domed_by: B0 B1 B2 
+B3:
+  doms: B6 
+  domed_by: B0 B1 B3 
+B4:
+  doms: 
+  domed_by: B0 B1 B3 B4 B6 B9 
+B6:
+  doms: B7 B8 B9 
+  domed_by: B0 B1 B3 B6 
+B7:
+  doms: 
+  domed_by: B0 B1 B3 B6 B7 
+B8:
+  doms: B10 
+  domed_by: B0 B1 B3 B6 B8 
+B9:
+  doms: B4 
+  domed_by: B0 B1 B3 B6 B9 
+B10:
+  doms: B11 B12 B13 
+  domed_by: B0 B1 B3 B6 B8 B10 
+B11:
+  doms: 
+  domed_by: B0 B1 B3 B6 B8 B10 B11 
+B12:
+  doms: 
+  domed_by: B0 B1 B3 B6 B8 B10 B12 
+B13:
+  doms: 
+  domed_by: B0 B1 B3 B6 B8 B10 B13 
 
 B0:
+  DF: 
+B1:
+  DF: 
+B2:
+  DF: 
+B3:
+  DF: 
+B4:
+  DF: 
+B6:
+  DF: 
+B7:
+  DF: B9 
+B8:
+  DF: B9 
+B9:
+  DF: 
+B10:
+  DF: B9 
+B11:
+  DF: B13 
+B12:
+  DF: B13 
+B13:
+  DF: B9 
+
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 3 regs
+B15:
+  prev: 
+  succ: 
+B16:
+  prev: 
+  succ: 
+
+B15:
+  prev: 
+  succ: 
+
+entryB15
+reverse_postorderB15
+B15:
+  doms: 
+  domed_by: B15 
+
+B15:
   DF: 
 
 ir:
 ; module
 define i32 @main(){
+B15:
+  %2 = call i32 @ifElseIf()
+  %1 = call@putint(i32 %2)
+  %3 = 0
+  ret i32 %3
+
+}
+define void @(){
+}
+define i32 @ifElseIf(){
 B0:
-  %1 = alloca int [4,2], 32
-  %2 = 0
-  %4 = 0
-  %3 = add i32 %1, %4
-  store i32 %2, ptr %3
-  %5 = 0
-  %7 = 4
-  %6 = add i32 %1, %7
-  store i32 %5, ptr %6
-  %8 = 0
-  %10 = 8
-  %9 = add i32 %1, %10
-  store i32 %8, ptr %9
-  %11 = 0
-  %13 = 12
-  %12 = add i32 %1, %13
-  store i32 %11, ptr %12
-  %14 = 0
-  %16 = 16
-  %15 = add i32 %1, %16
-  store i32 %14, ptr %15
-  %17 = 0
-  %19 = 20
-  %18 = add i32 %1, %19
-  store i32 %17, ptr %18
-  %20 = 0
-  %22 = 24
-  %21 = add i32 %1, %22
-  store i32 %20, ptr %21
-  %23 = 0
-  %25 = 28
-  %24 = add i32 %1, %25
-  store i32 %23, ptr %24
-  %26 = alloca int [4,2], 32
-  %27 = 1
-  %29 = 0
-  %28 = add i32 %26, %29
-  store i32 %27, ptr %28
-  %30 = 2
-  %32 = 4
-  %31 = add i32 %26, %32
-  store i32 %30, ptr %31
-  %33 = 3
-  %35 = 8
-  %34 = add i32 %26, %35
-  store i32 %33, ptr %34
-  %36 = 4
-  %38 = 12
-  %37 = add i32 %26, %38
-  store i32 %36, ptr %37
-  %39 = 5
-  %41 = 16
-  %40 = add i32 %26, %41
-  store i32 %39, ptr %40
-  %42 = 6
-  %44 = 20
-  %43 = add i32 %26, %44
-  store i32 %42, ptr %43
-  %45 = 7
-  %47 = 24
-  %46 = add i32 %26, %47
-  store i32 %45, ptr %46
-  %48 = 8
-  %50 = 28
-  %49 = add i32 %26, %50
-  store i32 %48, ptr %49
-  %51 = alloca int [4,2], 32
-  %52 = 1
-  %54 = 0
-  %53 = add i32 %51, %54
-  store i32 %52, ptr %53
-  %55 = 2
-  %57 = 4
-  %56 = add i32 %51, %57
-  store i32 %55, ptr %56
-  %58 = 3
-  %60 = 8
-  %59 = add i32 %51, %60
-  store i32 %58, ptr %59
-  %61 = 4
-  %63 = 12
-  %62 = add i32 %51, %63
-  store i32 %61, ptr %62
-  %64 = 5
-  %66 = 16
-  %65 = add i32 %51, %66
-  store i32 %64, ptr %65
-  %67 = 6
-  %69 = 20
-  %68 = add i32 %51, %69
-  store i32 %67, ptr %68
-  %70 = 7
-  %72 = 24
-  %71 = add i32 %51, %72
-  store i32 %70, ptr %71
-  %73 = 8
-  %75 = 28
-  %74 = add i32 %51, %75
-  store i32 %73, ptr %74
-  %76 = alloca int [4,2], 32
-  %77 = 1
-  %79 = 0
-  %78 = add i32 %76, %79
-  store i32 %77, ptr %78
-  %80 = 2
-  %82 = 4
-  %81 = add i32 %76, %82
-  store i32 %80, ptr %81
-  %83 = 3
-  %85 = 8
-  %84 = add i32 %76, %85
-  store i32 %83, ptr %84
-  %86 = 0
-  %88 = 12
-  %87 = add i32 %76, %88
-  store i32 %86, ptr %87
-  %89 = 5
-  %91 = 16
-  %90 = add i32 %76, %91
-  store i32 %89, ptr %90
-  %92 = 0
-  %94 = 20
-  %93 = add i32 %76, %94
-  store i32 %92, ptr %93
-  %95 = 7
-  %97 = 24
-  %96 = add i32 %76, %97
-  store i32 %95, ptr %96
-  %98 = 8
-  %100 = 28
-  %99 = add i32 %76, %100
-  store i32 %98, ptr %99
-  %101 = alloca int [4,2], 32
-  %102 = 4
-  %103 = 1
-  %104 = mul i32 %103, %102
-  %105 = add i32 %76, %104
-  %106 = 2
-  %107 = mul i32 %102, %106
-  %108 = 2
-  %109 = mul i32 %108, %107
-  %110 = add i32 %105, %109
-  %111 = load i32, ptr %110
-  %113 = 0
-  %112 = add i32 %101, %113
-  store i32 %111, ptr %112
-  %114 = 4
-  %115 = 1
-  %116 = mul i32 %115, %114
-  %117 = add i32 %51, %116
-  %118 = 2
-  %119 = mul i32 %114, %118
-  %120 = 2
-  %121 = mul i32 %120, %119
-  %122 = add i32 %117, %121
-  %123 = load i32, ptr %122
-  %125 = 4
-  %124 = add i32 %101, %125
-  store i32 %123, ptr %124
-  %126 = 3
-  %128 = 8
-  %127 = add i32 %101, %128
-  store i32 %126, ptr %127
-  %129 = 4
-  %131 = 12
-  %130 = add i32 %101, %131
-  store i32 %129, ptr %130
-  %132 = 5
-  %134 = 16
-  %133 = add i32 %101, %134
-  store i32 %132, ptr %133
-  %135 = 6
-  %137 = 20
-  %136 = add i32 %101, %137
-  store i32 %135, ptr %136
-  %138 = 7
-  %140 = 24
-  %139 = add i32 %101, %140
-  store i32 %138, ptr %139
-  %141 = 8
-  %143 = 28
-  %142 = add i32 %101, %143
-  store i32 %141, ptr %142
-  %144 = 4
-  %145 = 1
-  %146 = mul i32 %145, %144
-  %147 = add i32 %101, %146
-  %148 = 2
-  %149 = mul i32 %144, %148
-  %150 = 3
-  %151 = mul i32 %150, %149
-  %152 = add i32 %147, %151
-  %153 = load i32, ptr %152
-  %154 = 4
-  %155 = 0
-  %156 = mul i32 %155, %154
-  %157 = add i32 %101, %156
-  %158 = 2
-  %159 = mul i32 %154, %158
-  %160 = 0
-  %161 = mul i32 %160, %159
-  %162 = add i32 %157, %161
-  %163 = load i32, ptr %162
-  %164 = add i32 %153, %163
-  %165 = 4
-  %166 = 1
-  %167 = mul i32 %166, %165
-  %168 = add i32 %101, %167
-  %169 = 2
-  %170 = mul i32 %165, %169
-  %171 = 0
-  %172 = mul i32 %171, %170
-  %173 = add i32 %168, %172
-  %174 = load i32, ptr %173
-  %175 = add i32 %164, %174
-  %176 = 4
-  %177 = 0
-  %178 = mul i32 %177, %176
-  %179 = add i32 %1, %178
-  %180 = 2
-  %181 = mul i32 %176, %180
-  %182 = 2
-  %183 = mul i32 %182, %181
-  %184 = add i32 %179, %183
-  %185 = load i32, ptr %184
-  %186 = add i32 %175, %185
-  ret i32 %186
+  %1 = alloca int, 4
+  %2 = 5
+  store i32 %2, ptr %1
+  %3 = alloca int, 4
+  %4 = 10
+  store i32 %4, ptr %3
+  br label B1
+
+B1:
+  %5 = load i32, ptr %1
+  %6 = 6
+  %7 = icmp eq i32 %5, %6
+  %8 = load i32, ptr %3
+  %9 = 11
+  %10 = icmp eq i32 %8, %9
+  %11 = or i32 %7, %10
+  br i32 %11, label B2, label B3
+
+B2:
+  %12 = load i32, ptr %1
+  ret i32 %12
+
+B3:
+  br label B6
+
+B4:
+  %36 = load i32, ptr %1
+  ret i32 %36
+
+B6:
+  %13 = load i32, ptr %3
+  %14 = 10
+  %15 = icmp eq i32 %13, %14
+  %16 = load i32, ptr %1
+  %17 = 1
+  %18 = icmp eq i32 %16, %17
+  %19 = and i32 %15, %18
+  br i32 %19, label B7, label B8
+
+B7:
+  %20 = 25
+  store i32 %20, ptr %1
+  br label B9
+
+B8:
+  br label B10
+
+B9:
+  br label B4
+
+B10:
+  %21 = load i32, ptr %3
+  %22 = 10
+  %23 = icmp eq i32 %21, %22
+  %24 = load i32, ptr %1
+  %25 = 5
+  %27 = 0
+  %26 = sub i32 %27, %25
+  %28 = icmp eq i32 %24, %26
+  %29 = and i32 %23, %28
+  br i32 %29, label B11, label B12
+
+B11:
+  %30 = load i32, ptr %1
+  %31 = 15
+  %32 = add i32 %30, %31
+  store i32 %32, ptr %1
+  br label B13
+
+B12:
+  %33 = load i32, ptr %1
+  %35 = 0
+  %34 = sub i32 %35, %33
+  store i32 %34, ptr %1
+  br label B13
+
+B13:
+  br label B9
 
 }
 --------------------------- building riscv ---------------------------
 riscv: 
-
-B1:
-addi T[-1], sp, 48
-li T[-2], 0
-li T[-4], 0
-add T[-3], T[-1], T[-4]
-sw T[-2], 0(T[-3])
-li T[-5], 0
-li T[-7], 4
-add T[-6], T[-1], T[-7]
-sw T[-5], 0(T[-6])
-li T[-8], 0
-li T[-10], 8
-add T[-9], T[-1], T[-10]
-sw T[-8], 0(T[-9])
-li T[-11], 0
-li T[-13], 12
-add T[-12], T[-1], T[-13]
-sw T[-11], 0(T[-12])
-li T[-14], 0
-li T[-16], 16
-add T[-15], T[-1], T[-16]
-sw T[-14], 0(T[-15])
-li T[-17], 0
-li T[-19], 20
-add T[-18], T[-1], T[-19]
-sw T[-17], 0(T[-18])
-li T[-20], 0
-li T[-22], 24
-add T[-21], T[-1], T[-22]
-sw T[-20], 0(T[-21])
-li T[-23], 0
-li T[-25], 28
-add T[-24], T[-1], T[-25]
-sw T[-23], 0(T[-24])
-addi T[-26], sp, 80
-li T[-27], 1
-li T[-29], 0
-add T[-28], T[-26], T[-29]
-sw T[-27], 0(T[-28])
-li T[-30], 2
-li T[-32], 4
-add T[-31], T[-26], T[-32]
-sw T[-30], 0(T[-31])
-li T[-33], 3
-li T[-35], 8
-add T[-34], T[-26], T[-35]
-sw T[-33], 0(T[-34])
-li T[-36], 4
-li T[-38], 12
-add T[-37], T[-26], T[-38]
-sw T[-36], 0(T[-37])
-li T[-39], 5
-li T[-41], 16
-add T[-40], T[-26], T[-41]
-sw T[-39], 0(T[-40])
-li T[-42], 6
-li T[-44], 20
-add T[-43], T[-26], T[-44]
-sw T[-42], 0(T[-43])
-li T[-45], 7
-li T[-47], 24
-add T[-46], T[-26], T[-47]
-sw T[-45], 0(T[-46])
-li T[-48], 8
-li T[-50], 28
-add T[-49], T[-26], T[-50]
-sw T[-48], 0(T[-49])
-addi T[-51], sp, 112
-li T[-52], 1
-li T[-54], 0
-add T[-53], T[-51], T[-54]
-sw T[-52], 0(T[-53])
-li T[-55], 2
-li T[-57], 4
-add T[-56], T[-51], T[-57]
-sw T[-55], 0(T[-56])
-li T[-58], 3
-li T[-60], 8
-add T[-59], T[-51], T[-60]
-sw T[-58], 0(T[-59])
-li T[-61], 4
-li T[-63], 12
-add T[-62], T[-51], T[-63]
-sw T[-61], 0(T[-62])
-li T[-64], 5
-li T[-66], 16
-add T[-65], T[-51], T[-66]
-sw T[-64], 0(T[-65])
-li T[-67], 6
-li T[-69], 20
-add T[-68], T[-51], T[-69]
-sw T[-67], 0(T[-68])
-li T[-70], 7
-li T[-72], 24
-add T[-71], T[-51], T[-72]
-sw T[-70], 0(T[-71])
-li T[-73], 8
-li T[-75], 28
-add T[-74], T[-51], T[-75]
-sw T[-73], 0(T[-74])
-addi T[-76], sp, 144
-li T[-77], 1
-li T[-79], 0
-add T[-78], T[-76], T[-79]
-sw T[-77], 0(T[-78])
-li T[-80], 2
-li T[-82], 4
-add T[-81], T[-76], T[-82]
-sw T[-80], 0(T[-81])
-li T[-83], 3
-li T[-85], 8
-add T[-84], T[-76], T[-85]
-sw T[-83], 0(T[-84])
-li T[-86], 0
-li T[-88], 12
-add T[-87], T[-76], T[-88]
-sw T[-86], 0(T[-87])
-li T[-89], 5
-li T[-91], 16
-add T[-90], T[-76], T[-91]
-sw T[-89], 0(T[-90])
-li T[-92], 0
-li T[-94], 20
-add T[-93], T[-76], T[-94]
-sw T[-92], 0(T[-93])
-li T[-95], 7
-li T[-97], 24
-add T[-96], T[-76], T[-97]
-sw T[-95], 0(T[-96])
-li T[-98], 8
-li T[-100], 28
-add T[-99], T[-76], T[-100]
-sw T[-98], 0(T[-99])
-addi T[-101], sp, 176
-li T[-102], 4
-li T[-103], 1
-mul T[-104], T[-103], T[-102]
-add T[-105], T[-76], T[-104]
-li T[-106], 2
-mul T[-107], T[-102], T[-106]
-li T[-108], 2
-mul T[-109], T[-108], T[-107]
-add T[-110], T[-105], T[-109]
-lw T[-111], 0(T[-110])
-li T[-113], 0
-add T[-112], T[-101], T[-113]
-sw T[-111], 0(T[-112])
-li T[-114], 4
-li T[-115], 1
-mul T[-116], T[-115], T[-114]
-add T[-117], T[-51], T[-116]
-li T[-118], 2
-mul T[-119], T[-114], T[-118]
-li T[-120], 2
-mul T[-121], T[-120], T[-119]
-add T[-122], T[-117], T[-121]
-lw T[-123], 0(T[-122])
-li T[-125], 4
-add T[-124], T[-101], T[-125]
-sw T[-123], 0(T[-124])
-li T[-126], 3
-li T[-128], 8
-add T[-127], T[-101], T[-128]
-sw T[-126], 0(T[-127])
-li T[-129], 4
-li T[-131], 12
-add T[-130], T[-101], T[-131]
-sw T[-129], 0(T[-130])
-li T[-132], 5
-li T[-134], 16
-add T[-133], T[-101], T[-134]
-sw T[-132], 0(T[-133])
-li T[-135], 6
-li T[-137], 20
-add T[-136], T[-101], T[-137]
-sw T[-135], 0(T[-136])
-li T[-138], 7
-li T[-140], 24
-add T[-139], T[-101], T[-140]
-sw T[-138], 0(T[-139])
-li T[-141], 8
-li T[-143], 28
-add T[-142], T[-101], T[-143]
-sw T[-141], 0(T[-142])
-li T[-144], 4
-li T[-145], 1
-mul T[-146], T[-145], T[-144]
-add T[-147], T[-101], T[-146]
-li T[-148], 2
-mul T[-149], T[-144], T[-148]
-li T[-150], 3
-mul T[-151], T[-150], T[-149]
-add T[-152], T[-147], T[-151]
-lw T[-153], 0(T[-152])
-li T[-154], 4
-li T[-155], 0
-mul T[-156], T[-155], T[-154]
-add T[-157], T[-101], T[-156]
-li T[-158], 2
-mul T[-159], T[-154], T[-158]
-li T[-160], 0
-mul T[-161], T[-160], T[-159]
-add T[-162], T[-157], T[-161]
-lw T[-163], 0(T[-162])
-add T[-164], T[-153], T[-163]
-li T[-165], 4
-li T[-166], 1
-mul T[-167], T[-166], T[-165]
-add T[-168], T[-101], T[-167]
-li T[-169], 2
-mul T[-170], T[-165], T[-169]
-li T[-171], 0
-mul T[-172], T[-171], T[-170]
-add T[-173], T[-168], T[-172]
-lw T[-174], 0(T[-173])
-add T[-175], T[-164], T[-174]
-li T[-176], 4
-li T[-177], 0
-mul T[-178], T[-177], T[-176]
-add T[-179], T[-1], T[-178]
-li T[-180], 2
-mul T[-181], T[-176], T[-180]
-li T[-182], 2
-mul T[-183], T[-182], T[-181]
-add T[-184], T[-179], T[-183]
-lw T[-185], 0(T[-184])
-add T[-186], T[-175], T[-185]
-mv a0, T[-186]
-ret
-pred: B0 
-succ: 
