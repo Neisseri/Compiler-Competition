@@ -579,6 +579,7 @@ public:
                     visitBlock(*block, ir_bb);
                 }
                 else if (auto exprstmt = dynamic_cast<ast::ExprStmt *>(child.get())){
+                    visitExpression(exprstmt->expr, ir_bb);
                 }
                 else {
                     child->print(std::cerr, 0);
