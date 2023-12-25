@@ -55,6 +55,19 @@ namespace frontend
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "redeclaration of variable " + name);
         }
+        if (var_def->is_array()){
+            //get children
+            for (auto &child : var_def->indices->children)
+            {
+                SyError().throw_info("visitDims " + child->toString());
+                auto expr_type = visitExpr(child.get());
+                if (expr_type->type != static_cast<int>(TypeEnum::INT)){
+                    SyError().throw_error(ErrorTypeEnum::SemanticError, "array index must be int");
+                }
+            }
+        }
+
+
         auto var_symbol = std::make_shared<VarSymbol>(var_def->ident.get()->name, std::move(var_def->var_type.get()), scope_stack->stack.back()->type == ScopeType::GlobalScope);
         scope_stack->declare_symbol(var_def->ident.get()->name, var_symbol);
         if (var_def->init_expr != nullptr)

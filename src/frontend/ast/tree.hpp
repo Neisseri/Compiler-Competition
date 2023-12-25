@@ -81,6 +81,7 @@ namespace frontend
                 }
                 return ret;
             }
+
             void print(std::ostream &os, int indent) const override
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
@@ -280,6 +281,12 @@ namespace frontend
             {
                 os << std::string(indent, ' ') << toString() << std::endl;
             }
+
+            bool is_array() const
+            {
+                return !indices->is_empty();
+            }
+
             std::unique_ptr<Type> var_type;
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<Expression> init_expr = nullptr;
