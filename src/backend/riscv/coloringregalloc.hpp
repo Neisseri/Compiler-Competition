@@ -76,8 +76,8 @@ namespace riscv {
         );
         AssignColors();
         if (!spilledNodes.empty()) {
-            for (auto s: spilledNodes)
-                std::cout << "spill node " << print_reg(s) << "\n";
+            // for (auto s: spilledNodes)
+                // std::cout << "spill node " << print_reg(s) << "\n";
             RewriteProgram();
             Main();
         }
@@ -232,7 +232,7 @@ namespace riscv {
             std::swap(u, v);
         }
         worklistMoves.erase(m);
-        std::cout << "combine u " << print_reg(u) << " and v " << print_reg(v) << "\n";
+        // std::cout << "combine u " << print_reg(u) << " and v " << print_reg(v) << "\n";
         if (u == v) {
             coalescedMoves.insert(m);
             AddWorklist(u);
@@ -260,7 +260,7 @@ namespace riscv {
                 should_combine = Conservative(nodes);
             }
             if (should_combine) {
-                std::cout << "should combine\n";
+                // std::cout << "should combine\n";
                 coalescedMoves.insert(m);
                 Combine(u, v);
                 AddWorklist(u);
@@ -350,11 +350,11 @@ namespace riscv {
     }
 
     void coloringregalloc::AssignColors() {
-        std::cout << ":)" << std::endl;
+        // std::cout << ":)" << std::endl;
         color.clear();
-        for (auto n: selectStack) {
-            std::cout << "select stack " << print_reg(n) << std::endl;
-        }
+        // for (auto n: selectStack) {
+        //     std::cout << "select stack " << print_reg(n) << std::endl;
+        // }
         while (!selectStack.empty()) {
             Reg n = selectStack.back();
             selectStack.pop_back();
@@ -375,8 +375,8 @@ namespace riscv {
                 color[n] = *okColors.begin();
             }
         }
-        for (auto n: coalescedNodes) 
-            std::cout << "coalescedNodes " << print_reg(n) << "\n";
+        // for (auto n: coalescedNodes) 
+        //     std::cout << "coalescedNodes " << print_reg(n) << "\n";
         for (auto n: coalescedNodes) {
             if (!isPrecolored(GetAlias(n)))
                 color[n] = color[GetAlias(n)];
@@ -386,9 +386,9 @@ namespace riscv {
     }
 
     void coloringregalloc::ReplaceRegs() {
-        for (auto n: color) {
-            std::cout << "assign " << print_reg(n.first) << " to " << print_reg(Reg(General, n.second)) << std::endl;
-        }
+        // for (auto n: color) {
+        //     std::cout << "assign " << print_reg(n.first) << " to " << print_reg(Reg(General, n.second)) << std::endl;
+        // }
         for (auto &bb: func->bbs) {
             for (auto &inst: bb->instructions) {
                 auto reg_ptrs = inst->reg_ptrs();

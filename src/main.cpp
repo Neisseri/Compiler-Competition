@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 
 
     if (out_riscv_flag) {
-        cout << "riscv: " << endl;
+        cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
             riscv::coloringregalloc RegAllocator(func);

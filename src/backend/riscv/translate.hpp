@@ -189,9 +189,9 @@ namespace riscv {
         for (auto &inst: ir_bb->instrs)
           select_instr(inst.get(), bb, bb_map);
 
-        std::cout << "before allocating regs\n";
-        for (auto &inst: bb->instructions) 
-          inst->emit(std::cout);
+        // std::cout << "before allocating regs\n";
+        // for (auto &inst: bb->instructions) 
+        //   inst->emit(std::cout);
 
         // std::cout << "pred: ";
         // for (auto &prevs: bb->pred) 
