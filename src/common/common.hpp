@@ -23,7 +23,6 @@
 #include <unordered_set>
 #include <iostream>
 
-#include "../frontend/type/type.hpp"
 #include "const.hpp"
 
 namespace ir {

@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "../../common/common.hpp"
 #include "../../common/const.hpp"
@@ -5,9 +6,10 @@
 struct Type
 {
     int type;
-    bool is_const;
-    std::vector<int> dim={};
+    bool is_const=false;
+    bool is_array=false;
 
+    std::vector<int> dim={};
     Type(){}
 
     Type(int type) : type(type), is_const(false) {}
@@ -22,6 +24,7 @@ struct Type
     int n_dim(){
         return dim.size();
     }
+    
     int get_array_size(){
         int size = 1;
         for (int i : dim){
