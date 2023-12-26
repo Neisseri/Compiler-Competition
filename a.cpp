@@ -1,11 +1,6 @@
-#include <map>
-#include <cstdio>
-#include <iostream>
-
+//test rem
 int main(){
-	std::map<int, int> map;
-	map[2] = 3;
-	int d = map.at(2);
-	std::cout << d << std::endl;
-	return 0;
+    int a;
+    a = 10;
+    return a % 3;
 }

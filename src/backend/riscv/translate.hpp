@@ -87,6 +87,10 @@ namespace riscv {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, src2));
           bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SNEZ, dst));
           break;
+        } case BinaryOpEnum::MOD: {
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::DIV, src1, src2));
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::MUL, dst, src2));
+          bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SUB, src1, dst));
         }
         default: break;
       }

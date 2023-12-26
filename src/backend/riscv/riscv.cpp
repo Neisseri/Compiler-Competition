@@ -20,14 +20,17 @@ namespace riscv {
     }
   }
 
+  std::string global_var_name(std::string var_name) {
+    return var_name.substr(0, var_name.length()-2);
+  }
 
   void Program::emit(std::ostream &os) {
     for (auto b: global_defs) {
       if (b->is_array) {
         if (b->has_init) {
           os << "\n.data\n";
-          os << ".glob " << b->var_name << "\n";
-          os << b->var_name << "\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
           for (auto i: b->init_val) {
             os << "    .word " << i << "\n";
           }
@@ -37,22 +40,22 @@ namespace riscv {
         }
         else {
           os << "\n.bss\n";
-          os << ".glob " << b->var_name << "\n";
-          os << b->var_name << "\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
           os << "    .space " << 4 * b->type.get_array_size() << "\n";
         }
       }
       else {
         if (b->has_init) {
           os << "\n.data\n";
-          os << ".glob " << b->var_name << "\n";
-          os << b->var_name << "\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
           os << "    .word " << b->init_val[0] << "\n";
         }
         else {
           os << "\n.bss\n";
-          os << ".glob " << b->var_name << "\n";
-          os << b->var_name << "\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
           os << "    .space " << 4 << "\n";
         }
       }
