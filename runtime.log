@@ -2,29 +2,30 @@
 parse tree: 
 (compUnit 
         (compUnitItem 
-            (decl 
-                (varDecl 
-                    (bType int) 
-                    (varDef a [ 
-                        (exp 
-                            (addExp 
-                                (mulExp 
-                                    (unaryExp 
-                                        (primaryExp 
-                                            (number 
-                                                (intConst 10))))))) ] [ 
-                        (exp 
-                            (addExp 
-                                (mulExp 
-                                    (unaryExp 
-                                        (primaryExp 
-                                            (number 
-                                                (intConst 10))))))) ]) ;))) 
+            (funcDef 
+                (funcType 
+                    (bType int)) func ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 1))))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
                     (bType int)) main ( ) 
                 (block { 
+                    (blockItem 
+                        (stmt 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp func ( ))))) ;)) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -35,13 +36,15 @@ parse tree:
                                                 (number 
                                                     (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
-visitVarDecl: int start
-visitVarDecl: array dim_size=2
+visitCompUnit: funcDef
+construct funct block: func
 visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitVarDecl: ident: a
+visitBlock done!
+construct funct block done!
 visitCompUnit: funcDef
 construct funct block: main
+visitCall ident: func
+visitCall args_list size: 0
 visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
@@ -49,40 +52,39 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitVarDef int @a
-Info: visitDims 10
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x55c5c300b810
-Info: visitDims 10
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x55c5c300b9b0
+Info: visitFuncDefint @func()
+Info: visitBlock
+Info: visitStatementReturn 1
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x56427d075470
 Info: visitFuncDefint @main()
 Info: visitBlock
+Info: visitStatementCall @func()
+Info: visitExprCall @func()
+Info: visiCalltExprCall @func()
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55c5c3006a20
+ret->type 0x56427d07df40
 ast: 
 Program
-  int @a#0
+  int @func()
+    {
+      Return 1
+    }
   int @main()
     {
+      Call @func()
       Return 0
     }
 End of Program
 --------------------------- building ir ---------------------------
 visitProgram
-visit decl global array
-visitExpressionVal
-visitExpressionVal
-global array size: 100
-visit decl global array done
-visitFunction main
+visitFunction func
 visitBlock 
 visitExpression
-function main has 1 regs
+function func has 1 regs
 B0:
   prev: 
   succ: 
@@ -103,12 +105,43 @@ B0:
 B0:
   DF: 
 
+visitFunction main
+visitBlock 
+visitExpression
+visitExpression
+function main has 2 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
 ir:
 ; module
-@a#0 = global int [10,10], 400
 define i32 @main(){
+B2:
+  %1 = call i32 @func()
+  %2 = 0
+  ret i32 %2
+
+}
+define i32 @func(){
 B0:
-  %1 = 0
+  %1 = 1
   ret i32 %1
 
 }
@@ -116,8 +149,20 @@ B0:
 riscv: 
 
 B1:
-li T[-1], 0
-mv a0, T[-1]
+addi sp, sp, 0
+mv t6, sp
+call func
+mv T[-1], a0
+addi sp, sp, 0
+li T[-2], 0
+mv a0, T[-2]
 ret
 pred: B0 
+succ: 
+
+B3:
+li T[-1], 1
+mv a0, T[-1]
+ret
+pred: B2 
 succ: 
