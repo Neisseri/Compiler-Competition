@@ -141,7 +141,8 @@ namespace riscv {
   }
 
   void Move::emit(std::ostream &os) const {
-    os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
+    if (dst != src)
+      os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
   }
 
   void Call::emit(std::ostream &os) const {

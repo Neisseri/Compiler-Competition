@@ -57,6 +57,10 @@ struct Instruction {
 struct Function {
     std::string name;
     ir::Label label;
+    Reg freshTemp() {
+        return Reg(General, -(++num_regs));
+    }
+    int num_regs;
     int reg_occupied[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;

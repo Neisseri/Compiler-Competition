@@ -1,5 +1,6 @@
 #include "riscv.hpp"
 #include "const.hpp"
+#include <iostream>
 namespace riscv {
     class coloringregalloc
     {
@@ -24,8 +25,8 @@ namespace riscv {
         std::map<Reg, int> degree;
 
         std::map<Reg, std::set<Move*>> moveList;
-        std::map<Reg, Reg> alias;
         std::map<Reg, int> color;
+        std::set<Reg> initial;
 
         Function* func;
         int K;
@@ -52,16 +53,18 @@ namespace riscv {
         void Combine(Reg u, Reg v);
         void FreezeMoves(Reg u);
         bool isPrecolored(Reg u);
+        void ReplaceRegs();
 
     public:
         coloringregalloc(Function* func): func(func) {}
-        ~coloringregalloc();
+        ~coloringregalloc() {}
         void Main();
     };
     
     void coloringregalloc::Main() {
         func->do_liveness_analysis();
         Build();
+        initial.clear();
         MkWorklist();
         do {
             if (!simplifyWorklist.empty()) Simplify();
@@ -73,9 +76,12 @@ namespace riscv {
         );
         AssignColors();
         if (!spilledNodes.empty()) {
+            for (auto s: spilledNodes)
+                std::cout << "spill node " << print_reg(s) << "\n";
             RewriteProgram();
             Main();
         }
+        ReplaceRegs();
     }
 
     void coloringregalloc::AddEdge(Reg u, Reg v) {
@@ -101,7 +107,7 @@ namespace riscv {
         adjList.clear();
         adjSet.clear();
         degree.clear();
-        int inf = 1e10;
+        int inf = 2147483647;
         for (int i = 0; i < 26; i++) {
             degree[Reg(General, i)] = inf;
         }
@@ -155,7 +161,6 @@ namespace riscv {
     }
 
     void coloringregalloc::MkWorklist() {
-        std::set<Reg> initial;
         for (auto bb: func->bbs) {
             for (auto inst: bb->instructions) {
                 auto def = inst->def();
@@ -182,6 +187,7 @@ namespace riscv {
 
     void coloringregalloc::Simplify() {
         auto it = *simplifyWorklist.begin();
+        // std::cout << "simplify reg " << print_reg(it) << "\n";
         simplifyWorklist.erase(it);
         selectStack.push_back(it);
         for (Reg m: Adjacent(it))
@@ -226,6 +232,7 @@ namespace riscv {
             std::swap(u, v);
         }
         worklistMoves.erase(m);
+        std::cout << "combine u " << print_reg(u) << " and v " << print_reg(v) << "\n";
         if (u == v) {
             coalescedMoves.insert(m);
             AddWorklist(u);
@@ -253,6 +260,7 @@ namespace riscv {
                 should_combine = Conservative(nodes);
             }
             if (should_combine) {
+                std::cout << "should combine\n";
                 coalescedMoves.insert(m);
                 Combine(u, v);
                 AddWorklist(u);
@@ -342,16 +350,23 @@ namespace riscv {
     }
 
     void coloringregalloc::AssignColors() {
+        std::cout << ":)" << std::endl;
+        color.clear();
+        for (auto n: selectStack) {
+            std::cout << "select stack " << print_reg(n) << std::endl;
+        }
         while (!selectStack.empty()) {
             Reg n = selectStack.back();
             selectStack.pop_back();
             std::set<int> okColors;
             for (int i = 0; i < 26; i++)
-                okColors.insert(i);
+                okColors.insert(allocable_regs[i]);
             for (Reg w: adjList[n]) {
                 Reg u = GetAlias(w);
-                if (isPrecolored(u) || coloredNodes.count(u))
+                if (coloredNodes.count(u))
                     okColors.erase(color[u]);
+                else if (isPrecolored(u))
+                    okColors.erase(u.id);
             }
             if (okColors.empty())
                 spilledNodes.insert(n);
@@ -360,12 +375,72 @@ namespace riscv {
                 color[n] = *okColors.begin();
             }
         }
-        for (auto n: coalescedNodes)
-            color[n] = color[GetAlias(n)];
+        for (auto n: coalescedNodes) 
+            std::cout << "coalescedNodes " << print_reg(n) << "\n";
+        for (auto n: coalescedNodes) {
+            if (!isPrecolored(GetAlias(n)))
+                color[n] = color[GetAlias(n)];
+            else
+                color[n] = GetAlias(n).id;
+        }
     }
 
-    void RewriteProgram() {
-        return;
+    void coloringregalloc::ReplaceRegs() {
+        for (auto n: color) {
+            std::cout << "assign " << print_reg(n.first) << " to " << print_reg(Reg(General, n.second)) << std::endl;
+        }
+        for (auto &bb: func->bbs) {
+            for (auto &inst: bb->instructions) {
+                auto reg_ptrs = inst->reg_ptrs();
+                for (auto &p : reg_ptrs) {
+                    Reg old = *p;
+                    if (color.count(old)) {
+                        *p = Reg(General, color[old]);
+                    }
+                }
+            }
+        }
+    }
+
+    void coloringregalloc::RewriteProgram() {
+        std::set<Reg> newTemps;
+        for (auto n: spilledNodes) {
+            // assign memory location for each n
+            func->offsets[n] = func->frame_size;
+            func->frame_size += 4;
+            // insert a store after each def, insert a load before each use
+            for (auto &bb: func->bbs) {
+                for (auto inst = bb->instructions.begin(); inst != bb->instructions.end(); inst++) {
+                    auto use = (*inst)->use();
+                    auto def = (*inst)->def();
+                    if (def.count(n)) {
+                        Reg ni = func->freshTemp();
+                        newTemps.insert(ni);
+                        for (auto &p: (*inst)->reg_ptrs())
+                            if (*p == n)
+                                *p = ni;
+                        bb->instructions.emplace(std::next(inst), new StoreWord(ni, Reg(General, sp), func->offsets[n]));
+                    }
+                    else if (use.count(n)) {
+                        Reg ni = func->freshTemp();
+                        newTemps.insert(ni);
+                        for (auto &p: (*inst)->reg_ptrs())
+                            if (*p == n)
+                                *p = ni;
+                        bb->instructions.emplace(inst, new LoadWord(ni, Reg(General, sp), func->offsets[n]));
+                    }
+                }
+            }
+        }
+        spilledNodes.clear();
+        for (auto n: coloredNodes)
+            initial.insert(n);
+        for (auto n: coalescedNodes)
+            initial.insert(n);
+        for (auto n: newTemps)
+            initial.insert(n);
+        coloredNodes.clear();
+        coalescedNodes.clear();
     }
 
 }

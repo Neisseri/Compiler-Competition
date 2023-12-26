@@ -164,13 +164,14 @@ namespace riscv {
 
   Function::Function(ir::Function& ir_function, const std::string& name): name(name) {
     auto entry_bb = new BasicBlock;
+    num_regs = ir_function.num_regs;
     bbs.emplace_back(entry_bb);
     num_params = ir_function.param_types.size();
     std::vector<int> stack_params;
     frame_size = 4 * 11 + 4; // callee-saved regs + ra
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
     for (int i = 0; i < num_params; i++) {
-      Reg param_reg = Reg(General, -(i + 1 + ir_function.num_regs)); // allocate regs for function parameters
+      Reg param_reg = Reg(General, -(++num_regs)); // allocate regs for function parameters
       offsets[param_reg] = frame_size; // load all parameters from stack
       frame_size += 4;
       //entry_bb->instructions.emplace_back(new LoadWord(param_reg, Reg(General, sp), offsets[param_reg]));
@@ -185,19 +186,21 @@ namespace riscv {
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = bb_map[ir_bb.get()];
         bb->instructions.clear();
-        std::cout << "\n" << print_bb(bb) << ":\n";
         for (auto &inst: ir_bb->instrs)
           select_instr(inst.get(), bb, bb_map);
+
+        std::cout << "before allocating regs\n";
         for (auto &inst: bb->instructions) 
           inst->emit(std::cout);
-        std::cout << "pred: ";
-        for (auto &prevs: bb->pred) 
-          std::cout << print_bb(prevs) << " ";
-        std::cout << "\n";
-        std::cout << "succ: ";
-        for (auto &prevs: bb->succ) 
-          std::cout << print_bb(prevs) << " ";
-        std::cout << "\n";
+
+        // std::cout << "pred: ";
+        // for (auto &prevs: bb->pred) 
+        //   std::cout << print_bb(prevs) << " ";
+        // std::cout << "\n";
+        // std::cout << "succ: ";
+        // for (auto &prevs: bb->succ) 
+        //   std::cout << print_bb(prevs) << " ";
+        // std::cout << "\n";
     }
   }
 

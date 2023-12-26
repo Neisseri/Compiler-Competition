@@ -8,6 +8,7 @@
 #include "frontend/IR/irgenerator.hpp"
 #include "antlr4-runtime.h"
 #include "backend/riscv/riscv.hpp"
+#include "backend/riscv/coloringregalloc.hpp"
 
 // backend
 #include "backend/riscv/riscv.hpp"
@@ -25,6 +26,7 @@ int main(int argc, const char *argv[])
     f_stream.open(argv[1]);
     string s = argv[1];
     std::string tag = s.substr(5, s.length() - 7);
+    // 你这也太不鲁棒了wok
     std::cout << tag << "-------------------" << std::endl;
     ANTLRInputStream input(f_stream);
     frontend::SysYLexer lexer(&input);
@@ -81,7 +83,9 @@ int main(int argc, const char *argv[])
         cout << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
-            func->do_reg_alloc();
+            riscv::coloringregalloc RegAllocator(func);
+            // func->do_reg_alloc();
+            RegAllocator.Main();
             func->emitend();
         }
         // output to file
