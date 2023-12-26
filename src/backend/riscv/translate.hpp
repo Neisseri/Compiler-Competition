@@ -131,10 +131,15 @@ namespace riscv {
         scrs.push_back(std::pair(Reg(i.first), bb_map[i.second.get()]));
       }
       bb->instructions.emplace_back(new Phi(Reg(phi->dst), scrs));
+    } else if (auto load_symb = dynamic_cast<ir::LoadAddr*>(ir_inst)) {
+      bb->instructions.emplace_back(new LoadAddr(Reg(load_symb->ret_val), load_symb->var_name));
     }
   }
 
   Program::Program(ir::Program ir_program) {
+    for (auto b: ir_program.global_defs) {
+      global_defs.push_back(dynamic_cast<ir::GlobalDef*>(b));
+    }
     for (auto &[name, func]: ir_program.functions)
       functions[name] = new Function(func, name);
   }

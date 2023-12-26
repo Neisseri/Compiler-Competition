@@ -94,6 +94,7 @@ struct Function {
 struct Program {
     void cfg_build();
     std::list<BasicBlock*> bbs;
+    std::list<ir::GlobalDef*> global_defs;
     std::unordered_map<std::string, Function*> functions;
     int label_cnt;
     std::string new_label() {
@@ -255,6 +256,16 @@ struct Phi: Instruction {
         }
         return rst;
     }
+    void emit(std::ostream &os) const override;
+};
+
+struct LoadAddr: Instruction {
+    Reg dst;
+    std::string var_name;
+    LoadAddr(Reg dst, std::string var_name): dst(dst), var_name(var_name) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
     void emit(std::ostream &os) const override;
 };
 
