@@ -90,11 +90,7 @@ int main(int argc, char *argv[])
 
     ifstream f_stream;
     f_stream.open(input_file_path);
-    string s = argv[1];
-    std::string tag = s.substr(5, s.length() - 7);
-    // 你这也太不鲁棒了wok
-    std::cout << tag << "-------------------" << std::endl;
-
+    
     cerr << "--------------------------- building ast ---------------------------" << endl;
 
     ANTLRInputStream input(f_stream);
@@ -146,9 +142,7 @@ int main(int argc, char *argv[])
 
     cerr << "--------------------------- building riscv ---------------------------" << endl;
 
-    // TODO:优化ir
 
-    // TODO:生成riscv代码并优化
     if (out_riscv_flag) {
         cout << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
@@ -159,8 +153,7 @@ int main(int argc, char *argv[])
             func->emitend();
         }
         // output to file
-        ofstream output_file;
-        output_file.open("riscv/" + tag + ".s");
+        ofstream output_file= openOrCreateFile("riscv", output_file_name);
         program.emit(output_file);
         output_file.close();
     }
