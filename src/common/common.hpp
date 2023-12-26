@@ -27,6 +27,7 @@
 
 namespace ir {
 enum InstType {
+  GLOBALDEF,
   ALLOCA,
   ASSIGN,
   LOAD,

@@ -15,6 +15,7 @@ public:
     int label_num = 0;
 
     std::set<std::string> var_name_set; // set of variable names
+    std::set<std::string> global_var_table; // set of global variable names
     std::unordered_map<std::string, std::set<std::shared_ptr<ir::BasicBlock>>> Defs; // bbs where the var defined
     std::unordered_map<std::string, ir::Reg> var_ptr_table; // the table of var ptr
     std::unordered_map<std::string, Type> var_type_table; // the table of var type
@@ -36,7 +37,15 @@ public:
         assert(lvalue->has_index);
 
         ir::Reg dst_adr_ptr;
-        ir::Reg dst_ptr = var_ptr_table[lvalue->ident->name];
+        std::string name = lvalue->ident->name;
+        ir::Reg dst_ptr;
+        if (global_var_table.find(name) != global_var_table.end()){
+            dst_ptr = get_new_reg(lvalue->var_type->type);
+            std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(dst_ptr, name));
+            ir_bb->instrs.push_back(std::move(loadaddr_instr));
+        } else {
+            dst_ptr = var_ptr_table[lvalue->ident->name];
+        }
         ir::Reg block_size = get_new_reg(lvalue->var_type->type);
         std::unique_ptr<ir::LoadInt> loadone_instr(new ir::LoadInt(block_size, 4));
         ir_bb->instrs.push_back(std::move(loadone_instr));
@@ -78,8 +87,79 @@ public:
         }
     }
 
-    void visitDeclaration(ast::Declaration &decl){
-//TODO
+    std::vector<int> visit_global_init(ast::Declaration *decl, ast::Expression *exp, int dim_len, int dim, int ele_start){
+        std::cerr << "visit_global_init" << std::endl;
+        
+        int ele_cnt = 0;
+        auto assignment = dynamic_cast<ast::Assignment *>(exp);
+        std::vector<int> ret_vals;
+        assert(assignment);
+        if (assignment->value != nullptr) {
+            ret_vals.push_back(visitExpressionVal(assignment->value));
+            return ret_vals;
+        }
+        for (auto &i : assignment->values){
+            if (auto sub_assignment = dynamic_cast<ast::Assignment *>(i.get())){
+                if (sub_assignment->value == nullptr){
+                    int sub_dim_len = dim_len / decl->var_type->dim[dim];
+                    std::vector<int> sub_vals = visit_global_init(decl, i.get(), sub_dim_len, dim + 1, ele_cnt);
+                    ret_vals.insert(ret_vals.end(), sub_vals.begin(), sub_vals.end());
+                    ele_cnt += sub_dim_len;
+                    continue;
+                }
+            }
+            int init_val = visitExpressionVal(i);
+            ret_vals.push_back(init_val);
+            ele_cnt ++;
+        }
+        while (ele_cnt < dim_len){
+            ret_vals.push_back(0);
+            ele_cnt ++;
+        }
+        return ret_vals;
+    }
+
+    void visitDeclaration(ast::Declaration &declaration){
+        ast::Declaration *decl = &declaration;
+        // TODO:consider the const val
+        if (decl->var_type->is_array){ // 数组
+            std::cerr << "visit decl global array" << std::endl;
+            for (auto &exp: decl->indices->children) {
+                decl->var_type->dim.push_back(visitExpressionVal(exp));
+            }
+            std::cerr << "global array size: " << decl->var_type->get_array_size() << std::endl;
+            std::vector<int> init_vals;
+            if (decl->has_init) {
+                init_vals = visit_global_init(decl, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
+            }
+            ir::GlobalDef* globaldef_instr(new ir::GlobalDef(decl->ident->name, *decl->var_type, init_vals, decl->has_init, 1));
+            std::string temp_name3 = decl->ident->name;
+            ir_program.global_defs.push_back(std::move(globaldef_instr));
+            std::string temp_name = decl->ident->name;
+            global_var_table.insert(std::move(temp_name));
+            Type array_type = *decl->var_type;
+            std::string temp_name2 = decl->ident->name;
+            var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
+            std::cerr << "visit decl global array done" << std::endl;
+        } else {
+            std::cerr << "visit decl global var" << std::endl;
+            std::vector<int> init_vals;
+            if (decl->has_init) {
+                init_vals = visit_global_init(decl, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
+            }
+            ir::GlobalDef* globaldef_instr(new ir::GlobalDef(decl->ident->name, *decl->var_type, init_vals, decl->has_init, 0));
+            std::string temp_name3 = decl->ident->name;
+            ir_program.global_defs.push_back(std::move(globaldef_instr));
+            global_var_table.insert(decl->ident->name);
+            Type var_type = *decl->var_type;
+            std::string temp_name2 = decl->ident->name;
+            var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(var_type)));
+            if (decl->is_const){
+                std::string temp_name = decl->ident->name;
+                const_val_table.insert(std::make_pair<std::string, int>(std::move(temp_name), visitExpressionVal(decl->init_expr)));
+            }
+            std::cerr << "visit decl global var done" << std::endl;
+        }
     }
 
     void visitFunction(ast::Function &func){
@@ -104,7 +184,7 @@ public:
         for (auto &i : func.params->children){
             ir::Reg init_reg(i->var_type->type, ++param_id);
             ir::Reg dst_ptr = get_new_reg(i->var_type->type);
-            std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, i->var_type->type ,4));
+            std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *i->var_type ,4));
             alloca_instr->is_local_var = 1;
             ir_bb->instrs.push_back(std::move(alloca_instr));
             std::string tem_name = i->ident->name;
@@ -293,13 +373,21 @@ public:
         }
         else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get())){
             std::string name = lvalue->ident->name;
-            ir::Reg val_ptr = var_ptr_table[name];
-            ir::Reg ret = get_new_reg(lvalue->var_type->type);
+            ir::Reg val_ptr;
             if (lvalue->has_index) {
                 val_ptr = visitIndex(lvalue, ir_bb);
+            } else {
+                if (global_var_table.find(name) != global_var_table.end()){
+                    val_ptr = get_new_reg(lvalue->var_type->type);
+                    std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(val_ptr, name));
+                    ir_bb->instrs.push_back(std::move(loadaddr_instr));
+                } else {
+                    val_ptr = var_ptr_table[name];
+                }
             }
+            ir::Reg ret = get_new_reg(lvalue->var_type->type);
             std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
-            if (!lvalue->has_index){
+            if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
                 load_instr->is_local_var = 1;
             }
             ir_bb->instrs.push_back(std::move(load_instr));
@@ -368,14 +456,25 @@ public:
             if (auto stmt = dynamic_cast<ast::Statement *>(child.get())){
                 if (auto assign = dynamic_cast<ast::Assign *>(child.get())){
                     ir::Reg src = visitExpression(assign->expr, ir_bb);
-                    ir::Reg dst_ptr = var_ptr_table[assign->lvalue->ident->name];
+                    ir::Reg dst_ptr;
+                    std::string name = assign->lvalue->ident->name;
+                    if (global_var_table.find(name) != global_var_table.end()){
+                        dst_ptr = get_new_reg(assign->lvalue->var_type->type);
+                        std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(dst_ptr, name));
+                        ir_bb->instrs.push_back(std::move(loadaddr_instr));
+                    } else {
+                        dst_ptr = var_ptr_table[assign->lvalue->ident->name];
+                    }
+
                     if (assign->lvalue->has_index) { // 数组
                         dst_ptr = visitIndex(assign->lvalue.get(), ir_bb);
                     }else {
-                        Defs[assign->lvalue->ident->name].insert(ir_bb);
+                        if (global_var_table.find(name) == global_var_table.end()){
+                            Defs[assign->lvalue->ident->name].insert(ir_bb);
+                        }
                     }
                     std::unique_ptr<ir::Store> store_instr(new ir::Store(assign->lvalue->var_type->type, src, dst_ptr, assign->lvalue->ident->name));
-                    if (!assign->lvalue->has_index){
+                    if (!assign->lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
                         store_instr->is_local_var = 1;
                     }
                     ir_bb->instrs.push_back(std::move(store_instr));
@@ -493,7 +592,7 @@ public:
                     for (auto &exp: decl->indices->children) {
                         decl->var_type->dim.push_back(visitExpressionVal(exp));
                     }
-                    std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type, decl->var_type->get_size()));
+                    std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *decl->var_type, decl->var_type->get_size()));
                     ir_bb->instrs.push_back(std::move(alloca_instr));
                     std::string temp_name = decl->ident->name;
                     ir::Reg temp_reg = dst_ptr;
@@ -506,7 +605,7 @@ public:
                     }
                     std::cerr << "visit decl array done" << std::endl;
                 } else {
-                    std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, decl->var_type->type ,4));
+                    std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *decl->var_type ,4));
                     alloca_instr->is_local_var = 1;
                     ir_bb->instrs.push_back(std::move(alloca_instr));
                     var_name_set.insert(decl->ident->name);
