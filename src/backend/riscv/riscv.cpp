@@ -64,6 +64,14 @@ namespace riscv {
     os << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
   }
 
+  void Phi::emit(std::ostream &os) const {
+    os << "phi " << print_reg(dst) << " = ";
+    for (auto i: srcs) {
+      os << "[ " << print_reg(i.first) << ", " << print_bb(i.second) << "] ";
+    }
+    os << "\n";
+  }
+
   void Binary::emit(std::ostream &os) const {
     // ADD OR XOR SUB MUL DIV AND SLT SHL SRL SRA SGT
     switch (op) {

@@ -9,29 +9,19 @@ namespace riscv {
   
   void Function::select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map) {
-    // ir_inst->print(std::cout, 4);
     if (auto alloca = dynamic_cast<ir::Alloca*>(ir_inst)) {
       Reg r = Reg(alloca->ret_val);
       alloca_offsets[r] = frame_size;
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
       bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
-      // std::cout << "# alloca_offsets[r]" << alloca_offsets[r] << "\n";
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
-      // debug
-      // std::cout << "# store " << store->src_val.id << " to " << store->ptr.id << "----------------------------\n";
-      
-      // TODO: 目前参数全放栈上
       if (num_params > 0 && store->src_val.id <= num_params) {
           Reg dst = Reg(store->ptr);
-          // Reg a0 = Reg(General, argregs[0]);
-          // debug
-          std::cout << "# " << name << " frame_size " << frame_size << "\n";
-          //bb->instructions.emplace_back(new LoadWord(a0, Reg(General, sp), 4 * (store->src_val.id - 1) + frame_size));
           bb->instructions.emplace_back(new LoadWord(Reg(General, t5), Reg(General, t6), 4 * (store->src_val.id - 1)));
           bb->instructions.emplace_back(new StoreWord(Reg(General, t5), dst, 0));
       } else { // no params
@@ -79,17 +69,17 @@ namespace riscv {
         } case BinaryOpEnum::XOR: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::XOR, src1, src2));
           break;
-        } case BinaryOpEnum::SGT: { // signed greater than
+        } case BinaryOpEnum::SGT: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SGT, src1, src2));
           break;
-        } case BinaryOpEnum::SLT: { // signed less than
+        } case BinaryOpEnum::SLT: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SLT, src1, src2));
           break;
-        } case BinaryOpEnum::SGE: { // signed greater or equal
+        } case BinaryOpEnum::SGE: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SLT, src1, src2));
           bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
           break;
-        } case BinaryOpEnum::SLE: { // signed less or equal
+        } case BinaryOpEnum::SLE: {
           bb->instructions.emplace_back(new Binary(dst, RiscvBinaryOp::SGT, src1, src2));
           bb->instructions.emplace_back(new Unary(dst, RiscvUnaryOp::SEQZ, dst));
           break;
@@ -124,27 +114,8 @@ namespace riscv {
       Reg dst = Reg(loadint->dst);
       bb->instructions.emplace_back(new LoadImm(dst, loadint->val));
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
-      // debug
-      // std::cout << "# call " << call->func_name << "----------------------------\n";
-
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
-      // 这里遇到个问题，如果参数数量较多，li 指令赋值的时候会用到参数寄存器
-      // 但是参数寄存器的值在函数调用之后会被覆盖
-      // 这部分涉及寄存器分配，还没搞懂，所以先全放到栈上
-      // for (int i = 0; i < num_args; i++) {
-      //   if (i < 8) {
-      //     Reg src_reg = Reg(call->params[i]);
-      //     bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
-      //   }
-      // }
-      // if (num_args > 8) {
-      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), -4 * (num_args - 8)));
-      //   for (int i = 8; i < num_args; i++) {
-      //     Reg src_reg = Reg(call->params[i]);
-      //     bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * (i - 8)));
-      //   }
-      // }
       bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), - 4 * num_args));
       for (int i = 0; i < num_args; i++) {
         Reg src_reg = Reg(call->params[i]);
@@ -154,12 +125,43 @@ namespace riscv {
       bb->instructions.emplace_back(new Call(call->func_name, num_args));
       bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
       bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), 4 * num_args));
+    } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
+      std::vector<std::pair<Reg, BasicBlock*>> scrs;
+      for (auto i: phi->srcs) {
+        scrs.push_back(std::pair(Reg(i.first), bb_map[i.second.get()]));
+      }
+      bb->instructions.emplace_back(new Phi(Reg(phi->dst), scrs));
     }
   }
 
   Program::Program(ir::Program ir_program) {
     for (auto &[name, func]: ir_program.functions)
       functions[name] = new Function(func, name);
+  }
+
+  void Function::resolve_phi() {
+    std::unordered_map<BasicBlock*, std::vector<std::pair<Reg, Reg>>> pairs;
+    for (auto bb: bbs) {
+      auto it = bb->instructions.begin();
+      while (it != bb->instructions.end()) {
+        auto inst = *it;
+        if (auto phi = dynamic_cast<Phi*>(inst)) {
+          for (auto i: phi->srcs) {
+            pairs[i.second].push_back({phi->dst, i.first});
+          }
+          it = bb->instructions.erase(it);
+        }
+        else {
+          it++;
+        }
+      }
+    }
+    for (auto i: pairs) {
+      while (true) {
+        std::set<Reg> livein;
+        
+      }
+    }
   }
 
   Function::Function(ir::Function& ir_function, const std::string& name): name(name) {

@@ -88,6 +88,7 @@ struct Function {
     Function(ir::Function& ir_function, const std::string& name);
     void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
         std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
+    void resolve_phi();
 };
 
 struct Program {
@@ -231,6 +232,29 @@ struct Call: Instruction {
         return use_set;
     }
     std::vector<Reg*> reg_ptrs() override { return {}; }
+    void emit(std::ostream &os) const override;
+};
+
+struct Phi: Instruction {
+    Reg dst;
+    std::vector<std::pair<Reg, BasicBlock*>> srcs;
+    Phi(Reg dst, std::vector<std::pair<Reg, BasicBlock*>>): dst(dst), srcs(srcs) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override {
+        std::set<Reg> rst;
+        for (auto i: srcs) {
+            rst.insert(i.first);
+        }
+        return rst;
+    }
+    std::vector<Reg*> reg_ptrs() override {
+        std::vector<Reg*> rst;
+        rst.push_back(&dst);
+        for (auto i: srcs) {
+            rst.push_back(&i.first);
+        }
+        return rst;
+    }
     void emit(std::ostream &os) const override;
 };
 
