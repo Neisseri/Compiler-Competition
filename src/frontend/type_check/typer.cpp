@@ -46,42 +46,53 @@ namespace frontend
         visitBlock(func_def->body.get());
         if (func_def->ret_type->type == static_cast<int>(TypeEnum::VOID))
         {
-            //create a return statement for void function
+            // create a return statement for void function
             auto int_literal = std::make_unique<ast::IntLiteral>(0);
 
             auto return_stmt = std::make_unique<ast::Return>(std::move(int_literal));
             func_def->body->children.push_back(std::move(return_stmt));
         }
-
-
         this->scope_stack->scope_pop();
     }
 
     void TyperVisitor::visitVarDef(const ast::Declaration *var_def)
     {
-        SyError().throw_info("visitVarDef" + var_def->toString());
+        SyError().throw_info("visitVarDef " + var_def->toString());
         auto name = var_def->ident.get()->name;
         if (scope_stack->lookup_top(name) != nullptr)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "redeclaration of variable " + name);
         }
+        if (var_def->is_array())
+        {
+            // get children
+            for (auto &child : var_def->indices->children)
+            {
+                SyError().throw_info("visitDims " + child->toString());
+                auto expr_type = visitExpr(child.get());
+                if (expr_type->type != static_cast<int>(TypeEnum::INT))
+                {
+                    SyError().throw_error(ErrorTypeEnum::SemanticError, "array index must be int");
+                }
+            }
+        }
+
         auto var_symbol = std::make_shared<VarSymbol>(var_def->ident.get()->name, std::move(var_def->var_type.get()), scope_stack->stack.back()->type == ScopeType::GlobalScope);
         scope_stack->declare_symbol(var_def->ident.get()->name, var_symbol);
         if (var_def->init_expr != nullptr)
         {
             Type *expr_type = visitExpr(var_def->init_expr.get());
-            if(!expr_type){
+            if (!expr_type)
+            {
                 SyError().throw_info("expr_type is nullptr , its an array ,return");
-                return;
             }
-            if (expr_type->type != var_symbol.get()->type->type)
+            if (expr_type && expr_type->type != var_symbol.get()->type->type)
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in variable declaration");
             }
         }
-        //rename var by adding scope_id
+        // rename var by adding scope_id
         var_def->ident->name = name + "#" + std::to_string(scope_stack->stack.back()->scope_id);
-
     }
 
     void TyperVisitor::visitParamDef(const ast::Parameter *param_def)
@@ -118,11 +129,11 @@ namespace frontend
         auto lval_type = visitExpr(lval);
         SyError().throw_info("visitAssignStmt" + lval_type->toString());
         auto rval_type = visitExpr(rval);
-        if(!rval_type){
+        if (!rval_type)
+        {
             SyError().throw_info("rval_type is nullptr , its an array ,return");
-            return;
         }
-        if (lval_type->type != rval_type->type)
+        if (rval_type && lval_type->type != rval_type->type)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in assignment");
         }
@@ -320,7 +331,10 @@ namespace frontend
             }
             else
             {
-                SyError().throw_info("assignment->value is nullptr , its an array ,return nullptr");
+                for (auto &child : assignment->values)
+                {
+                    auto rval_type = visitExpr(child.get());
+                }
                 return nullptr;
             }
         }
