@@ -3,18 +3,34 @@ parse tree:
 (compUnit 
         (compUnitItem 
             (funcDef 
-                (funcType 
-                    (bType int)) func ( ) 
-                (block { 
-                    (blockItem 
-                        (stmt return 
+                (funcType void) func ( ) 
+                (block { }))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef a = 
+                        (initVal 
                             (exp 
                                 (addExp 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
                                                 (number 
-                                                    (intConst 1))))))) ;)) }))) 
+                                                    (intConst 1))))))))) ;))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef b = 
+                        (initVal 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 2))))))))) ;))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
@@ -34,13 +50,35 @@ parse tree:
                                         (unaryExp 
                                             (primaryExp 
                                                 (number 
-                                                    (intConst 0))))))) ;)) }))) <EOF>)
+                                                    (intConst 0))))))) ;)) }))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef c = 
+                        (initVal 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 3))))))))) ;))) <EOF>)
 visitCompUnit
 visitCompUnit: funcDef
 construct funct block: func
-visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
+visitVarDecl: int start
+visitVarDecl: ident: a
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitVarDecl: int start
+visitVarDecl: ident: b
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
 visitCompUnit: funcDef
 construct funct block: main
 visitCall ident: func
@@ -48,16 +86,29 @@ visitCall args_list size: 0
 visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
+visitVarDecl: int start
+visitVarDecl: ident: c
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
 visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitFuncDefint @func()
+Info: visitFuncDefvoid @func()
 Info: visitBlock
-Info: visitStatementReturn 1
+Info: visitVarDefint @a = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x56427d075470
+ret->type 0x564ad2fff670
+Info: visitVarDefint @b = 2
+Info: visitExpr2
+Info: visitAssignmentExpr2
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x564ad30079d0
 Info: visitFuncDefint @main()
 Info: visitBlock
 Info: visitStatementCall @func()
@@ -66,18 +117,27 @@ Info: visiCalltExprCall @func()
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x56427d07df40
+ret->type 0x564ad3007940
+Info: visitVarDefint @c = 3
+Info: visitExpr3
+Info: visitAssignmentExpr3
+Info: visitExpr3
+Info: visitIntLiteralExpr3
+ret->type 0x564ad2ffb8c0
 ast: 
 Program
-  int @func()
+  void @func()
     {
-      Return 1
+      Return 0
     }
+  int @a#0 = 1
+  int @b#0 = 2
   int @main()
     {
       Call @func()
       Return 0
     }
+  int @c#0 = 3
 End of Program
 --------------------------- building ir ---------------------------
 visitProgram
@@ -105,6 +165,14 @@ B0:
 B0:
   DF: 
 
+visit decl global var
+visit_global_init
+visitExpressionVal
+visit decl global var done
+visit decl global var
+visit_global_init
+visitExpressionVal
+visit decl global var done
 visitFunction main
 visitBlock 
 visitExpression
@@ -130,18 +198,25 @@ B2:
 B2:
   DF: 
 
+visit decl global var
+visit_global_init
+visitExpressionVal
+visit decl global var done
 ir:
 ; module
+@a#0 = global int 1, 4
+@b#0 = global int 2, 4
+@c#0 = global int 3, 4
 define i32 @main(){
 B2:
-  %1 = call i32 @func()
+  %1 = call@func()
   %2 = 0
   ret i32 %2
 
 }
-define i32 @func(){
+define void @func(){
 B0:
-  %1 = 1
+  %1 = 0
   ret i32 %1
 
 }
@@ -161,7 +236,7 @@ pred: B0
 succ: 
 
 B3:
-li T[-1], 1
+li T[-1], 0
 mv a0, T[-1]
 ret
 pred: B2 
