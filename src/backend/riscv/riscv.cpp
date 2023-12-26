@@ -20,7 +20,46 @@ namespace riscv {
     }
   }
 
+  std::string global_var_name(std::string var_name) {
+    return var_name.substr(0, var_name.length()-2);
+  }
+
   void Program::emit(std::ostream &os) {
+    for (auto b: global_defs) {
+      if (b->is_array) {
+        if (b->has_init) {
+          os << "\n.data\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
+          for (auto i: b->init_val) {
+            os << "    .word " << i << "\n";
+          }
+          int space_left = 4 * (b->type.get_array_size() - b->init_val.size());
+          if (space_left > 0)
+            os << "    .space " << space_left << "\n";
+        }
+        else {
+          os << "\n.bss\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
+          os << "    .space " << 4 * b->type.get_array_size() << "\n";
+        }
+      }
+      else {
+        if (b->has_init) {
+          os << "\n.data\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
+          os << "    .word " << b->init_val[0] << "\n";
+        }
+        else {
+          os << "\n.bss\n";
+          os << ".globl " << global_var_name(b->var_name) << "\n";
+          os << global_var_name(b->var_name) << ":\n";
+          os << "    .space " << 4 << "\n";
+        }
+      }
+    }
     os << "\n.text\n";
     os << ".global main\n";
     os << "\n";
@@ -62,6 +101,14 @@ namespace riscv {
 
   void Branch::emit(std::ostream &os) const {
     os << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
+  }
+
+  void Phi::emit(std::ostream &os) const {
+    os << "phi " << print_reg(dst) << " = ";
+    for (auto i: srcs) {
+      os << "[ " << print_reg(i.first) << ", " << print_bb(i.second) << "] ";
+    }
+    os << "\n";
   }
 
   void Binary::emit(std::ostream &os) const {
@@ -141,10 +188,15 @@ namespace riscv {
   }
 
   void Move::emit(std::ostream &os) const {
-    os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
+    if (dst != src)
+      os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
   }
 
   void Call::emit(std::ostream &os) const {
     os << "call " << func_name << "\n";
+  }
+
+  void LoadAddr::emit(std::ostream &os) const {
+    os << "la " << print_reg(dst) << ", " << var_name << "\n";
   }
 }

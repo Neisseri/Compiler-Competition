@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma once
+
 #include "../../common/common.hpp"
 #include "../../common/ir.hpp"
 #include "../../common/label.hpp"
@@ -57,6 +59,10 @@ struct Instruction {
 struct Function {
     std::string name;
     ir::Label label;
+    Reg freshTemp() {
+        return Reg(General, -(++num_regs));
+    }
+    int num_regs;
     int reg_occupied[32];
     std::vector<std::unique_ptr<Instruction>> instrs;
     std::list<BasicBlock*> bbs;
@@ -82,11 +88,13 @@ struct Function {
     Function(ir::Function& ir_function, const std::string& name);
     void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
         std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
+    void resolve_phi();
 };
 
 struct Program {
     void cfg_build();
     std::list<BasicBlock*> bbs;
+    std::list<ir::GlobalDef*> global_defs;
     std::unordered_map<std::string, Function*> functions;
     int label_cnt;
     std::string new_label() {
@@ -108,7 +116,6 @@ struct Unary: Instruction {
     Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
-    std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
 };
 
@@ -226,6 +233,39 @@ struct Call: Instruction {
         return use_set;
     }
     std::vector<Reg*> reg_ptrs() override { return {}; }
+    void emit(std::ostream &os) const override;
+};
+
+struct Phi: Instruction {
+    Reg dst;
+    std::vector<std::pair<Reg, BasicBlock*>> srcs;
+    Phi(Reg dst, std::vector<std::pair<Reg, BasicBlock*>>): dst(dst), srcs(srcs) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override {
+        std::set<Reg> rst;
+        for (auto i: srcs) {
+            rst.insert(i.first);
+        }
+        return rst;
+    }
+    std::vector<Reg*> reg_ptrs() override {
+        std::vector<Reg*> rst;
+        rst.push_back(&dst);
+        for (auto i: srcs) {
+            rst.push_back(&i.first);
+        }
+        return rst;
+    }
+    void emit(std::ostream &os) const override;
+};
+
+struct LoadAddr: Instruction {
+    Reg dst;
+    std::string var_name;
+    LoadAddr(Reg dst, std::string var_name): dst(dst), var_name(var_name) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
     void emit(std::ostream &os) const override;
 };
 

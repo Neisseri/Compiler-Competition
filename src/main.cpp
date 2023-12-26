@@ -23,6 +23,8 @@
 
 //utils , some tools
 #include "common/utils.hpp"
+#include "backend/riscv/riscv.hpp"
+#include "backend/riscv/coloringregalloc.hpp"
 
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
@@ -88,7 +90,7 @@ int main(int argc, char *argv[])
 
     ifstream f_stream;
     f_stream.open(input_file_path);
-
+    
     cerr << "--------------------------- building ast ---------------------------" << endl;
 
     ANTLRInputStream input(f_stream);
@@ -140,15 +142,14 @@ int main(int argc, char *argv[])
 
     cerr << "--------------------------- building riscv ---------------------------" << endl;
 
-    // TODO:优化ir
 
-    // TODO:生成riscv代码并优化
-    if (out_riscv_flag)
-    {
+    if (out_riscv_flag) {
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
-            func->do_reg_alloc();
+            riscv::coloringregalloc RegAllocator(func);
+            // func->do_reg_alloc();
+            RegAllocator.Main();
             func->emitend();
         }
         // output to file
