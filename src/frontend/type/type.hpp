@@ -5,11 +5,11 @@
 
 struct Type
 {
-    int type;
-    bool is_const=false;
-    bool is_array=false;
+    int type; // set in ast gen
+    bool is_const=false; // set in ast gen
+    bool is_array=false; // set in ast gen
 
-    std::vector<int> dim={};
+    std::vector<int> dim={}; // set in ir gen
     Type(){}
 
     Type(int type) : type(type), is_const(false) {}
