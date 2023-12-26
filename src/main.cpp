@@ -26,10 +26,6 @@
 #include "backend/riscv/riscv.hpp"
 #include "backend/riscv/coloringregalloc.hpp"
 
-// backend
-#include "backend/riscv/riscv.hpp"
-#include "backend/riscv/translate.hpp"
-
 #define VISITOR 1 // 0 for listener, 1 for visitor
 
 using namespace antlr4;
@@ -153,7 +149,7 @@ int main(int argc, char *argv[])
     // TODO:优化ir
 
     // TODO:生成riscv代码并优化
-    if (step == 4) {
+    if (out_riscv_flag) {
         cout << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
@@ -165,18 +161,6 @@ int main(int argc, char *argv[])
         // output to file
         ofstream output_file;
         output_file.open("riscv/" + tag + ".s");
-        program.emit(output_file);
-        output_file.close();
-    }    if (out_riscv_flag)
-    {
-        cerr << "riscv: " << endl;
-        riscv::Program program(ir_generator.ir_program);
-        for (auto [name, func]: program.functions) {
-            func->do_reg_alloc();
-            func->emitend();
-        }
-        // output to file
-        ofstream output_file= openOrCreateFile("riscv", output_file_name);
         program.emit(output_file);
         output_file.close();
     }
