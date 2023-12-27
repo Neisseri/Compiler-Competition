@@ -9,6 +9,7 @@ class Scope
 public:
     ScopeType type=ScopeType::ErrorScope;
     Type *ret_type; // only for func scope
+    bool has_return = false;
     int scope_id;
     Scope() = default;
     Scope(ScopeType type) : type(type) {}
@@ -104,6 +105,20 @@ public:
         }
         return nullptr;
     }
+
+    std::shared_ptr<Scope> get_func_scope()
+    {
+        for (auto iter = stack.rbegin(); iter != stack.rend(); iter++)
+        {
+            if ((*iter)->type == ScopeType::FuncScope)
+            {
+                return std::make_shared<Scope>(**iter);
+            }
+        }
+        return nullptr;
+    }
+
+
 
     void declare_symbol(const std::string name, const std::shared_ptr<Symbol> symbol)
     {
