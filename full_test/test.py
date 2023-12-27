@@ -22,7 +22,7 @@ TIMEOUT = 20
 compiler_path = "../build/compiler"
 # compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"
 # compiler_args = "-O2 -march=rv32gc -mabi=ilp32f -xc++ -S -include ./runtime/sylib.h"
-compiler_args = "-O -r -f"
+compiler_args = " -A -f"
 qemu_command = "qemu-riscv32"
 
 # 调用gcc进行链接的参数
@@ -146,7 +146,7 @@ def test(config: Config, testcase: str) -> bool:
     assembly = os.path.join(f'{testcase}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
     command = (f'{config.compiler} {config.compiler_args} {source}'
-                f' -O -A -o {assembly}')
+                f' -A -o {assembly}')
 
     proc = subprocess.Popen(command, shell=True,stderr=open(error_log, 'w'))
     try:

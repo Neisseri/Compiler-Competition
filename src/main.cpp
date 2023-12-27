@@ -146,8 +146,10 @@ int main(int argc, char *argv[])
     if (out_riscv_flag) {
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
+        std::cerr << "?\n";
         for (auto [name, func]: program.functions) {
             func->resolve_phi();
+            std::cerr << name << "\n";
             riscv::coloringregalloc RegAllocator(func);
             // func->do_reg_alloc();
             RegAllocator.Main();
