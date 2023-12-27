@@ -22,7 +22,7 @@ TIMEOUT = 20
 compiler_path = "../build/compiler"
 # compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"
 # compiler_args = "-O2 -march=rv32gc -mabi=ilp32f -xc++ -S -include ./runtime/sylib.h"
-compiler_args = " -r -f"
+compiler_args = "-O -r -f"
 qemu_command = "qemu-riscv32"
 
 # 调用gcc进行链接的参数
@@ -105,8 +105,7 @@ def run(
     output = os.path.join(workdir, name_body + '.stdout')
     time = os.path.join(workdir, name_body + '.stderr')
     # os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} -o {executable}')
-    if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a'
-                 f' -o {executable}') != 0:
+    if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a -o {executable}') != 0:
         return Result.LINKER_ERROR
     answer_content, answer_exitcode = get_answer(answer)
     average_time = 0

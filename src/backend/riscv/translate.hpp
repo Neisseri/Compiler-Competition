@@ -27,15 +27,9 @@ namespace riscv {
       Reg src = Reg(load->ptr);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
-      if (num_params > 0 && store->src_val.id <= num_params) {
-          Reg dst = Reg(store->ptr);
-          bb->instructions.emplace_back(new LoadWord(Reg(General, t5), Reg(General, t6), 4 * (store->src_val.id - 1)));
-          bb->instructions.emplace_back(new StoreWord(Reg(General, t5), dst, 0));
-      } else { // no params
-        Reg dst = Reg(store->ptr);
-        Reg src = Reg(store->src_val);
-        bb->instructions.emplace_back(new StoreWord(src, dst, 0));
-      }
+      Reg dst = Reg(store->ptr);
+      Reg src = Reg(store->src_val);
+      bb->instructions.emplace_back(new StoreWord(src, dst, 0));
     } else if (auto binary = dynamic_cast<ir::Binary*>(ir_inst)) {
       Reg dst = Reg(binary->dst);
       Reg src1 = Reg(binary->src1);

@@ -4,279 +4,192 @@ parse tree:
         (compUnitItem 
             (funcDef 
                 (funcType 
-                    (bType int)) param16 ( 
+                    (bType int)) func ( 
                 (funcFParams 
                     (funcFParam 
-                        (bType int) a1) , 
+                        (bType int) a) , 
                     (funcFParam 
-                        (bType int) a2) , 
-                    (funcFParam 
-                        (bType int) a3) , 
-                    (funcFParam 
-                        (bType int) a4) , 
-                    (funcFParam 
-                        (bType int) a5) , 
-                    (funcFParam 
-                        (bType int) a6) , 
-                    (funcFParam 
-                        (bType int) a7) , 
-                    (funcFParam 
-                        (bType int) a8) , 
-                    (funcFParam 
-                        (bType int) a9) , 
-                    (funcFParam 
-                        (bType int) a10) , 
-                    (funcFParam 
-                        (bType int) a11) , 
-                    (funcFParam 
-                        (bType int) a12) , 
-                    (funcFParam 
-                        (bType int) a13) , 
-                    (funcFParam 
-                        (bType int) a14) , 
-                    (funcFParam 
-                        (bType int) a15) , 
-                    (funcFParam 
-                        (bType int) a16)) ) 
+                        (bType int) b)) ) 
                 (block { 
                     (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
+                                    (addExp 
+                                        (mulExp 
+                                            (unaryExp 
+                                                (primaryExp 
+                                                    (lVal a))))) + 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (number 
-                                                    (intConst 0))))))) ;)) }))) 
+                                                (lVal b)))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
                     (bType int)) main ( ) 
                 (block { 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef arr [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 32))))))) ] [ 
-                                    (exp 
-                                        (addExp 
-                                            (mulExp 
-                                                (unaryExp 
-                                                    (primaryExp 
-                                                        (number 
-                                                            (intConst 2))))))) ] = 
-                                    (initVal { 
-                                        (initVal { 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp param16 ( 
-                                                                (funcRParams 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( )))))) , 
-                                                                    (funcRParam 
-                                                                        (exp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp getint ( ))))))) )))))) , 
-                                            (initVal 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 8848)))))))) }) })) ;))) 
-                    (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
                                     (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (number 
-                                                    (intConst 0))))))) ;)) }))) <EOF>)
+                                        (unaryExp func ( 
+                                            (funcRParams 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 2)))))))) , 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 2))))))))) ))))) ;)) }))) <EOF>)
 visitCompUnit
 visitCompUnit: funcDef
-construct funct block: param16
-visitPrimaryExp_ number
+construct funct block: func
 visitBlock done!
 construct funct block done!
 visitCompUnit: funcDef
 construct funct block: main
-visitVarDecl: int start
-visitVarDecl: array dim_size=2
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitVarDecl: ident: arr
-visitVarDecl: initVal
-visitInit
-visitCall ident: param16
+visitCall ident: func
 visitFuncRParams
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall args_list size: 16
-visitInit
 visitPrimaryExp_ number
 visitPrimaryExp_ number
+visitCall args_list size: 2
 visitBlock done!
 construct funct block done!
 visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitFuncDefint @param16(int @a1, int @a2, int @a3, int @a4, int @a5, int @a6, int @a7, int @a8, int @a9, int @a10, int @a11, int @a12, int @a13, int @a14, int @a15, int @a16)
-Info: visitParamDefint @a1
-Info: visitParamDefint @a2
-Info: visitParamDefint @a3
-Info: visitParamDefint @a4
-Info: visitParamDefint @a5
-Info: visitParamDefint @a6
-Info: visitParamDefint @a7
-Info: visitParamDefint @a8
-Info: visitParamDefint @a9
-Info: visitParamDefint @a10
-Info: visitParamDefint @a11
-Info: visitParamDefint @a12
-Info: visitParamDefint @a13
-Info: visitParamDefint @a14
-Info: visitParamDefint @a15
-Info: visitParamDefint @a16
+Info: visitFuncDefint @func(int @a, int @b)
+Info: visitParamDefint @a
+Info: visitParamDefint @b
 Info: visitBlock
-Info: visitStatementReturn 0
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x55b87e941e00
+Info: visitStatementReturn @a+@b
+Info: visitExpr@a+@b
+Info: visitBinopExpr@a+@b
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitReturnStmtReturn @a#1+@b#1function has returnscope id1
 Info: visitFuncDefint @main()
 Info: visitBlock
-Info: visitVarDef int @arr = {{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitDims 32
-Info: visitExpr32
-Info: visitIntLiteralExpr32
-ret->type 0x55b87e942490
-Info: visitDims 2
+Info: visitStatementReturn Call @func(2, 2)
+Info: visitExprCall @func(2, 2)
+Info: visiCalltExprCall @func(2, 2)
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55b87e9424c0
-Info: visitExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitAssignmentExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
-Info: visitAssignmentExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
-Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitAssignmentExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visiCalltExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitExprCall @getint()
-Info: visiCalltExprCall @getint()
-Info: use of undeclared function getint
+ret->type 0x55fccb3ceb50
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x55fccb3d0480
+Info: visitReturnStmtReturn Call @func(2, 2)function has returnscope id3
+ast: 
+Program
+  int @func(int @a#1, int @b#1)
+    {
+      Return @a#1+@b#1
+    }
+  int @main()
+    {
+      Return Call @func(2, 2)
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction func
+visitFunction param decl: a#1
+visitFunction param decl: b#1
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue a#1
+visitExpression
+visitExpressionLValue b#1
+function func has 7 regs
+B0:
+  prev: 
+  succ: 
+B1:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: 
+
+entryB0
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 3 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
+ir:
+; module
+define i32 @main(){
+B2:
+  %2 = 2
+  %3 = 2
+  %1 = call i32 @func(i32 %2, i32 %3)
+  ret i32 %1
+
+}
+define i32 @func(i32, i32){
+B0:
+  %3 = alloca int, 4
+  store i32 %1, ptr %3
+  %4 = alloca int, 4
+  store i32 %2, ptr %4
+  %5 = load i32, ptr %3
+  %6 = load i32, ptr %4
+  %7 = add i32 %5, %6
+  ret i32 %7
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
