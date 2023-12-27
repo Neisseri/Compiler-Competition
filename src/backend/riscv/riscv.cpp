@@ -17,7 +17,6 @@ namespace riscv {
     for (auto bb: bbs) {
       os << print_bb(bb) << ":\n";
       for (auto &inst: bb->instructions) {
-        os << tab;
         inst->emit(os);
       }
       os << "\n";

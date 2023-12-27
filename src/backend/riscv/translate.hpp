@@ -8,12 +8,14 @@
 namespace riscv {
   
   void Function::select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
-    std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map) {
+    std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map,
+    std::set<std::string> func_defined) {
     if (auto alloca = dynamic_cast<ir::Alloca*>(ir_inst)) {
       Reg r = Reg(alloca->ret_val);
       alloca_offsets[r] = frame_size;
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
+      // if (alloca_offsets[r] > )
       bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
@@ -120,15 +122,25 @@ namespace riscv {
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
-      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), - 4 * num_args));
+      // if (func_defined.count(call->func_name)) {
+      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), - 4 * num_args));
+      //   for (int i = 0; i < num_args; i++) {
+      //     Reg src_reg = Reg(call->params[i]);
+      //     bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));
+      //   }
+      //   bb->instructions.emplace_back(new Move(Reg(General, sp), Reg(General, 31)));
+      //   bb->instructions.emplace_back(new Call(call->func_name, num_args));
+      //   bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
+      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), 4 * num_args));
+      // }
+      // else {
       for (int i = 0; i < num_args; i++) {
         Reg src_reg = Reg(call->params[i]);
-        bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));
+        bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
       }
-      bb->instructions.emplace_back(new Move(Reg(General, sp), Reg(General, 31)));
       bb->instructions.emplace_back(new Call(call->func_name, num_args));
       bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-      bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), 4 * num_args));
+      // }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
       for (auto i: phi->srcs) {
@@ -138,7 +150,7 @@ namespace riscv {
       }
       bb->instructions.emplace_back(new Phi(Reg(phi->dst), scrs));
     } else if (auto load_symb = dynamic_cast<ir::LoadAddr*>(ir_inst)) {
-      bb->instructions.emplace_back(new LoadAddr(Reg(load_symb->ret_val), load_symb->var_name));
+      bb->instructions.emplace_back(new LoadAddr(Reg(load_symb->ret_val), load_symb->var_name.substr(0, load_symb->var_name.length()-2)));
     }
   }
 
@@ -146,8 +158,11 @@ namespace riscv {
     for (auto b: ir_program.global_defs) {
       global_defs.push_back(dynamic_cast<ir::GlobalDef*>(b));
     }
+    std::set<std::string> func_defined;
     for (auto &[name, func]: ir_program.functions)
-      functions[name] = new Function(func, name);
+      func_defined.insert(name);
+    for (auto &[name, func]: ir_program.functions)
+      functions[name] = new Function(func, name, func_defined);
   }
 
   void Function::resolve_phi() {
@@ -197,19 +212,16 @@ namespace riscv {
     }
   }
 
-  Function::Function(ir::Function& ir_function, const std::string& name): name(name) {
+  Function::Function(ir::Function& ir_function, const std::string& name, std::set<std::string> func_defined): name(name) {
     auto entry_bb = new BasicBlock;
     num_regs = ir_function.num_regs;
     bbs.emplace_back(entry_bb);
     num_params = ir_function.param_types.size();
-    std::vector<int> stack_params;
-    frame_size = 4 * 11 + 4; // callee-saved regs + ra
+    frame_size = 4 * 11 + 4;
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
+    std::set<int> arg_idxs;
     for (int i = 0; i < num_params; i++) {
-      Reg param_reg = Reg(General, -(++num_regs)); // allocate regs for function parameters
-      offsets[param_reg] = frame_size; // load all parameters from stack
-      frame_size += 4;
-      //entry_bb->instructions.emplace_back(new LoadWord(param_reg, Reg(General, sp), offsets[param_reg]));
+      arg_idxs.insert(-(i+1));
     }
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = new BasicBlock;
@@ -222,7 +234,7 @@ namespace riscv {
         auto bb = bb_map[ir_bb.get()];
         bb->instructions.clear();
         for (auto &inst: ir_bb->instrs)
-          select_instr(inst.get(), bb, bb_map);
+          select_instr(inst.get(), bb, bb_map, func_defined);
 
         // std::cout << "before allocating regs\n";
         // for (auto &inst: bb->instructions) 
@@ -236,6 +248,16 @@ namespace riscv {
         // for (auto &prevs: bb->succ) 
         //   std::cout << print_bb(prevs) << " ";
         // std::cout << "\n";
+    }
+    for (auto bb: bbs) {
+      for (auto inst: bb->instructions) {
+        auto reg_ptrs = inst->reg_ptrs();
+        for (auto &r: reg_ptrs) {
+          if (arg_idxs.count(r->id)) {
+            *r = Reg(General, argregs[-1-r->id]);
+          }
+        }
+      }
     }
   }
 
