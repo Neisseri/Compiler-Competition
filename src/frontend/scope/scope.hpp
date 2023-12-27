@@ -143,6 +143,19 @@ public:
         return nullptr;
     }
 
+    void set_has_return()
+    {
+        //find the top func scope
+        for (auto iter = stack.rbegin(); iter != stack.rend(); iter++)
+        {
+            if ((*iter)->type == ScopeType::FuncScope)
+            {
+                (*iter)->has_return = true;
+                return;
+            }
+        }
+    }
+
     bool is_in_loop()
     {
         return loop_cnt > 0;

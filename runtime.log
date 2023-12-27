@@ -4,17 +4,40 @@ parse tree:
         (compUnitItem 
             (funcDef 
                 (funcType 
-                    (bType int)) model ( 
+                    (bType int)) param16 ( 
                 (funcFParams 
                     (funcFParam 
-                        (bType int) a [ ] [ 
-                        (exp 
-                            (addExp 
-                                (mulExp 
-                                    (unaryExp 
-                                        (primaryExp 
-                                            (number 
-                                                (intConst 5))))))) ])) ) 
+                        (bType int) a1) , 
+                    (funcFParam 
+                        (bType int) a2) , 
+                    (funcFParam 
+                        (bType int) a3) , 
+                    (funcFParam 
+                        (bType int) a4) , 
+                    (funcFParam 
+                        (bType int) a5) , 
+                    (funcFParam 
+                        (bType int) a6) , 
+                    (funcFParam 
+                        (bType int) a7) , 
+                    (funcFParam 
+                        (bType int) a8) , 
+                    (funcFParam 
+                        (bType int) a9) , 
+                    (funcFParam 
+                        (bType int) a10) , 
+                    (funcFParam 
+                        (bType int) a11) , 
+                    (funcFParam 
+                        (bType int) a12) , 
+                    (funcFParam 
+                        (bType int) a13) , 
+                    (funcFParam 
+                        (bType int) a14) , 
+                    (funcFParam 
+                        (bType int) a15) , 
+                    (funcFParam 
+                        (bType int) a16)) ) 
                 (block { 
                     (blockItem 
                         (stmt return 
@@ -23,21 +46,8 @@ parse tree:
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (lVal a [ 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 0))))))) ] [ 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 3))))))) ])))))) ;)) }))) 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
@@ -47,75 +57,129 @@ parse tree:
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef a [ 
+                                (varDef arr [ 
                                     (exp 
                                         (addExp 
                                             (mulExp 
                                                 (unaryExp 
                                                     (primaryExp 
                                                         (number 
-                                                            (intConst 3))))))) ] [ 
+                                                            (intConst 32))))))) ] [ 
                                     (exp 
                                         (addExp 
                                             (mulExp 
                                                 (unaryExp 
                                                     (primaryExp 
                                                         (number 
-                                                            (intConst 5))))))) ] = 
+                                                            (intConst 2))))))) ] = 
                                     (initVal { 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 1)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 2)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 3)))))))) , 
-                                        (initVal 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 4)))))))) })) ;))) 
+                                        (initVal { 
+                                            (initVal 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp param16 ( 
+                                                                (funcRParams 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( )))))) , 
+                                                                    (funcRParam 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp getint ( ))))))) )))))) , 
+                                            (initVal 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 8848)))))))) }) })) ;))) 
                     (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
                                     (mulExp 
-                                        (unaryExp model ( 
-                                            (funcRParams 
-                                                (funcRParam 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (lVal a)))))))) ))))) ;)) }))) <EOF>)
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
 visitCompUnit: funcDef
-visitArrayParam
-visitPrimaryExp_ number
-visitArrayParam: dim_ is not nullptr
-construct funct block: model
-visitPrimaryExp_ number
+construct funct block: param16
 visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
@@ -125,254 +189,94 @@ visitVarDecl: int start
 visitVarDecl: array dim_size=2
 visitPrimaryExp_ number
 visitPrimaryExp_ number
-visitVarDecl: ident: a
+visitVarDecl: ident: arr
 visitVarDecl: initVal
 visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitInit
-visitPrimaryExp_ number
-visitCall ident: model
+visitCall ident: param16
 visitFuncRParams
-visitCall args_list size: 1
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall ident: getint
+visitCall args_list size: 0
+visitCall args_list size: 16
+visitInit
+visitPrimaryExp_ number
+visitPrimaryExp_ number
 visitBlock done!
 construct funct block done!
 visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitFuncDefint @model(int @a[0, 5])
-Info: visitParamDefint @a[0, 5]
+Info: visitFuncDefint @param16(int @a1, int @a2, int @a3, int @a4, int @a5, int @a6, int @a7, int @a8, int @a9, int @a10, int @a11, int @a12, int @a13, int @a14, int @a15, int @a16)
+Info: visitParamDefint @a1
+Info: visitParamDefint @a2
+Info: visitParamDefint @a3
+Info: visitParamDefint @a4
+Info: visitParamDefint @a5
+Info: visitParamDefint @a6
+Info: visitParamDefint @a7
+Info: visitParamDefint @a8
+Info: visitParamDefint @a9
+Info: visitParamDefint @a10
+Info: visitParamDefint @a11
+Info: visitParamDefint @a12
+Info: visitParamDefint @a13
+Info: visitParamDefint @a14
+Info: visitParamDefint @a15
+Info: visitParamDefint @a16
 Info: visitBlock
-Info: visitStatementReturn @a[0][3]
-Info: visitExpr@a[0][3]
-Info: visitLvalExpr@a[0][3]
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55b87e941e00
 Info: visitFuncDefint @main()
 Info: visitBlock
-Info: visitVarDef int @a = {1, 2, 3, 4}
-Info: visitDims 3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x562277e2fbf0
-Info: visitDims 5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x562277e2fc20
-Info: visitExpr{1, 2, 3, 4}
-Info: visitAssignmentExpr{1, 2, 3, 4}
-Info: visitExpr1
-Info: visitAssignmentExpr1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x562277e2fc50
-Info: visitExpr2
-Info: visitAssignmentExpr2
+Info: visitVarDef int @arr = {{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
+Info: visitDims 32
+Info: visitExpr32
+Info: visitIntLiteralExpr32
+ret->type 0x55b87e942490
+Info: visitDims 2
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x562277e2f4d0
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x562277e2f500
-Info: visitExpr4
-Info: visitAssignmentExpr4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x562277e2f530
-Info: expr_type is nullptr , its an array ,return
-Info: visitStatementReturn Call @model(@a)
-Info: visitExprCall @model(@a)
-Info: visiCalltExprCall @model(@a)
-Info: visitExpr@a
-Info: visitLvalExpr@a
-ast: 
-Program
-  int @model(int @a#1[0, 5])
-    {
-      Return @a#1[0][3]
-    }
-  int @main()
-    {
-      int @a#4 = {1, 2, 3, 4}
-      Return Call @model(@a#4)
-    }
-End of Program
---------------------------- building ir ---------------------------
-visitProgram
-visitFunction model
-visitFunction param decl: a#1
-visitFunction param decl array
-visitExpressionVal
-visitExpressionVal
-visitBlock 
-visitStatement
-visitExpression
-visitExpressionLValue a#1
-visitIndex
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitIndex calc blocksize 1
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-function model has 11 regs
-B0:
-  prev: 
-  succ: 
-B1:
-  prev: 
-  succ: 
-
-B0:
-  prev: 
-  succ: 
-
-entryB0
-reverse_postorderB0
-B0:
-  doms: 
-  domed_by: B0 
-
-B0:
-  DF: 
-
-visitFunction main
-visitBlock 
-visit decl array
-visitExpressionVal
-visitExpressionVal
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visit decl array store type done a#4 1
-visit decl array done
-visitStatement
-visitExpression
-visitExpression
-visitExpressionLValue a#4
-visitExpressionLValue array ptr pass
-function main has 47 regs
-B2:
-  prev: 
-  succ: 
-B3:
-  prev: 
-  succ: 
-
-B2:
-  prev: 
-  succ: 
-
-entryB2
-reverse_postorderB2
-B2:
-  doms: 
-  domed_by: B2 
-
-B2:
-  DF: 
-
-ir:
-; module
-define i32 @main(){
-B2:
-  %1 = alloca int [3,5], 60
-  %2 = 1
-  %4 = 0
-  %3 = add i32 %1, %4
-  store i32 %2, ptr %3
-  %5 = 2
-  %7 = 4
-  %6 = add i32 %1, %7
-  store i32 %5, ptr %6
-  %8 = 3
-  %10 = 8
-  %9 = add i32 %1, %10
-  store i32 %8, ptr %9
-  %11 = 4
-  %13 = 12
-  %12 = add i32 %1, %13
-  store i32 %11, ptr %12
-  %14 = 0
-  %16 = 16
-  %15 = add i32 %1, %16
-  store i32 %14, ptr %15
-  %17 = 0
-  %19 = 20
-  %18 = add i32 %1, %19
-  store i32 %17, ptr %18
-  %20 = 0
-  %22 = 24
-  %21 = add i32 %1, %22
-  store i32 %20, ptr %21
-  %23 = 0
-  %25 = 28
-  %24 = add i32 %1, %25
-  store i32 %23, ptr %24
-  %26 = 0
-  %28 = 32
-  %27 = add i32 %1, %28
-  store i32 %26, ptr %27
-  %29 = 0
-  %31 = 36
-  %30 = add i32 %1, %31
-  store i32 %29, ptr %30
-  %32 = 0
-  %34 = 40
-  %33 = add i32 %1, %34
-  store i32 %32, ptr %33
-  %35 = 0
-  %37 = 44
-  %36 = add i32 %1, %37
-  store i32 %35, ptr %36
-  %38 = 0
-  %40 = 48
-  %39 = add i32 %1, %40
-  store i32 %38, ptr %39
-  %41 = 0
-  %43 = 52
-  %42 = add i32 %1, %43
-  store i32 %41, ptr %42
-  %44 = 0
-  %46 = 56
-  %45 = add i32 %1, %46
-  store i32 %44, ptr %45
-  %47 = call i32 @model(i32 %1)
-  ret i32 %47
-
-}
-define i32 @model(i32){
-B0:
-  %2 = 4
-  %3 = 3
-  %4 = mul i32 %3, %2
-  %5 = add i32 %1, %4
-  %6 = 5
-  %7 = mul i32 %2, %6
-  %8 = 0
-  %9 = mul i32 %8, %7
-  %10 = add i32 %5, %9
-  %11 = load i32, ptr %10
-  ret i32 %11
-
-}
---------------------------- building riscv ---------------------------
-riscv: 
+ret->type 0x55b87e9424c0
+Info: visitExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
+Info: visitAssignmentExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
+Info: visitExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
+Info: visitAssignmentExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
+Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
+Info: visitAssignmentExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
+Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
+Info: visiCalltExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
+Info: visitExprCall @getint()
+Info: visiCalltExprCall @getint()
+Info: use of undeclared function getint
