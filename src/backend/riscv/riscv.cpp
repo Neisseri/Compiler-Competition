@@ -67,8 +67,10 @@ namespace riscv {
     os << "\n.text\n";
     os << ".global main\n";
     os << "\n";
-    for (auto &[name, func]: functions)
+    for (auto &[name, func]: functions) {
+      os << ".globl " << func->name << "\n";
       func->emit(os);
+    }
   }
   
   void BasicBlock::add_inst(Instruction* inst) {
