@@ -613,7 +613,9 @@ public:
             visitBlock(*block, ir_bb);
         }
         else if (auto exprstmt = dynamic_cast<ast::ExprStmt *>(statement)){
-            visitExpression(exprstmt->expr, ir_bb);
+            if (exprstmt->expr != nullptr){
+                visitExpression(exprstmt->expr, ir_bb);
+            }
         }
         else {
             assert(false);
