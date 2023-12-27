@@ -165,7 +165,7 @@ namespace riscv {
         }
       }
     }
-    for (auto i: pairs) {
+    for (auto [bb, p]: pairs) {
       while (true) {
         std::set<Reg> livein;
         
