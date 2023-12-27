@@ -261,7 +261,7 @@ namespace frontend
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "return type mismatch");
             }
         }
-        cur_func_scope->has_return = true;
+        scope_stack->set_has_return();
         SyError().throw_info("visitReturnStmt" + return_stmt->toString()+"function has return"+"scope id"+std::to_string(cur_func_scope->scope_id));
     }
 
