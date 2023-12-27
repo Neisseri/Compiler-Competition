@@ -1,0 +1,14 @@
+Syntax error: line 1, column 7
+int a[1048576];
+Syntax error: line 1, column 15
+int a[1048576];
+Syntax error: line 2, column 1
+int main() {
+Syntax error: line 2, column 5
+int main() {
+Syntax error: line 4, column 11
+        a[i] = 1048576-i;
+Syntax error: line 5, column 14
+    return a[142123] + a[564432];
+Syntax error: line 5, column 26
+    return a[142123] + a[564432];

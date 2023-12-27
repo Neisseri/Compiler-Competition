@@ -1,0 +1,10 @@
+Syntax error: line 1, column 9
+int foo = 4;
+Syntax error: line 1, column 11
+int foo = 4;
+Syntax error: line 1, column 12
+int foo = 4;
+Syntax error: line 3, column 1
+int main() {
+Syntax error: line 3, column 5
+int main() {

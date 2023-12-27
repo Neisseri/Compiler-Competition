@@ -106,7 +106,7 @@ public:
         init.reset(init_->accept(this).as<Assignment *>());
       }
       auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
-      //check dim_list_ length
+      // check dim_list_ length
       auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), true);
       decls.push_back(decl);
     }
@@ -227,7 +227,7 @@ public:
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    return new Parameter(std::move(type), std::move(ident));
+    return new Parameter(std::move(type), std::move(ident), nullptr, false);
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
@@ -235,27 +235,27 @@ public:
     std::cerr << "visitArrayParam" << std::endl;
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
+    type->is_array = true;
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    std::vector<int> dim_list;
-    dim_list.push_back(0);
+    std::vector<std::unique_ptr<Expression>> dim_list;
+    // const int 0
+    auto const dim_0 = new IntLiteral(0);
+    dim_list.push_back(std::unique_ptr<Expression>(dim_0));
     for (auto dim_ : ctx->exp())
     {
       auto const dim = dim_->accept(this).as<Expression *>();
-      std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
-      if (!dim_literal)
+      if (dim)
       {
-        std::cerr << "visitArrayParam: array dim is not int literal" << std::endl;
-        assert(false);
+        dim_list.push_back(std::unique_ptr<Expression>(dim));
       }
-      dim_list.push_back(dim_literal->value);
+      else
+      {
+        std::cerr << "visitArrayParam: dim is nullptr" << std::endl;
+      }
+      std::cerr << "visitArrayParam: dim_ is not nullptr" << std::endl;
     }
-    type->dim = std::move(dim_list);
-    std::cerr << "dims: " << type->dim.size() << std::endl;
-    for (auto i : type->dim)
-    {
-      std::cerr << i << " ";
-    }
-    return new Parameter(std::move(type), std::move(ident));
+    auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
+    return new Parameter(std::move(type), std::move(ident), std::move(dim_list_), true);
   }
 
   antlrcpp::Any visitBlock(SysYParser::BlockContext *ctx) override
@@ -299,6 +299,13 @@ public:
 
   antlrcpp::Any visitExprStmt(SysYParser::ExprStmtContext *ctx) override
   {
+    std::cerr << "visitExprStmt" << std::endl;
+
+    if (!ctx->exp())
+    {
+      std::cerr << "visitExprStmt: empty exp" << std::endl;
+      return static_cast<Statement *>(new ExprStmt(nullptr));
+    }
     auto const expr = ctx->exp()->accept(this).as<Expression *>();
     auto const ret = new ExprStmt(std::unique_ptr<Expression>(expr));
     return static_cast<Statement *>(ret);

@@ -4,7 +4,7 @@
 
 namespace frontend
 {
-    void TyperVisitor::visitPromgram(const ast::Program *program)
+    void TyperVisitor::visitPromgram(ast::Program *program)
     {
         SyError().throw_info("visitProgram" + program->toString());
         this->global_scope = std::make_unique<Scope>(ScopeType::GlobalScope);
@@ -17,14 +17,14 @@ namespace frontend
             {
                 visitVarDef(decl);
             }
-            else if (auto func = dynamic_cast<const ast::Function *>(child.get()))
+            else if (auto func = dynamic_cast<ast::Function *>(child.get()))
             {
                 visitFuncDef(func);
             }
         }
     }
 
-    void TyperVisitor::visitFuncDef(const ast::Function *func_def)
+    void TyperVisitor::visitFuncDef(ast::Function *func_def)
     {
         SyError().throw_info("visitFuncDef" + func_def->toString());
         auto name = func_def->ident->name;
@@ -103,21 +103,46 @@ namespace frontend
         param_def->ident->name = param_def->ident.get()->name + "#" + std::to_string(scope_stack->stack.back()->scope_id);
     }
 
-    void TyperVisitor::visitBlock(const ast::Block *block)
+    void TyperVisitor::visitBlock(ast::Block *block)
     {
         SyError().throw_info("visitBlock" + block->toString());
         scope_stack->scope_push(std::make_unique<Scope>(ScopeType::BlockScope));
-        for (auto &child : block->children)
+
+        for (auto it = block->children.begin(); it != block->children.end();)
         {
-            if (auto decl = dynamic_cast<const ast::Declaration *>(child.get()))
+            bool shouldRemove = false;
+
+            if (auto decl = dynamic_cast<const ast::Declaration *>(it->get()))
             {
                 visitVarDef(decl);
             }
-            else if (auto stmt = dynamic_cast<const ast::Statement *>(child.get()))
+            else if (auto stmt = dynamic_cast<ast::Statement *>(it->get()))
             {
-                visitStatement(stmt);
+                if (auto expr_stmt = dynamic_cast<ast::ExprStmt *>(stmt))
+                {
+                    if (!expr_stmt->expr)
+                    {
+                        // Mark this child for removal
+                        shouldRemove = true;
+                    }
+                }
+                // Visit the statement if it's not marked for removal
+                if (!shouldRemove)
+                {
+                    visitStatement(stmt);
+                }
+            }
+
+            if (shouldRemove)
+            {
+                it = block->children.erase(it); // Remove the child and update the iterator
+            }
+            else
+            {
+                ++it; // Move to the next element
             }
         }
+
         scope_stack->scope_pop();
     }
 
@@ -139,7 +164,7 @@ namespace frontend
         }
     }
 
-    void TyperVisitor::visitStatement(const ast::Statement *statement)
+    void TyperVisitor::visitStatement(ast::Statement *statement)
     {
         SyError().throw_info("visitStatement" + statement->toString());
         if (auto break_stmt = dynamic_cast<const ast::Break *>(statement))
@@ -154,7 +179,7 @@ namespace frontend
         {
             visitAssignStmt(assign_stmt);
         }
-        else if (auto block = dynamic_cast<const ast::Block *>(statement))
+        else if (auto block = dynamic_cast<ast::Block *>(statement))
         {
             visitBlock(block);
         }
@@ -298,6 +323,10 @@ namespace frontend
             if (symbol == nullptr)
             {
                 SyError().throw_info("use of undeclared function " + func_call->ident->name);
+                for (int i = 0; i < func_call->argument_list->children.size(); i++)
+                {
+                    auto arg_type = visitExpr(func_call->argument_list->children[i].get());
+                }
                 return nullptr;
             }
             if (auto func_symbol = dynamic_cast<FuncSymbol *>(symbol.get()))
@@ -318,7 +347,7 @@ namespace frontend
             }
             else
             {
-                SyError().throw_info("use of undeclared function " + func_call->ident->name);
+                SyError().throw_error(ErrorTypeEnum::SemanticError, "Can't convert to function" + func_call->ident->name);
             }
         }
         else if (auto assignment = dynamic_cast<const ast::Assignment *>(expr))

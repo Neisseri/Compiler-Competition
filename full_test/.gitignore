@@ -1,3 +1,6 @@
 build
 riscv
-testcases
+testcases/*
+!testcases/step10
+!testcases/step11
+!testcases/step12

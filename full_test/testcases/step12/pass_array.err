@@ -1,0 +1,102 @@
+Syntax error: line 1, column 7
+int f(int a[]){
+Syntax error: line 1, column 11
+int f(int a[]){
+Syntax error: line 2, column 5
+  a[0] = 10;
+Syntax error: line 3, column 12
+  return a[1] + a[2] * 2 + a[3] * 3; 
+Syntax error: line 3, column 19
+  return a[1] + a[2] * 2 + a[3] * 3; 
+Syntax error: line 3, column 30
+  return a[1] + a[2] * 2 + a[3] * 3; 
+Syntax error: line 6, column 1
+int main(){
+Syntax error: line 6, column 5
+int main(){
+Syntax error: line 6, column 9
+int main(){
+Syntax error: line 6, column 10
+int main(){
+Syntax error: line 6, column 11
+int main(){
+Syntax error: line 7, column 3
+  int b[4];
+Syntax error: line 7, column 7
+  int b[4];
+Syntax error: line 7, column 9
+  int b[4];
+Syntax error: line 7, column 11
+  int b[4];
+Syntax error: line 8, column 3
+  b[1] = 2;
+Syntax error: line 8, column 5
+  b[1] = 2;
+Syntax error: line 8, column 8
+  b[1] = 2;
+Syntax error: line 8, column 10
+  b[1] = 2;
+Syntax error: line 8, column 11
+  b[1] = 2;
+Syntax error: line 9, column 3
+  b[2] = 3;
+Syntax error: line 9, column 5
+  b[2] = 3;
+Syntax error: line 9, column 8
+  b[2] = 3;
+Syntax error: line 9, column 10
+  b[2] = 3;
+Syntax error: line 9, column 11
+  b[2] = 3;
+Syntax error: line 10, column 3
+  b[3] = 4;
+Syntax error: line 10, column 5
+  b[3] = 4;
+Syntax error: line 10, column 8
+  b[3] = 4;
+Syntax error: line 10, column 10
+  b[3] = 4;
+Syntax error: line 10, column 11
+  b[3] = 4;
+Syntax error: line 11, column 3
+  int ans = f(b);
+Syntax error: line 11, column 7
+  int ans = f(b);
+Syntax error: line 11, column 11
+  int ans = f(b);
+Syntax error: line 11, column 13
+  int ans = f(b);
+Syntax error: line 11, column 14
+  int ans = f(b);
+Syntax error: line 11, column 15
+  int ans = f(b);
+Syntax error: line 11, column 16
+  int ans = f(b);
+Syntax error: line 11, column 17
+  int ans = f(b);
+Syntax error: line 12, column 3
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 7
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 9
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 13
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 15
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 17
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 20
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 22
+  ans = ans + b[0] * 2;
+Syntax error: line 12, column 23
+  ans = ans + b[0] * 2;
+Syntax error: line 13, column 3
+  return ans;
+Syntax error: line 13, column 10
+  return ans;
+Syntax error: line 13, column 13
+  return ans;
+Syntax error: line 14, column 1
+}

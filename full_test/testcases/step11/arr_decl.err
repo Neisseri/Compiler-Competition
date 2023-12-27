@@ -1,0 +1,4 @@
+Syntax error: line 2, column 11
+    int a[2];
+Syntax error: line 3, column 11
+    int b[2];

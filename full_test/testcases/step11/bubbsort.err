@@ -1,0 +1,456 @@
+Syntax error: line 1, column 18
+int sorted_after = 500;
+Syntax error: line 1, column 20
+int sorted_after = 500;
+Syntax error: line 1, column 23
+int sorted_after = 500;
+Syntax error: line 2, column 1
+int a[500];
+Syntax error: line 2, column 5
+int a[500];
+Syntax error: line 2, column 7
+int a[500];
+Syntax error: line 2, column 11
+int a[500];
+Syntax error: line 4, column 1
+int state;
+Syntax error: line 4, column 5
+int state;
+Syntax error: line 4, column 10
+int state;
+Syntax error: line 5, column 1
+int rand()
+Syntax error: line 5, column 5
+int rand()
+Syntax error: line 10, column 1
+int swap(int i, int j)
+Syntax error: line 10, column 5
+int swap(int i, int j)
+Syntax error: line 10, column 9
+int swap(int i, int j)
+Syntax error: line 10, column 10
+int swap(int i, int j)
+Syntax error: line 10, column 14
+int swap(int i, int j)
+Syntax error: line 10, column 17
+int swap(int i, int j)
+Syntax error: line 10, column 21
+int swap(int i, int j)
+Syntax error: line 10, column 22
+int swap(int i, int j)
+Syntax error: line 11, column 1
+{
+Syntax error: line 12, column 5
+    int tmp = a[i];
+Syntax error: line 12, column 9
+    int tmp = a[i];
+Syntax error: line 12, column 13
+    int tmp = a[i];
+Syntax error: line 12, column 15
+    int tmp = a[i];
+Syntax error: line 12, column 17
+    int tmp = a[i];
+Syntax error: line 12, column 19
+    int tmp = a[i];
+Syntax error: line 13, column 5
+    a[i] = a[j];
+Syntax error: line 13, column 7
+    a[i] = a[j];
+Syntax error: line 13, column 10
+    a[i] = a[j];
+Syntax error: line 13, column 12
+    a[i] = a[j];
+Syntax error: line 13, column 14
+    a[i] = a[j];
+Syntax error: line 13, column 16
+    a[i] = a[j];
+Syntax error: line 14, column 5
+    a[j] = tmp;
+Syntax error: line 14, column 7
+    a[j] = tmp;
+Syntax error: line 14, column 10
+    a[j] = tmp;
+Syntax error: line 14, column 12
+    a[j] = tmp;
+Syntax error: line 14, column 15
+    a[j] = tmp;
+Syntax error: line 15, column 5
+    return 0;
+Syntax error: line 15, column 12
+    return 0;
+Syntax error: line 15, column 13
+    return 0;
+Syntax error: line 16, column 1
+}
+Syntax error: line 18, column 1
+int bubblesort(int sorted_after)
+Syntax error: line 18, column 5
+int bubblesort(int sorted_after)
+Syntax error: line 18, column 15
+int bubblesort(int sorted_after)
+Syntax error: line 18, column 16
+int bubblesort(int sorted_after)
+Syntax error: line 18, column 20
+int bubblesort(int sorted_after)
+Syntax error: line 18, column 32
+int bubblesort(int sorted_after)
+Syntax error: line 19, column 1
+{
+Syntax error: line 20, column 5
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 9
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 10
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 14
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 16
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 18
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 19
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 21
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 23
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 25
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 37
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 39
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 41
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 43
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 45
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 47
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 20, column 48
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 21, column 9
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 13
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 14
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 18
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 20
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 22
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 24
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 26
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 27
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 29
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 31
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 33
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 45
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 47
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 49
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 51
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 53
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 55
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 21, column 56
+        for (int j = i + 1; j < sorted_after; j = j + 1)
+Syntax error: line 22, column 13
+            if (a[i] > a[j])
+Syntax error: line 22, column 16
+            if (a[i] > a[j])
+Syntax error: line 22, column 17
+            if (a[i] > a[j])
+Syntax error: line 22, column 19
+            if (a[i] > a[j])
+Syntax error: line 22, column 22
+            if (a[i] > a[j])
+Syntax error: line 22, column 24
+            if (a[i] > a[j])
+Syntax error: line 22, column 26
+            if (a[i] > a[j])
+Syntax error: line 22, column 28
+            if (a[i] > a[j])
+Syntax error: line 23, column 17
+                swap(i, j);
+Syntax error: line 23, column 21
+                swap(i, j);
+Syntax error: line 23, column 22
+                swap(i, j);
+Syntax error: line 23, column 25
+                swap(i, j);
+Syntax error: line 23, column 26
+                swap(i, j);
+Syntax error: line 23, column 27
+                swap(i, j);
+Syntax error: line 24, column 5
+    return 0;
+Syntax error: line 24, column 12
+    return 0;
+Syntax error: line 24, column 13
+    return 0;
+Syntax error: line 25, column 1
+}
+Syntax error: line 27, column 1
+int main()
+Syntax error: line 27, column 5
+int main()
+Syntax error: line 27, column 9
+int main()
+Syntax error: line 27, column 10
+int main()
+Syntax error: line 28, column 1
+{
+Syntax error: line 29, column 5
+    int state = 218397121;
+Syntax error: line 29, column 9
+    int state = 218397121;
+Syntax error: line 29, column 15
+    int state = 218397121;
+Syntax error: line 29, column 17
+    int state = 218397121;
+Syntax error: line 29, column 26
+    int state = 218397121;
+Syntax error: line 30, column 5
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 9
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 10
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 14
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 16
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 18
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 19
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 21
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 23
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 25
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 37
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 39
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 41
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 43
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 45
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 47
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 30, column 48
+    for (int i = 0; i < sorted_after; i = i + 1)
+Syntax error: line 31, column 9
+        a[i] = rand();
+Syntax error: line 31, column 11
+        a[i] = rand();
+Syntax error: line 31, column 14
+        a[i] = rand();
+Syntax error: line 31, column 16
+        a[i] = rand();
+Syntax error: line 31, column 20
+        a[i] = rand();
+Syntax error: line 31, column 21
+        a[i] = rand();
+Syntax error: line 31, column 22
+        a[i] = rand();
+Syntax error: line 33, column 5
+    int sorted_before = 1;
+Syntax error: line 33, column 9
+    int sorted_before = 1;
+Syntax error: line 33, column 23
+    int sorted_before = 1;
+Syntax error: line 33, column 25
+    int sorted_before = 1;
+Syntax error: line 33, column 26
+    int sorted_before = 1;
+Syntax error: line 34, column 5
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 9
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 10
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 14
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 16
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 18
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 19
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 21
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 23
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 25
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 38
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 40
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 41
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 43
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 45
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 47
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 49
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 51
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 34, column 52
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 35, column 9
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 12
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 13
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 15
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 18
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 20
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 22
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 24
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 26
+        if (a[i] > a[i + 1])
+Syntax error: line 35, column 28
+        if (a[i] > a[i + 1])
+Syntax error: line 36, column 13
+            sorted_before = 0;
+Syntax error: line 36, column 27
+            sorted_before = 0;
+Syntax error: line 36, column 29
+            sorted_before = 0;
+Syntax error: line 36, column 30
+            sorted_before = 0;
+Syntax error: line 38, column 5
+    bubblesort(sorted_after);
+Syntax error: line 38, column 15
+    bubblesort(sorted_after);
+Syntax error: line 38, column 16
+    bubblesort(sorted_after);
+Syntax error: line 38, column 28
+    bubblesort(sorted_after);
+Syntax error: line 38, column 29
+    bubblesort(sorted_after);
+Syntax error: line 40, column 5
+    int sorted_after = 1;
+Syntax error: line 40, column 9
+    int sorted_after = 1;
+Syntax error: line 40, column 22
+    int sorted_after = 1;
+Syntax error: line 40, column 24
+    int sorted_after = 1;
+Syntax error: line 40, column 25
+    int sorted_after = 1;
+Syntax error: line 41, column 5
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 9
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 10
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 14
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 16
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 18
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 19
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 21
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 23
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 25
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 38
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 40
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 41
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 43
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 45
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 47
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 49
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 51
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 41, column 52
+    for (int i = 0; i < sorted_after - 1; i = i + 1)
+Syntax error: line 42, column 9
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 12
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 13
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 15
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 18
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 20
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 22
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 24
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 26
+        if (a[i] > a[i + 1])
+Syntax error: line 42, column 28
+        if (a[i] > a[i + 1])
+Syntax error: line 43, column 13
+            sorted_after = 0;
+Syntax error: line 43, column 26
+            sorted_after = 0;
+Syntax error: line 43, column 28
+            sorted_after = 0;
+Syntax error: line 43, column 29
+            sorted_after = 0;
+Syntax error: line 44, column 5
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 12
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 16
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 18
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 32
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 34
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 37
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 39
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 44, column 51
+    return 200 + sorted_before * 10 + sorted_after;
+Syntax error: line 45, column 1
+}

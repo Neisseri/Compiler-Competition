@@ -104,10 +104,10 @@ def run(
     executable = os.path.join(workdir, name_body + '.exec')
     output = os.path.join(workdir, name_body + '.stdout')
     time = os.path.join(workdir, name_body + '.stderr')
-    os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} -o {executable}')
-    # if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a'
-    #              f' -o {executable}') != 0:
-    #     return Result.LINKER_ERROR
+    # os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} -o {executable}')
+    if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a'
+                 f' -o {executable}') != 0:
+        return Result.LINKER_ERROR
     answer_content, answer_exitcode = get_answer(answer)
     average_time = 0
     for _ in range(round):
@@ -144,8 +144,7 @@ def test(config: Config, testcase: str) -> bool:
     answer = os.path.join(config.testcases, f'{testcase}.out')
     error_log=os.path.join(config.tempdir, f'{testcase}_compile_error.log')
 
-    ident = '%04d' % random.randint(0, 9999)
-    assembly = os.path.join(f'{testcase}-{ident}.s')
+    assembly = os.path.join(f'{testcase}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
     command = (f'{config.compiler} {config.compiler_args} {source}'
                 f' -A -o {assembly}')

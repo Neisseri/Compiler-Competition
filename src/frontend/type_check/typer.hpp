@@ -12,13 +12,13 @@ namespace frontend{
         std::unique_ptr<ScopeStack> scope_stack;
         std::unique_ptr<Scope> global_scope;
 
-        void visitPromgram(const ast::Program *program);
-        void visitFuncDef(const ast::Function *func_def);
+        void visitPromgram(ast::Program *program);
+        void visitFuncDef(ast::Function *func_def);
         void visitVarDef(const ast::Declaration *var_def);
         void visitParamDef(const ast::Parameter *param_def);
-        void visitBlock(const ast::Block *block);
+        void visitBlock(ast::Block *block);
         void visitAssignStmt(const ast::Assign *assign_stmt);
-        void visitStatement(const ast::Statement *statement);
+        void visitStatement(ast::Statement *statement);
         void visitIfElseStmt(const ast::IfElse *ifelse_stmt);
         void visitWhileStmt(const ast::While *while_stmt);
         void visitBreakStmt(const ast::Break *break_stmt);

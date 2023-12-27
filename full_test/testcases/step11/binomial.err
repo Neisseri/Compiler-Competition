@@ -1,0 +1,74 @@
+Syntax error: line 1, column 7
+int C[2][10000];
+Syntax error: line 1, column 10
+int C[2][10000];
+Syntax error: line 1, column 16
+int C[2][10000];
+Syntax error: line 2, column 1
+int P = 10000007;
+Syntax error: line 2, column 5
+int P = 10000007;
+Syntax error: line 2, column 7
+int P = 10000007;
+Syntax error: line 2, column 9
+int P = 10000007;
+Syntax error: line 2, column 17
+int P = 10000007;
+Syntax error: line 4, column 1
+int main() {
+Syntax error: line 4, column 5
+int main() {
+Syntax error: line 7, column 7
+    C[0][0] = 1;
+Syntax error: line 7, column 10
+    C[0][0] = 1;
+Syntax error: line 11, column 15
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 22
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 25
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 27
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 28
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 39
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 42
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 49
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 11, column 52
+            C[1 - b][j] = !j ? 1 : (C[b][j] + C[b][j - 1]) % P;
+Syntax error: line 15, column 11
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 15, column 14
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 15, column 27
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 15, column 30
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 15, column 43
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 15, column 50
+    if (C[b][0] != 1 || C[b][n] != 1 || C[1 - b][1] != n - 1) return 1;
+Syntax error: line 16, column 11
+    if (C[b][1234] != 6188476) return 2;
+Syntax error: line 16, column 14
+    if (C[b][1234] != 6188476) return 2;
+Syntax error: line 17, column 11
+    if (C[b][2333] != 9957662) return 3;
+Syntax error: line 17, column 14
+    if (C[b][2333] != 9957662) return 3;
+Syntax error: line 18, column 11
+    if (C[b][3456] != 9832509) return 4;
+Syntax error: line 18, column 14
+    if (C[b][3456] != 9832509) return 4;
+Syntax error: line 19, column 11
+    if (C[b][5678] != 2436480) return 5;
+Syntax error: line 19, column 14
+    if (C[b][5678] != 2436480) return 5;
+Syntax error: line 20, column 11
+    if (C[b][n / 2] != 7609783) return 6;
+Syntax error: line 20, column 14
+    if (C[b][n / 2] != 7609783) return 6;

@@ -1,0 +1,36 @@
+Syntax error: line 2, column 11
+    int a[2][3][4];
+Syntax error: line 2, column 14
+    int a[2][3][4];
+Syntax error: line 2, column 17
+    int a[2][3][4];
+Syntax error: line 6, column 15
+            a[i][j][0] = i*6-j*3;
+Syntax error: line 6, column 18
+            a[i][j][0] = i*6-j*3;
+Syntax error: line 6, column 21
+            a[i][j][0] = i*6-j*3;
+Syntax error: line 9, column 19
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 9, column 22
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 9, column 25
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 9, column 32
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 9, column 35
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 9, column 38
+                a[i][j][k] = a[i][j][k-1] + r;
+Syntax error: line 12, column 14
+    return a[1][2][3] + a[0][0][2];
+Syntax error: line 12, column 17
+    return a[1][2][3] + a[0][0][2];
+Syntax error: line 12, column 20
+    return a[1][2][3] + a[0][0][2];
+Syntax error: line 12, column 27
+    return a[1][2][3] + a[0][0][2];
+Syntax error: line 12, column 30
+    return a[1][2][3] + a[0][0][2];
+Syntax error: line 12, column 33
+    return a[1][2][3] + a[0][0][2];

@@ -1,0 +1,46 @@
+Syntax error: line 1, column 6
+int a;
+Syntax error: line 3, column 1
+int fun() {
+Syntax error: line 3, column 5
+int fun() {
+Syntax error: line 7, column 1
+int main() {
+Syntax error: line 7, column 5
+int main() {
+Syntax error: line 7, column 9
+int main() {
+Syntax error: line 7, column 10
+int main() {
+Syntax error: line 7, column 12
+int main() {
+Syntax error: line 8, column 5
+    int b = a;
+Syntax error: line 8, column 9
+    int b = a;
+Syntax error: line 8, column 11
+    int b = a;
+Syntax error: line 8, column 13
+    int b = a;
+Syntax error: line 8, column 14
+    int b = a;
+Syntax error: line 9, column 5
+    fun();
+Syntax error: line 9, column 8
+    fun();
+Syntax error: line 9, column 9
+    fun();
+Syntax error: line 9, column 10
+    fun();
+Syntax error: line 10, column 5
+    return a + b;
+Syntax error: line 10, column 12
+    return a + b;
+Syntax error: line 10, column 14
+    return a + b;
+Syntax error: line 10, column 16
+    return a + b;
+Syntax error: line 10, column 17
+    return a + b;
+Syntax error: line 11, column 1
+}

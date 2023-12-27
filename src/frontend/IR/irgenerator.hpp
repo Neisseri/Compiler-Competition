@@ -61,6 +61,7 @@ public:
             ir_bb->instrs.push_back(std::move(addoffset_instr));
 
             if (i > 0){
+                std::cerr << "visitIndex calc blocksize " << i << std::endl;
                 ir::Reg dim_size = get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::LoadInt> loaddim_instr(new ir::LoadInt(dim_size, var_type_table[lvalue->ident->name].dim[i]));
                 ir::Reg old_block_size = block_size;
@@ -182,18 +183,40 @@ public:
         }
         int param_id = 0;
         for (auto &i : func.params->children){
+            std::cerr << "visitFunction param decl: " << i->ident->name << std::endl;
             ir::Reg init_reg(i->var_type->type, ++param_id);
-            ir::Reg dst_ptr = get_new_reg(i->var_type->type);
-            std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *i->var_type ,4));
-            alloca_instr->is_local_var = 1;
-            ir_bb->instrs.push_back(std::move(alloca_instr));
-            std::string tem_name = i->ident->name;
-            ir::Reg temp_reg = dst_ptr;
-            var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
-            std::unique_ptr<ir::Store> store_instr(new ir::Store(i->var_type->type, init_reg, dst_ptr, i->ident->name));
-            store_instr->is_local_var = 1;
-            Defs[i->ident->name].insert(ir_bb);
-            ir_bb->instrs.push_back(std::move(store_instr));
+            if (i->is_array){ // 传入的是数组指针
+                std::cerr << "visitFunction param decl array" << std::endl;
+                for (auto &exp: i->indices->children) {
+                    int dim = visitExpressionVal(exp);
+                    if (dim == 0) {
+                        dim = 1;
+                    }
+                    i->var_type->dim.push_back(dim);
+                }
+                std::string tem_name = i->ident->name;
+                ir::Reg temp_reg = init_reg;
+                var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
+                Type array_type = *i->var_type;
+                std::string temp_name2 = i->ident->name;
+                var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
+            } else {
+                ir::Reg dst_ptr = get_new_reg(i->var_type->type);
+                std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *i->var_type ,4));
+                alloca_instr->is_local_var = 1;
+                ir_bb->instrs.push_back(std::move(alloca_instr));
+                var_name_set.insert(i->ident->name);
+                std::string tem_name = i->ident->name;
+                ir::Reg temp_reg = dst_ptr;
+                var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
+                Type var_type = *i->var_type;
+                std::string temp_name2 = i->ident->name;
+                var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(var_type)));
+                std::unique_ptr<ir::Store> store_instr(new ir::Store(i->var_type->type, init_reg, dst_ptr, i->ident->name));
+                store_instr->is_local_var = 1;
+                Defs[i->ident->name].insert(ir_bb);
+                ir_bb->instrs.push_back(std::move(store_instr));
+            }
         }
 
         visitBlock(*(func.body.get()), ir_bb);
@@ -374,7 +397,7 @@ public:
             return visitExpression(assignment->value, ir_bb);
         }
         else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get())){
-            std::cerr << "visitExpressionLValue" << std::endl;
+            std::cerr << "visitExpressionLValue " << lvalue->ident->name << std::endl;
             std::string name = lvalue->ident->name;
             ir::Reg val_ptr;
             if (lvalue->has_index) {
@@ -388,12 +411,18 @@ public:
                     val_ptr = var_ptr_table[name];
                 }
             }
-            ir::Reg ret = get_new_reg(lvalue->var_type->type);
-            std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
-            if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
-                load_instr->is_local_var = 1;
+            ir::Reg ret;
+            if (!lvalue->has_index && var_type_table[name].is_array){
+                std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
+                ret = val_ptr;
+            } else {
+                ret = get_new_reg(lvalue->var_type->type);
+                std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
+                if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
+                    load_instr->is_local_var = 1;
+                }
+                ir_bb->instrs.push_back(std::move(load_instr));
             }
-            ir_bb->instrs.push_back(std::move(load_instr));
             return ret;
         }
         else if (auto call = dynamic_cast<ast::Call *>(expr.get())){
@@ -616,6 +645,7 @@ public:
                     if (decl->has_init){
                         visit_array_init(decl, ir_bb, dst_ptr, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
                     }
+                    std::cerr << "visit decl array store type done " << decl->ident->name << " " << var_type_table[decl->ident->name].is_array << std::endl;
                     std::cerr << "visit decl array done" << std::endl;
                 } else {
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *decl->var_type ,4));
