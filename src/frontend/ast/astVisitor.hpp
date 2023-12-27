@@ -76,6 +76,7 @@ public:
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
     std::cerr << "visitConstDecl: " << ctx->bType()->getText() << " start" << std::endl;
+    bool is_array = false;
     for (auto item : ctx->constDef())
     {
       auto dimensions = item->exp();
@@ -95,6 +96,7 @@ public:
         }
         temp_type = std::make_unique<Type>(*type);
         temp_type->is_array = true;
+        is_array = true;
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
       std::cerr << "visitConstDecl: ident: " << item->Ident()->getText() << std::endl;
@@ -107,7 +109,7 @@ public:
       }
       auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
       // check dim_list_ length
-      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), true);
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), true, is_array);
       decls.push_back(decl);
     }
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));
@@ -128,6 +130,7 @@ public:
     std::vector<Declaration *> decls;
     std::unique_ptr<Type> type(ctx->bType()->accept(this).as<Type *>());
     std::cerr << "visitVarDecl: " << ctx->bType()->getText() << " start" << std::endl;
+    bool is_array = false;
     for (auto item : ctx->varDef())
     {
       auto dimensions = item->exp();
@@ -147,6 +150,7 @@ public:
         }
         temp_type = std::make_unique<Type>(*type);
         temp_type->is_array = true;
+        is_array = true;
       }
       std::unique_ptr<Identifier> ident(new Identifier(item->Ident()->getText()));
       std::cerr << "visitVarDecl: ident: " << item->Ident()->getText() << std::endl;
@@ -157,7 +161,7 @@ public:
         init.reset(init_->accept(this).as<Assignment *>());
       }
       auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
-      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), false);
+      auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), false, is_array);
       decls.push_back(decl);
     }
     return std::make_shared<std::vector<Declaration *>>(std::move(decls));

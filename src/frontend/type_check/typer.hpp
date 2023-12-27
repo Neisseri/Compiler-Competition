@@ -26,6 +26,6 @@ namespace frontend{
         void visitReturnStmt(const ast::Return *return_stmt);
         void visitLVal(const ast::LValue *lval);
         Type* visitExpr(const ast::Expression *expr); // 返回值是Type*
-        void visitExprStmt(const ast::ExprStmt *expr_stmt);
+        void visitExprStmt(ast::ExprStmt *expr_stmt);
     };
 }

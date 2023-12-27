@@ -63,9 +63,10 @@ namespace frontend
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "redeclaration of variable " + name);
         }
-        if (var_def->is_array())
+        if (var_def->is_array)
         {
             // get children
+            SyError().throw_info("var_def->indices->children.size() " + std::to_string(var_def->indices->children.size()));
             for (auto &child : var_def->indices->children)
             {
                 SyError().throw_info("visitDims " + child->toString());
@@ -195,7 +196,7 @@ namespace frontend
         {
             visitReturnStmt(return_stmt);
         }
-        else if (auto expr_stmt = dynamic_cast<const ast::ExprStmt *>(statement))
+        else if (auto expr_stmt = dynamic_cast<ast::ExprStmt *>(statement))
         {
             visitExprStmt(expr_stmt);
         }
@@ -203,9 +204,9 @@ namespace frontend
 
     void TyperVisitor::visitIfElseStmt(const ast::IfElse *ifelse_stmt)
     {
-        auto cond_type = visitExpr(ifelse_stmt->cond.get());
+        visitExpr(ifelse_stmt->cond.get());
         visitStatement(ifelse_stmt->then.get());
-        if (ifelse_stmt->other != nullptr)
+        if (ifelse_stmt->other)
         {
             visitStatement(ifelse_stmt->other.get());
         }
@@ -213,7 +214,7 @@ namespace frontend
 
     void TyperVisitor::visitWhileStmt(const ast::While *while_stmt)
     {
-        auto cond_type = visitExpr(while_stmt->cond.get());
+        visitExpr(while_stmt->cond.get());
         auto scope = std::make_unique<Scope>(ScopeType::LoopScope);
         scope_stack->scope_push(std::move(scope));
         visitStatement(while_stmt->body.get());
@@ -259,7 +260,7 @@ namespace frontend
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "return value required in non-void function");
             }
             auto expr_type = visitExpr(return_stmt->expr.get());
-            if (expr_type->type != ret_type->type)
+            if (expr_type && expr_type->type != ret_type->type)
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "return type mismatch");
             }
@@ -273,6 +274,15 @@ namespace frontend
         if (symbol == nullptr)
         {
             SyError().throw_error(ErrorTypeEnum::SemanticError, "use of undeclared variable " + name);
+        }
+        if (lval->indices.size() > 0)
+        {
+            SyError().throw_info("lval->indices->children.size() " + std::to_string(lval->indices.size()));
+            for (auto &child : lval->indices)
+            {
+                SyError().throw_info("visitDims " + child->toString());
+                auto expr_type = visitExpr(child.get());
+            }
         }
     }
 
@@ -304,7 +314,7 @@ namespace frontend
             SyError().throw_info("visitBinopExpr" + binop->toString());
             auto lhs_type = visitExpr(binop->lhs.get());
             auto rhs_type = visitExpr(binop->rhs.get());
-            if (lhs_type->type != rhs_type->type)
+            if (lhs_type && rhs_type && lhs_type->type != rhs_type->type)
             {
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in binary operation");
             }
@@ -338,7 +348,7 @@ namespace frontend
                 for (int i = 0; i < func_call->argument_list->children.size(); i++)
                 {
                     auto arg_type = visitExpr(func_call->argument_list->children[i].get());
-                    if (arg_type->type != func_symbol->get_param_type(i)->type)
+                    if (arg_type && arg_type->type != func_symbol->get_param_type(i)->type)
                     {
                         SyError().throw_error(ErrorTypeEnum::SemanticError, "type mismatch in function call");
                     }
@@ -375,8 +385,12 @@ namespace frontend
         return nullptr;
     }
 
-    void TyperVisitor::visitExprStmt(const ast::ExprStmt *expr_stmt)
+    void TyperVisitor::visitExprStmt(ast::ExprStmt *expr_stmt)
     {
-        Type *expr_type = visitExpr(expr_stmt->expr.get());
+        SyError().throw_info("visitExprStmt" + expr_stmt->toString());
+        if (expr_stmt->expr)
+        {
+            visitExpr(expr_stmt->expr.get());
+        }
     }
 }
