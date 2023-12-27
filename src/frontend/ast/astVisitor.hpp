@@ -227,7 +227,7 @@ public:
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    return new Parameter(std::move(type), std::move(ident));
+    return new Parameter(std::move(type), std::move(ident),nullptr, false);
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
@@ -236,26 +236,23 @@ public:
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    std::vector<int> dim_list;
-    dim_list.push_back(0);
+    std::vector<std::unique_ptr<Expression>> dim_list;
+    //const int 0
+    auto const dim_0 = new IntLiteral(0);
+    dim_list.push_back(std::unique_ptr<Expression>(dim_0));
     for (auto dim_ : ctx->exp())
     {
       auto const dim = dim_->accept(this).as<Expression *>();
-      std::unique_ptr<IntLiteral> dim_literal(dynamic_cast<IntLiteral *>(dim));
-      if (!dim_literal)
-      {
-        std::cerr << "visitArrayParam: array dim is not int literal" << std::endl;
-        assert(false);
+      if(dim){
+      dim_list.push_back(std::unique_ptr<Expression>(dim));
       }
-      dim_list.push_back(dim_literal->value);
+      else{
+        std::cerr << "visitArrayParam: dim is nullptr" << std::endl;
+      }
+      std::cerr<<"visitArrayParam: dim_ is not nullptr"<<std::endl;
     }
-    type->dim = std::move(dim_list);
-    std::cerr << "dims: " << type->dim.size() << std::endl;
-    for (auto i : type->dim)
-    {
-      std::cerr << i << " ";
-    }
-    return new Parameter(std::move(type), std::move(ident));
+    auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
+    return new Parameter(std::move(type), std::move(ident), std::move(dim_list_), true);
   }
 
   antlrcpp::Any visitBlock(SysYParser::BlockContext *ctx) override
