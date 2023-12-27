@@ -179,7 +179,7 @@ namespace frontend
         {
             visitAssignStmt(assign_stmt);
         }
-        else if (auto block = dynamic_cast <ast::Block *>(statement))
+        else if (auto block = dynamic_cast<ast::Block *>(statement))
         {
             visitBlock(block);
         }
@@ -323,6 +323,10 @@ namespace frontend
             if (symbol == nullptr)
             {
                 SyError().throw_info("use of undeclared function " + func_call->ident->name);
+                for (int i = 0; i < func_call->argument_list->children.size(); i++)
+                {
+                    auto arg_type = visitExpr(func_call->argument_list->children[i].get());
+                }
                 return nullptr;
             }
             if (auto func_symbol = dynamic_cast<FuncSymbol *>(symbol.get()))
@@ -343,7 +347,7 @@ namespace frontend
             }
             else
             {
-                SyError().throw_info("use of undeclared function " + func_call->ident->name);
+                SyError().throw_error(ErrorTypeEnum::SemanticError, "Can't convert to function" + func_call->ident->name);
             }
         }
         else if (auto assignment = dynamic_cast<const ast::Assignment *>(expr))

@@ -199,10 +199,6 @@ if __name__ == '__main__':
         shutil.rmtree(config.tempdir)
     os.mkdir(config.tempdir)
 
-    os.rmdir("ast")
-    os.rmdir("riscv")
-    os.rmdir("ir")
-
     failed = []
     if config.parallel:
         futures = []

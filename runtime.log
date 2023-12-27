@@ -7,6 +7,33 @@ parse tree:
                     (bType int)) main ( ) 
                 (block { 
                     (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef c = 
+                                    (initVal 
+                                        (exp 
+                                            (addExp 
+                                                (mulExp 
+                                                    (unaryExp 
+                                                        (primaryExp 
+                                                            (number 
+                                                                (intConst 0))))))))) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp putint ( 
+                                            (funcRParams 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal c)))))))) ))))) ;)) 
+                    (blockItem 
                         (stmt 
                             (exp 
                                 (addExp 
@@ -33,6 +60,15 @@ parse tree:
 visitCompUnit
 visitCompUnit: funcDef
 construct funct block: main
+visitVarDecl: int start
+visitVarDecl: ident: c
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitExprStmt
+visitCall ident: putint
+visitFuncRParams
+visitCall args_list size: 1
 visitExprStmt
 visitCall ident: putint
 visitFuncRParams
@@ -47,18 +83,35 @@ visitCompUnit end create new program end
 Info: visitProgramProgram
 Info: visitFuncDefint @main()
 Info: visitBlock
+Info: visitVarDef int @c = 0
+Info: visitExpr0
+Info: visitAssignmentExpr0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x563fd63c9e60
+Info: visitStatementCall @putint(@c)
+Info: visitExprCall @putint(@c)
+Info: visiCalltExprCall @putint(@c)
+Info: use of undeclared function putint
+Info: visitExpr@c
+Info: visitLvalExpr@c
 Info: visitStatementCall @putint(123)
 Info: visitExprCall @putint(123)
 Info: visiCalltExprCall @putint(123)
 Info: use of undeclared function putint
+Info: visitExpr123
+Info: visitIntLiteralExpr123
+ret->type 0x563fd63ce790
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x5594ea3c1ab0
+ret->type 0x563fd63cf560
 ast: 
 Program
   int @main()
     {
+      int @c#2 = 0
+      Call @putint(@c#2)
       Call @putint(123)
       Return 0
     }
@@ -67,6 +120,14 @@ End of Program
 visitProgram
 visitFunction main
 visitBlock 
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue
 visitStatement
 visitExpression
 visitExpression
@@ -76,7 +137,7 @@ visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-function main has 3 regs
+function main has 7 regs
 B0:
   prev: 
   succ: 
@@ -101,10 +162,15 @@ ir:
 ; module
 define i32 @main(){
 B0:
-  %2 = 123
-  %1 = call i32 @putint(i32 %2)
-  %3 = 0
-  ret i32 %3
+  %1 = alloca int, 4
+  %2 = 0
+  store i32 %2, ptr %1
+  %4 = load i32, ptr %1
+  %3 = call i32 @putint(i32 %4)
+  %6 = 123
+  %5 = call i32 @putint(i32 %6)
+  %7 = 0
+  ret i32 %7
 
 }
 --------------------------- building riscv ---------------------------
