@@ -1,7 +1,11 @@
-int func(int a, int b) {
-    return a+b;
+int a;
+int func(int p){
+	p = p - 1;
+	return p;
 }
-
-int main() {
-    return func(2, 2);
+int main(){
+	int b;
+	a = 10;
+	b = func(a);
+	return b;
 }

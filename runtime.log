@@ -2,140 +2,41 @@
 parse tree: 
 (compUnit 
         (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef a) ;))) 
+        (compUnitItem 
             (funcDef 
                 (funcType 
-                    (bType int)) get_one ( 
+                    (bType int)) func ( 
                 (funcFParams 
                     (funcFParam 
-                        (bType int) a)) ) 
+                        (bType int) p)) ) 
                 (block { 
                     (blockItem 
-                        (stmt return 
+                        (stmt 
+                            (lVal p) = 
                             (exp 
                                 (addExp 
                                     (addExp 
                                         (mulExp 
                                             (unaryExp 
                                                 (primaryExp 
-                                                    (lVal a))))) + 
+                                                    (lVal p))))) - 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
                                                 (number 
-                                                    (intConst 1))))))) ;)) }))) 
-        (compUnitItem 
-            (funcDef 
-                (funcType 
-                    (bType int)) deepWhileBr ( 
-                (funcFParams 
-                    (funcFParam 
-                        (bType int) a) , 
-                    (funcFParam 
-                        (bType int) b)) ) 
-                (block { 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef c) ;))) 
-                    (blockItem 
-                        (stmt 
-                            (lVal c) = 
-                            (exp 
-                                (addExp 
-                                    (addExp 
-                                        (mulExp 
-                                            (unaryExp 
-                                                (primaryExp 
-                                                    (lVal a))))) + 
-                                    (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (lVal b)))))) ;)) 
-                    (blockItem 
-                        (stmt while ( 
-                            (cond 
-                                (lOrExp 
-                                    (lAndExp 
-                                        (eqExp 
-                                            (relExp 
-                                                (relExp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal c)))))) < 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 75))))))))))) ) 
-                            (stmt 
-                                (block { 
-                                    (blockItem 
-                                        (decl 
-                                            (varDecl 
-                                                (bType int) 
-                                                (varDef d) ;))) 
-                                    (blockItem 
-                                        (stmt 
-                                            (lVal d) = 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 42))))))) ;)) 
-                                    (blockItem 
-                                        (stmt if ( 
-                                            (cond 
-                                                (lOrExp 
-                                                    (lAndExp 
-                                                        (eqExp 
-                                                            (relExp 
-                                                                (relExp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (lVal c)))))) < 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 100))))))))))) ) 
-                                            (stmt 
-                                                (block { 
-                                                    (blockItem 
-                                                        (stmt 
-                                                            (lVal c) = 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (lVal c))))) + 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (lVal d)))))) ;)) })))) })))) 
+                                                    (intConst 1))))))) ;)) 
                     (blockItem 
                         (stmt return 
                             (exp 
                                 (addExp 
                                     (mulExp 
                                         (unaryExp 
-                                            (primaryExp ( 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal c)))))) )))))) ;)) }))) 
+                                            (primaryExp 
+                                                (lVal p)))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
@@ -145,24 +46,24 @@ parse tree:
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef p) ;))) 
+                                (varDef b) ;))) 
                     (blockItem 
                         (stmt 
-                            (lVal p) = 
+                            (lVal a) = 
                             (exp 
                                 (addExp 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
                                                 (number 
-                                                    (intConst 2))))))) ;)) 
+                                                    (intConst 10))))))) ;)) 
                     (blockItem 
                         (stmt 
-                            (lVal p) = 
+                            (lVal b) = 
                             (exp 
                                 (addExp 
                                     (mulExp 
-                                        (unaryExp deepWhileBr ( 
+                                        (unaryExp func ( 
                                             (funcRParams 
                                                 (funcRParam 
                                                     (exp 
@@ -170,28 +71,7 @@ parse tree:
                                                             (mulExp 
                                                                 (unaryExp 
                                                                     (primaryExp 
-                                                                        (lVal p))))))) , 
-                                                (funcRParam 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (lVal p)))))))) ))))) ;)) 
-                    (blockItem 
-                        (stmt 
-                            (exp 
-                                (addExp 
-                                    (mulExp 
-                                        (unaryExp putint ( 
-                                            (funcRParams 
-                                                (funcRParam 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (lVal p)))))))) ))))) ;)) 
+                                                                        (lVal a)))))))) ))))) ;)) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -199,128 +79,184 @@ parse tree:
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (number 
-                                                    (intConst 0))))))) ;)) }))) <EOF>)
+                                                (lVal b)))))) ;)) }))) <EOF>)
 visitCompUnit
-visitCompUnit: funcDef
-construct funct block: get_one
-visitPrimaryExp_ number
-visitBlock done!
-construct funct block done!
-visitCompUnit: funcDef
-construct funct block: deepWhileBr
 visitVarDecl: int start
-visitVarDecl: ident: c
-visitAssign done!
-visitPrimaryExp_ number
-visit block stmt
-visitVarDecl: int start
-visitVarDecl: ident: d
+visitVarDecl: ident: a
+visitCompUnit: funcDef
+construct funct block: func
 visitPrimaryExp_ number
 visitAssign done!
-visitPrimaryExp_ number
-visit block stmt
-visitAssign done!
-visitBlock done!
-visitBlock done!
-visitPrimaryExp_ exp
 visitBlock done!
 construct funct block done!
 visitCompUnit: funcDef
 construct funct block: main
 visitVarDecl: int start
-visitVarDecl: array dim_size=2
+visitVarDecl: ident: b
 visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitVarDecl: ident: arr
-visitVarDecl: initVal
-visitInit
-visitCall ident: param16
+visitAssign done!
+visitCall ident: func
 visitFuncRParams
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall ident: getint
-visitCall args_list size: 0
-visitCall args_list size: 16
-visitInit
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitCall args_list size: 2
+visitCall args_list size: 1
+visitAssign done!
 visitBlock done!
 construct funct block done!
 visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitFuncDefint @param16(int @a1, int @a2, int @a3, int @a4, int @a5, int @a6, int @a7, int @a8, int @a9, int @a10, int @a11, int @a12, int @a13, int @a14, int @a15, int @a16)
-Info: visitParamDefint @a1
-Info: visitParamDefint @a2
-Info: visitParamDefint @a3
-Info: visitParamDefint @a4
-Info: visitParamDefint @a5
-Info: visitParamDefint @a6
-Info: visitParamDefint @a7
-Info: visitParamDefint @a8
-Info: visitParamDefint @a9
-Info: visitParamDefint @a10
-Info: visitParamDefint @a11
-Info: visitParamDefint @a12
-Info: visitParamDefint @a13
-Info: visitParamDefint @a14
-Info: visitParamDefint @a15
-Info: visitParamDefint @a16
+Info: visitVarDef int @a
+Info: visitFuncDefint @func(int @p)
+Info: visitParamDefint @p
 Info: visitBlock
-Info: visitStatementReturn 0
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x55b87e941e00
+Info: visitStatementAssign@p = @p-1
+Info: visitAssignStmtAssign@p = @p-1
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitAssignStmtint
+Info: visitExpr@p-1
+Info: visitBinopExpr@p-1
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55ff0dbe0770
+Info: visitStatementReturn @p
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitReturnStmtReturn @p#1function has returnscope id1
 Info: visitFuncDefint @main()
 Info: visitBlock
-Info: visitVarDef int @arr = {{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitDims 32
-Info: visitExpr32
-Info: visitIntLiteralExpr32
-ret->type 0x55b87e942490
-Info: visitDims 2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x55b87e9424c0
-Info: visitExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitAssignmentExpr{{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}}
-Info: visitExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
-Info: visitAssignmentExpr{Call @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint()), 8848}
-Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitAssignmentExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visiCalltExprCall @param16(Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint(), Call @getint())
-Info: visitExprCall @getint()
-Info: visiCalltExprCall @getint()
-Info: use of undeclared function getint
+Info: visitVarDef int @b
+Info: visitStatementAssign@a = 10
+Info: visitAssignStmtAssign@a = 10
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x55ff0dbd96e0
+Info: visitStatementAssign@b = Call @func(@a)
+Info: visitAssignStmtAssign@b = Call @func(@a)
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitAssignStmtint
+Info: visitExprCall @func(@a)
+Info: visiCalltExprCall @func(@a)
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatementReturn @b
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitReturnStmtReturn @b#4function has returnscope id3
+ast: 
+Program
+  int @a#0
+  int @func(int @p#1)
+    {
+      Assign@p#1 = @p#1-1
+      Return @p#1
+    }
+  int @main()
+    {
+      int @b#4
+      Assign@a#0 = 10
+      Assign@b#4 = Call @func(@a#0)
+      Return @b#4
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visit decl global var
+visit decl global var done
+visitFunction func
+visitFunction param decl: p#1
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue p#1
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionLValue p#1
+function func has 6 regs
+B0:
+  prev: 
+  succ: 
+B1:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: 
+
+entryB0
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue a#0
+visitStatement
+visitExpression
+visitExpressionLValue b#4
+function main has 7 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
+ir:
+; module
+@a#0 = global int, 4
+define i32 @main(){
+B2:
+  %2 = 10
+  %3 = loadaddr @a#0
+  store i32 %2, ptr %3
+  %5 = loadaddr @a#0
+  %6 = load i32, ptr %5
+  %4 = call i32 @func(i32 %6)
+  ret i32 %4
+
+}
+define i32 @func(i32){
+B0:
+  %4 = 1
+  %5 = sub i32 %1, %4
+  ret i32 %5
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 

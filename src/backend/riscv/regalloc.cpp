@@ -147,11 +147,11 @@ void Function::emitend() {
     }
     epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, ra), Reg(General, sp), 44));
     if (frame_size >= 2048) {
-        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, a1), frame_size)); // change sp
-        prologue.emplace(prologue.begin(), new Move(Reg(General, a1), Reg(General, sp))); // change sp
+        epilogue.emplace(epilogue.end(), new LoadImm(Reg(General, a1), frame_size)); // change sp
+        epilogue.emplace(epilogue.end(), new Move(Reg(General, a1), Reg(General, sp))); // change sp
     }
     else 
-        prologue.emplace(prologue.begin(), new SPAdd(frame_size)); // change sp
+        epilogue.emplace(epilogue.end(), new SPAdd(frame_size)); // change sp
     epilogue.emplace(epilogue.end(), new Return);
 
     for (auto &bb : bbs) {
