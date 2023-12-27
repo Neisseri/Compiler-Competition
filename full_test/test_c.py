@@ -70,7 +70,7 @@ def get_config(argv: list[str]) -> Config:
 
 def get_testcases(config: Config) -> list[str]:
     testcases = [os.path.splitext(os.path.basename(file))[0]
-                 for file in glob(os.path.join(config.testcases, '*.sy'))]
+                 for file in glob(os.path.join(config.testcases, '*.c'))]
     testcases.sort()
     return testcases
 
@@ -139,12 +139,13 @@ def run(
 
 
 def test(config: Config, testcase: str) -> bool:
-    source = os.path.join(config.testcases, f'{testcase}.sy')
+    source = os.path.join(config.testcases, f'{testcase}.c')
     input = os.path.join(config.testcases, f'{testcase}.in')
-    answer = os.path.join(config.testcases, f'{testcase}.out')
+    answer = os.path.join(config.testcases, f'{testcase}.expected')
     error_log=os.path.join(config.tempdir, f'{testcase}_compile_error.log')
 
-    assembly = os.path.join(f'{testcase}.s')
+    ident = '%04d' % random.randint(0, 9999)
+    assembly = os.path.join(f'{testcase}-{ident}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
     command = (f'{config.compiler} {config.compiler_args} {source}'
                 f' -A -o {assembly}')
@@ -198,10 +199,6 @@ if __name__ == '__main__':
     if os.path.exists(config.tempdir):
         shutil.rmtree(config.tempdir)
     os.mkdir(config.tempdir)
-
-    os.rmdir("ast")
-    os.rmdir("riscv")
-    os.rmdir("ir")
 
     failed = []
     if config.parallel:
