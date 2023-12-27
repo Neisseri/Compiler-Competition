@@ -5,5 +5,6 @@ int model(int a[][5]){
 
 int main()
 {
-    return 0;
+    int a[3][5] = {1,2,3,4};
+    return model(a);
 }

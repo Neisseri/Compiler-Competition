@@ -397,7 +397,7 @@ public:
             return visitExpression(assignment->value, ir_bb);
         }
         else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get())){
-            std::cerr << "visitExpressionLValue" << std::endl;
+            std::cerr << "visitExpressionLValue " << lvalue->ident->name << std::endl;
             std::string name = lvalue->ident->name;
             ir::Reg val_ptr;
             if (lvalue->has_index) {
@@ -411,12 +411,18 @@ public:
                     val_ptr = var_ptr_table[name];
                 }
             }
-            ir::Reg ret = get_new_reg(lvalue->var_type->type);
-            std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
-            if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
-                load_instr->is_local_var = 1;
+            ir::Reg ret;
+            if (!lvalue->has_index && var_type_table[name].is_array){
+                std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
+                ret = val_ptr;
+            } else {
+                ret = get_new_reg(lvalue->var_type->type);
+                std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
+                if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
+                    load_instr->is_local_var = 1;
+                }
+                ir_bb->instrs.push_back(std::move(load_instr));
             }
-            ir_bb->instrs.push_back(std::move(load_instr));
             return ret;
         }
         else if (auto call = dynamic_cast<ast::Call *>(expr.get())){
@@ -639,6 +645,7 @@ public:
                     if (decl->has_init){
                         visit_array_init(decl, ir_bb, dst_ptr, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
                     }
+                    std::cerr << "visit decl array store type done " << decl->ident->name << " " << var_type_table[decl->ident->name].is_array << std::endl;
                     std::cerr << "visit decl array done" << std::endl;
                 } else {
                     std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *decl->var_type ,4));
