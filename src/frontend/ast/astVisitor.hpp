@@ -106,7 +106,7 @@ public:
         init.reset(init_->accept(this).as<Assignment *>());
       }
       auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
-      //check dim_list_ length
+      // check dim_list_ length
       auto decl = new Declaration(std::move(temp_type), std::move(ident), (init ? std::move(init) : nullptr), std::move(dim_list_), true);
       decls.push_back(decl);
     }
@@ -227,7 +227,7 @@ public:
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
-    return new Parameter(std::move(type), std::move(ident),nullptr, false);
+    return new Parameter(std::move(type), std::move(ident), nullptr, false);
   }
 
   antlrcpp::Any visitArrayParam(SysYParser::ArrayParamContext *ctx) override
@@ -235,21 +235,24 @@ public:
     std::cerr << "visitArrayParam" << std::endl;
     auto const type_ = ctx->bType()->accept(this).as<Type *>();
     std::unique_ptr<Type> type(type_);
+    type->is_array = true;
     std::unique_ptr<Identifier> ident(new Identifier(ctx->Ident()->getText()));
     std::vector<std::unique_ptr<Expression>> dim_list;
-    //const int 0
+    // const int 0
     auto const dim_0 = new IntLiteral(0);
     dim_list.push_back(std::unique_ptr<Expression>(dim_0));
     for (auto dim_ : ctx->exp())
     {
       auto const dim = dim_->accept(this).as<Expression *>();
-      if(dim){
-      dim_list.push_back(std::unique_ptr<Expression>(dim));
+      if (dim)
+      {
+        dim_list.push_back(std::unique_ptr<Expression>(dim));
       }
-      else{
+      else
+      {
         std::cerr << "visitArrayParam: dim is nullptr" << std::endl;
       }
-      std::cerr<<"visitArrayParam: dim_ is not nullptr"<<std::endl;
+      std::cerr << "visitArrayParam: dim_ is not nullptr" << std::endl;
     }
     auto dim_list_ = std::make_unique<ExpressionList>(std::move(dim_list));
     return new Parameter(std::move(type), std::move(ident), std::move(dim_list_), true);
@@ -298,7 +301,8 @@ public:
   {
     std::cerr << "visitExprStmt" << std::endl;
 
-    if(!ctx->exp()){
+    if (!ctx->exp())
+    {
       std::cerr << "visitExprStmt: empty exp" << std::endl;
       return static_cast<Statement *>(new ExprStmt(nullptr));
     }
