@@ -132,6 +132,8 @@ namespace riscv {
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
       for (auto i: phi->srcs) {
+        std::cerr << print_reg(Reg(i.first)) << " ";
+        std::cerr << print_bb(bb_map[i.second.get()]) << "\n";
         scrs.push_back(std::pair(Reg(i.first), bb_map[i.second.get()]));
       }
       bb->instructions.emplace_back(new Phi(Reg(phi->dst), scrs));
@@ -149,15 +151,14 @@ namespace riscv {
   }
 
   void Function::resolve_phi() {
-    std::unordered_map<BasicBlock*, std::vector<std::pair<Reg, Reg>>> pairs;
+    std::unordered_map<BasicBlock*, std::set<std::pair<Reg, Reg>>> pair_map;
     for (auto bb: bbs) {
       auto it = bb->instructions.begin();
       while (it != bb->instructions.end()) {
         auto inst = *it;
         if (auto phi = dynamic_cast<Phi*>(inst)) {
-          for (auto i: phi->srcs) {
-            pairs[i.second].push_back({phi->dst, i.first});
-          }
+          for (auto i: phi->srcs)
+            pair_map[i.second].insert({phi->dst, i.first});
           it = bb->instructions.erase(it);
         }
         else {
@@ -165,10 +166,33 @@ namespace riscv {
         }
       }
     }
-    for (auto i: pairs) {
-      while (true) {
+    for (auto [bb, pairs]: pair_map) {
+      while (!std::all_of(pairs.begin(), pairs.end(), [](const auto p){ return p.first == p.second; })) {
         std::set<Reg> livein;
-        
+        for (auto [dst, src]: pairs) 
+          livein.insert(src);
+        Move* mov = nullptr;
+        bool has_erase = false;
+        for (auto p: pairs) {
+          if (!livein.count(p.first)) {
+            auto [dst, src] = p;
+            mov = new Move(src, dst);
+            pairs.erase(p);
+            has_erase = true;
+            break;
+          }
+        }
+        if (!has_erase) {
+          for (auto p: pairs) {
+            if (p.first != p.second) {
+              Reg tmp = freshTemp();
+              mov = new Move(p.second, tmp);
+              p.second = tmp;
+            }
+          }
+        }
+        bb->instructions.emplace(std::prev(bb->instructions.end()), mov);
+        phi_moves.insert(mov);
       }
     }
   }

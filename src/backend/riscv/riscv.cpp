@@ -10,12 +10,16 @@ namespace riscv {
         *r = dst;
   }
 
+  const std::string tab = "    ";
+
   void Function::emit(std::ostream &os) {
     os << name << ":\n";
     for (auto bb: bbs) {
       os << print_bb(bb) << ":\n";
-      for (auto &inst: bb->instructions)
+      for (auto &inst: bb->instructions) {
+        os << tab;
         inst->emit(os);
+      }
       os << "\n";
     }
   }
@@ -106,6 +110,7 @@ namespace riscv {
   void Phi::emit(std::ostream &os) const {
     os << "phi " << print_reg(dst) << " = ";
     for (auto i: srcs) {
+      std::cerr << print_reg(i.first) << " " << print_bb(i.second) << "\n";
       os << "[ " << print_reg(i.first) << ", " << print_bb(i.second) << "] ";
     }
     os << "\n";

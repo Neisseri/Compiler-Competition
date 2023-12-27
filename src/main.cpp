@@ -147,6 +147,7 @@ int main(int argc, char *argv[])
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         for (auto [name, func]: program.functions) {
+            func->resolve_phi();
             riscv::coloringregalloc RegAllocator(func);
             // func->do_reg_alloc();
             RegAllocator.Main();

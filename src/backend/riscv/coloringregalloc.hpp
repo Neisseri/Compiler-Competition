@@ -115,13 +115,15 @@ namespace riscv {
             auto live = bb->live_out;
             for (auto i = bb->instructions.rbegin(); i != bb->instructions.rend(); i++) {
                 if (auto move = dynamic_cast<Move*>(*i)) {
-                    for (auto u: move->use())
-                        live.erase(u);
-                    for (auto n: move->def())
-                        moveList[n].insert(move);
-                    for (auto u: move->use())
-                        moveList[u].insert(move);
-                    worklistMoves.insert(move);
+                    if (!func->phi_moves.count(move)) {
+                        for (auto u: move->use())
+                            live.erase(u);
+                        for (auto n: move->def())
+                            moveList[n].insert(move);
+                        for (auto u: move->use())
+                            moveList[u].insert(move);
+                        worklistMoves.insert(move);
+                    }
                 }
                 for (auto d: (*i)->def())
                     live.insert(d);

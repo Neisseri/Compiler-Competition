@@ -56,57 +56,6 @@ struct Instruction {
     void replace_reg(Reg src, Reg dst);
 };
 
-struct Function {
-    std::string name;
-    ir::Label label;
-    Reg freshTemp() {
-        return Reg(General, -(++num_regs));
-    }
-    int num_regs;
-    int reg_occupied[32];
-    std::vector<std::unique_ptr<Instruction>> instrs;
-    std::list<BasicBlock*> bbs;
-    int num_params;
-    void do_liveness_analysis();
-    std::vector<BasicBlock*> do_post_order_tranverse();
-    std::vector<BasicBlock*> compute_post_order() const;
-    void do_reg_alloc();
-    void alloc_reg_for(Reg i, bool is_read,
-        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
-    void emitend();
-    int frame_size;
-    // std::vector<int> allocable_regs;
-    std::vector<int> callee_saved_regs;
-    std::map<Reg, int> bindings;
-    std::map<int, Reg> reg_to_tmp;
-    int temps[32];
-    void replace_regs(std::map<Reg, int> reg_map);
-    std::map<Reg, int> offsets; // virtual reg -> stack offset
-    std::map<Reg, int> alloca_offsets; // virtual regs are ptr to stack objs
-    std::map<Reg, int> alloca_sizes;
-    void emit(std::ostream &os);
-    Function(ir::Function& ir_function, const std::string& name);
-    void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
-        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
-    void resolve_phi();
-};
-
-struct Program {
-    void cfg_build();
-    std::list<BasicBlock*> bbs;
-    std::list<ir::GlobalDef*> global_defs;
-    std::unordered_map<std::string, Function*> functions;
-    int label_cnt;
-    std::string new_label() {
-        return ".L" + std::to_string(label_cnt++);
-    }
-    std::vector<std::string> buffer;
-    Program() {}
-    void emit(std::ostream &os);
-    void emitEnd(std::ostream &os);
-    Program(ir::Program ir_program);
-};
-
 std::string print_reg(Reg src);
 std::string print_bb(BasicBlock* bb);
 
@@ -239,7 +188,7 @@ struct Call: Instruction {
 struct Phi: Instruction {
     Reg dst;
     std::vector<std::pair<Reg, BasicBlock*>> srcs;
-    Phi(Reg dst, std::vector<std::pair<Reg, BasicBlock*>>): dst(dst), srcs(srcs) {}
+    Phi(Reg dst, std::vector<std::pair<Reg, BasicBlock*>> srcs): dst(dst), srcs(std::move(srcs)) {}
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override {
         std::set<Reg> rst;
@@ -268,5 +217,58 @@ struct LoadAddr: Instruction {
     std::vector<Reg*> reg_ptrs() override { return {&dst}; }
     void emit(std::ostream &os) const override;
 };
+
+struct Function {
+    std::string name;
+    ir::Label label;
+    Reg freshTemp() {
+        return Reg(General, -(++num_regs));
+    }
+    std::set<Move*> phi_moves;
+    int num_regs;
+    int reg_occupied[32];
+    std::vector<std::unique_ptr<Instruction>> instrs;
+    std::list<BasicBlock*> bbs;
+    int num_params;
+    void do_liveness_analysis();
+    std::vector<BasicBlock*> do_post_order_tranverse();
+    std::vector<BasicBlock*> compute_post_order() const;
+    void do_reg_alloc();
+    void alloc_reg_for(Reg i, bool is_read,
+        std::list<Instruction*>::iterator it, std::list<Instruction*> instructions);
+    void emitend();
+    int frame_size;
+    // std::vector<int> allocable_regs;
+    std::vector<int> callee_saved_regs;
+    std::map<Reg, int> bindings;
+    std::map<int, Reg> reg_to_tmp;
+    int temps[32];
+    void replace_regs(std::map<Reg, int> reg_map);
+    std::map<Reg, int> offsets; // virtual reg -> stack offset
+    std::map<Reg, int> alloca_offsets; // virtual regs are ptr to stack objs
+    std::map<Reg, int> alloca_sizes;
+    void emit(std::ostream &os);
+    Function(ir::Function& ir_function, const std::string& name);
+    void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
+        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
+    void resolve_phi();
+};
+
+struct Program {
+    void cfg_build();
+    std::list<BasicBlock*> bbs;
+    std::list<ir::GlobalDef*> global_defs;
+    std::unordered_map<std::string, Function*> functions;
+    int label_cnt;
+    std::string new_label() {
+        return ".L" + std::to_string(label_cnt++);
+    }
+    std::vector<std::string> buffer;
+    Program() {}
+    void emit(std::ostream &os);
+    void emitEnd(std::ostream &os);
+    Program(ir::Program ir_program);
+};
+
 
 }
