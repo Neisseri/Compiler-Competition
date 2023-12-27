@@ -1,0 +1,107 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) model ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) a [ ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (number 
+                                                (intConst 5))))))) ])) ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal a [ 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 0))))))) ] [ 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 3))))))) ])))))) ;)) }))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+visitArrayParam
+visitPrimaryExp_ number
+dims: 2
+0 5 construct funct block: model
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit: funcDef
+construct funct block: main
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefint @model(int [0,5] @a)
+Info: visitParamDefint [0,5] @a
+Info: visitBlock
+Info: visitStatementReturn @a[0][3]
+Info: visitExpr@a[0][3]
+Info: visitLvalExpr@a[0][3]
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55c12a2f8440
+ast: 
+Program
+  int @model(int [0,5] @a#1)
+    {
+      Return @a#1[0][3]
+    }
+  int @main()
+    {
+      Return 0
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction model
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionLValue
+visitIndex
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
