@@ -398,8 +398,13 @@ public:
         }
         else if (auto call = dynamic_cast<ast::Call *>(expr.get())){
             std::string name = call->ident->name;
-            Type ret_type = ir_program.functions[name].ret_type;
-            ir::Reg ret = get_new_reg(ret_type.type);
+            int ret_type;
+            if (ir_program.functions.find(name) != ir_program.functions.end()){
+                ret_type = ir_program.functions[name].ret_type.type;
+            } else {
+                ret_type = 1;;
+            }
+            ir::Reg ret = get_new_reg(ret_type);
             std::vector<ir::Reg> params;
             for (auto &i : call->argument_list->children) {
                 params.push_back(visitExpression(i, ir_bb));
