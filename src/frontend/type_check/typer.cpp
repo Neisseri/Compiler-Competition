@@ -44,12 +44,11 @@ namespace frontend
             visitParamDef(param.get());
         }
         visitBlock(func_def->body.get());
-        if (func_def->ret_type->type == static_cast<int>(TypeEnum::VOID))
+        if (!scope_stack->get_top_scope()->has_return)
         {
-            // create a return statement for void function
-            auto int_literal = std::make_unique<ast::IntLiteral>(0);
-
-            auto return_stmt = std::make_unique<ast::Return>(std::move(int_literal));
+            SyError().throw_info("function " + name + " has no return"+"scope id"+std::to_string(scope_stack->get_top_scope()->scope_id));
+            auto const_0 = std::make_unique<ast::IntLiteral>(0);
+            auto return_stmt = std::make_unique<ast::Return>(std::move(const_0));
             func_def->body->children.push_back(std::move(return_stmt));
         }
         this->scope_stack->scope_pop();
@@ -143,7 +142,6 @@ namespace frontend
                 ++it; // Move to the next element
             }
         }
-
         scope_stack->scope_pop();
     }
 
@@ -192,7 +190,7 @@ namespace frontend
         {
             visitWhileStmt(while_stmt);
         }
-        else if (auto return_stmt = dynamic_cast<const ast::Return *>(statement))
+        else if (auto return_stmt = dynamic_cast<ast::Return *>(statement))
         {
             visitReturnStmt(return_stmt);
         }
@@ -237,7 +235,7 @@ namespace frontend
         }
     }
 
-    void TyperVisitor::visitReturnStmt(const ast::Return *return_stmt)
+    void TyperVisitor::visitReturnStmt(ast::Return *return_stmt)
     {
         auto cur_func_scope = scope_stack->get_cur_func_scope();
         if (cur_func_scope == nullptr)
@@ -248,10 +246,8 @@ namespace frontend
         auto ret_type = cur_func_scope->ret_type;
         if (ret_type->type == static_cast<int>(TypeEnum::VOID))
         {
-            if (return_stmt->expr != nullptr)
-            {
-                SyError().throw_warning("return value in void function will be ignored");
-            }
+            auto const_0 = std::make_unique<ast::IntLiteral>(0);
+            return_stmt->expr = std::move(const_0);
         }
         else
         {
@@ -265,6 +261,8 @@ namespace frontend
                 SyError().throw_error(ErrorTypeEnum::SemanticError, "return type mismatch");
             }
         }
+        cur_func_scope->has_return = true;
+        SyError().throw_info("visitReturnStmt" + return_stmt->toString()+"function has return"+"scope id"+std::to_string(cur_func_scope->scope_id));
     }
 
     void TyperVisitor::visitLVal(const ast::LValue *lval)

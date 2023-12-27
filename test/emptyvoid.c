@@ -1,8 +1,8 @@
-int to[10][10];
-int used[10];
-
-int main()
-{
-    to[1][1] = 123;
-    return used[to[1][1]];
+void func(){
+    int a[5]={1,2,3,4,5};
+    return;
+}
+int main(){
+    func();
+    return 0;
 }
