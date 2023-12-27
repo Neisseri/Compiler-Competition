@@ -173,7 +173,7 @@ namespace frontend
             ~Return() = default;
             std::string toString() const override
             {
-                return "Return " + expr->toString();
+                return "Return " + (expr?expr->toString():" nullptr_for_void_func");
             }
             void print(std::ostream &os, int indent) const override
             {

@@ -44,6 +44,14 @@ namespace frontend
             visitParamDef(param.get());
         }
         visitBlock(func_def->body.get());
+        if (func_def->ret_type->type == static_cast<int>(TypeEnum::VOID))
+        {
+            // create a return statement for void function
+            auto int_literal = std::make_unique<ast::IntLiteral>(0);
+
+            auto return_stmt = std::make_unique<ast::Return>(std::move(int_literal));
+            func_def->body->children.push_back(std::move(return_stmt));
+        }
         this->scope_stack->scope_pop();
     }
 
