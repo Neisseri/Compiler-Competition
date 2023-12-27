@@ -1,0 +1,188 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) model ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) a [ ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (number 
+                                                (intConst 5))))))) ])) ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal a [ 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 0))))))) ] [ 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 3))))))) ])))))) ;)) }))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+visitArrayParam
+visitPrimaryExp_ number
+visitArrayParam: dim_ is not nullptr
+construct funct block: model
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit: funcDef
+construct funct block: main
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefint @model(int @a[0, 5])
+Info: visitParamDefint @a[0, 5]
+Info: visitBlock
+Info: visitStatementReturn @a[0][3]
+Info: visitExpr@a[0][3]
+Info: visitLvalExpr@a[0][3]
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55874fddf2a0
+ast: 
+Program
+  int @model(int @a#1[0, 5])
+    {
+      Return @a#1[0][3]
+    }
+  int @main()
+    {
+      Return 0
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction model
+visitFunction param decl: a#1
+visitFunction param decl array
+visitExpressionVal
+visitExpressionVal
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionLValue
+visitIndex
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitIndex calc blocksize 1
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function model has 11 regs
+B0:
+  prev: 
+  succ: 
+B1:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: 
+
+entryB0
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 1 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
+ir:
+; module
+define i32 @main(){
+B2:
+  %1 = 0
+  ret i32 %1
+
+}
+define i32 @model(i32){
+B0:
+  %2 = 4
+  %3 = 3
+  %4 = mul i32 %3, %2
+  %5 = add i32 %1, %4
+  %6 = 5
+  %7 = mul i32 %2, %6
+  %8 = 0
+  %9 = mul i32 %8, %7
+  %10 = add i32 %5, %9
+  %11 = load i32, ptr %10
+  ret i32 %11
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
