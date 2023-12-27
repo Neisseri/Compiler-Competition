@@ -173,7 +173,7 @@ namespace frontend
             ~Return() = default;
             std::string toString() const override
             {
-                return "Return " + (expr?expr->toString():" nullptr_for_void_func");
+                return "Return " + (expr ? expr->toString() : " nullptr_for_void_func");
             }
             void print(std::ostream &os, int indent) const override
             {
@@ -185,11 +185,15 @@ namespace frontend
         class Parameter : public AstNode
         {
         public:
-            Parameter(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident) : var_type(std::move(var_type)), ident(std::move(ident)) {}
+            Parameter(std::unique_ptr<Type> var_type, std::unique_ptr<Identifier> ident, std::unique_ptr<ExpressionList> indices,bool is_array):
+                var_type(std::move(var_type)), ident(std::move(ident)), indices(std::move(indices)), is_array(is_array) {}
             ~Parameter() = default;
             std::string toString() const override
             {
-                return var_type->toString() + " " + ident->toString();
+                if(is_array)
+                    return var_type->toString() + " " + ident->toString() + "[" + indices->toString() + "]";
+                else
+                    return var_type->toString() + " " + ident->toString();
             }
             void print(std::ostream &os, int indent) const override
             {
@@ -197,6 +201,9 @@ namespace frontend
             }
             std::unique_ptr<Type> var_type;
             std::unique_ptr<Identifier> ident;
+            std::unique_ptr<ExpressionList> indices;
+            bool is_const = false;
+            bool is_array = false;
         };
 
         class ParameterList : public AstNode
@@ -291,8 +298,8 @@ namespace frontend
             std::unique_ptr<Identifier> ident;
             std::unique_ptr<Expression> init_expr = nullptr;
             std::unique_ptr<ExpressionList> indices;
-            bool has_init;
             bool is_const = false;
+            bool has_init;
         };
 
         class Operator : public AstNode
