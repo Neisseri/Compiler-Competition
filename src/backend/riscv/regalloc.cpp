@@ -125,7 +125,12 @@ void Function::emitend() {
     }
     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44)); // store ra
 
-    prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
+    if (frame_size >= 2048) {
+        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, s1), -frame_size)); // change sp
+        prologue.emplace(prologue.begin(), new Move(Reg(General, s1), Reg(General, sp))); // change sp
+    }
+    else 
+        prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
 
     // for (int i = 0; i < num_params; i++) {
     //     prologue.emplace(prologue.end(), new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, -(i+1))]));
