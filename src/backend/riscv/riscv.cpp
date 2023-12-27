@@ -100,6 +100,10 @@ namespace riscv {
     os << "addi " << print_reg(dst) << ", " << print_reg(src) << ", " << offset << "\n";
   }
 
+  void LUI::emit(std::ostream &os) const {
+    os << "lui " << print_reg(dst) << ", " << imm << "\n";
+  }
+
   void Return::emit(std::ostream &os) const {
     os << "ret\n";
   }

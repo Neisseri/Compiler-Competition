@@ -137,6 +137,16 @@ struct ADDI: Instruction {
 };
 
 
+struct LUI: Instruction {
+    Reg dst;
+    int imm;
+    LUI(Reg dst, int imm): dst(dst), imm(imm) {}
+    std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {}; }
+    std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    void emit(std::ostream &os) const override;
+};
+
 struct Jump: Instruction {
     BasicBlock* target;
     Jump(BasicBlock* target): target(target) {}
