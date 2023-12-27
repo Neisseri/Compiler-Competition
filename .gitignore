@@ -11,5 +11,6 @@ ir/
 riscv/
 
 runtime.log
+test/simple.c
 a.out
 test.exec
