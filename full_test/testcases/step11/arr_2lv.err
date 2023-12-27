@@ -1,0 +1,24 @@
+Syntax error: line 2, column 11
+    int a[2][2];
+Syntax error: line 2, column 14
+    int a[2][2];
+Syntax error: line 6, column 15
+            a[i][j] = k=k+1;
+Syntax error: line 6, column 18
+            a[i][j] = k=k+1;
+Syntax error: line 7, column 14
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 17
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 27
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 30
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 42
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 45
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 57
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];
+Syntax error: line 7, column 60
+    return a[0][0]*40 + a[0][1] * 20 + a[1][0] * 10 + a[1][1];

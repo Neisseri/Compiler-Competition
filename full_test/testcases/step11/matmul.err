@@ -1,0 +1,424 @@
+Syntax error: line 1, column 7
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 10
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 12
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 14
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 18
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 20
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 23
+int a[2][2]; int b[2][2];
+Syntax error: line 1, column 25
+int a[2][2]; int b[2][2];
+Syntax error: line 3, column 1
+int mulMatrix(int n) {
+Syntax error: line 3, column 5
+int mulMatrix(int n) {
+Syntax error: line 3, column 15
+int mulMatrix(int n) {
+Syntax error: line 3, column 19
+int mulMatrix(int n) {
+Syntax error: line 9, column 15
+            b[i][j] = 0;
+Syntax error: line 9, column 18
+            b[i][j] = 0;
+Syntax error: line 12, column 19
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 22
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 29
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 32
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 39
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 42
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 49
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 12, column 52
+                b[i][j] = b[i][j] + a[i][k] * a[k][j];
+Syntax error: line 22, column 1
+int initMatrix(int n) {
+Syntax error: line 22, column 5
+int initMatrix(int n) {
+Syntax error: line 22, column 15
+int initMatrix(int n) {
+Syntax error: line 22, column 16
+int initMatrix(int n) {
+Syntax error: line 22, column 20
+int initMatrix(int n) {
+Syntax error: line 22, column 21
+int initMatrix(int n) {
+Syntax error: line 22, column 23
+int initMatrix(int n) {
+Syntax error: line 23, column 5
+    int i; int j; int k;
+Syntax error: line 23, column 9
+    int i; int j; int k;
+Syntax error: line 23, column 10
+    int i; int j; int k;
+Syntax error: line 23, column 12
+    int i; int j; int k;
+Syntax error: line 23, column 16
+    int i; int j; int k;
+Syntax error: line 23, column 17
+    int i; int j; int k;
+Syntax error: line 23, column 19
+    int i; int j; int k;
+Syntax error: line 23, column 23
+    int i; int j; int k;
+Syntax error: line 23, column 24
+    int i; int j; int k;
+Syntax error: line 24, column 5
+    k = 0;
+Syntax error: line 24, column 7
+    k = 0;
+Syntax error: line 24, column 9
+    k = 0;
+Syntax error: line 24, column 10
+    k = 0;
+Syntax error: line 25, column 5
+    i = 0;
+Syntax error: line 25, column 7
+    i = 0;
+Syntax error: line 25, column 9
+    i = 0;
+Syntax error: line 25, column 10
+    i = 0;
+Syntax error: line 26, column 5
+    while (i < 2) {
+Syntax error: line 26, column 11
+    while (i < 2) {
+Syntax error: line 26, column 12
+    while (i < 2) {
+Syntax error: line 26, column 14
+    while (i < 2) {
+Syntax error: line 26, column 16
+    while (i < 2) {
+Syntax error: line 26, column 17
+    while (i < 2) {
+Syntax error: line 26, column 19
+    while (i < 2) {
+Syntax error: line 27, column 9
+        j = 0;
+Syntax error: line 27, column 11
+        j = 0;
+Syntax error: line 27, column 13
+        j = 0;
+Syntax error: line 27, column 14
+        j = 0;
+Syntax error: line 28, column 9
+        while (j < 2) {
+Syntax error: line 28, column 15
+        while (j < 2) {
+Syntax error: line 28, column 16
+        while (j < 2) {
+Syntax error: line 28, column 18
+        while (j < 2) {
+Syntax error: line 28, column 20
+        while (j < 2) {
+Syntax error: line 28, column 21
+        while (j < 2) {
+Syntax error: line 28, column 23
+        while (j < 2) {
+Syntax error: line 29, column 13
+            k = k + 1;
+Syntax error: line 29, column 15
+            k = k + 1;
+Syntax error: line 29, column 17
+            k = k + 1;
+Syntax error: line 29, column 19
+            k = k + 1;
+Syntax error: line 29, column 21
+            k = k + 1;
+Syntax error: line 29, column 22
+            k = k + 1;
+Syntax error: line 30, column 13
+            a[i][j] = k;
+Syntax error: line 30, column 15
+            a[i][j] = k;
+Syntax error: line 30, column 18
+            a[i][j] = k;
+Syntax error: line 30, column 21
+            a[i][j] = k;
+Syntax error: line 30, column 23
+            a[i][j] = k;
+Syntax error: line 30, column 24
+            a[i][j] = k;
+Syntax error: line 31, column 13
+            j = j + 1;
+Syntax error: line 31, column 15
+            j = j + 1;
+Syntax error: line 31, column 17
+            j = j + 1;
+Syntax error: line 31, column 19
+            j = j + 1;
+Syntax error: line 31, column 21
+            j = j + 1;
+Syntax error: line 31, column 22
+            j = j + 1;
+Syntax error: line 32, column 9
+        }
+Syntax error: line 33, column 9
+        i = i + 1;
+Syntax error: line 33, column 11
+        i = i + 1;
+Syntax error: line 33, column 13
+        i = i + 1;
+Syntax error: line 33, column 15
+        i = i + 1;
+Syntax error: line 33, column 17
+        i = i + 1;
+Syntax error: line 33, column 18
+        i = i + 1;
+Syntax error: line 34, column 5
+    }
+Syntax error: line 35, column 5
+    return 0;
+Syntax error: line 35, column 12
+    return 0;
+Syntax error: line 35, column 13
+    return 0;
+Syntax error: line 36, column 1
+}
+Syntax error: line 38, column 1
+int main() {
+Syntax error: line 38, column 5
+int main() {
+Syntax error: line 38, column 9
+int main() {
+Syntax error: line 38, column 10
+int main() {
+Syntax error: line 38, column 12
+int main() {
+Syntax error: line 39, column 5
+    initMatrix(2);
+Syntax error: line 39, column 15
+    initMatrix(2);
+Syntax error: line 39, column 16
+    initMatrix(2);
+Syntax error: line 39, column 17
+    initMatrix(2);
+Syntax error: line 39, column 18
+    initMatrix(2);
+Syntax error: line 40, column 5
+    mulMatrix(2);
+Syntax error: line 40, column 14
+    mulMatrix(2);
+Syntax error: line 40, column 15
+    mulMatrix(2);
+Syntax error: line 40, column 16
+    mulMatrix(2);
+Syntax error: line 40, column 17
+    mulMatrix(2);
+Syntax error: line 41, column 5
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 9
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 10
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 14
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 16
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 18
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 19
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 21
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 23
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 25
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 26
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 28
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 30
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 32
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 34
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 36
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 41, column 37
+    for (int i = 0; i < 2; i = i + 1)
+Syntax error: line 42, column 9
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 13
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 14
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 18
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 20
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 22
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 23
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 25
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 27
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 29
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 30
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 32
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 34
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 36
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 38
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 40
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 41
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 42, column 43
+        for (int j = 0; j < 2; j = j + 1) {
+Syntax error: line 43, column 13
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 15
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 18
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 21
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 23
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 25
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 28
+            a[i][j] = b[i][j];
+Syntax error: line 43, column 30
+            a[i][j] = b[i][j];
+Syntax error: line 44, column 13
+            b[i][j] = 0;
+Syntax error: line 44, column 15
+            b[i][j] = 0;
+Syntax error: line 44, column 18
+            b[i][j] = 0;
+Syntax error: line 44, column 21
+            b[i][j] = 0;
+Syntax error: line 44, column 23
+            b[i][j] = 0;
+Syntax error: line 44, column 24
+            b[i][j] = 0;
+Syntax error: line 45, column 9
+        }
+Syntax error: line 46, column 5
+    mulMatrix(2);
+Syntax error: line 46, column 14
+    mulMatrix(2);
+Syntax error: line 46, column 15
+    mulMatrix(2);
+Syntax error: line 46, column 16
+    mulMatrix(2);
+Syntax error: line 46, column 17
+    mulMatrix(2);
+Syntax error: line 47, column 5
+    if (b[0][0] != 199)
+Syntax error: line 47, column 8
+    if (b[0][0] != 199)
+Syntax error: line 47, column 9
+    if (b[0][0] != 199)
+Syntax error: line 47, column 11
+    if (b[0][0] != 199)
+Syntax error: line 47, column 14
+    if (b[0][0] != 199)
+Syntax error: line 47, column 17
+    if (b[0][0] != 199)
+Syntax error: line 47, column 20
+    if (b[0][0] != 199)
+Syntax error: line 47, column 23
+    if (b[0][0] != 199)
+Syntax error: line 48, column 9
+        return 1;
+Syntax error: line 48, column 16
+        return 1;
+Syntax error: line 48, column 17
+        return 1;
+Syntax error: line 49, column 5
+    if (b[0][1] != 290)
+Syntax error: line 49, column 8
+    if (b[0][1] != 290)
+Syntax error: line 49, column 9
+    if (b[0][1] != 290)
+Syntax error: line 49, column 11
+    if (b[0][1] != 290)
+Syntax error: line 49, column 14
+    if (b[0][1] != 290)
+Syntax error: line 49, column 17
+    if (b[0][1] != 290)
+Syntax error: line 49, column 20
+    if (b[0][1] != 290)
+Syntax error: line 49, column 23
+    if (b[0][1] != 290)
+Syntax error: line 50, column 9
+        return 2;
+Syntax error: line 50, column 16
+        return 2;
+Syntax error: line 50, column 17
+        return 2;
+Syntax error: line 51, column 5
+    if (b[1][0] != 435)
+Syntax error: line 51, column 8
+    if (b[1][0] != 435)
+Syntax error: line 51, column 9
+    if (b[1][0] != 435)
+Syntax error: line 51, column 11
+    if (b[1][0] != 435)
+Syntax error: line 51, column 14
+    if (b[1][0] != 435)
+Syntax error: line 51, column 17
+    if (b[1][0] != 435)
+Syntax error: line 51, column 20
+    if (b[1][0] != 435)
+Syntax error: line 51, column 23
+    if (b[1][0] != 435)
+Syntax error: line 52, column 9
+        return 3;
+Syntax error: line 52, column 16
+        return 3;
+Syntax error: line 52, column 17
+        return 3;
+Syntax error: line 53, column 5
+    if (b[1][1] != 634)
+Syntax error: line 53, column 8
+    if (b[1][1] != 634)
+Syntax error: line 53, column 9
+    if (b[1][1] != 634)
+Syntax error: line 53, column 11
+    if (b[1][1] != 634)
+Syntax error: line 53, column 14
+    if (b[1][1] != 634)
+Syntax error: line 53, column 17
+    if (b[1][1] != 634)
+Syntax error: line 53, column 20
+    if (b[1][1] != 634)
+Syntax error: line 53, column 23
+    if (b[1][1] != 634)
+Syntax error: line 54, column 9
+        return 4;
+Syntax error: line 54, column 16
+        return 4;
+Syntax error: line 54, column 17
+        return 4;
+Syntax error: line 55, column 5
+    return 0;
+Syntax error: line 55, column 12
+    return 0;
+Syntax error: line 55, column 13
+    return 0;
+Syntax error: line 56, column 1
+}

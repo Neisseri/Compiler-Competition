@@ -1,0 +1,400 @@
+Syntax error: line 1, column 7
+int n = 1000000;
+Syntax error: line 1, column 9
+int n = 1000000;
+Syntax error: line 1, column 16
+int n = 1000000;
+Syntax error: line 2, column 1
+int arr[1000000];
+Syntax error: line 2, column 5
+int arr[1000000];
+Syntax error: line 2, column 9
+int arr[1000000];
+Syntax error: line 2, column 17
+int arr[1000000];
+Syntax error: line 4, column 1
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 5
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 11
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 15
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 17
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 27
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 31
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 34
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 4, column 38
+int qsort(int a[1000000], int l, int r) {
+Syntax error: line 7, column 15
+    int p = a[(l+r)/2];
+Syntax error: line 7, column 16
+    int p = a[(l+r)/2];
+Syntax error: line 7, column 19
+    int p = a[(l+r)/2];
+Syntax error: line 7, column 20
+    int p = a[(l+r)/2];
+Syntax error: line 7, column 21
+    int p = a[(l+r)/2];
+Syntax error: line 10, column 18
+        while (a[i] < p) i = i + 1;
+Syntax error: line 11, column 18
+        while (a[j] > p) j = j - 1;
+Syntax error: line 13, column 19
+        int u = a[i]; a[i] = a[j]; a[j] = u;
+Syntax error: line 13, column 25
+        int u = a[i]; a[i] = a[j]; a[j] = u;
+Syntax error: line 13, column 32
+        int u = a[i]; a[i] = a[j]; a[j] = u;
+Syntax error: line 13, column 38
+        int u = a[i]; a[i] = a[j]; a[j] = u;
+Syntax error: line 17, column 21
+    if (i < r) qsort(a, i, r);
+Syntax error: line 17, column 22
+    if (i < r) qsort(a, i, r);
+Syntax error: line 17, column 25
+    if (i < r) qsort(a, i, r);
+Syntax error: line 17, column 28
+    if (i < r) qsort(a, i, r);
+Syntax error: line 17, column 29
+    if (i < r) qsort(a, i, r);
+Syntax error: line 18, column 21
+    if (j > l) qsort(a, l, j);
+Syntax error: line 18, column 22
+    if (j > l) qsort(a, l, j);
+Syntax error: line 18, column 25
+    if (j > l) qsort(a, l, j);
+Syntax error: line 18, column 28
+    if (j > l) qsort(a, l, j);
+Syntax error: line 18, column 29
+    if (j > l) qsort(a, l, j);
+Syntax error: line 22, column 1
+int state;
+Syntax error: line 22, column 5
+int state;
+Syntax error: line 22, column 10
+int state;
+Syntax error: line 23, column 1
+int rand() {
+Syntax error: line 23, column 5
+int rand() {
+Syntax error: line 23, column 9
+int rand() {
+Syntax error: line 23, column 10
+int rand() {
+Syntax error: line 23, column 12
+int rand() {
+Syntax error: line 24, column 5
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 11
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 13
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 14
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 20
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 22
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 28
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 30
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 37
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 39
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 41
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 24, column 46
+    state = (state * 64013 + 1531011) % 32768;
+Syntax error: line 25, column 5
+    return state % 1000;
+Syntax error: line 25, column 12
+    return state % 1000;
+Syntax error: line 25, column 18
+    return state % 1000;
+Syntax error: line 25, column 20
+    return state % 1000;
+Syntax error: line 25, column 24
+    return state % 1000;
+Syntax error: line 26, column 1
+}
+Syntax error: line 28, column 1
+int initArr(int n) {
+Syntax error: line 28, column 5
+int initArr(int n) {
+Syntax error: line 28, column 12
+int initArr(int n) {
+Syntax error: line 28, column 13
+int initArr(int n) {
+Syntax error: line 28, column 17
+int initArr(int n) {
+Syntax error: line 28, column 18
+int initArr(int n) {
+Syntax error: line 28, column 20
+int initArr(int n) {
+Syntax error: line 29, column 5
+    int i = 0;
+Syntax error: line 29, column 9
+    int i = 0;
+Syntax error: line 29, column 11
+    int i = 0;
+Syntax error: line 29, column 13
+    int i = 0;
+Syntax error: line 29, column 14
+    int i = 0;
+Syntax error: line 30, column 5
+    while (i < n) {
+Syntax error: line 30, column 11
+    while (i < n) {
+Syntax error: line 30, column 12
+    while (i < n) {
+Syntax error: line 30, column 14
+    while (i < n) {
+Syntax error: line 30, column 16
+    while (i < n) {
+Syntax error: line 30, column 17
+    while (i < n) {
+Syntax error: line 30, column 19
+    while (i < n) {
+Syntax error: line 31, column 9
+        arr[i] = rand();
+Syntax error: line 31, column 13
+        arr[i] = rand();
+Syntax error: line 31, column 16
+        arr[i] = rand();
+Syntax error: line 31, column 18
+        arr[i] = rand();
+Syntax error: line 31, column 22
+        arr[i] = rand();
+Syntax error: line 31, column 23
+        arr[i] = rand();
+Syntax error: line 31, column 24
+        arr[i] = rand();
+Syntax error: line 32, column 9
+        i = i + 1;
+Syntax error: line 32, column 11
+        i = i + 1;
+Syntax error: line 32, column 13
+        i = i + 1;
+Syntax error: line 32, column 15
+        i = i + 1;
+Syntax error: line 32, column 17
+        i = i + 1;
+Syntax error: line 32, column 18
+        i = i + 1;
+Syntax error: line 33, column 5
+    }
+Syntax error: line 34, column 5
+    return 0;
+Syntax error: line 34, column 12
+    return 0;
+Syntax error: line 34, column 13
+    return 0;
+Syntax error: line 35, column 1
+}
+Syntax error: line 37, column 1
+int isSorted(int n) {
+Syntax error: line 37, column 5
+int isSorted(int n) {
+Syntax error: line 37, column 13
+int isSorted(int n) {
+Syntax error: line 37, column 14
+int isSorted(int n) {
+Syntax error: line 37, column 18
+int isSorted(int n) {
+Syntax error: line 37, column 19
+int isSorted(int n) {
+Syntax error: line 37, column 21
+int isSorted(int n) {
+Syntax error: line 38, column 5
+    int i = 0;
+Syntax error: line 38, column 9
+    int i = 0;
+Syntax error: line 38, column 11
+    int i = 0;
+Syntax error: line 38, column 13
+    int i = 0;
+Syntax error: line 38, column 14
+    int i = 0;
+Syntax error: line 39, column 5
+    while (i < n-1) {
+Syntax error: line 39, column 11
+    while (i < n-1) {
+Syntax error: line 39, column 12
+    while (i < n-1) {
+Syntax error: line 39, column 14
+    while (i < n-1) {
+Syntax error: line 39, column 16
+    while (i < n-1) {
+Syntax error: line 39, column 17
+    while (i < n-1) {
+Syntax error: line 39, column 18
+    while (i < n-1) {
+Syntax error: line 39, column 19
+    while (i < n-1) {
+Syntax error: line 39, column 21
+    while (i < n-1) {
+Syntax error: line 40, column 9
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 12
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 14
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 18
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 21
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 23
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 27
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 28
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 29
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 40, column 32
+        if ( arr[i] > arr[i+1] )
+Syntax error: line 41, column 13
+            return 0;
+Syntax error: line 41, column 20
+            return 0;
+Syntax error: line 41, column 21
+            return 0;
+Syntax error: line 42, column 9
+        i = i + 1;
+Syntax error: line 42, column 11
+        i = i + 1;
+Syntax error: line 42, column 13
+        i = i + 1;
+Syntax error: line 42, column 15
+        i = i + 1;
+Syntax error: line 42, column 17
+        i = i + 1;
+Syntax error: line 42, column 18
+        i = i + 1;
+Syntax error: line 43, column 5
+    }
+Syntax error: line 44, column 5
+    return 1;
+Syntax error: line 44, column 12
+    return 1;
+Syntax error: line 44, column 13
+    return 1;
+Syntax error: line 45, column 1
+}
+Syntax error: line 47, column 1
+int main() {
+Syntax error: line 47, column 5
+int main() {
+Syntax error: line 47, column 9
+int main() {
+Syntax error: line 47, column 10
+int main() {
+Syntax error: line 47, column 12
+int main() {
+Syntax error: line 48, column 5
+    initArr(n);
+Syntax error: line 48, column 12
+    initArr(n);
+Syntax error: line 48, column 13
+    initArr(n);
+Syntax error: line 48, column 14
+    initArr(n);
+Syntax error: line 48, column 15
+    initArr(n);
+Syntax error: line 49, column 5
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 9
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 23
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 25
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 33
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 34
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 35
+    int sorted_before = isSorted(n);
+Syntax error: line 49, column 36
+    int sorted_before = isSorted(n);
+Syntax error: line 50, column 5
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 10
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 11
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 16
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 19
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 20
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 21
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 22
+    qsort(arr, 0, n-1);
+Syntax error: line 50, column 23
+    qsort(arr, 0, n-1);
+Syntax error: line 51, column 5
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 9
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 22
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 24
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 32
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 33
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 34
+    int sorted_after = isSorted(n);
+Syntax error: line 51, column 35
+    int sorted_after = isSorted(n);
+Syntax error: line 52, column 5
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 8
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 9
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 10
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 11
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 24
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 26
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 28
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 31
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 43
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 45
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 46
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 52, column 47
+    if (!(sorted_before==0 && sorted_after==1))
+Syntax error: line 53, column 9
+        return 1;
+Syntax error: line 53, column 16
+        return 1;
+Syntax error: line 53, column 17
+        return 1;
+Syntax error: line 54, column 5
+    return 0;
+Syntax error: line 54, column 12
+    return 0;
+Syntax error: line 54, column 13
+    return 0;
+Syntax error: line 55, column 1
+}

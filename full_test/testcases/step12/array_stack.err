@@ -1,0 +1,114 @@
+Syntax error: line 2, column 13
+  int array[100] = {100};
+Syntax error: line 2, column 20
+  int array[100] = {100};
+Syntax error: line 2, column 24
+  int array[100] = {100};
+Syntax error: line 3, column 16
+  return array[10] + array[0];
+Syntax error: line 3, column 28
+  return array[10] + array[0];
+Syntax error: line 6, column 1
+int main(){
+Syntax error: line 6, column 5
+int main(){
+Syntax error: line 6, column 9
+int main(){
+Syntax error: line 6, column 10
+int main(){
+Syntax error: line 6, column 11
+int main(){
+Syntax error: line 7, column 3
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 7
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 9
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 13
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 15
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 16
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 19
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 22
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 23
+  int b[10] = {3, 4, 5};
+Syntax error: line 7, column 24
+  int b[10] = {3, 4, 5};
+Syntax error: line 8, column 3
+  int ans = fun();
+Syntax error: line 8, column 7
+  int ans = fun();
+Syntax error: line 8, column 11
+  int ans = fun();
+Syntax error: line 8, column 13
+  int ans = fun();
+Syntax error: line 8, column 16
+  int ans = fun();
+Syntax error: line 8, column 17
+  int ans = fun();
+Syntax error: line 8, column 18
+  int ans = fun();
+Syntax error: line 9, column 3
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 6
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 7
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 11
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 13
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 15
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 16
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 18
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 20
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 22
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 24
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 26
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 28
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 30
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 32
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 34
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 35
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 9, column 36
+  for(int i = 0; i < 10; i = i + 1){
+Syntax error: line 10, column 5
+    ans = ans + b[i];
+Syntax error: line 10, column 9
+    ans = ans + b[i];
+Syntax error: line 10, column 11
+    ans = ans + b[i];
+Syntax error: line 10, column 15
+    ans = ans + b[i];
+Syntax error: line 10, column 17
+    ans = ans + b[i];
+Syntax error: line 10, column 19
+    ans = ans + b[i];
+Syntax error: line 10, column 21
+    ans = ans + b[i];
+Syntax error: line 11, column 3
+  }
+Syntax error: line 12, column 3
+  return ans;
+Syntax error: line 12, column 10
+  return ans;
+Syntax error: line 12, column 13
+  return ans;
+Syntax error: line 13, column 1
+}

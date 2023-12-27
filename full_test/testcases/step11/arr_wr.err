@@ -1,0 +1,10 @@
+Syntax error: line 2, column 11
+    int a[2];
+Syntax error: line 3, column 7
+    a[0] = 1;
+Syntax error: line 4, column 7
+    a[1] = a[0] + 5;
+Syntax error: line 4, column 14
+    a[1] = a[0] + 5;
+Syntax error: line 5, column 14
+    return a[1];

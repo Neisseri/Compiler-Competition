@@ -1,0 +1,20 @@
+Syntax error: line 1, column 7
+int a = 3;
+Syntax error: line 1, column 9
+int a = 3;
+Syntax error: line 1, column 10
+int a = 3;
+Syntax error: line 2, column 1
+int b = 4;
+Syntax error: line 2, column 5
+int b = 4;
+Syntax error: line 2, column 7
+int b = 4;
+Syntax error: line 2, column 9
+int b = 4;
+Syntax error: line 2, column 10
+int b = 4;
+Syntax error: line 4, column 1
+int main() {
+Syntax error: line 4, column 5
+int main() {

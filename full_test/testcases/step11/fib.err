@@ -1,0 +1,68 @@
+Syntax error: line 2, column 12
+    int fi[30];
+Syntax error: line 3, column 8
+    fi[0] = 0;
+Syntax error: line 4, column 8
+    fi[1] = 1;
+Syntax error: line 6, column 12
+        fi[i] = fi[i - 2] + fi[i - 1];
+Syntax error: line 6, column 20
+        fi[i] = fi[i - 2] + fi[i - 1];
+Syntax error: line 6, column 32
+        fi[i] = fi[i - 2] + fi[i - 1];
+Syntax error: line 8, column 12
+    if (fi[2] != 1) return 2;
+Syntax error: line 9, column 12
+    if (fi[3] != 2) return 3;
+Syntax error: line 10, column 12
+    if (fi[4] != 3) return 4;
+Syntax error: line 11, column 12
+    if (fi[5] != 5) return 5;
+Syntax error: line 12, column 12
+    if (fi[6] != 8) return 6;
+Syntax error: line 13, column 12
+    if (fi[7] != 13) return 7;
+Syntax error: line 14, column 12
+    if (fi[8] != 21) return 8;
+Syntax error: line 15, column 12
+    if (fi[9] != 34) return 9;
+Syntax error: line 16, column 12
+    if (fi[10] != 55) return 10;
+Syntax error: line 17, column 12
+    if (fi[11] != 89) return 11;
+Syntax error: line 18, column 12
+    if (fi[12] != 144) return 12;
+Syntax error: line 19, column 12
+    if (fi[13] != 233) return 13;
+Syntax error: line 20, column 12
+    if (fi[14] != 377) return 14;
+Syntax error: line 21, column 12
+    if (fi[15] != 610) return 15;
+Syntax error: line 22, column 12
+    if (fi[16] != 987) return 16;
+Syntax error: line 23, column 12
+    if (fi[17] != 1597) return 17;
+Syntax error: line 24, column 12
+    if (fi[18] != 2584) return 18;
+Syntax error: line 25, column 12
+    if (fi[19] != 4181) return 19;
+Syntax error: line 26, column 12
+    if (fi[20] != 6765) return 20;
+Syntax error: line 27, column 12
+    if (fi[21] != 10946) return 21;
+Syntax error: line 28, column 12
+    if (fi[22] != 17711) return 22;
+Syntax error: line 29, column 12
+    if (fi[23] != 28657) return 23;
+Syntax error: line 30, column 12
+    if (fi[24] != 46368) return 24;
+Syntax error: line 31, column 12
+    if (fi[25] != 75025) return 25;
+Syntax error: line 32, column 12
+    if (fi[26] != 121393) return 26;
+Syntax error: line 33, column 12
+    if (fi[27] != 196418) return 27;
+Syntax error: line 34, column 12
+    if (fi[28] != 317811) return 28;
+Syntax error: line 35, column 12
+    if (fi[29] != 514229) return 29;

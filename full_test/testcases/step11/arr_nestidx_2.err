@@ -1,0 +1,78 @@
+Syntax error: line 2, column 11
+    int a[10];
+Syntax error: line 3, column 7
+    a[0] = 0;
+Syntax error: line 4, column 8
+    do {
+Syntax error: line 5, column 9
+        a[0] = a[0] + 1;
+Syntax error: line 5, column 11
+        a[0] = a[0] + 1;
+Syntax error: line 5, column 18
+        a[0] = a[0] + 1;
+Syntax error: line 6, column 11
+        a[a[0]] = a[0] + 1;
+Syntax error: line 6, column 13
+        a[a[0]] = a[0] + 1;
+Syntax error: line 6, column 21
+        a[a[0]] = a[0] + 1;
+Syntax error: line 7, column 7
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 13
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 14
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 16
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 19
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 22
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 24
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 25
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 26
+    } while (a[0] != 10-1);
+Syntax error: line 7, column 27
+    } while (a[0] != 10-1);
+Syntax error: line 8, column 5
+    a[10-1] = 0;
+Syntax error: line 8, column 7
+    a[10-1] = 0;
+Syntax error: line 8, column 9
+    a[10-1] = 0;
+Syntax error: line 8, column 10
+    a[10-1] = 0;
+Syntax error: line 8, column 13
+    a[10-1] = 0;
+Syntax error: line 8, column 15
+    a[10-1] = 0;
+Syntax error: line 8, column 16
+    a[10-1] = 0;
+Syntax error: line 9, column 5
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 12
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 14
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 16
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 18
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 20
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 22
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 24
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 26
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 28
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 30
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 9, column 40
+    return a[a[a[a[a[a[a[a[a[1]]]]]]]]];
+Syntax error: line 10, column 1
+}

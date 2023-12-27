@@ -1,0 +1,28 @@
+Syntax error: line 1, column 9
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 12
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 14
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 15
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 18
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 21
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 22
+int arr[4] = {3, 2, 1};
+Syntax error: line 1, column 23
+int arr[4] = {3, 2, 1};
+Syntax error: line 3, column 1
+int main(){
+Syntax error: line 3, column 5
+int main(){
+Syntax error: line 4, column 14
+  return arr[0] * arr[3] + arr[1] / arr[2];
+Syntax error: line 4, column 23
+  return arr[0] * arr[3] + arr[1] / arr[2];
+Syntax error: line 4, column 32
+  return arr[0] * arr[3] + arr[1] / arr[2];
+Syntax error: line 4, column 41
+  return arr[0] * arr[3] + arr[1] / arr[2];

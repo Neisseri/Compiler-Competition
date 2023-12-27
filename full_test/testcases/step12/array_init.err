@@ -1,0 +1,12 @@
+Syntax error: line 2, column 9
+  int b[10] = {3, 4, 5};
+Syntax error: line 2, column 15
+  int b[10] = {3, 4, 5};
+Syntax error: line 2, column 19
+  int b[10] = {3, 4, 5};
+Syntax error: line 2, column 22
+  int b[10] = {3, 4, 5};
+Syntax error: line 2, column 23
+  int b[10] = {3, 4, 5};
+Syntax error: line 5, column 19
+    ans = ans + b[i];
