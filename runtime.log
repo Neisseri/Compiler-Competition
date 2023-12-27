@@ -63,6 +63,7 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
+<<<<<<< HEAD
 Info: visitFuncDefint @main()
 Info: visitBlock
 Info: visitVarDef int @a = 10
@@ -86,6 +87,132 @@ ret->type 0x555a5dee4c10
 Info: visitExpr1
 Info: visitIntLiteralExpr1
 ret->type 0x555a5dedf130
+=======
+Info: visitFuncDefint @ifElseIf()
+Info: visitBlock
+Info: visitVarDef int @a
+Info: visitStatementAssign@a = 5
+Info: visitAssignStmtAssign@a = 5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5638ddc22330
+Info: visitVarDef int @b
+Info: visitStatementAssign@b = 10
+Info: visitAssignStmtAssign@b = 10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitAssignStmtint
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5638ddc22360
+Info: visitStatementIfElse
+Info: visitExpr@a==6||@b==11
+Info: visitBinopExpr@a==6||@b==11
+Info: visitExpr@a==6
+Info: visitBinopExpr@a==6
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr6
+Info: visitIntLiteralExpr6
+ret->type 0x5638ddc223e0
+Info: visitExpr@b==11
+Info: visitBinopExpr@b==11
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr11
+Info: visitIntLiteralExpr11
+ret->type 0x5638ddc22410
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==1
+Info: visitBinopExpr@b==10&&@a==1
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5638ddc22490
+Info: visitExpr@a==1
+Info: visitBinopExpr@a==1
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x5638ddc224c0
+Info: visitStatementAssign@a = 25
+Info: visitAssignStmtAssign@a = 25
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr25
+Info: visitIntLiteralExpr25
+ret->type 0x5638ddc224f0
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==-5
+Info: visitBinopExpr@b==10&&@a==-5
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x5638ddc22520
+Info: visitExpr@a==-5
+Info: visitBinopExpr@a==-5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr-5
+Info: visitUnonExpr-5
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5638ddc22550
+Info: visitStatementAssign@a = @a+15
+Info: visitAssignStmtAssign@a = @a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr@a+15
+Info: visitBinopExpr@a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr15
+Info: visitIntLiteralExpr15
+ret->type 0x5638ddc22580
+Info: visitStatementAssign@a = -+@a
+Info: visitAssignStmtAssign@a = -+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr-+@a
+Info: visitUnonExpr-+@a
+Info: visitExpr+@a
+Info: visitUnonExpr+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitStatementCall @putint(Call @ifElseIf())
+Info: visitExprCall @putint(Call @ifElseIf())
+Info: visiCalltExprCall @putint(Call @ifElseIf())
+Info: use of undeclared function putint
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5638ddc22630
+>>>>>>> 13cde96cd9fa45cfc3c6f6e1f48817aa1c32c0c9
 ast: 
 Program
   int @main()
@@ -141,6 +268,17 @@ B0:
 ir:
 ; module
 define i32 @main(){
+<<<<<<< HEAD
+=======
+B15:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
+  %3 = 0
+  ret i32 %3
+
+}
+define i32 @ifElseIf(){
+>>>>>>> 13cde96cd9fa45cfc3c6f6e1f48817aa1c32c0c9
 B0:
   %1 = alloca int, 4
   %2 = 10
