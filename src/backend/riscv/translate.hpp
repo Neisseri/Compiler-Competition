@@ -15,8 +15,13 @@ namespace riscv {
       alloca_offsets[r] = frame_size;
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
-      // if (alloca_offsets[r] > )
-      bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
+      if (alloca_offsets[r] >= 2048) {
+        bb->instructions.emplace_back(new LUI(r, alloca_offsets[r]/2048));
+        bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]%2048));
+      }
+      else {
+        bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
+      }
     } else if (auto load = dynamic_cast<ir::Load*>(ir_inst)) {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
