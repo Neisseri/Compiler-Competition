@@ -17,7 +17,6 @@ namespace riscv {
     for (auto bb: bbs) {
       os << print_bb(bb) << ":\n";
       for (auto &inst: bb->instructions) {
-        os << tab;
         inst->emit(os);
       }
       os << "\n";
@@ -67,8 +66,10 @@ namespace riscv {
     os << "\n.text\n";
     os << ".global main\n";
     os << "\n";
-    for (auto &[name, func]: functions)
+    for (auto &[name, func]: functions) {
+      os << ".globl " << func->name << "\n";
       func->emit(os);
+    }
   }
   
   void BasicBlock::add_inst(Instruction* inst) {

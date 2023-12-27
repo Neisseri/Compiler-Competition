@@ -124,10 +124,12 @@ void Function::emitend() {
         }    
     }
     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44)); // store ra
-    // store spilled regs
-    // for (auto [temp, offset]: offsets)
-    //     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, bindings[temp]), Reg(General, sp), offset));
+
     prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
+
+    // for (int i = 0; i < num_params; i++) {
+    //     prologue.emplace(prologue.end(), new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, -(i+1))]));
+    // }
 
     // emit epilogue
     auto &epilogue = exit->instructions;

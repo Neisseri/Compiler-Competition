@@ -248,9 +248,10 @@ struct Function {
     std::map<Reg, int> alloca_offsets; // virtual regs are ptr to stack objs
     std::map<Reg, int> alloca_sizes;
     void emit(std::ostream &os);
-    Function(ir::Function& ir_function, const std::string& name);
+    Function(ir::Function& ir_function, const std::string& name, std::set<std::string> func_defined);
     void select_instr(ir::Instruction* ir_inst, BasicBlock* bb,
-        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map);
+        std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map,
+        std::set<std::string> func_defined);
     void resolve_phi();
 };
 
