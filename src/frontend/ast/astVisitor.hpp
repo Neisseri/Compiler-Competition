@@ -299,6 +299,12 @@ public:
 
   antlrcpp::Any visitExprStmt(SysYParser::ExprStmtContext *ctx) override
   {
+    std::cerr << "visitExprStmt" << std::endl;
+
+    if(!ctx->exp()){
+      std::cerr << "visitExprStmt: empty exp" << std::endl;
+      return static_cast<Statement *>(new ExprStmt(nullptr));
+    }
     auto const expr = ctx->exp()->accept(this).as<Expression *>();
     auto const ret = new ExprStmt(std::unique_ptr<Expression>(expr));
     return static_cast<Statement *>(ret);
