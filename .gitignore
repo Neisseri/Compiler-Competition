@@ -12,3 +12,4 @@ riscv/
 
 runtime.log
 a.out
+test.exec

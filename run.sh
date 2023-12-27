@@ -11,8 +11,8 @@ rm -rf ir ast riscv
 
 build/compiler -f "$filename" -A > "runtime.log" 2>&1
 
-riscv64-unknown-elf-gcc -march=rv32im -mabi=ilp32 "riscv/test.s" -o "a.out"
-qemu-riscv32 a.out
+riscv64-unknown-elf-gcc -march=rv32gc -mabi=ilp32f riscv/test.s full_test/runtime/libsysy.a -o test.exec
+qemu-riscv32 test.exec
 
 exit_status=$?
 
