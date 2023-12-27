@@ -104,10 +104,10 @@ def run(
     executable = os.path.join(workdir, name_body + '.exec')
     output = os.path.join(workdir, name_body + '.stdout')
     time = os.path.join(workdir, name_body + '.stderr')
-    os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} -o {executable}')
-    # if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a'
-    #              f' -o {executable}') != 0:
-    #     return Result.LINKER_ERROR
+    # os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} -o {executable}')
+    if os.system(f'riscv64-unknown-elf-gcc {gcc_args} {assembly} runtime/libsysy.a'
+                 f' -o {executable}') != 0:
+        return Result.LINKER_ERROR
     answer_content, answer_exitcode = get_answer(answer)
     average_time = 0
     for _ in range(round):
