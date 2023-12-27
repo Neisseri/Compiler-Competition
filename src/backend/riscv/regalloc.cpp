@@ -101,7 +101,8 @@ void Function::do_reg_alloc() {
 
 
 void Function::emitend() {
-    int reg_used[32] = {false};
+    std::cerr << name << "\n";
+    int reg_used[NUM_REGS] = {false};
     for (auto &bb : bbs) {
         for (auto &insn : bb->instructions) {
             auto def = insn->def();
@@ -109,6 +110,7 @@ void Function::emitend() {
                 reg_used[r.id] = true;
         }
     }
+    std::cerr << "after compute reg_used\n";
 
     auto entry = *bbs.begin();
     auto exit = new BasicBlock;
@@ -117,31 +119,30 @@ void Function::emitend() {
     // emit prologue
     auto &prologue = entry->instructions;
     int id = 0;
-    for (int i = 0; i < NUM_REGS; i++) { // callee saved registers
-        if (reg_used[i] && REG_ATTR[i] == CalleeSaved) {
-            prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id));
+    for (int i = 0; i < NUM_REGS; i++) {
+        if (REG_ATTR[i] == CalleeSaved) {
+            if (reg_used[i])
+                prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id));
             id++;
-        }    
+        }
     }
-    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44)); // store ra
+    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44));
 
     if (frame_size >= 2048) {
-        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, s1), -frame_size)); // change sp
-        prologue.emplace(prologue.begin(), new Move(Reg(General, s1), Reg(General, sp))); // change sp
+        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, s1), -frame_size));
+        prologue.emplace(prologue.begin(), new Move(Reg(General, s1), Reg(General, sp)));
     }
     else 
-        prologue.emplace(prologue.begin(), new SPAdd(-frame_size)); // change sp
+        prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
+    
+    std::cerr << "after prologue\n";
 
-    // for (int i = 0; i < num_params; i++) {
-    //     prologue.emplace(prologue.end(), new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, -(i+1))]));
-    // }
-
-    // emit epilogue
     auto &epilogue = exit->instructions;
     id = 0;
-    for (int i = 0; i < NUM_REGS; i++) {// callee saved registers
-        if (reg_used[i] && REG_ATTR[i] == CalleeSaved) {
-            epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, i), Reg(General, sp), 4 * id));
+    for (int i = 0; i < NUM_REGS; i++) {
+        if (REG_ATTR[i] == CalleeSaved) {
+            if (reg_used[i])
+                epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, i), Reg(General, sp), 4 * id));
             id++;
         }
     }
@@ -165,5 +166,6 @@ void Function::emitend() {
         }
     }
     bbs.emplace_back(exit);
+    std::cerr << "end of emitend\n";
 }
 }
