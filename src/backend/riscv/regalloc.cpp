@@ -129,8 +129,8 @@ void Function::emitend() {
     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44));
 
     if (frame_size >= 2048) {
-        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, s1), -frame_size));
-        prologue.emplace(prologue.begin(), new Move(Reg(General, s1), Reg(General, sp)));
+        prologue.emplace(prologue.begin(), new Binary(Reg(General, sp), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
+        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, t6), -frame_size));
     }
     else 
         prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
@@ -149,7 +149,7 @@ void Function::emitend() {
     epilogue.emplace(epilogue.end(), new LoadWord(Reg(General, ra), Reg(General, sp), 44));
     if (frame_size >= 2048) {
         epilogue.emplace(epilogue.end(), new LoadImm(Reg(General, a1), frame_size)); // change sp
-        epilogue.emplace(epilogue.end(), new Move(Reg(General, a1), Reg(General, sp))); // change sp
+        epilogue.emplace(epilogue.end(), new Binary(Reg(General, sp), RiscvBinaryOp::ADD, Reg(General, a1), Reg(General, sp)));
     }
     else 
         epilogue.emplace(epilogue.end(), new SPAdd(frame_size)); // change sp

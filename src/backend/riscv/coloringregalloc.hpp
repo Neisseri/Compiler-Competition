@@ -62,6 +62,7 @@ namespace riscv {
     };
     
     void coloringregalloc::Main() {
+        std::cerr << func->name << " Main()\n";
         func->do_liveness_analysis();
         Build();
         initial.clear();

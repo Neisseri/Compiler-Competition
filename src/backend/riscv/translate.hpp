@@ -156,7 +156,8 @@ namespace riscv {
           bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
         // for (int i=0; i<32; i++) {
         //   if (REG_ATTR[i] == CallerSaved) {
-        //     bb->instructions.emplace_back(new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+        //     if (offsets[Reg(General, i)] < 2048)
+        //       bb->instructions.emplace_back(new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
         //   }
         // }
       }
