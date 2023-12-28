@@ -15775,6 +15775,7 @@ after compute reg_used
 after prologue
 end of emitend
 main
+main Main()
 main
 after compute reg_used
 after prologue
