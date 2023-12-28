@@ -74,9 +74,9 @@ public:
                         }
                     }
                     else if (auto call = dynamic_cast<ir::Call *>(later_instr.get())){
-                        for (auto &param : call->params){
-                            if (param.id == used.id){
-                                param = new_used;
+                        for (int i = 0; i < call->params.size(); i ++){
+                            if (call->params[i].id == used.id){
+                                call->params[i] = new_used;
                             }
                         }
                     }
@@ -94,7 +94,12 @@ public:
                     continue;
                 }
                 std::string res_name = store->var_name;
-                ir::Reg res_reg = reaching_def[store->var_name];
+                ir::Reg res_reg;
+                if (reaching_def.find(store->var_name) == reaching_def.end()){
+                    res_reg = ir::Reg(1, -1);
+                } else {
+                    res_reg = reaching_def[store->var_name];
+                }
                 restore_stack.push_back(std::make_pair<std::string, ir::Reg>(std::move(res_name), std::move(res_reg)));
                 reaching_def[store->var_name] = store->src_val;
                 it = ir_bb->instrs.erase(it);
@@ -112,7 +117,12 @@ public:
                 phi->dst = new_used;
                 
                 std::string res_name = phi->var_name;
-                ir::Reg res_reg = reaching_def[phi->var_name];
+                ir::Reg res_reg;
+                if (reaching_def.find(phi->var_name) == reaching_def.end()){
+                    res_reg = ir::Reg(1, -1);
+                } else {
+                    res_reg = reaching_def[phi->var_name];
+                }
                 restore_stack.push_back(std::make_pair<std::string, ir::Reg>(std::move(res_name), std::move(res_reg)));
                 reaching_def[phi->var_name] = phi->dst;
                 for (auto later = it; later != ir_bb->instrs.end(); later ++){
@@ -169,6 +179,9 @@ public:
         for (auto succ : ir_bb->succs){
             for (auto &instr : succ->instrs){
                 if (auto phi = dynamic_cast<ir::Phi *>(instr.get())){
+                    if (reaching_def.find(phi->var_name) == reaching_def.end()){
+                        continue;
+                    }
                     ir::Reg temp_reg = reaching_def[phi->var_name];
                     std::shared_ptr<ir::BasicBlock> temp_bb = ir_bb;
                     phi->srcs.push_back(std::make_pair<ir::Reg, std::shared_ptr<ir::BasicBlock>>(std::move(temp_reg), std::move(temp_bb)));
@@ -183,7 +196,11 @@ public:
             }
         }
         for (auto rit = restore_stack.rbegin(); rit != restore_stack.rend(); rit ++){
-            reaching_def[rit->first] = rit->second;
+            if (rit->second.id == -1){
+                reaching_def.erase(rit->first);
+            } else {
+                reaching_def[rit->first] = rit->second;
+            }
         }
     }
 
@@ -191,6 +208,8 @@ public:
         for (std::string var_name : ir_generator->var_name_set){
             std::set<std::shared_ptr<ir::BasicBlock>> F;
             std::set<std::shared_ptr<ir::BasicBlock>> W;
+            F.clear();
+            W.clear();
             for (auto d : ir_generator->Defs[var_name]){
                 W.insert(d);
             }
@@ -202,7 +221,7 @@ public:
                         std::unique_ptr<ir::Phi> Phi_instr(new ir::Phi(ir_generator->var_type_table[var_name], var_name));
                         Y->instrs.push_front(std::move(Phi_instr));
                         F.insert(Y);
-                        if (X->DF.find(Y) == X->DF.end()){
+                        if (ir_generator->Defs[var_name].find(Y) == ir_generator->Defs[var_name].end()){
                             W.insert(Y);
                         }
                     }
