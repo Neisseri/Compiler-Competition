@@ -121,7 +121,34 @@ namespace riscv {
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
+      // 这里把 a1, a2 存到栈上，之后再 load 回来防止被修改
+      if (!offsets.count(Reg(General, a1))) {
+        offsets[Reg(General, a1)] = frame_size;
+        frame_size += 4;
+      }
+      if (offsets[Reg(General, a1)] < 2048)
+        bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+      else {
+        bb->instructions.emplace_back(new LUI(Reg(General, t6), offsets[Reg(General, a1)]/2048));
+        bb->instructions.emplace_back(new Binary(Reg(General, t6), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
+        bb->instructions.emplace_back(new ADDI(Reg(General, t6), Reg(General, t6), offsets[Reg(General, a1)]%2048));
+        bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, t6), 0));
+      }
+      if (!offsets.count(Reg(General, a2))) {
+        offsets[Reg(General, a2)] = frame_size;
+        frame_size += 4;
+      }
+      if (offsets[Reg(General, a2)] < 2048)
+        bb->instructions.emplace_back(new StoreWord(Reg(General, a2), Reg(General, sp), offsets[Reg(General, a1)]));
+      else {
+        bb->instructions.emplace_back(new LUI(Reg(General, t6), offsets[Reg(General, a2)]/2048));
+        bb->instructions.emplace_back(new Binary(Reg(General, t6), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
+        bb->instructions.emplace_back(new ADDI(Reg(General, t6), Reg(General, t6), offsets[Reg(General, a2)]%2048));
+        bb->instructions.emplace_back(new StoreWord(Reg(General, a2), Reg(General, t6), 0));
+      }
       if (func_defined.count(call->func_name)) {
+        // 用栈传参以支持更多参数的情况
+
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
@@ -130,36 +157,28 @@ namespace riscv {
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
       }
       else {
-        // for (int i=0; i<32; i++) {
-        //   if (REG_ATTR[i] == CallerSaved) {
-        //     if (!offsets.count(Reg(General, i))) {
-        //       offsets[Reg(General, i)] = frame_size;
-        //       frame_size += 4;
-        //     }
-        //     if (offsets[Reg(General, a1)] < 2048)
-        //       bb->instructions.emplace_back(new StoreWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
-        //   }
-        // }
-        if (!offsets.count(Reg(General, a1))) {
-          offsets[Reg(General, a1)] = frame_size;
-          frame_size += 4;
-        }
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs_full[i])));
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
-        // for (int i=0; i<32; i++) {
-        //   if (REG_ATTR[i] == CallerSaved) {
-        //     if (offsets[Reg(General, i)] < 2048)
-        //       bb->instructions.emplace_back(new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
-        //   }
-        // }
+      }
+      if (offsets[Reg(General, a1)] < 2048)
+        bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+      else {
+        bb->instructions.emplace_back(new LUI(Reg(General, t6), offsets[Reg(General, a1)]/2048));
+        bb->instructions.emplace_back(new Binary(Reg(General, t6), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
+        bb->instructions.emplace_back(new ADDI(Reg(General, t6), Reg(General, t6), offsets[Reg(General, a1)]%2048));
+        bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, t6), 0));
+      }
+      if (offsets[Reg(General, a2)] < 2048)
+        bb->instructions.emplace_back(new LoadWord(Reg(General, a2), Reg(General, sp), offsets[Reg(General, a2)]));
+      else {
+        bb->instructions.emplace_back(new LUI(Reg(General, t6), offsets[Reg(General, a2)]/2048));
+        bb->instructions.emplace_back(new Binary(Reg(General, t6), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
+        bb->instructions.emplace_back(new ADDI(Reg(General, t6), Reg(General, t6), offsets[Reg(General, a2)]%2048));
+        bb->instructions.emplace_back(new LoadWord(Reg(General, a2), Reg(General, t6), 0));
       }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
