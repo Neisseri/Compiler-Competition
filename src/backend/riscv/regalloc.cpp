@@ -128,12 +128,17 @@ void Function::emitend() {
     }
     prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44));
 
+    // frame_size += stackParamSize;
+
     if (frame_size >= 2048) {
         prologue.emplace(prologue.begin(), new Binary(Reg(General, sp), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
         prologue.emplace(prologue.begin(), new LoadImm(Reg(General, t6), -frame_size));
     }
     else 
         prologue.emplace(prologue.begin(), new SPAdd(-frame_size));
+    
+    // if (num_params > 0)
+    //     prologue.emplace(prologue.begin(), new Move(Reg(General, sp), Reg(General, t1)));
     
     std::cerr << "after prologue\n";
 
