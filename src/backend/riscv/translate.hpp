@@ -121,25 +121,22 @@ namespace riscv {
     } else if (auto call = dynamic_cast<ir::Call *>(ir_inst)) {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
-      // if (func_defined.count(call->func_name)) {
-      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), - 4 * num_args));
-      //   for (int i = 0; i < num_args; i++) {
-      //     Reg src_reg = Reg(call->params[i]);
-      //     bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), 4 * i));
-      //   }
-      //   bb->instructions.emplace_back(new Move(Reg(General, sp), Reg(General, 31)));
-      //   bb->instructions.emplace_back(new Call(call->func_name, num_args));
-      //   bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-      //   bb->instructions.emplace_back(new ADDI(Reg(General, sp), Reg(General, sp), 4 * num_args));
-      // }
-      // else {
-      for (int i = 0; i < num_args; i++) {
-        Reg src_reg = Reg(call->params[i]);
-        bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+      if (func_defined.count(call->func_name)) {
+        for (int i = 0; i < num_args; i++) {
+          Reg src_reg = Reg(call->params[i]);
+          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+        }
+        bb->instructions.emplace_back(new Call(call->func_name, num_args));
+        bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
       }
-      bb->instructions.emplace_back(new Call(call->func_name, num_args));
-      bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-      // }
+      else {
+        for (int i = 0; i < num_args; i++) {
+          Reg src_reg = Reg(call->params[i]);
+          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs_full[i])));
+        }
+        bb->instructions.emplace_back(new Call(call->func_name, num_args));
+        bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
+      }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
       for (auto i: phi->srcs) {
