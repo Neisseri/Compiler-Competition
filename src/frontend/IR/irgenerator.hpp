@@ -56,17 +56,19 @@ public:
         ir::Reg block_size = get_new_reg(lvalue->var_type->type);
         std::unique_ptr<ir::LoadInt> loadone_instr(new ir::LoadInt(block_size, 4));
         ir_bb->instrs.push_back(std::move(loadone_instr));
-        for (int i = lvalue->indices.size() - 1; i >= 0; i--)
+        for (int i = var_type_table[lvalue->ident->name].dim.size() - 1; i >= 0; i--)
         {
-            ir::Reg idx = visitExpression(lvalue->indices[i], ir_bb);
-            ir::Reg offset = get_new_reg(lvalue->var_type->type);
-            std::unique_ptr<ir::Binary> muloffset_instr(new ir::Binary(offset, BinaryOpEnum::MUL, idx, block_size));
-            dst_adr_ptr = get_new_reg(lvalue->var_type->type);
-            std::unique_ptr<ir::Binary> addoffset_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
-            dst_ptr = dst_adr_ptr;
-            ir_bb->instrs.push_back(std::move(muloffset_instr));
-            ir_bb->instrs.push_back(std::move(addoffset_instr));
-
+            if (i < lvalue->indices.size())
+            {
+                ir::Reg idx = visitExpression(lvalue->indices[i], ir_bb);
+                ir::Reg offset = get_new_reg(lvalue->var_type->type);
+                std::unique_ptr<ir::Binary> muloffset_instr(new ir::Binary(offset, BinaryOpEnum::MUL, idx, block_size));
+                dst_adr_ptr = get_new_reg(lvalue->var_type->type);
+                std::unique_ptr<ir::Binary> addoffset_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
+                dst_ptr = dst_adr_ptr;
+                ir_bb->instrs.push_back(std::move(muloffset_instr));
+                ir_bb->instrs.push_back(std::move(addoffset_instr));
+            }
             if (i > 0){
                 std::cerr << "visitIndex calc blocksize " << i << std::endl;
                 ir::Reg dim_size = get_new_reg(lvalue->var_type->type);
@@ -470,7 +472,7 @@ public:
                 }
             }
             ir::Reg ret;
-            if (!lvalue->has_index && var_type_table[name].is_array){
+            if (lvalue->indices.size() < var_type_table[lvalue->ident->name].dim.size() && var_type_table[name].is_array){
                 std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
                 ret = val_ptr;
             } else {
