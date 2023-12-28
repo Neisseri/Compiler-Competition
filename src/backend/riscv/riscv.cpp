@@ -83,35 +83,35 @@ namespace riscv {
   }
 
   void StoreWord::emit(std::ostream &os) const {
-    os << "sw " << print_reg(src) << ", " << offset << "(" << print_reg(base) << ")\n";
+    os << tab <<  "sw " << print_reg(src) << ", " << offset << "(" << print_reg(base) << ")\n";
   }
 
   void LoadWord::emit(std::ostream &os) const {
-    os << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
+    os << tab << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
   }
 
   void SPAdd::emit(std::ostream &os) const {
-    os << "addi " << REG_NAMES[sp] << ", " << REG_NAMES[sp] << ", " << offset << "\n";
+    os << tab << "addi " << REG_NAMES[sp] << ", " << REG_NAMES[sp] << ", " << offset << "\n";
   }
 
   void ADDI::emit(std::ostream &os) const {
-    os << "addi " << print_reg(dst) << ", " << print_reg(src) << ", " << offset << "\n";
+    os << tab << "addi " << print_reg(dst) << ", " << print_reg(src) << ", " << offset << "\n";
   }
 
   void LUI::emit(std::ostream &os) const {
-    os << "lui " << print_reg(dst) << ", " << imm << "\n";
+    os << tab << "lui " << print_reg(dst) << ", " << imm << "\n";
   }
 
   void Return::emit(std::ostream &os) const {
-    os << "ret\n";
+    os << tab << "ret\n";
   }
 
   void Branch::emit(std::ostream &os) const {
-    os << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
+    os << tab << "beq x0, " << print_reg(src) << ", " << print_bb(target) << "\n";
   }
 
   void Phi::emit(std::ostream &os) const {
-    os << "phi " << print_reg(dst) << " = ";
+    os << tab << "phi " << print_reg(dst) << " = ";
     for (auto i: srcs) {
       std::cerr << print_reg(i.first) << " " << print_bb(i.second) << "\n";
       os << "[ " << print_reg(i.first) << ", " << print_bb(i.second) << "] ";
@@ -123,51 +123,51 @@ namespace riscv {
     // ADD OR XOR SUB MUL DIV AND SLT SHL SRL SRA SGT
     switch (op) {
       case RiscvBinaryOp::ADD: {
-        os << "add " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "add " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       } 
       case RiscvBinaryOp::OR: {
-        os << "or " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "or " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       } 
       case RiscvBinaryOp::XOR: {
-        os << "xor " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "xor " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       } 
       case RiscvBinaryOp::SUB: {
-        os << "sub " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "sub " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       } 
       case RiscvBinaryOp::MUL: {
-        os << "mul " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "mul " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::DIV: {
-        os << "div " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "div " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::AND: {
-        os << "and " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "and " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::SLT: {
-        os << "slt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "slt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::SHL: {
-        os << "shl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "shl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::SRL: {
-        os << "srl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "srl " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::SRA: {
-        os << "sra " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "sra " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       case RiscvBinaryOp::SGT: {
-        os << "sgt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
+        os << tab << "sgt " << print_reg(dst) << ", " << print_reg(src1) << ", " << print_reg(src2) << "\n";
         break;
       }
       default: os << "unkown binary op\n";
@@ -177,10 +177,10 @@ namespace riscv {
   void Unary::emit(std::ostream &os) const {
     switch (op) {
       case RiscvUnaryOp::SEQZ: {
-        os << "seqz " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        os << tab << "seqz " << print_reg(dst) << ", " << print_reg(src) << "\n";
         break;
       } case RiscvUnaryOp::SNEZ: {
-        os << "snez " << print_reg(dst) << ", " << print_reg(src) << "\n";
+        os << tab << "snez " << print_reg(dst) << ", " << print_reg(src) << "\n";
         break;
       }
       default: os << "unkown unary op\n";
@@ -188,23 +188,23 @@ namespace riscv {
   }
   
   void LoadImm::emit(std::ostream &os) const {
-    os << "li " << print_reg(dst) << ", " << imm << "\n";
+    os << tab << "li " << print_reg(dst) << ", " << imm << "\n";
   }
 
   void Jump::emit(std::ostream &os) const {
-    os << "j " << print_bb(target) << "\n";
+    os << tab << "j " << print_bb(target) << "\n";
   }
 
   void Move::emit(std::ostream &os) const {
     if (dst != src)
-      os << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
+      os << tab << "mv " << print_reg(dst) << ", " << print_reg(src) << "\n";
   }
 
   void Call::emit(std::ostream &os) const {
-    os << "call " << func_name << "\n";
+    os << tab << "call " << func_name << "\n";
   }
 
   void LoadAddr::emit(std::ostream &os) const {
-    os << "la " << print_reg(dst) << ", " << var_name << "\n";
+    os << tab << "la " << print_reg(dst) << ", " << var_name << "\n";
   }
 }
