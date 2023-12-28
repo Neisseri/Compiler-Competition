@@ -220,14 +220,16 @@ public:
 
     void dead_code_elimination() {
         for (auto &func : ir_generator->ir_program.functions) {
-            std::cerr << "break 1" << std::endl;
+            std::cerr << func.first << std::endl;
             // dead variable declaration
             std::list<int> dead_vars;
             for (auto &bb : func.second.bbs) {
-                std::cerr << "break 2" << std::endl;
+                std::cerr << "B" << bb.get()->label.label_id << std::endl;
                 for (auto &inst : bb.get()->instrs) {
-                    std::cerr << "break 3" << std::endl;
-                    if (auto alloca = dynamic_cast<ir::Alloca*>(inst.get())) {
+                    if (auto loadint = dynamic_cast<ir::LoadInt*>(inst.get())) { // LoadInt
+                        dead_vars.push_back(loadint->dst.id);
+                        std::cerr << "LoadInt" << std::endl;
+                    } else if (auto alloca = dynamic_cast<ir::Alloca*>(inst.get())) { // Alloca
                         if (alloca->is_local_var) {
                             dead_vars.push_back(alloca->ret_val.id);
                         }
@@ -287,6 +289,10 @@ public:
                             dead_vars.erase(it);
                         }
                         std::cerr << "Return" << std::endl;
+                    } else if (auto call = dynamic_cast<ir::Call*>(inst.get())) { // Call
+                        std::cerr << "Call" << std::endl;
+                    } else {
+                        std::cerr << "Other Instr" << std::endl;
                     }
                 } 
             }
@@ -298,13 +304,15 @@ public:
             for (auto &bb : func.second.bbs) {
                 for (auto it = bb.get()->instrs.begin(); it != bb.get()->instrs.end();) {
                     auto &instr = *it;
-                    if (auto alloca = dynamic_cast<ir::Alloca*>(instr.get())) {
-                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), alloca->ret_val.id);
+                    if (auto loadint = dynamic_cast<ir::LoadInt*>(instr.get())) {
+                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), loadint->dst.id);
                         if (it1 != dead_vars.end()) {
                             it = bb.get()->instrs.erase(it);
                         } else {
                             it++;
                         }
+                    } else {
+                        it++;
                     }
                 }   
             }
