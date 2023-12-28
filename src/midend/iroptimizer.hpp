@@ -215,4 +215,83 @@ public:
             visit_rename_regs(func.second.bbs.front());
         }
     }
+
+    void dead_code_elimination() {
+        for (auto &func : ir_generator->ir_program.functions) {
+            // dead variable declaration
+            std::list<int> dead_vars;
+            for (auto &bb : func.second.bbs) {
+                for (auto &inst : bb.get()->instrs) {
+                    if (auto alloca = dynamic_cast<ir::Alloca*>(inst.get())) {
+                        if (alloca->is_local_var) {
+                            dead_vars.push_back(alloca->ret_val.id);
+                        }
+                    } else if (auto phi = dynamic_cast<ir::Phi*>(inst.get())) { // Phi
+                        // search dst in dead_vars
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), phi->dst.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                        for (auto src : phi->srcs) {
+                            auto it = std::find(dead_vars.begin(), dead_vars.end(), src.first.id);
+                            if (it != dead_vars.end()) {
+                                dead_vars.erase(it);
+                            }
+                        }
+                    } else if (auto loadaddr = dynamic_cast<ir::LoadAddr*>(inst.get())) { // LoadAddr
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), loadaddr->ret_val.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                    } else if (auto store = dynamic_cast<ir::Store*>(inst.get())) { // Store
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), store->src_val.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                    } else if (auto binary = dynamic_cast<ir::Binary*>(inst.get())) { // Binary
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), binary->dst.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), binary->src1.id);
+                        if (it1 != dead_vars.end()) {
+                            dead_vars.erase(it1);
+                        }
+                        auto it2 = std::find(dead_vars.begin(), dead_vars.end(), binary->src2.id);
+                        if (it2 != dead_vars.end()) {
+                            dead_vars.erase(it2);
+                        }
+                    } else if (auto assign = dynamic_cast<ir::Assign*>(inst.get())) { // Assign
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), assign->dst.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), assign->src.id);
+                        if (it1 != dead_vars.end()) {
+                            dead_vars.erase(it1);
+                        }
+                    } else if (auto ret = dynamic_cast<ir::Return*>(inst.get())) { // Return
+                        auto it = std::find(dead_vars.begin(), dead_vars.end(), ret->ret_val.id);
+                        if (it != dead_vars.end()) {
+                            dead_vars.erase(it);
+                        }
+                    }
+                } 
+            }
+
+            for (auto &bb : func.second.bbs) {
+                for (auto it = bb.get()->instrs.begin(); it != bb.get()->instrs.end();) {
+                    auto &instr = *it;
+                    if (auto assign = dynamic_cast<ir::Assign*>(instr.get())) {
+                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), assign->dst.id);
+                        if (it1 != dead_vars.end()) {
+                            it = bb.get()->instrs.erase(it);
+                        } else {
+                            it++;
+                        }
+                    }
+                }   
+            }
+        }
+    }
 };

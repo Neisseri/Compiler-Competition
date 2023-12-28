@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     cxxopts::Options options("compiler", "it's a compiler for SysY language made by us with love <3");
 
     bool mem_to_reg_flag = false;
+    bool dce_flag = false;
     bool o2_flag = false;
     bool out_ast_flag = false;
     bool out_ir_flag = false;
@@ -48,7 +49,8 @@ int main(int argc, char *argv[])
     std::string output_file_name;
 
     options.add_options()
-    ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
+    ("m,m2r", "mem2reg", cxxopts::value<bool>(dce_flag)->default_value("false"))
+    ("d,dce", "dead code elimination", cxxopts::value<bool>(o2_flag)->default_value("false"))
     ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
     ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))
     ("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))
@@ -129,6 +131,9 @@ int main(int argc, char *argv[])
     IROptimizer ir_optimizer(&ir_generator);
     if (mem_to_reg_flag || o2_flag){
         ir_optimizer.mem_to_reg();
+    }
+    if (dce_flag || o2_flag){
+        ir_optimizer.dead_code_elimination();
     }
 
     if (out_ir_flag){
