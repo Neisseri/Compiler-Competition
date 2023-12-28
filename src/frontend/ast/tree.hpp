@@ -279,10 +279,14 @@ namespace frontend
             ~Declaration() = default;
             std::string toString() const override
             {
+                std::string ret = "";
+                ret += var_type->toString() + " " + ident->toString();
+                if (is_array)
+                    ret += "[" + indices->toString() + "]";
                 if (has_init)
-                    return var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
-                else
-                    return var_type->toString() + " " + ident->toString();
+                    ret += " = " + init_expr->toString();
+                return ret;
+
             }
             void print(std::ostream &os, int indent) const override
             {
