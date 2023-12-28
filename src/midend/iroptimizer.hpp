@@ -224,12 +224,14 @@ public:
             // dead variable declaration
             std::list<int> dead_vars;
             for (auto &bb : func.second.bbs) {
+                std::cerr << "break 2" << std::endl;
                 for (auto &inst : bb.get()->instrs) {
-                    std::cerr << "break 2" << std::endl;
+                    std::cerr << "break 3" << std::endl;
                     if (auto alloca = dynamic_cast<ir::Alloca*>(inst.get())) {
                         if (alloca->is_local_var) {
                             dead_vars.push_back(alloca->ret_val.id);
                         }
+                        std::cerr << "Alloca" << std::endl;
                     } else if (auto phi = dynamic_cast<ir::Phi*>(inst.get())) { // Phi
                         // search dst in dead_vars
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), phi->dst.id);
@@ -242,16 +244,19 @@ public:
                                 dead_vars.erase(it);
                             }
                         }
+                        std::cerr << "Phi" << std::endl;
                     } else if (auto loadaddr = dynamic_cast<ir::LoadAddr*>(inst.get())) { // LoadAddr
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), loadaddr->ret_val.id);
                         if (it != dead_vars.end()) {
                             dead_vars.erase(it);
                         }
+                        std::cerr << "LoadAddr" << std::endl;
                     } else if (auto store = dynamic_cast<ir::Store*>(inst.get())) { // Store
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), store->src_val.id);
                         if (it != dead_vars.end()) {
                             dead_vars.erase(it);
                         }
+                        std::cerr << "Store" << std::endl;
                     } else if (auto binary = dynamic_cast<ir::Binary*>(inst.get())) { // Binary
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), binary->dst.id);
                         if (it != dead_vars.end()) {
@@ -265,6 +270,7 @@ public:
                         if (it2 != dead_vars.end()) {
                             dead_vars.erase(it2);
                         }
+                        std::cerr << "Binary" << std::endl;
                     } else if (auto assign = dynamic_cast<ir::Assign*>(inst.get())) { // Assign
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), assign->dst.id);
                         if (it != dead_vars.end()) {
@@ -274,11 +280,13 @@ public:
                         if (it1 != dead_vars.end()) {
                             dead_vars.erase(it1);
                         }
+                        std::cerr << "Assign" << std::endl;
                     } else if (auto ret = dynamic_cast<ir::Return*>(inst.get())) { // Return
                         auto it = std::find(dead_vars.begin(), dead_vars.end(), ret->ret_val.id);
                         if (it != dead_vars.end()) {
                             dead_vars.erase(it);
                         }
+                        std::cerr << "Return" << std::endl;
                     }
                 } 
             }
