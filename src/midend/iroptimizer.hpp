@@ -309,6 +309,12 @@ public:
                         }
                         std::cerr << "Return" << std::endl;
                     } else if (auto call = dynamic_cast<ir::Call*>(inst.get())) { // Call
+                        for (auto para : call->params) {
+                            auto it = std::find(dead_vars.begin(), dead_vars.end(), para.id);
+                            if (it != dead_vars.end()) {
+                                dead_vars.erase(it);
+                            }
+                        }
                         std::cerr << "Call" << std::endl;
                     } else {
                         std::cerr << "Other Instr" << std::endl;
