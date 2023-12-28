@@ -128,10 +128,11 @@ namespace riscv {
         }
         if (offsets[Reg(General, a1)] < 2048)
           bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+        // stackParamSize = std::max(stackParamSize, 4*num_args);
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
-          bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), (i - num_args)*4));
-          // bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+          // bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), i*4));
+          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
@@ -228,6 +229,7 @@ namespace riscv {
   Function::Function(ir::Function& ir_function, const std::string& name, std::set<std::string> func_defined): name(name) {
     auto entry_bb = new BasicBlock;
     num_regs = ir_function.num_regs;
+    // stackParamSize = 0;
     bbs.emplace_back(entry_bb);
     num_params = ir_function.param_types.size();
     frame_size = 4 * 11 + 4;
@@ -263,7 +265,8 @@ namespace riscv {
         // std::cout << "\n";
     }
     for (auto bb: bbs) {
-      for (auto inst: bb->instructions) {
+      for (auto it = bb->instructions.begin(); it != bb->instructions.end(); it++) {
+        auto inst = *it;
         auto reg_ptrs = inst->reg_ptrs();
         for (auto &r: reg_ptrs) {
           if (arg_idxs.count(r->id)) {
@@ -272,6 +275,10 @@ namespace riscv {
         }
       }
     }
+    // auto prologue = *bbs.begin();
+    // for (int i=0; i<num_params; i++) {
+    //   prologue->instructions.emplace(prologue->instructions.begin(), new LoadWord(Reg(General, -(i+1)), Reg(General, t1), i*4));
+    // }
   }
 
 }

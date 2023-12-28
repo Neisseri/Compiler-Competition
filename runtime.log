@@ -1,0 +1,208 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) func ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) a) , 
+                    (funcFParam 
+                        (bType int) b)) ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (addExp 
+                                        (mulExp 
+                                            (unaryExp 
+                                                (primaryExp 
+                                                    (lVal a))))) + 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal b)))))) ;)) }))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp func ( 
+                                            (funcRParams 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 2)))))))) , 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 3))))))))) ))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+construct funct block: func
+visitBlock done!
+construct funct block done!
+visitCompUnit: funcDef
+construct funct block: main
+visitCall ident: func
+visitFuncRParams
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitCall args_list size: 2
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefint @func(int @a, int @b)
+Info: visitParamDefint @a
+Info: visitParamDefint @b
+Info: visitBlock
+Info: visitStatementReturn @a+@b
+Info: visitExpr@a+@b
+Info: visitBinopExpr@a+@b
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitReturnStmtReturn @a#1+@b#1function has returnscope id1
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitStatementReturn Call @func(2, 3)
+Info: visitExprCall @func(2, 3)
+Info: visiCalltExprCall @func(2, 3)
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x5609febdbb00
+Info: visitExpr3
+Info: visitIntLiteralExpr3
+ret->type 0x5609febde9a0
+Info: visitReturnStmtReturn Call @func(2, 3)function has returnscope id3
+ast: 
+Program
+  int @func(int @a#1, int @b#1)
+    {
+      Return @a#1+@b#1
+    }
+  int @main()
+    {
+      Return Call @func(2, 3)
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction func
+visitFunction param decl: a#1
+visitFunction param decl: b#1
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue a#1
+visitExpression
+visitExpressionLValue b#1
+function func has 7 regs
+B0:
+  prev: 
+  succ: 
+B1:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: 
+
+entryB0
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 3 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
+ir:
+; module
+define i32 @main(){
+B2:
+  %2 = 2
+  %3 = 3
+  %1 = call i32 @func(i32 %2, i32 %3)
+  ret i32 %1
+
+}
+define i32 @func(i32, i32){
+B0:
+  %3 = alloca int, 4
+  store i32 %1, ptr %3
+  %4 = alloca int, 4
+  store i32 %2, ptr %4
+  %5 = load i32, ptr %3
+  %6 = load i32, ptr %4
+  %7 = add i32 %5, %6
+  ret i32 %7
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
+?
+func
+func Main()
+func
+after compute reg_used
+after prologue
+end of emitend
+main
+main Main()
+main
+after compute reg_used
+after prologue
+end of emitend

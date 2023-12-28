@@ -263,7 +263,8 @@ struct Function {
         std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map,
         std::set<std::string> func_defined);
     void resolve_phi();
-    std::set<
+    int stackParamSize;
+    void emit_caller_store();
 };
 
 struct Program {
