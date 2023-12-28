@@ -22,7 +22,7 @@ TIMEOUT = 10
 compiler_path = "../build/compiler"
 # compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"
 # compiler_args = "-O2 -march=rv32gc -mabi=ilp32f -xc++ -S -include ./runtime/sylib.h"
-compiler_args = " -O -f"
+compiler_args = " -f"
 qemu_command = "qemu-riscv32"
 
 # 调用gcc进行链接的参数
@@ -119,10 +119,12 @@ def run(
         except subprocess.TimeoutExpired:
             proc.kill()
             return Result.TIME_LIMIT_EXCEEDED
-        # output_content = [line.strip() for line in open(output).read().splitlines()]
+        output_content = [line.strip() for line in open(output).read().splitlines()]
         if proc.returncode != answer_exitcode:
             print("expected ", answer_exitcode, ", got ", proc.returncode)
-                # or output_content != answer_content:
+            return Result.WRONG_ANSWER
+        if output_content != answer_content:
+            print("expected:\n  ", answer_content, "\ngot:\n  ", output_content)
             return Result.WRONG_ANSWER
         if round > 1:
             print('.', end='', flush=True)
