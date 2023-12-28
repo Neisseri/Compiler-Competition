@@ -1,7 +1,14 @@
-int func(int a, int b) {
-  return a+b;
-}
+int main()
+{
 
-int main() {
-  return func(2, 3);
+  int n = 100;
+  starttime();
+  int x, y;
+  while (n > 0)
+  {
+    n = n - 3;
+    
+  }
+  stoptime();
+  return n;
 }

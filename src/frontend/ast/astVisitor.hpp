@@ -463,12 +463,28 @@ public:
 
   antlrcpp::Any visitCall(SysYParser::CallContext *ctx) override
   {
-    auto const ident = ctx->Ident()->getText();
+    auto ident = ctx->Ident()->getText();
     std::cerr << "visitCall "
               << "ident: " << ident << std::endl;
     ExpressionList *args_list = nullptr;
+    if (ident == "starttime")
+    {
+      ident = "_sysy_starttime";
+    }
+    if (ident == "stoptime")
+    {
+      ident = "_sysy_stoptime";
+    }
     if (ctx->funcRParams())
       args_list = ctx->funcRParams()->accept(this).as<ExpressionList *>();
+    else if (ident == "_sysy_starttime" || ident == "_sysy_stoptime")
+    {
+      int line_num = ctx->getStart()->getLine();
+      auto literal_line_num = new IntLiteral(line_num);
+      std::vector<std::unique_ptr<Expression>> children;
+      children.push_back(std::unique_ptr<Expression>(literal_line_num));
+      args_list = new ExpressionList(std::move(children));
+    }
     else
       args_list = new ExpressionList();
 
