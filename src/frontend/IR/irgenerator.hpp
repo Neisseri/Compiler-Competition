@@ -398,12 +398,82 @@ public:
 
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get()))
         {
-            ir::Reg lhs = visitExpression(binary->lhs, ir_bb);
-            ir::Reg rhs = visitExpression(binary->rhs, ir_bb);
-            ir::Reg dst = get_new_reg(lhs.type); // TODO: change of type
-            std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst, static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs));
-            ir_bb->instrs.push_back(std::move(add_instr));
-            return dst;
+            if (static_cast<BinaryOpEnum>(binary->op->binary_op_type) == BinaryOpEnum::AND || static_cast<BinaryOpEnum>(binary->op->binary_op_type) == BinaryOpEnum::OR) {
+                ir::Reg dst_ptr = get_new_reg(static_cast<int>(TypeEnum::INT)); // define the logic temp var
+                std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, static_cast<int>(TypeEnum::INT), 4));
+                alloca_instr->is_local_var = 1;
+                ir_bb->instrs.push_back(std::move(alloca_instr));
+                std::string logic_expr_name = "logic_expr@#" + std::to_string(dst_ptr.id);
+                var_name_set.insert(logic_expr_name);
+                std::string temp_name = logic_expr_name;
+                ir::Reg temp_reg = dst_ptr;
+                var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(temp_name), std::move(temp_reg)));
+                Type var_type = Type(static_cast<int>(TypeEnum::INT));
+                std::string temp_name2 = logic_expr_name;
+                var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(var_type)));
+
+                ir::Reg lhs = visitExpression(binary->lhs, ir_bb);
+                std::shared_ptr<ir::BasicBlock> bb_true(get_new_bb_ptr(ir_bb->func));
+                std::shared_ptr<ir::BasicBlock> bb_false(get_new_bb_ptr(ir_bb->func));
+                std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(lhs, bb_true, bb_false));
+                ir_bb->instrs.push_back(std::move(condbr_instr));
+
+                ir_bb->func->bbs.push_back(bb_true);
+                ir_bb->func->bbs.push_back(bb_false);
+
+                std::shared_ptr<ir::BasicBlock> ir_new_bb(get_new_bb_ptr(ir_bb->func));
+                ir_bb->func->bbs.push_back(ir_new_bb);
+                ir_bb = ir_new_bb;
+
+                if (static_cast<BinaryOpEnum>(binary->op->binary_op_type) == BinaryOpEnum::AND) {
+                    ir::Reg rhs = visitExpression(binary->rhs, bb_true);
+                    std::unique_ptr<ir::Store> store_instr(new ir::Store(static_cast<int>(TypeEnum::INT), rhs, dst_ptr, logic_expr_name));
+                    store_instr->is_local_var = 1;
+                    Defs[logic_expr_name].insert(bb_true);
+                    bb_true->instrs.push_back(std::move(store_instr));
+                    std::unique_ptr<ir::Branch> br_true_instr(new ir::Branch(ir_new_bb));
+                    bb_true->instrs.push_back(std::move(br_true_instr));
+                    ir::Reg zero = get_new_reg(static_cast<int>(TypeEnum::INT));
+                    std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(zero, 0));
+                    bb_false->instrs.push_back(std::move(loadzero_instr));
+                    std::unique_ptr<ir::Store> store_instr2(new ir::Store(static_cast<int>(TypeEnum::INT), zero, dst_ptr, logic_expr_name));
+                    store_instr2->is_local_var = 1;
+                    Defs[logic_expr_name].insert(bb_false);
+                    bb_false->instrs.push_back(std::move(store_instr2));
+                    std::unique_ptr<ir::Branch> br_false_instr(new ir::Branch(ir_new_bb));
+                    bb_false->instrs.push_back(std::move(br_false_instr));
+                } else { // logic OR
+                    ir::Reg rhs = visitExpression(binary->rhs, bb_false);
+                    std::unique_ptr<ir::Store> store_instr(new ir::Store(static_cast<int>(TypeEnum::INT), rhs, dst_ptr, logic_expr_name));
+                    store_instr->is_local_var = 1;
+                    Defs[logic_expr_name].insert(bb_false);
+                    bb_false->instrs.push_back(std::move(store_instr));
+                    std::unique_ptr<ir::Branch> br_false_instr(new ir::Branch(ir_new_bb));
+                    bb_false->instrs.push_back(std::move(br_false_instr));
+                    ir::Reg one = get_new_reg(static_cast<int>(TypeEnum::INT));
+                    std::unique_ptr<ir::LoadInt> loadone_instr(new ir::LoadInt(one, 1));
+                    bb_true->instrs.push_back(std::move(loadone_instr));
+                    std::unique_ptr<ir::Store> store_instr2(new ir::Store(static_cast<int>(TypeEnum::INT), one, dst_ptr, logic_expr_name));
+                    store_instr2->is_local_var = 1;
+                    Defs[logic_expr_name].insert(bb_true);
+                    bb_true->instrs.push_back(std::move(store_instr2));
+                    std::unique_ptr<ir::Branch> br_true_instr(new ir::Branch(ir_new_bb));
+                    bb_true->instrs.push_back(std::move(br_true_instr));
+                }
+
+                ir::Reg dst = get_new_reg(static_cast<int>(TypeEnum::INT));
+                std::unique_ptr<ir::Load> load_instr(new ir::Load(dst, static_cast<int>(TypeEnum::INT), dst_ptr, logic_expr_name));
+                load_instr->is_local_var = 1;
+                ir_bb->instrs.push_back(std::move(load_instr));
+                return dst;
+            } else {
+                ir::Reg lhs = visitExpression(binary->lhs, ir_bb);
+                ir::Reg rhs = visitExpression(binary->rhs, ir_bb);
+                ir::Reg dst = get_new_reg(lhs.type); // TODO: change of type
+                std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst, static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs));
+                ir_bb->instrs.push_back(std::move(add_instr));
+                return dst;
+            }
         }
         else if (auto unary = dynamic_cast<ast::Unary *>(expr.get()))
         {
@@ -607,10 +677,10 @@ public:
         else if (auto ifelse = dynamic_cast<ast::IfElse *>(statement))
         {
             std::shared_ptr<ir::BasicBlock> bb_cond(get_new_bb_ptr(ir_bb->func));
+            ir_bb->func->bbs.push_back(bb_cond);
             std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond));
             ir_bb->instrs.push_back(std::move(br_instr));
             ir::Reg cond = visitExpression(ifelse->cond, bb_cond);
-            ir_bb->func->bbs.push_back(bb_cond);
             if (auto other = dynamic_cast<ast::Statement *>(ifelse->other.get()))
             {
                 std::shared_ptr<ir::BasicBlock> bb_true(get_new_bb_ptr(ir_bb->func));
@@ -667,8 +737,8 @@ public:
 
             std::unique_ptr<ir::Branch> br_instr(new ir::Branch(bb_cond));
             ir_bb->instrs.push_back(std::move(br_instr));
-            ir_bb = ir_new_bb;
 
+            std::shared_ptr<ir::BasicBlock> old_bb_cond = bb_cond;
             ir::Reg cond_reg = visitExpression(whileloop->cond, bb_cond);
             std::unique_ptr<ir::CondBranch> condbr_instr(new ir::CondBranch(cond_reg, bb_body, ir_new_bb));
             bb_cond->instrs.push_back(std::move(condbr_instr));
@@ -676,8 +746,10 @@ public:
             auto body = dynamic_cast<ast::Statement *>(whileloop->body.get());
             assert(body);
             visitStatement(body, bb_body);
-            std::unique_ptr<ir::Branch> br_back_instr(new ir::Branch(bb_cond));
+            std::unique_ptr<ir::Branch> br_back_instr(new ir::Branch(old_bb_cond));
             bb_body->instrs.push_back(std::move(br_back_instr));
+
+            ir_bb = ir_new_bb;
 
             break_to_stack.pop_back();
             continue_to_stack.pop_back();
