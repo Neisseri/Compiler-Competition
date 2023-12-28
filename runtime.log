@@ -1,0 +1,339 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef n = 
+                                    (initVal 
+                                        (exp 
+                                            (addExp 
+                                                (mulExp 
+                                                    (unaryExp 
+                                                        (primaryExp 
+                                                            (number 
+                                                                (intConst 100))))))))) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp starttime ( ))))) ;)) 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef x) , 
+                                (varDef y) ;))) 
+                    (blockItem 
+                        (stmt while ( 
+                            (cond 
+                                (lOrExp 
+                                    (lAndExp 
+                                        (eqExp 
+                                            (relExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal n)))))) > 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 0))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt 
+                                            (lVal n) = 
+                                            (exp 
+                                                (addExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal n))))) - 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 3))))))) ;)) })))) 
+                    (blockItem 
+                        (stmt 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp stoptime ( ))))) ;)) 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal n)))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+construct funct block: main
+visitVarDecl: int start
+visitVarDecl: ident: n
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitExprStmt
+visitCall ident: starttime
+visitCall args_list size: 1
+visitVarDecl: int start
+visitVarDecl: ident: x
+visitVarDecl: ident: y
+visitPrimaryExp_ number
+visit block stmt
+visitPrimaryExp_ number
+visitAssign done!
+visitBlock done!
+visitExprStmt
+visitCall ident: stoptime
+visitCall args_list size: 1
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitVarDef int @n = 100
+Info: visitExpr100
+Info: visitAssignmentExpr100
+Info: visitExpr100
+Info: visitIntLiteralExpr100
+ret->type 0x55e46ebcdee0
+Info: visitStatementCall @_sysy_starttime(5)
+Info: visitExprStmtCall @_sysy_starttime(5)
+Info: visitExprCall @_sysy_starttime(5)
+Info: visiCalltExprCall @_sysy_starttime(5)
+Info: use of undeclared function _sysy_starttime
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x55e46ebcf590
+Info: visitVarDef int @x
+Info: visitVarDef int @y
+Info: visitStatementWhile
+Info: visitExpr@n>0
+Info: visitBinopExpr@n>0
+Info: visitExpr@n
+Info: visitLvalExpr@n
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55e46ebcdf70
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementAssign@n = @n-3
+Info: visitAssignStmtAssign@n = @n-3
+Info: visitExpr@n
+Info: visitLvalExpr@n
+Info: visitAssignStmtint
+Info: visitExpr@n-3
+Info: visitBinopExpr@n-3
+Info: visitExpr@n
+Info: visitLvalExpr@n
+Info: visitExpr3
+Info: visitIntLiteralExpr3
+ret->type 0x55e46ebcdeb0
+Info: visitStatementCall @_sysy_stoptime(12)
+Info: visitExprStmtCall @_sysy_stoptime(12)
+Info: visitExprCall @_sysy_stoptime(12)
+Info: visiCalltExprCall @_sysy_stoptime(12)
+Info: use of undeclared function _sysy_stoptime
+Info: visitExpr12
+Info: visitIntLiteralExpr12
+ret->type 0x55e46ebcd4c0
+Info: visitStatementReturn @n
+Info: visitExpr@n
+Info: visitLvalExpr@n
+Info: visitReturnStmtReturn @n#2function has returnscope id1
+ast: 
+Program
+  int @main()
+    {
+      int @n#2 = 100
+      Call @_sysy_starttime        5
+      int @x#2
+      int @y#2
+      While        @n#2>0
+        {
+          Assign@n#2 = @n#2-3
+        }
+      Call @_sysy_stoptime        12
+      Return @n#2
+    }
+End of Program
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction main
+visitBlock 
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue n#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue n#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionLValue n#2
+function main has 15 regs
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 B2 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B1 
+B3:
+  prev: B1 
+  succ: 
+B4:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 B2 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B1 
+B3:
+  prev: B1 
+  succ: 
+
+entryB0
+B1
+B2
+B3
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB2
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB2
+B0:
+  doms: B1 
+  domed_by: B0 
+B1:
+  doms: B2 B3 
+  domed_by: B0 B1 
+B2:
+  doms: 
+  domed_by: B0 B1 B2 
+B3:
+  doms: 
+  domed_by: B0 B1 B3 
+
+B0:
+  DF: 
+B1:
+  DF: 
+B2:
+  DF: B1 
+B3:
+  DF: 
+
+1____________________________________________________
+dead code elimination ----------------------------------------------------------
+main
+B0
+LoadInt
+LoadInt
+Call
+Other Instr
+B1
+Phi
+LoadInt
+Binary
+Other Instr
+B2
+LoadInt
+Binary
+Other Instr
+B3
+LoadInt
+Call
+Return
+dead code elimination ----------------------------------------------------------
+ir:
+; module
+define i32 @main(){
+B0:
+  %2 = 100
+  %4 = 5
+  %3 = call i32 @_sysy_starttime(i32 %4)
+  br label B1
+
+B1:
+  %16 = phi i32 [ %2, B0 ], [ %12, B2 ]
+  %8 = 0
+  %9 = icmp sgt i32 %16, %8
+  br i32 %9, label B2, label B3
+
+B2:
+  %11 = 3
+  %12 = sub i32 %16, %11
+  br label B1
+
+B3:
+  %14 = 12
+  %13 = call i32 @_sysy_stoptime(i32 %14)
+  ret i32 %16
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
+T[-2] B1
+T[-12] B3
+?
+main
+main Main()
+main
+after compute reg_used
+after prologue
+end of emitend

@@ -149,7 +149,7 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
-                os << std::string(indent, ' ') << "Call " << ident->toString() << std::endl;
+                os << std::string(indent, ' ') << "Call " << ident->toString();
                 argument_list->print(os, indent + 2);
             }
             std::unique_ptr<Identifier> ident;
