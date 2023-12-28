@@ -10,6 +10,8 @@
 
 #include "../frontend/IR/irgenerator.hpp"
 
+#include <iostream>
+
 class IROptimizer{
 public:
     IRGenerator *ir_generator;
@@ -218,10 +220,12 @@ public:
 
     void dead_code_elimination() {
         for (auto &func : ir_generator->ir_program.functions) {
+            std::cerr << "break 1" << std::endl;
             // dead variable declaration
             std::list<int> dead_vars;
             for (auto &bb : func.second.bbs) {
                 for (auto &inst : bb.get()->instrs) {
+                    std::cerr << "break 2" << std::endl;
                     if (auto alloca = dynamic_cast<ir::Alloca*>(inst.get())) {
                         if (alloca->is_local_var) {
                             dead_vars.push_back(alloca->ret_val.id);
@@ -279,11 +283,15 @@ public:
                 } 
             }
 
+            for (auto dead_var : dead_vars) {
+                std::cerr << "dead var: " << dead_var << std::endl;
+            }
+
             for (auto &bb : func.second.bbs) {
                 for (auto it = bb.get()->instrs.begin(); it != bb.get()->instrs.end();) {
                     auto &instr = *it;
-                    if (auto assign = dynamic_cast<ir::Assign*>(instr.get())) {
-                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), assign->dst.id);
+                    if (auto alloca = dynamic_cast<ir::Alloca*>(instr.get())) {
+                        auto it1 = std::find(dead_vars.begin(), dead_vars.end(), alloca->ret_val.id);
                         if (it1 != dead_vars.end()) {
                             it = bb.get()->instrs.erase(it);
                         } else {

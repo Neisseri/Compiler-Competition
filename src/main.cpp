@@ -49,8 +49,8 @@ int main(int argc, char *argv[])
     std::string output_file_name;
 
     options.add_options()
-    ("m,m2r", "mem2reg", cxxopts::value<bool>(dce_flag)->default_value("false"))
-    ("d,dce", "dead code elimination", cxxopts::value<bool>(o2_flag)->default_value("false"))
+    ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
+    ("d,dce", "dead code elimination", cxxopts::value<bool>(dce_flag)->default_value("false"))
     ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
     ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))
     ("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))
@@ -132,8 +132,11 @@ int main(int argc, char *argv[])
     if (mem_to_reg_flag || o2_flag){
         ir_optimizer.mem_to_reg();
     }
+    cerr << o2_flag << "____________________________________________________" << endl;
     if (dce_flag || o2_flag){
+        cerr << "dead code elimination ----------------------------------------------------------" << endl;
         ir_optimizer.dead_code_elimination();
+        cerr << "dead code elimination ----------------------------------------------------------" << endl;
     }
 
     if (out_ir_flag){
