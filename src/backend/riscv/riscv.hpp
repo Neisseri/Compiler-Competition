@@ -263,6 +263,7 @@ struct Function {
         std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map,
         std::set<std::string> func_defined);
     void resolve_phi();
+    std::set<
 };
 
 struct Program {
