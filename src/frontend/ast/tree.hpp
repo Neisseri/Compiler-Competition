@@ -149,7 +149,7 @@ namespace frontend
             }
             void print(std::ostream &os, int indent) const override
             {
-                os << std::string(indent, ' ') << "Call " << ident->toString() << std::endl;
+                os << std::string(indent, ' ') << "Call " << ident->toString();
                 argument_list->print(os, indent + 2);
             }
             std::unique_ptr<Identifier> ident;
@@ -279,10 +279,14 @@ namespace frontend
             ~Declaration() = default;
             std::string toString() const override
             {
+                std::string ret = "";
+                ret += var_type->toString() + " " + ident->toString();
+                if (is_array)
+                    ret += "[" + indices->toString() + "]";
                 if (has_init)
-                    return var_type->toString() + " " + ident->toString() + " = " + init_expr->toString();
-                else
-                    return var_type->toString() + " " + ident->toString();
+                    ret += " = " + init_expr->toString();
+                return ret;
+
             }
             void print(std::ostream &os, int indent) const override
             {
