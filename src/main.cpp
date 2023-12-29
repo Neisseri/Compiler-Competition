@@ -154,6 +154,9 @@ int main(int argc, char *argv[])
     if (out_riscv_flag) {
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
+        // cerr print
+        std::cerr << "riscv before phi resolving" << std::endl;
+        program.emit(std::cerr);
         std::cerr << "?\n";
         for (auto [name, func]: program.functions) {
             func->resolve_phi();
