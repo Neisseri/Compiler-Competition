@@ -5,6 +5,8 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+./build.sh
+
 filename=$1
 
 rm -rf ir ast riscv
