@@ -354,15 +354,15 @@ struct Call: Instruction {
             ret += " float ";
         }
         ret += "@" + func_name + "(";
-        for (auto i : params){
-            if (i.type == static_cast<int>(TypeEnum::INT)){
+        for (int i = 0; i < params.size(); i ++){
+            if (params[i].type == static_cast<int>(TypeEnum::INT)){
                 ret += "i32 ";
             }
-            else if (i.type == static_cast<int>(TypeEnum::FLOAT)){
+            else if (params[i].type == static_cast<int>(TypeEnum::FLOAT)){
                 ret += "float ";
             }
-            ret += i.toString();
-            if (i.id != params.back().id){
+            ret += params[i].toString();
+            if (i + 1 < params.size()){
                 ret += ", ";
             }
         }

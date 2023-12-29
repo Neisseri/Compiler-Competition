@@ -15,7 +15,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TEST_ROUND = 1
-TIMEOUT = 400
+TIMEOUT = 10
 
 # NOTE: 在这里修改你的编译器路径和参数。此处的默认值对应着gcc
 # compiler_path = "riscv64-unknown-elf-gcc"
@@ -119,10 +119,12 @@ def run(
         except subprocess.TimeoutExpired:
             proc.kill()
             return Result.TIME_LIMIT_EXCEEDED
-        # output_content = [line.strip() for line in open(output).read().splitlines()]
+        output_content = [line.strip() for line in open(output).read().splitlines()]
         if proc.returncode != answer_exitcode:
             print("expected ", answer_exitcode, ", got ", proc.returncode)
-                # or output_content != answer_content:
+            return Result.WRONG_ANSWER
+        if output_content != answer_content:
+            print("expected:\n  ", answer_content, "\ngot:\n  ", output_content)
             return Result.WRONG_ANSWER
         if round > 1:
             print('.', end='', flush=True)
