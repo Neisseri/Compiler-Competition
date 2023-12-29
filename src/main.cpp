@@ -157,10 +157,14 @@ int main(int argc, char *argv[])
         // cerr print
         std::cerr << "riscv before phi resolving" << std::endl;
         program.emit(std::cerr);
+        std::cerr << "riscv before phi_resloving end" << std::endl;
         std::cerr << "?\n";
         for (auto [name, func]: program.functions) {
             func->resolve_phi();
             std::cerr << name << "\n";
+            std::cerr << "func before reg alloc" << std::endl;
+            func->emit(std::cerr);
+            std::cerr << "func before reg alloc end" << std::endl;
             riscv::coloringregalloc RegAllocator(func);
             // func->do_reg_alloc();
             RegAllocator.Main();
