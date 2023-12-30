@@ -17,7 +17,8 @@ namespace riscv {
       frame_size += alloca->size;
       if (alloca_offsets[r] >= 2048) {
         bb->instructions.emplace_back(new LUI(r, alloca_offsets[r]/2048));
-        bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]%2048));
+        bb->instructions.emplace_back(new Binary(r, RiscvBinaryOp::ADD, r, Reg(General, sp)));
+        bb->instructions.emplace_back(new ADDI(r, r, alloca_offsets[r]%2048));
       }
       else {
         bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
@@ -122,38 +123,33 @@ namespace riscv {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
       if (func_defined.count(call->func_name)) {
-        if (!offsets.count(Reg(General, a1))) {
-          offsets[Reg(General, a1)] = frame_size;
-          frame_size += 4;
-        }
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
-        // stackParamSize = std::max(stackParamSize, 4*num_args);
+        for (int i = 0; i < num_params; i++)
+          bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
-          // bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), i*4));
-          bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+          if (i < 7) {
+            bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+          }
+          else {
+            bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), (i-7)*4));
+          }
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+        for (int i = 0; i < num_params; i++)
+          bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
       }
       else {
-        if (!offsets.count(Reg(General, a1))) {
-          offsets[Reg(General, a1)] = frame_size;
-          frame_size += 4;
-        }
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new StoreWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+        for (int i = 0; i < num_params; i++)
+          bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs_full[i])));
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        if (offsets[Reg(General, a1)] < 2048)
-          bb->instructions.emplace_back(new LoadWord(Reg(General, a1), Reg(General, sp), offsets[Reg(General, a1)]));
+        for (int i = 0; i < num_params; i++)
+          bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
       }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
@@ -229,14 +225,18 @@ namespace riscv {
   Function::Function(ir::Function& ir_function, const std::string& name, std::set<std::string> func_defined): name(name) {
     auto entry_bb = new BasicBlock;
     num_regs = ir_function.num_regs;
-    // stackParamSize = 0;
+    stackParamSize = 0;
     bbs.emplace_back(entry_bb);
     num_params = ir_function.param_types.size();
     frame_size = 4 * 11 + 4;
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
     std::set<int> arg_idxs;
     for (int i = 0; i < num_params; i++) {
-      arg_idxs.insert(-(i+1));
+      if (i < 7) {
+        arg_idxs.insert(-(i+1));
+        offsets[Reg(General, argregs[i])] = frame_size;
+        frame_size += 4;
+      }
     }
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = new BasicBlock;
@@ -246,23 +246,21 @@ namespace riscv {
     auto bb_front = bb_map[ir_function.bbs.front().get()];
     BasicBlock::add_edge(entry_bb, bb_front);
     for (auto &ir_bb: ir_function.bbs) {
+      for (auto &inst: ir_bb->instrs) {
+        if (auto call = dynamic_cast<ir::Call*>(inst.get())) {
+          if (call->params.size() > 7) {
+            if (4*(call->params.size()-7) > stackParamSize)
+              stackParamSize = 4 * (call->params.size() - 7);
+          }
+        }
+      }
+    }
+    frame_size += stackParamSize;
+    for (auto &ir_bb: ir_function.bbs) {
         auto bb = bb_map[ir_bb.get()];
         bb->instructions.clear();
         for (auto &inst: ir_bb->instrs)
           select_instr(inst.get(), bb, bb_map, func_defined);
-
-        // std::cout << "before allocating regs\n";
-        // for (auto &inst: bb->instructions) 
-        //   inst->emit(std::cout);
-
-        // std::cout << "pred: ";
-        // for (auto &prevs: bb->pred) 
-        //   std::cout << print_bb(prevs) << " ";
-        // std::cout << "\n";
-        // std::cout << "succ: ";
-        // for (auto &prevs: bb->succ) 
-        //   std::cout << print_bb(prevs) << " ";
-        // std::cout << "\n";
     }
     for (auto bb: bbs) {
       for (auto it = bb->instructions.begin(); it != bb->instructions.end(); it++) {
@@ -275,10 +273,17 @@ namespace riscv {
         }
       }
     }
-    // auto prologue = *bbs.begin();
-    // for (int i=0; i<num_params; i++) {
-    //   prologue->instructions.emplace(prologue->instructions.begin(), new LoadWord(Reg(General, -(i+1)), Reg(General, t1), i*4));
-    // }
+    auto prologue = *bbs.begin();
+    for (int i=0; i<num_params; i++) {
+      if (i >= 7)
+        prologue->instructions.emplace(prologue->instructions.begin(), new LoadWord(Reg(General, -(i+1)), Reg(General, t1), (i-7)*4));
+    }
+
+    for (auto bb: bbs) {
+      for (auto inst: bb->instructions) {
+        inst->emit(std::cerr);
+      }
+    }
   }
 
 }

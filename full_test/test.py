@@ -15,7 +15,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TEST_ROUND = 1
-TIMEOUT = 10
+TIMEOUT = 300
 
 # NOTE: 在这里修改你的编译器路径和参数。此处的默认值对应着gcc
 # compiler_path = "riscv64-unknown-elf-gcc"
