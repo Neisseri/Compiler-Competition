@@ -347,7 +347,7 @@ Info: visitBlock
 Info: visitStatementReturn 1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x559f8a1cb4b0
+ret->type 0x5620aaa4b420
 Info: visitReturnStmtReturn 1function has returnscope id1
 Info: visitFuncDefi32 @deepWhileBr(i32 @a, i32 @b)
 Info: visitParamDefi32 @a
@@ -372,7 +372,7 @@ Info: visitExpr@c
 Info: visitLvalExpr@c
 Info: visitExpr75
 Info: visitIntLiteralExpr75
-ret->type 0x559f8a1cb560
+ret->type 0x5620aaa4b4d0
 Info: visitStatement
 Info: visitBlock
 Info: visitVarDef i32 @d
@@ -383,7 +383,7 @@ Info: visitLvalExpr@d
 Info: visitAssignStmti32
 Info: visitExpr42
 Info: visitIntLiteralExpr42
-ret->type 0x559f8a1cb370
+ret->type 0x5620aaa4b2e0
 Info: visitStatementIfElse
 Info: visitExpr@c<100
 Info: visitBinopExpr@c<100
@@ -391,7 +391,7 @@ Info: visitExpr@c
 Info: visitLvalExpr@c
 Info: visitExpr100
 Info: visitIntLiteralExpr100
-ret->type 0x559f8a1cb4e0
+ret->type 0x5620aaa4b450
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@c = @c+@d
@@ -412,7 +412,7 @@ Info: visitExpr@c
 Info: visitLvalExpr@c
 Info: visitExpr99
 Info: visitIntLiteralExpr99
-ret->type 0x559f8a1cb770
+ret->type 0x5620aaa4b6e0
 Info: visitStatement
 Info: visitBlock
 Info: visitVarDef i32 @e
@@ -427,7 +427,7 @@ Info: visitExpr@d
 Info: visitLvalExpr@d
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x559f8a1cb7f0
+ret->type 0x5620aaa4b760
 Info: visitStatementIfElse
 Info: visitExprCall @get_one(0)==1
 Info: visitBinopExprCall @get_one(0)==1
@@ -435,10 +435,10 @@ Info: visitExprCall @get_one(0)
 Info: visiCalltExprCall @get_one(0)
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x559f8a1cb870
+ret->type 0x5620aaa4b7e0
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x559f8a1cb8f0
+ret->type 0x5620aaa4b860
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@c = @e*2
@@ -452,7 +452,7 @@ Info: visitExpr@e
 Info: visitLvalExpr@e
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x559f8a1cb920
+ret->type 0x5620aaa4b890
 Info: visitStatementReturn @c
 Info: visitExpr@c
 Info: visitLvalExpr@c
@@ -467,7 +467,7 @@ Info: visitLvalExpr@p
 Info: visitAssignStmti32
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x559f8a1cb950
+ret->type 0x5620aaa4b8c0
 Info: visitStatementAssign@p = Call @deepWhileBr(@p, @p)
 Info: visitAssignStmtAssign@p = Call @deepWhileBr(@p, @p)
 Info: visitExpr@p
@@ -489,47 +489,8 @@ Info: visitLvalExpr@p
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x559f8a1cb9e0
+ret->type 0x5620aaa4b950
 Info: visitReturnStmtReturn 0function has returnscope id10
-ast: 
-Program
-  i32 @get_one(i32 @a#1)
-    {
-      Return 1
-    }
-  i32 @deepWhileBr(i32 @a#3, i32 @b#3)
-    {
-      i32 @c#4
-      Assign@c#4 = @a#3+@b#3
-      While        @c#4<75
-        {
-          i32 @d#6
-          Assign@d#6 = 42
-          If            @c#4<100
-            {
-              Assign@c#4 = @c#4+@d#6
-              If                @c#4>99
-                {
-                  i32 @e#8
-                  Assign@e#8 = @d#6*2
-                  If                    Call @get_one(0)==1
-                    {
-                      Assign@c#4 = @e#8*2
-                    }
-                }
-            }
-        }
-      Return @c#4
-    }
-  i32 @main()
-    {
-      i32 @p#11
-      Assign@p#11 = 2
-      Assign@p#11 = Call @deepWhileBr(@p#11, @p#11)
-      Call @putint        @p#11
-      Return 0
-    }
-End of Program
 --------------------------- building ir ---------------------------
 visitProgram
 visitFunction get_one

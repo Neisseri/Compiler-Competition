@@ -243,6 +243,8 @@ if __name__ == '__main__':
     if os.path.exists(config.tempdir):
         shutil.rmtree(config.tempdir)
     os.mkdir(config.tempdir)
+    if not os.path.exists("llvm_s"):
+        os.mkdir("llvm_s")
 
 
 

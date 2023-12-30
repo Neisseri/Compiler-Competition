@@ -63,17 +63,17 @@ struct Type
             s = "unknown";
             break;
         }
-        if (is_const && !ir)
-            s = "const " + s;
+        // if (is_const && !ir)
+        //     s = "const " + s;
         // if has dim
-        if (dim.size() > 0 && !ir){
-            s += " [";
-            for (int i : dim){
-                s += std::to_string(i) + ",";
-            }
-            s.pop_back();
-            s += "]";
-        }
+        // if (dim.size() > 0 && !ir){
+        //     s += " [";
+        //     for (int i : dim){
+        //         s += std::to_string(i) + ",";
+        //     }
+        //     s.pop_back();
+        //     s += "]";
+        // }
         return s;
     }
 };

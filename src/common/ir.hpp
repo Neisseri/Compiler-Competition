@@ -116,7 +116,9 @@ struct GlobalDef: Instruction {
 
     std::string toString() {
         std::string ret = "";
-        ret += "@" + var_name + " = global " + type.toString();
+        std::string tem = var_name;
+        tem.erase(tem.find('#'));
+        ret += "@" + tem + " = global " + type.toString();
         if (has_init) {
             if (is_array){
                 ret += " [";
@@ -132,7 +134,7 @@ struct GlobalDef: Instruction {
                 ret += " " + std::to_string(init_val[0]);
             }
         }
-        ret += ", " + std::to_string(type.get_array_size() * 4);
+        ret += ", i32 " + std::to_string(type.get_array_size() * 4);
         return ret;
     }
 
