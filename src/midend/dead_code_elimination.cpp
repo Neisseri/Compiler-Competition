@@ -9,13 +9,13 @@ void IROptimizer::dead_code_elimination()
         std::list<int> dead_vars;
         for (auto &bb : func.second.bbs)
         {
-            std::cerr << "B" << bb.get()->label.label_id << std::endl;
+            SyError().throw_info("bb" + bb.get()->toString());
             for (auto &inst : bb.get()->instrs)
             {
                 if (auto loadint = dynamic_cast<ir::LoadInt *>(inst.get()))
                 { // LoadInt
                     dead_vars.push_back(loadint->dst.id);
-                    std::cerr << "LoadInt" << std::endl;
+                    SyError().throw_info("LoadInt" + loadint->toString());
                 }
                 else if (auto alloca = dynamic_cast<ir::Alloca *>(inst.get()))
                 { // Alloca
@@ -23,7 +23,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.push_back(alloca->ret_val.id);
                     }
-                    std::cerr << "Alloca" << std::endl;
+                    SyError().throw_info("Alloca" + alloca->toString());
                 }
                 else if (auto phi = dynamic_cast<ir::Phi *>(inst.get()))
                 { // Phi
@@ -41,7 +41,7 @@ void IROptimizer::dead_code_elimination()
                             dead_vars.erase(it);
                         }
                     }
-                    std::cerr << "Phi" << std::endl;
+                    SyError().throw_info("Phi" + phi->toString());
                 }
                 else if (auto loadaddr = dynamic_cast<ir::LoadAddr *>(inst.get()))
                 { // LoadAddr
@@ -50,7 +50,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.erase(it);
                     }
-                    std::cerr << "LoadAddr" << std::endl;
+                    SyError().throw_info("LoadAddr" + loadaddr->toString());
                 }
                 else if (auto store = dynamic_cast<ir::Store *>(inst.get()))
                 { // Store
@@ -59,7 +59,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.erase(it);
                     }
-                    std::cerr << "Store" << std::endl;
+                    SyError().throw_info("Store" + store->toString());
                 }
                 else if (auto binary = dynamic_cast<ir::Binary *>(inst.get()))
                 { // Binary
@@ -78,7 +78,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.erase(it2);
                     }
-                    std::cerr << "Binary" << std::endl;
+                    SyError().throw_info("Binary" + binary->toString());
                 }
                 else if (auto assign = dynamic_cast<ir::Assign *>(inst.get()))
                 { // Assign
@@ -92,7 +92,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.erase(it1);
                     }
-                    std::cerr << "Assign" << std::endl;
+                    SyError().throw_info("Assign" + assign->toString());
                 }
                 else if (auto ret = dynamic_cast<ir::Return *>(inst.get()))
                 { // Return
@@ -101,7 +101,7 @@ void IROptimizer::dead_code_elimination()
                     {
                         dead_vars.erase(it);
                     }
-                    std::cerr << "Return" << std::endl;
+                    SyError().throw_info("Return" + ret->toString());
                 }
                 else if (auto call = dynamic_cast<ir::Call *>(inst.get()))
                 { // Call
@@ -113,11 +113,11 @@ void IROptimizer::dead_code_elimination()
                             dead_vars.erase(it);
                         }
                     }
-                    std::cerr << "Call" << std::endl;
+                    SyError().throw_info("Call" + call->toString());
                 }
                 else
                 {
-                    std::cerr << "Other Instr" << std::endl;
+                    SyError().throw_info("Unknown" + inst->toString());
                 }
             }
         }

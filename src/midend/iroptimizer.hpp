@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../common/common.hpp"
+#include "../common/const.hpp"
+#include "../common/error.hpp"
 
 #include "../common/ir.hpp"
 
@@ -22,4 +24,6 @@ public:
     void visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb);
     void mem_to_reg();
     void dead_code_elimination();
+    //常量传播
+    // void constant_propagation();
 };
