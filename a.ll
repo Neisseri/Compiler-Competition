@@ -14,9 +14,9 @@ B2:
   br label %B4
 
 B3:
-  %r25 = phi i32 [ %r23, %B6 ]
-  %r26 = phi i32 [ %r7, %B6 ]
   %r27 = phi i32 [ %r2, %B1 ], [ %r24, %B6 ]
+  %r25 = add i32 0, %r23 ; assign
+  %r26 = add i32 0, %r7 ; assign
   ret i32 %r27
 
 B4:
@@ -30,8 +30,8 @@ B5:
   br label %B7
 
 B6:
-  %r23 = phi i32 [ %r21, %B9 ]
   %r24 = phi i32 [ %r2, %B4 ], [ %r22, %B9 ]
+  %r23 = add i32 0, %r21 ; assign
   br label %B3
 
 B7:
@@ -45,8 +45,8 @@ B8:
   br label %B9
 
 B9:
-  %r21 = phi i32 [ %r18, %B8 ]
   %r22 = phi i32 [ %r13, %B7 ], [ %r19, %B8 ]
+  %r21 = add i32 0, %r18 ; assign
   br label %B6
 
 }

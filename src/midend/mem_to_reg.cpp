@@ -291,4 +291,29 @@ void IROptimizer::mem_to_reg()
         }
         visit_rename_regs(func.second.bbs.front());
     }
+
+    for (auto func: ir_generator->ir_program.functions) {
+        for (auto bb : func.second.bbs) {
+            std::list<ir::Assign*> changed_phi;
+            for (auto it = bb->instrs.begin(); it != bb->instrs.end();)
+            {
+                auto &instr = *it;
+                if (auto phi = dynamic_cast<ir::Phi *>(instr.get()))
+                {
+                    if (phi->srcs.size() == 1) {
+                        ir::Assign* assign_instr(new ir::Assign(phi->dst, phi->srcs[0].first));
+                        changed_phi.push_back(std::move(assign_instr));
+                        it = bb->instrs.erase(it);
+                    } else {
+                        it ++;
+                    }
+                }
+                else
+                {
+                    bb->instrs.insert(it, changed_phi.begin(), changed_phi.end());
+                    break;
+                }
+            }
+        }
+    }
 }

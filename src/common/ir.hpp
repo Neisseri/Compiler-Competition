@@ -296,7 +296,7 @@ struct Assign : Instruction {
     Assign(Reg dst, Reg src):Instruction(InstType::ASSIGN), src(src), dst(dst){}
 
     virtual std::string toString() override {
-        return dst.toString() + " = " + src.toString();
+        return dst.toString() + " = add i32 0, " + src.toString() + " ; assign";
     }
 
     virtual void print(std::ostream &os, int indent) override{

@@ -1,14 +1,25 @@
-int main(){
-  int c = 4;
-  if (c < 75) {
-    int d = 42;
-    if (c < 100) {
-      c = c + 42;
-      if (c > 99) {
-        int e = 84;
-        c = 168;
-      }
-    }
+// test if-else-if
+int ifElseIf() {
+  int a;
+  a = 5;
+  int b;
+  b = 10;
+  if(a == 6 || b == 0xb) {
+    return a;
   }
-  return c;
+  else {
+    if (b == 10 && a == 1)
+      a = 25;
+    else if (b == 10 && a == -5)
+      a = a + 15;
+    else
+      a = -+a;
+  }
+
+  return a;
+}
+
+int main(){
+  putint(ifElseIf());
+  return 0;
 }
