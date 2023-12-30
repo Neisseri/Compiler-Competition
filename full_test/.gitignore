@@ -1,8 +1,7 @@
 *
 !test.py
-build
-riscv
-testcases/*
+!test_ir.py
+!runtest.sh
 !testcases/step10
 !testcases/step11
 !testcases/step12

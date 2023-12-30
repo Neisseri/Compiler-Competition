@@ -12,7 +12,7 @@ class IRGenerator
 {
 public:
     ir::Program ir_program;
-    int reg_num = 0;
+    // int reg_num = 0;
     int label_num = 0;
 
     std::set<std::string> var_name_set;                                              // set of variable names
@@ -25,10 +25,10 @@ public:
     std::vector<std::shared_ptr<ir::BasicBlock>> break_to_stack;
     std::vector<std::shared_ptr<ir::BasicBlock>> continue_to_stack;
 
-    ir::Reg get_new_reg(int type)
-    {
-        return ir::Reg(type, ++reg_num);
-    }
+    // ir::Reg get_new_reg(int type)
+    // {
+    //     return ir::Reg(type, ++reg_num);
+    // }
 
     ir::BasicBlock *get_new_bb_ptr(ir::Function *func)
     {
@@ -45,7 +45,7 @@ public:
         ir::Reg dst_ptr;
         if (global_var_table.find(name) != global_var_table.end())
         {
-            dst_ptr = get_new_reg(lvalue->var_type->type);
+            dst_ptr = ir_bb->func->get_new_reg(lvalue->var_type->type);
             std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(dst_ptr, name));
             ir_bb->instrs.push_back(std::move(loadaddr_instr));
         }
@@ -53,7 +53,7 @@ public:
         {
             dst_ptr = var_ptr_table[lvalue->ident->name];
         }
-        ir::Reg block_size = get_new_reg(lvalue->var_type->type);
+        ir::Reg block_size = ir_bb->func->get_new_reg(lvalue->var_type->type);
         std::unique_ptr<ir::LoadInt> loadone_instr(new ir::LoadInt(block_size, 4));
         ir_bb->instrs.push_back(std::move(loadone_instr));
         for (int i = var_type_table[lvalue->ident->name].dim.size() - 1; i >= 0; i--)
@@ -61,9 +61,9 @@ public:
             if (i < lvalue->indices.size())
             {
                 ir::Reg idx = visitExpression(lvalue->indices[i], ir_bb);
-                ir::Reg offset = get_new_reg(lvalue->var_type->type);
+                ir::Reg offset = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::Binary> muloffset_instr(new ir::Binary(offset, BinaryOpEnum::MUL, idx, block_size));
-                dst_adr_ptr = get_new_reg(lvalue->var_type->type);
+                dst_adr_ptr = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::Binary> addoffset_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
                 dst_ptr = dst_adr_ptr;
                 ir_bb->instrs.push_back(std::move(muloffset_instr));
@@ -71,10 +71,10 @@ public:
             }
             if (i > 0){
                 std::cerr << "visitIndex calc blocksize " << i << std::endl;
-                ir::Reg dim_size = get_new_reg(lvalue->var_type->type);
+                ir::Reg dim_size = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::LoadInt> loaddim_instr(new ir::LoadInt(dim_size, var_type_table[lvalue->ident->name].dim[i]));
                 ir::Reg old_block_size = block_size;
-                block_size = get_new_reg(lvalue->var_type->type);
+                block_size = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::Binary> muldim_instr(new ir::Binary(block_size, BinaryOpEnum::MUL, old_block_size, dim_size));
                 ir_bb->instrs.push_back(std::move(loaddim_instr));
                 ir_bb->instrs.push_back(std::move(muldim_instr));
@@ -197,22 +197,22 @@ public:
     {
         std::cerr << "visitFunction " << func.ident->name << std::endl;
 
-        reg_num = 0;
-        ir::Function ir_function;
-        ir_function.name = func.ident->name;
-        ir_function.ret_type = *(func.ret_type.get());
+        // reg_num = 0;
+        ir::Function *ir_function(new ir::Function(func.ident->name, *(func.ret_type.get())));
+        // ir_function.name = func.ident->name;
+        // ir_function.ret_type = *(func.ret_type.get());
 
         for (auto &i : func.params->children)
         {
-            ir_function.param_types.push_back(*(i->var_type.get()));
+            ir_function->param_types.push_back(*(i->var_type.get()));
         }
 
-        std::shared_ptr<ir::BasicBlock> ir_bb(get_new_bb_ptr(&ir_function));
-        ir_function.bbs.push_back(ir_bb);
+        std::shared_ptr<ir::BasicBlock> ir_bb(get_new_bb_ptr(ir_function));
+        ir_function->bbs.push_back(ir_bb);
 
         for (auto &i : func.params->children)
         {
-            ir::Reg init_reg = get_new_reg(i->var_type->type);
+            ir::Reg init_reg = ir_function->get_new_reg(i->var_type->type);
         }
         int param_id = 0;
         for (auto &i : func.params->children){
@@ -234,7 +234,7 @@ public:
                 std::string temp_name2 = i->ident->name;
                 var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
             } else {
-                ir::Reg dst_ptr = get_new_reg(i->var_type->type);
+                ir::Reg dst_ptr = ir_function->get_new_reg(i->var_type->type);
                 std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, *i->var_type ,4));
                 alloca_instr->is_local_var = 1;
                 ir_bb->instrs.push_back(std::move(alloca_instr));
@@ -254,11 +254,11 @@ public:
 
         visitBlock(*(func.body.get()), ir_bb);
 
-        ir_function.num_regs = reg_num;
+        // ir_function.num_regs = reg_num;
 
-        std::cerr << "function " << ir_function.name << " has " << ir_function.num_regs << " regs" << std::endl;
+        std::cerr << "function " << ir_function->name << " has " << ir_function->num_regs << " regs" << std::endl;
 
-        CFGbuilder cfg_builder(&ir_function);
+        CFGbuilder cfg_builder(ir_function);
         cfg_builder.CFG_build();
         cfg_builder.CFG_print(std::cerr, 0);
         cfg_builder.remove_unreachable_bb();
@@ -269,7 +269,7 @@ public:
         cfg_builder.dom_fro_print(std::cerr, 0);
 
         std::string temp_name = func.ident->name;
-        ir_program.functions.insert(std::make_pair<std::string, ir::Function>(std::move(temp_name), std::move(ir_function)));
+        ir_program.functions[temp_name] = *ir_function;
     }
 
     int visitBinaryVal(BinaryOpEnum binaryop, int lhs, int rhs)
@@ -399,7 +399,7 @@ public:
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get()))
         {
             if (static_cast<BinaryOpEnum>(binary->op->binary_op_type) == BinaryOpEnum::AND || static_cast<BinaryOpEnum>(binary->op->binary_op_type) == BinaryOpEnum::OR) {
-                ir::Reg dst_ptr = get_new_reg(static_cast<int>(TypeEnum::INT)); // define the logic temp var
+                ir::Reg dst_ptr = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT)); // define the logic temp var
                 std::unique_ptr<ir::Alloca> alloca_instr(new ir::Alloca(dst_ptr, static_cast<int>(TypeEnum::INT), 4));
                 alloca_instr->is_local_var = 1;
                 ir_bb->instrs.push_back(std::move(alloca_instr));
@@ -433,7 +433,7 @@ public:
                     bb_true->instrs.push_back(std::move(store_instr));
                     std::unique_ptr<ir::Branch> br_true_instr(new ir::Branch(ir_new_bb));
                     bb_true->instrs.push_back(std::move(br_true_instr));
-                    ir::Reg zero = get_new_reg(static_cast<int>(TypeEnum::INT));
+                    ir::Reg zero = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT));
                     std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(zero, 0));
                     bb_false->instrs.push_back(std::move(loadzero_instr));
                     std::unique_ptr<ir::Store> store_instr2(new ir::Store(static_cast<int>(TypeEnum::INT), zero, dst_ptr, logic_expr_name));
@@ -450,7 +450,7 @@ public:
                     bb_false->instrs.push_back(std::move(store_instr));
                     std::unique_ptr<ir::Branch> br_false_instr(new ir::Branch(ir_new_bb));
                     bb_false->instrs.push_back(std::move(br_false_instr));
-                    ir::Reg one = get_new_reg(static_cast<int>(TypeEnum::INT));
+                    ir::Reg one = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT));
                     std::unique_ptr<ir::LoadInt> loadone_instr(new ir::LoadInt(one, 1));
                     bb_true->instrs.push_back(std::move(loadone_instr));
                     std::unique_ptr<ir::Store> store_instr2(new ir::Store(static_cast<int>(TypeEnum::INT), one, dst_ptr, logic_expr_name));
@@ -461,7 +461,7 @@ public:
                     bb_true->instrs.push_back(std::move(br_true_instr));
                 }
 
-                ir::Reg dst = get_new_reg(static_cast<int>(TypeEnum::INT));
+                ir::Reg dst = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT));
                 std::unique_ptr<ir::Load> load_instr(new ir::Load(dst, static_cast<int>(TypeEnum::INT), dst_ptr, logic_expr_name));
                 load_instr->is_local_var = 1;
                 ir_bb->instrs.push_back(std::move(load_instr));
@@ -469,7 +469,7 @@ public:
             } else {
                 ir::Reg lhs = visitExpression(binary->lhs, ir_bb);
                 ir::Reg rhs = visitExpression(binary->rhs, ir_bb);
-                ir::Reg dst = get_new_reg(lhs.type); // TODO: change of type
+                ir::Reg dst = ir_bb->func->get_new_reg(lhs.type); // TODO: change of type
                 std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst, static_cast<BinaryOpEnum>(binary->op->binary_op_type), lhs, rhs));
                 ir_bb->instrs.push_back(std::move(add_instr));
                 return dst;
@@ -484,8 +484,8 @@ public:
             }
             else if (unary->op->unary_op_type == static_cast<int>(UnaryOpEnum::NEG))
             {
-                ir::Reg dst = get_new_reg(oprand.type);                      // TODO: change of type
-                ir::Reg zero = get_new_reg(static_cast<int>(TypeEnum::INT)); // TODO: float.
+                ir::Reg dst = ir_bb->func->get_new_reg(oprand.type);                      // TODO: change of type
+                ir::Reg zero = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT)); // TODO: float.
                 std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(zero, 0));
                 ir_bb->instrs.push_back(std::move(loadint_instr));
                 std::unique_ptr<ir::Binary> sub_instr(new ir::Binary(dst, BinaryOpEnum::SUB, zero, oprand));
@@ -494,8 +494,8 @@ public:
             }
             else if (unary->op->unary_op_type == static_cast<int>(UnaryOpEnum::NOT))
             {
-                ir::Reg dst = get_new_reg(oprand.type);                      // TODO: change of type
-                ir::Reg zero = get_new_reg(static_cast<int>(TypeEnum::INT)); // TODO: float.
+                ir::Reg dst = ir_bb->func->get_new_reg(oprand.type);                      // TODO: change of type
+                ir::Reg zero = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT)); // TODO: float.
                 std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(zero, 0));
                 ir_bb->instrs.push_back(std::move(loadint_instr));
                 std::unique_ptr<ir::Binary> eq_instr(new ir::Binary(dst, BinaryOpEnum::EQ, zero, oprand));
@@ -510,7 +510,7 @@ public:
         else if (auto intliteral = dynamic_cast<ast::IntLiteral *>(expr.get()))
         {
             std::cerr << "visitExpressionintliteral" << std::endl;
-            ir::Reg ret = get_new_reg(static_cast<int>(TypeEnum::INT));
+            ir::Reg ret = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT));
             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(ret, intliteral->value));
             ir_bb->instrs.push_back(std::move(loadint_instr));
             std::cerr << "visitExpressionintliteral done" << std::endl;
@@ -532,7 +532,7 @@ public:
             {
                 if (global_var_table.find(name) != global_var_table.end())
                 {
-                    val_ptr = get_new_reg(lvalue->var_type->type);
+                    val_ptr = ir_bb->func->get_new_reg(lvalue->var_type->type);
                     std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(val_ptr, name));
                     ir_bb->instrs.push_back(std::move(loadaddr_instr));
                 }
@@ -546,7 +546,7 @@ public:
                 std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
                 ret = val_ptr;
             } else {
-                ret = get_new_reg(lvalue->var_type->type);
+                ret = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::Load> load_instr(new ir::Load(ret, lvalue->var_type->type, val_ptr, name));
                 if (!lvalue->has_index && global_var_table.find(name) == global_var_table.end()){
                     load_instr->is_local_var = 1;
@@ -558,17 +558,16 @@ public:
         else if (auto call = dynamic_cast<ast::Call *>(expr.get()))
         {
             std::string name = call->ident->name;
-            int ret_type;
-            if (ir_program.functions.find(name) != ir_program.functions.end())
-            {
-                ret_type = ir_program.functions[name].ret_type.type;
-            }
-            else
-            {
-                ret_type = 1;
-                ;
-            }
-            ir::Reg ret = get_new_reg(ret_type);
+            int ret_type = 1;
+            // if (ir_program.functions.find(name) != ir_program.functions.end())
+            // {
+            //     ret_type = ir_program.functions[name].ret_type.type;
+            // }
+            // else
+            // {
+            //     ret_type = 1;
+            // }
+            ir::Reg ret = ir_bb->func->get_new_reg(ret_type);
             std::vector<ir::Reg> params;
             for (auto &i : call->argument_list->children)
             {
@@ -603,8 +602,8 @@ public:
                 }
             }
             ir::Reg init_reg = visitExpression(i, ir_bb);
-            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
-            ir::Reg offset = get_new_reg(decl->var_type->type);
+            ir::Reg dst_adr_ptr = ir_bb->func->get_new_reg(decl->var_type->type);
+            ir::Reg offset = ir_bb->func->get_new_reg(decl->var_type->type);
             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_start + ele_cnt++) * 4));
             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
             std::unique_ptr<ir::Store> store_instr(new ir::Store(decl->var_type->type, init_reg, dst_adr_ptr, decl->ident->name));
@@ -614,9 +613,9 @@ public:
         }
         while (ele_cnt < dim_len)
         {
-            ir::Reg init_reg = get_new_reg(decl->var_type->type);
-            ir::Reg dst_adr_ptr = get_new_reg(decl->var_type->type);
-            ir::Reg offset = get_new_reg(decl->var_type->type);
+            ir::Reg init_reg = ir_bb->func->get_new_reg(decl->var_type->type);
+            ir::Reg dst_adr_ptr = ir_bb->func->get_new_reg(decl->var_type->type);
+            ir::Reg offset = ir_bb->func->get_new_reg(decl->var_type->type);
             std::unique_ptr<ir::LoadInt> loadzero_instr(new ir::LoadInt(init_reg, 0));
             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(offset, (ele_start + ele_cnt++) * 4));
             std::unique_ptr<ir::Binary> add_instr(new ir::Binary(dst_adr_ptr, BinaryOpEnum::ADD, dst_ptr, offset));
@@ -638,7 +637,7 @@ public:
             std::string name = assign->lvalue->ident->name;
             if (global_var_table.find(name) != global_var_table.end())
             {
-                dst_ptr = get_new_reg(assign->lvalue->var_type->type);
+                dst_ptr = ir_bb->func->get_new_reg(assign->lvalue->var_type->type);
                 std::unique_ptr<ir::LoadAddr> loadaddr_instr(new ir::LoadAddr(dst_ptr, name));
                 ir_bb->instrs.push_back(std::move(loadaddr_instr));
             }
@@ -797,7 +796,7 @@ public:
             }
             else if (auto decl = dynamic_cast<ast::Declaration *>(child.get()))
             { // TODO:consider the const val
-                ir::Reg dst_ptr = get_new_reg(decl->var_type->type);
+                ir::Reg dst_ptr = ir_bb->func->get_new_reg(decl->var_type->type);
                 if (decl->var_type->is_array)
                 { // 数组
                     std::cerr << "visit decl array" << std::endl;

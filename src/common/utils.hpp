@@ -6,10 +6,10 @@
 
 namespace fs = std::filesystem;
 
-std::ofstream openOrCreateFile(const std::string &file_path, const std::string &file_name)
+std::ofstream openOrCreateFile(const std::string &file_path, const std::string &file_name, std::string succfix = ".s")
 {
     // Combine directory and file name to get the full output path
-    std::string full_file_path = file_path + "/" + file_name + ".s";
+    std::string full_file_path = file_path + "/" + file_name + succfix;
 
     // Check if the directory exists, create it if not
     if (!fs::exists(file_path))

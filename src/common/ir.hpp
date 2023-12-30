@@ -26,7 +26,7 @@ namespace ir
 
         std::string toString()
         {
-            return "%" + std::to_string(id) + (is_constant ? ("(c" + std::to_string(constant_val) + ")") : "");
+            return "%r" + std::to_string(id) + (is_constant ? ("(c" + std::to_string(constant_val) + ")") : "");
         }
     };
 
@@ -104,21 +104,18 @@ namespace ir
         Reg dst;
         std::vector<std::pair<Reg, std::shared_ptr<ir::BasicBlock>>> srcs;
 
-        Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name) {}
+    Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name){}
 
-        std::string toString()
-        {
-            std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
-            for (auto i = srcs.begin(); i != srcs.end(); i++)
-            {
-                ret += "[ " + i->first.toString() + ", " + i->second->label.toString() + " ]";
-                if (i + 1 != srcs.end())
-                {
-                    ret += ", ";
-                }
+    std::string toString() {
+        std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
+        for (auto i = srcs.begin(); i != srcs.end(); i ++){
+            ret += "[ " + i->first.toString() + ", " + i->second->label.toString() + " ]";
+            if (i + 1 != srcs.end()){
+                ret += ", ";
             }
-            return ret;
         }
+        return ret;
+    }
 
         void print(std::ostream &os, int indent)
         {
@@ -196,7 +193,7 @@ namespace ir
 
         std::string toString()
         {
-            return ret_val.toString() + " = alloca " + type.toString() + ", " + std::to_string(size);
+            return ret_val.toString() + " = alloca " + type.toString() + ", i32 " + std::to_string(size);
         }
 
         void print(std::ostream &os, int indent)
@@ -337,10 +334,9 @@ namespace ir
         Reg dst;
         Assign(Reg dst, Reg src) : Instruction(InstType::ASSIGN), src(src), dst(dst) {}
 
-        virtual std::string toString() override
-        {
-            return dst.toString() + " = " + src.toString();
-        }
+    virtual std::string toString() override {
+        return dst.toString() + " = add i32 0, " + src.toString() + " ; assign";
+    }
 
         virtual void print(std::ostream &os, int indent) override
         {
@@ -354,10 +350,9 @@ namespace ir
         int val;
         LoadInt(Reg dst, int val) : Instruction(InstType::LOADIMM), dst(dst), val(val) {}
 
-        virtual std::string toString() override
-        {
-            return dst.toString() + " = " + std::to_string(val);
-        }
+    virtual std::string toString() override {
+        return dst.toString() + " = add i32 0, " + std::to_string(val) + " ; loadint";
+    }
 
         virtual void print(std::ostream &os, int indent) override
         {
@@ -442,10 +437,9 @@ namespace ir
 
         Branch(std::shared_ptr<BasicBlock> bb_dst) : bb_dst(bb_dst), Instruction(BRANCH) {}
 
-        std::string toString()
-        {
-            return "br label " + bb_dst->label.toString();
-        }
+    std::string toString(){
+        return "br label %" + bb_dst->label.toString();
+    }
 
         void print(std::ostream &os, int indent)
         {
@@ -460,21 +454,18 @@ namespace ir
 
         Reg cond;
 
-        CondBranch(Reg cond, std::shared_ptr<BasicBlock> bb_true, std::shared_ptr<BasicBlock> bb_false) : bb_true(bb_true), bb_false(bb_false), cond(cond), Instruction(BRANCH) {}
+    CondBranch(Reg cond, std::shared_ptr<BasicBlock> bb_true, std::shared_ptr<BasicBlock> bb_false) : bb_true(bb_true), bb_false(bb_false), cond(cond), Instruction(BRANCH) {}
 
-        std::string toString()
-        {
-            std::string cond_type_str;
-            if (cond.type == static_cast<int>(TypeEnum::INT))
-            {
-                cond_type_str += "i32";
-            }
-            else if (cond.type == static_cast<int>(TypeEnum::FLOAT))
-            {
-                cond_type_str += "float";
-            }
-            return "br " + cond_type_str + " " + cond.toString() + ", label " + bb_true->label.toString() + ", label " + bb_false->label.toString();
+    std::string toString(){
+        std::string cond_type_str;
+        if (cond.type == static_cast<int>(TypeEnum::INT)){
+            cond_type_str += "i32";
         }
+        else if (cond.type == static_cast<int>(TypeEnum::FLOAT)){
+            cond_type_str += "float";
+        }
+        return "br " + cond_type_str + " " + cond.toString() + ", label " + bb_true->label.toString() + ", label " + bb_false->label.toString();
+    }
 
         void print(std::ostream &os, int indent)
         {
@@ -486,16 +477,19 @@ namespace ir
     {
         std::string name;
         Type ret_type;
-        int num_regs;
+        int num_regs = 0;
         std::vector<Type> param_types;
         std::list<std::shared_ptr<BasicBlock>> bbs;
+
+    Function(std::string name, Type ret_type) : name(name), ret_type(ret_type) {}
+    Function() {}
 
         std::string toString()
         {
             std::string ret = " @" + name + "(";
             for (int i = 0; i < param_types.size(); i++)
             {
-                ret += param_types[i].toString(1);
+                ret += param_types[i].toString(1) + " %r" + std::to_string(i + 1);
                 if (i + 1 < param_types.size())
                 {
                     ret += ", ";
@@ -517,6 +511,12 @@ namespace ir
 
             os << std::string(indent, ' ') << '}' << std::endl;
         }
+
+    ir::Reg get_new_reg(int type)
+    {
+        // std::cerr << "get_new_reg " << name << " numregs: " << num_regs << std::endl;
+        return ir::Reg(type, ++num_regs);
+    }
     };
 
     struct Program

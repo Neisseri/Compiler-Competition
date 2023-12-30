@@ -126,8 +126,7 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
         {
             std::string name = phi->var_name;
             ir::Reg used = reaching_def[name];
-            ir::Reg new_used = ir_generator->get_new_reg(used.type);
-            phi->dst = new_used;
+            ir::Reg new_used = phi->dst;
 
             std::string res_name = phi->var_name;
             ir::Reg res_reg;
@@ -211,6 +210,7 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
             break;
         }
     }
+
     for (auto succ : ir_bb->succs)
     {
         for (auto &instr : succ->instrs)
@@ -219,6 +219,10 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
             {
                 if (reaching_def.find(phi->var_name) == reaching_def.end())
                 {
+                    ir::Reg temp_reg = phi->dst;
+                    std::shared_ptr<ir::BasicBlock> temp_bb = ir_bb;
+                    phi->srcs.push_back(std::make_pair<ir::Reg, std::shared_ptr<ir::BasicBlock>>(std::move(temp_reg), std::move(temp_bb)));
+
                     continue;
                 }
                 ir::Reg temp_reg = reaching_def[phi->var_name];
@@ -272,6 +276,7 @@ void IROptimizer::mem_to_reg()
                 if (F.find(Y) == F.end())
                 {
                     std::unique_ptr<ir::Phi> Phi_instr(new ir::Phi(ir_generator->var_type_table[var_name], var_name));
+                    Phi_instr->dst = Y->func->get_new_reg(ir_generator->var_type_table[var_name].type);
                     Y->instrs.push_front(std::move(Phi_instr));
                     F.insert(Y);
                     if (ir_generator->Defs[var_name].find(Y) == ir_generator->Defs[var_name].end())
@@ -291,4 +296,29 @@ void IROptimizer::mem_to_reg()
         }
         visit_rename_regs(func.second.bbs.front());
     }
+
+    // for (auto func: ir_generator->ir_program.functions) {
+    //     for (auto bb : func.second.bbs) {
+    //         std::list<ir::Assign*> changed_phi;
+    //         for (auto it = bb->instrs.begin(); it != bb->instrs.end();)
+    //         {
+    //             auto &instr = *it;
+    //             if (auto phi = dynamic_cast<ir::Phi *>(instr.get()))
+    //             {
+    //                 if (phi->srcs.size() == 1) {
+    //                     ir::Assign* assign_instr(new ir::Assign(phi->dst, phi->srcs[0].first));
+    //                     changed_phi.push_back(std::move(assign_instr));
+    //                     it = bb->instrs.erase(it);
+    //                 } else {
+    //                     it ++;
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 bb->instrs.insert(it, changed_phi.begin(), changed_phi.end());
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 }
