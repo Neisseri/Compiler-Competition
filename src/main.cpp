@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
     ifstream f_stream;
     f_stream.open(input_file_path);
-    
+
     cerr << "--------------------------- building ast ---------------------------" << endl;
 
     ANTLRInputStream input(f_stream);
@@ -129,21 +129,32 @@ int main(int argc, char *argv[])
     IRGenerator ir_generator;
     ir_generator.visitPromgram(AST);
     IROptimizer ir_optimizer(&ir_generator);
-    if (mem_to_reg_flag || o2_flag){
-        ir_optimizer.mem_to_reg();
-    }
-    cerr << o2_flag << "____________________________________________________" << endl;
-    if (dce_flag || o2_flag){
-        cerr << "dead code elimination ----------------------------------------------------------" << endl;
-        ir_optimizer.dead_code_elimination();
-        cerr << "dead code elimination ----------------------------------------------------------" << endl;
-    }
-
-    if (out_ir_flag){
+    if (out_ir_flag)
+    {
         cerr << "ir:" << endl;
         ir_generator.ir_program.print(cerr, 0);
 
-        ofstream output_file= openOrCreateFile("ir", output_file_name);
+        ofstream output_file = openOrCreateFile("ir", output_file_name);
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+
+    if (mem_to_reg_flag){
+        cerr << "---------------------------------ir after mem2reg-------------------------------------" << endl;
+        ir_optimizer.mem_to_reg();
+        ir_generator.ir_program.print(cerr, 0);
+        ofstream output_file= openOrCreateFile("ir-m2r", output_file_name);
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+    
+    if (dce_flag)
+    {
+        cerr << "---------------------------------ir after dce-------------------------------------" << endl;
+        ir_optimizer.dead_code_elimination();
+        ir_generator.ir_program.print(cerr, 0);
+
+        ofstream output_file= openOrCreateFile("ir-dce", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
     }
