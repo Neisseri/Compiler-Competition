@@ -17,7 +17,7 @@ struct Reg {
     Reg(int type, int id): type(type), id(id) {}
 
     std::string toString(){
-        return "%" + std::to_string(id);
+        return "%r" + std::to_string(id);
     }
 };
 
@@ -92,7 +92,7 @@ struct Phi: Instruction {
     std::string toString() {
         std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
         for (auto i = srcs.begin(); i != srcs.end(); i ++){
-            ret += "[ " + i->first.toString() + ", " + i->second->label.toString() + " ]";
+            ret += "[ " + i->first.toString() + ", %" + i->second->label.toString() + " ]";
             if (i + 1 != srcs.end()){
                 ret += ", ";
             }
@@ -310,7 +310,7 @@ struct LoadInt : Instruction {
     LoadInt(Reg dst, int val):Instruction(InstType::LOADIMM), dst(dst), val(val){}
 
     virtual std::string toString() override {
-        return dst.toString() + " = " + std::to_string(val);
+        return dst.toString() + " = add i32 0, " + std::to_string(val) + " ; loadint";
     }
 
     virtual void print(std::ostream &os, int indent) override{
@@ -382,7 +382,7 @@ struct Branch : Instruction {
     Branch(std::shared_ptr<BasicBlock> bb_dst) : bb_dst(bb_dst), Instruction(BRANCH) {}
 
     std::string toString(){
-        return "br label " + bb_dst->label.toString();
+        return "br label %" + bb_dst->label.toString();
     }
 
     void print(std::ostream &os, int indent){
@@ -401,12 +401,12 @@ struct CondBranch : Instruction {
     std::string toString(){
         std::string cond_type_str;
         if (cond.type == static_cast<int>(TypeEnum::INT)){
-            cond_type_str += "i32";
+            cond_type_str += "i1";
         }
         else if (cond.type == static_cast<int>(TypeEnum::FLOAT)){
             cond_type_str += "float";
         }
-        return "br " + cond_type_str + " " + cond.toString() + ", label " + bb_true->label.toString() + ", label " + bb_false->label.toString();
+        return "br " + cond_type_str + " " + cond.toString() + ", label %" + bb_true->label.toString() + ", label %" + bb_false->label.toString();
     }
 
     void print(std::ostream &os, int indent){
