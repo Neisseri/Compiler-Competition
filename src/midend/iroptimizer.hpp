@@ -25,5 +25,5 @@ public:
     void mem_to_reg();
     void dead_code_elimination();
     //常量传播
-    // void constant_propagation();
+    void constant_propagation();
 };

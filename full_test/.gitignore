@@ -1,3 +1,5 @@
+*
+!test.py
 build
 riscv
 testcases/*

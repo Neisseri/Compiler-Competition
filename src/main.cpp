@@ -21,7 +21,7 @@
 #include "backend/riscv/riscv.hpp"
 #include "backend/riscv/translate.hpp"
 
-//utils , some tools
+// utils , some tools
 #include "common/utils.hpp"
 #include "backend/riscv/riscv.hpp"
 #include "backend/riscv/coloringregalloc.hpp"
@@ -32,13 +32,13 @@ using namespace antlr4;
 using namespace tree;
 using namespace std;
 
-
 int main(int argc, char *argv[])
 {
     cxxopts::Options options("compiler", "it's a compiler for SysY language made by us with love <3");
 
     bool mem_to_reg_flag = false;
     bool dce_flag = false;
+    bool cp_flag = false;
     bool o2_flag = false;
     bool out_ast_flag = false;
     bool out_ir_flag = false;
@@ -48,17 +48,7 @@ int main(int argc, char *argv[])
     std::string input_file_path;
     std::string output_file_name;
 
-    options.add_options()
-    ("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))
-    ("d,dce", "dead code elimination", cxxopts::value<bool>(dce_flag)->default_value("false"))
-    ("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))
-    ("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))
-    ("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))
-    ("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))
-    ("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))
-    ("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))
-    ("A,all", "output all", cxxopts::value<bool>(out_all_flag)->default_value("false"))
-    ("h,help", "Print usage");
+    options.add_options()("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))("d,dce", "dead code elimination", cxxopts::value<bool>(dce_flag)->default_value("false"))("c,cp", "constant propagation", cxxopts::value<bool>(cp_flag)->default_value("false"))("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))("A,all", "output all", cxxopts::value<bool>(out_all_flag)->default_value("false"))("h,help", "Print usage");
 
     // usage:
     // ("short_name,long_name", "description", cxxopts::value<type>()->default_value("default_value"))
@@ -76,19 +66,18 @@ int main(int argc, char *argv[])
             std::cerr << options.help() << std::endl;
             return 0;
         }
-
     }
     catch (const std::exception &e)
     {
         std::cerr << "Error parsing options: " << e.what() << std::endl;
         return 1;
     }
-    if (out_all_flag){
+    if (out_all_flag)
+    {
         out_ast_flag = true;
         out_ir_flag = true;
         out_riscv_flag = true;
     }
-
 
     ifstream f_stream;
     f_stream.open(input_file_path);
@@ -100,15 +89,15 @@ int main(int argc, char *argv[])
     CommonTokenStream tokens(&lexer);
     frontend::SysYParser parser(&tokens);
     ParseTree *tree = parser.compUnit();
-    //输出parse tree，这里的visit的作用是什么？
-    cerr<<"parse tree: "<<endl;
+    // 输出parse tree，这里的visit的作用是什么？
+    cerr << "parse tree: " << endl;
     frontend::SysYBaseVisitor parse_visitor;
     parse_visitor.visit(tree);
     cerr << tree->toStringTree(&parser, true) << endl;
     // ast构建
     ASTVisitor ast_visitor;
     auto AST = ast_visitor.visit(tree).as<ast::Program *>();
-    cerr<< "------------------------------type check------------------------------"<<endl;
+    cerr << "------------------------------type check------------------------------" << endl;
 
     TyperVisitor typer;
     typer.visitPromgram(AST);
@@ -117,12 +106,10 @@ int main(int argc, char *argv[])
     {
         cerr << "ast: " << endl;
         AST->print(cerr, 0);
-        ofstream output_file= openOrCreateFile("ast", output_file_name);
+        ofstream output_file = openOrCreateFile("ast", output_file_name);
         AST->print(output_file, 0);
         output_file.close();
     }
-
-
 
     cerr << "--------------------------- building ir ---------------------------" << endl;
 
@@ -139,34 +126,57 @@ int main(int argc, char *argv[])
         output_file.close();
     }
 
-    if (mem_to_reg_flag){
+    if (mem_to_reg_flag)
+    {
         cerr << "---------------------------------ir after mem2reg-------------------------------------" << endl;
         ir_optimizer.mem_to_reg();
         ir_generator.ir_program.print(cerr, 0);
-        ofstream output_file= openOrCreateFile("ir-m2r", output_file_name);
+        ofstream output_file = openOrCreateFile("ir-m2r", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
     }
-    
+
+    if (cp_flag)
+    {
+        cerr << "---------------------------------ir after cp-------------------------------------" << endl;
+        ir_optimizer.constant_propagation();
+        ir_generator.ir_program.print(cerr, 0);
+
+        ofstream output_file = openOrCreateFile("ir-cp", output_file_name);
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+
     if (dce_flag)
     {
         cerr << "---------------------------------ir after dce-------------------------------------" << endl;
         ir_optimizer.dead_code_elimination();
         ir_generator.ir_program.print(cerr, 0);
 
-        ofstream output_file= openOrCreateFile("ir-dce", output_file_name);
+        ofstream output_file = openOrCreateFile("ir-dce", output_file_name);
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
+        if (cp_flag)
+        {
+            cerr << "---------------------------------ir after cp-dce-cp -------------------------------------" << endl;
+            ir_optimizer.constant_propagation();
+            ir_generator.ir_program.print(cerr, 0);
+
+            ofstream output_file = openOrCreateFile("ir-cp-dce-cp", output_file_name);
+            ir_generator.ir_program.print(output_file, 0);
+            output_file.close();
+        }
     }
 
     cerr << "--------------------------- building riscv ---------------------------" << endl;
 
-
-    if (out_riscv_flag) {
+    if (out_riscv_flag)
+    {
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
         std::cerr << "?\n";
-        for (auto [name, func]: program.functions) {
+        for (auto [name, func] : program.functions)
+        {
             func->resolve_phi();
             std::cerr << name << "\n";
             riscv::coloringregalloc RegAllocator(func);
@@ -175,7 +185,7 @@ int main(int argc, char *argv[])
             func->emitend();
         }
         // output to file
-        ofstream output_file= openOrCreateFile("riscv", output_file_name);
+        ofstream output_file = openOrCreateFile("riscv", output_file_name);
         program.emit(output_file);
         output_file.close();
     }

@@ -2,309 +2,202 @@
 parse tree: 
 (compUnit 
         (compUnitItem 
-            (decl 
-                (varDecl 
-                    (bType int) 
-                    (varDef loopCount = 
-                        (initVal 
-                            (exp 
-                                (addExp 
-                                    (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (number 
-                                                    (intConst 0))))))))) ;))) 
-        (compUnitItem 
-            (decl 
-                (varDecl 
-                    (bType int) 
-                    (varDef global = 
-                        (initVal 
-                            (exp 
-                                (addExp 
-                                    (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (number 
-                                                    (intConst 0))))))))) ;))) 
-        (compUnitItem 
             (funcDef 
-                (funcType void) func ( 
-                (funcFParams 
-                    (funcFParam 
-                        (bType int) i0)) ) 
+                (funcType 
+                    (bType int)) ifElseIf ( ) 
                 (block { 
                     (blockItem 
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef i1 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 1))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i2 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 2))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i3 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 3))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i4 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 4))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i5 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 5))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i6 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 6))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i7 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 7))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i8 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 8))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i9 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 9))))))))) ;))) 
+                                (varDef a) ;))) 
                     (blockItem 
                         (stmt 
-                            (lVal global) = 
+                            (lVal a) = 
                             (exp 
                                 (addExp 
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (lVal i0)))))) ;)) 
+                                                (number 
+                                                    (intConst 5))))))) ;)) 
                     (blockItem 
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef i10 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 10))))))))) ;))) 
+                                (varDef b) ;))) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i11 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 11))))))))) ;))) 
+                        (stmt 
+                            (lVal b) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 10))))))) ;)) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i12 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 12))))))))) ;))) 
+                        (stmt if ( 
+                            (cond 
+                                (lOrExp 
+                                    (lOrExp 
+                                        (lAndExp 
+                                            (eqExp 
+                                                (eqExp 
+                                                    (relExp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal a))))))) == 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 6)))))))))) || 
+                                    (lAndExp 
+                                        (eqExp 
+                                            (eqExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal b))))))) == 
+                                            (relExp 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 0xb))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt return 
+                                            (exp 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (lVal a)))))) ;)) })) else 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt if ( 
+                                            (cond 
+                                                (lOrExp 
+                                                    (lAndExp 
+                                                        (lAndExp 
+                                                            (eqExp 
+                                                                (eqExp 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (lVal b))))))) == 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (number 
+                                                                                        (intConst 10))))))))) && 
+                                                        (eqExp 
+                                                            (eqExp 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal a))))))) == 
+                                                            (relExp 
+                                                                (addExp 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 1))))))))))) ) 
+                                            (stmt 
+                                                (lVal a) = 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 25))))))) ;) else 
+                                            (stmt if ( 
+                                                (cond 
+                                                    (lOrExp 
+                                                        (lAndExp 
+                                                            (lAndExp 
+                                                                (eqExp 
+                                                                    (eqExp 
+                                                                        (relExp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (lVal b))))))) == 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (number 
+                                                                                            (intConst 10))))))))) && 
+                                                            (eqExp 
+                                                                (eqExp 
+                                                                    (relExp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (lVal a))))))) == 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp - 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (number 
+                                                                                            (intConst 5)))))))))))) ) 
+                                                (stmt 
+                                                    (lVal a) = 
+                                                    (exp 
+                                                        (addExp 
+                                                            (addExp 
+                                                                (mulExp 
+                                                                    (unaryExp 
+                                                                        (primaryExp 
+                                                                            (lVal a))))) + 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (number 
+                                                                            (intConst 15))))))) ;) else 
+                                                (stmt 
+                                                    (lVal a) = 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp - 
+                                                                    (unaryExp + 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (lVal a)))))))) ;)))) })))) 
                     (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i13 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 13))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i14 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 14))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i15 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 15))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i16 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 16))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i17 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 17))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i18 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 18))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i19 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 19))))))))) ;))) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef i20 = 
-                                    (initVal 
-                                        (exp 
-                                            (addExp 
-                                                (mulExp 
-                                                    (unaryExp 
-                                                        (primaryExp 
-                                                            (number 
-                                                                (intConst 20))))))))) ;))) 
-                    (blockItem 
-                        (stmt return ;)) }))) 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal a)))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
@@ -315,16 +208,13 @@ parse tree:
                             (exp 
                                 (addExp 
                                     (mulExp 
-                                        (unaryExp func ( 
+                                        (unaryExp putint ( 
                                             (funcRParams 
                                                 (funcRParam 
                                                     (exp 
                                                         (addExp 
                                                             (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 100))))))))) ))))) ;)) 
+                                                                (unaryExp ifElseIf ( ))))))) ))))) ;)) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -335,127 +225,40 @@ parse tree:
                                                 (number 
                                                     (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
-visitVarDecl: int start
-visitVarDecl: ident: loopCount
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: global
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
 visitCompUnit: funcDef
-construct funct block: func
+construct funct block: ifElseIf
 visitVarDecl: int start
-visitVarDecl: ident: i1
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i2
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i3
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i4
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i5
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i6
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i7
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i8
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i9
-visitVarDecl: initVal
-visitInit
+visitVarDecl: ident: a
 visitPrimaryExp_ number
 visitAssign done!
 visitVarDecl: int start
-visitVarDecl: ident: i10
-visitVarDecl: initVal
-visitInit
+visitVarDecl: ident: b
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i11
-visitVarDecl: initVal
-visitInit
+visitAssign done!
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i12
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i13
-visitVarDecl: initVal
-visitInit
+visit block stmt
+visitBlock done!
+visit block stmt
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i14
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i15
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i16
-visitVarDecl: initVal
-visitInit
+visitAssign done!
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i17
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i18
-visitVarDecl: initVal
-visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i19
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: i20
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
+visitAssign done!
+visitAssign done!
+visitBlock done!
 visitBlock done!
 construct funct block done!
 visitCompUnit: funcDef
 construct funct block: main
 visitExprStmt
-visitCall ident: func
+visitCall ident: putint
 visitFuncRParams
-visitPrimaryExp_ number
+visitCall ident: ifElseIf
+visitCall args_list size: 0
 visitCall args_list size: 1
 visitPrimaryExp_ number
 visitBlock done!
@@ -464,292 +267,171 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitVarDef int @loopCount = 0
-Info: visitExpr0
-Info: visitAssignmentExpr0
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x5644cfc31f20
-Info: visitVarDef int @global = 0
-Info: visitExpr0
-Info: visitAssignmentExpr0
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x5644cfc31fa0
-Info: visitFuncDefvoid @func(int @i0)
-Info: visitParamDefint @i0
+Info: visitFuncDefint @ifElseIf()
 Info: visitBlock
-Info: visitVarDef int @i1 = 1
-Info: visitExpr1
-Info: visitAssignmentExpr1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x5644cfc32160
-Info: visitVarDef int @i2 = 2
-Info: visitExpr2
-Info: visitAssignmentExpr2
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x5644cfc321e0
-Info: visitVarDef int @i3 = 3
-Info: visitExpr3
-Info: visitAssignmentExpr3
-Info: visitExpr3
-Info: visitIntLiteralExpr3
-ret->type 0x5644cfc32260
-Info: visitVarDef int @i4 = 4
-Info: visitExpr4
-Info: visitAssignmentExpr4
-Info: visitExpr4
-Info: visitIntLiteralExpr4
-ret->type 0x5644cfc322e0
-Info: visitVarDef int @i5 = 5
-Info: visitExpr5
-Info: visitAssignmentExpr5
+Info: visitVarDef int @a
+Info: visitStatementAssign@a = 5
+Info: visitAssignStmtAssign@a = 5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
 Info: visitExpr5
 Info: visitIntLiteralExpr5
-ret->type 0x5644cfc323c0
-Info: visitVarDef int @i6 = 6
-Info: visitExpr6
-Info: visitAssignmentExpr6
-Info: visitExpr6
-Info: visitIntLiteralExpr6
-ret->type 0x5644cfc324a0
-Info: visitVarDef int @i7 = 7
-Info: visitExpr7
-Info: visitAssignmentExpr7
-Info: visitExpr7
-Info: visitIntLiteralExpr7
-ret->type 0x5644cfc32580
-Info: visitVarDef int @i8 = 8
-Info: visitExpr8
-Info: visitAssignmentExpr8
-Info: visitExpr8
-Info: visitIntLiteralExpr8
-ret->type 0x5644cfc32660
-Info: visitVarDef int @i9 = 9
-Info: visitExpr9
-Info: visitAssignmentExpr9
-Info: visitExpr9
-Info: visitIntLiteralExpr9
-ret->type 0x5644cfc32740
-Info: visitStatementAssign@global = @i0
-Info: visitAssignStmtAssign@global = @i0
-Info: visitExpr@global
-Info: visitLvalExpr@global
+ret->type 0x558ba65df6e0
+Info: visitVarDef int @b
+Info: visitStatementAssign@b = 10
+Info: visitAssignStmtAssign@b = 10
+Info: visitExpr@b
+Info: visitLvalExpr@b
 Info: visitAssignStmtint
-Info: visitExpr@i0
-Info: visitLvalExpr@i0
-Info: visitVarDef int @i10 = 10
-Info: visitExpr10
-Info: visitAssignmentExpr10
 Info: visitExpr10
 Info: visitIntLiteralExpr10
-ret->type 0x5644cfc32820
-Info: visitVarDef int @i11 = 11
-Info: visitExpr11
-Info: visitAssignmentExpr11
+ret->type 0x558ba65df760
+Info: visitStatementIfElse
+Info: visitExpr@a==6||@b==11
+Info: visitBinopExpr@a==6||@b==11
+Info: visitExpr@a==6
+Info: visitBinopExpr@a==6
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr6
+Info: visitIntLiteralExpr6
+ret->type 0x558ba65df7e0
+Info: visitExpr@b==11
+Info: visitBinopExpr@b==11
+Info: visitExpr@b
+Info: visitLvalExpr@b
 Info: visitExpr11
 Info: visitIntLiteralExpr11
-ret->type 0x5644cfc32900
-Info: visitVarDef int @i12 = 12
-Info: visitExpr12
-Info: visitAssignmentExpr12
-Info: visitExpr12
-Info: visitIntLiteralExpr12
-ret->type 0x5644cfc329e0
-Info: visitVarDef int @i13 = 13
-Info: visitExpr13
-Info: visitAssignmentExpr13
-Info: visitExpr13
-Info: visitIntLiteralExpr13
-ret->type 0x5644cfc32ac0
-Info: visitVarDef int @i14 = 14
-Info: visitExpr14
-Info: visitAssignmentExpr14
-Info: visitExpr14
-Info: visitIntLiteralExpr14
-ret->type 0x5644cfc32ba0
-Info: visitVarDef int @i15 = 15
-Info: visitExpr15
-Info: visitAssignmentExpr15
+ret->type 0x558ba65df810
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitReturnStmtReturn @a#2function has returnscope id1
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==1
+Info: visitBinopExpr@b==10&&@a==1
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x558ba65df890
+Info: visitExpr@a==1
+Info: visitBinopExpr@a==1
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x558ba65df910
+Info: visitStatementAssign@a = 25
+Info: visitAssignStmtAssign@a = 25
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr25
+Info: visitIntLiteralExpr25
+ret->type 0x558ba65df940
+Info: visitStatementIfElse
+Info: visitExpr@b==10&&@a==-5
+Info: visitBinopExpr@b==10&&@a==-5
+Info: visitExpr@b==10
+Info: visitBinopExpr@b==10
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr10
+Info: visitIntLiteralExpr10
+ret->type 0x558ba65df970
+Info: visitExpr@a==-5
+Info: visitBinopExpr@a==-5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr-5
+Info: visitUnonExpr-5
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x558ba65df9a0
+Info: visitStatementAssign@a = @a+15
+Info: visitAssignStmtAssign@a = @a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr@a+15
+Info: visitBinopExpr@a+15
+Info: visitExpr@a
+Info: visitLvalExpr@a
 Info: visitExpr15
 Info: visitIntLiteralExpr15
-ret->type 0x5644cfc32c80
-Info: visitVarDef int @i16 = 16
-Info: visitExpr16
-Info: visitAssignmentExpr16
-Info: visitExpr16
-Info: visitIntLiteralExpr16
-ret->type 0x5644cfc32d60
-Info: visitVarDef int @i17 = 17
-Info: visitExpr17
-Info: visitAssignmentExpr17
-Info: visitExpr17
-Info: visitIntLiteralExpr17
-ret->type 0x5644cfc32e40
-Info: visitVarDef int @i18 = 18
-Info: visitExpr18
-Info: visitAssignmentExpr18
-Info: visitExpr18
-Info: visitIntLiteralExpr18
-ret->type 0x5644cfc32f20
-Info: visitVarDef int @i19 = 19
-Info: visitExpr19
-Info: visitAssignmentExpr19
-Info: visitExpr19
-Info: visitIntLiteralExpr19
-ret->type 0x5644cfc33000
-Info: visitVarDef int @i20 = 20
-Info: visitExpr20
-Info: visitAssignmentExpr20
-Info: visitExpr20
-Info: visitIntLiteralExpr20
-ret->type 0x5644cfc330e0
-Info: visitStatementReturn  nullptr_for_void_func
-Info: visitReturnStmtReturn 0function has returnscope id1
+ret->type 0x558ba65df9d0
+Info: visitStatementAssign@a = -+@a
+Info: visitAssignStmtAssign@a = -+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmtint
+Info: visitExpr-+@a
+Info: visitUnonExpr-+@a
+Info: visitExpr+@a
+Info: visitUnonExpr+@a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitStatementReturn @a
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitReturnStmtReturn @a#2function has returnscope id1
 Info: visitFuncDefint @main()
 Info: visitBlock
-Info: visitStatementCall @func(100)
-Info: visitExprStmtCall @func(100)
-Info: visitExprCall @func(100)
-Info: visiCalltExprCall @func(100)
-Info: visitExpr100
-Info: visitIntLiteralExpr100
-ret->type 0x5644cfc332c0
+Info: visitStatementCall @putint(Call @ifElseIf())
+Info: visitExprStmtCall @putint(Call @ifElseIf())
+Info: visitExprCall @putint(Call @ifElseIf())
+Info: visiCalltExprCall @putint(Call @ifElseIf())
+Info: use of undeclared function putint
+Info: visitExprCall @ifElseIf()
+Info: visiCalltExprCall @ifElseIf()
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x5644cfc33340
-Info: visitReturnStmtReturn 0function has returnscope id3
+ret->type 0x558ba65dfa00
+Info: visitReturnStmtReturn 0function has returnscope id5
 ast: 
 Program
-  int @loopCount#0 = 0
-  int @global#0 = 0
-  void @func(int @i0#1)
+  int @ifElseIf()
     {
-      int @i1#2 = 1
-      int @i2#2 = 2
-      int @i3#2 = 3
-      int @i4#2 = 4
-      int @i5#2 = 5
-      int @i6#2 = 6
-      int @i7#2 = 7
-      int @i8#2 = 8
-      int @i9#2 = 9
-      Assign@global#0 = @i0#1
-      int @i10#2 = 10
-      int @i11#2 = 11
-      int @i12#2 = 12
-      int @i13#2 = 13
-      int @i14#2 = 14
-      int @i15#2 = 15
-      int @i16#2 = 16
-      int @i17#2 = 17
-      int @i18#2 = 18
-      int @i19#2 = 19
-      int @i20#2 = 20
-      Return 0
+      int @a#2
+      Assign@a#2 = 5
+      int @b#2
+      Assign@b#2 = 10
+      If        @a#2==6||@b#2==11
+        {
+          Return @a#2
+        }
+      Else
+        {
+          If            @b#2==10&&@a#2==1
+            Assign@a#2 = 25
+          Else
+            If              @b#2==10&&@a#2==-5
+              Assign@a#2 = @a#2+15
+            Else
+              Assign@a#2 = -+@a#2
+        }
+      Return @a#2
     }
   int @main()
     {
-      Call @func        100
+      Call @putint        Call @ifElseIf()
       Return 0
     }
 End of Program
 --------------------------- building ir ---------------------------
 visitProgram
-visit decl global var
-visit_global_init
-visitExpressionVal
-visit decl global var done
-visit decl global var
-visit_global_init
-visitExpressionVal
-visit decl global var done
-visitFunction func
-visitFunction param decl: i0#1
+visitFunction ifElseIf
 visitBlock 
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
 visitStatement
-visitExpression
-visitExpressionLValue i0#1
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
@@ -757,189 +439,1167 @@ visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-function func has 45 regs
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpressionLValue b#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionLValue a#2
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue b#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue b#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitStatement
+visitExpression
+visitExpressionLValue a#2
+function ifElseIf has 42 regs
 B0:
   prev: 
-  succ: 
+  succ: B1 
 B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 
+  succ: B4 
+B4:
+  prev: B2 B3 
+  succ: B5 B6 
+B5:
+  prev: B4 
+  succ: 
+B6:
+  prev: B4 
+  succ: B9 
+B7:
+  prev: B8 B15 
+  succ: 
+B8:
+  prev: 
+  succ: B7 
+B9:
+  prev: B6 
+  succ: B10 B11 
+B10:
+  prev: B9 
+  succ: B12 
+B11:
+  prev: B9 
+  succ: B12 
+B12:
+  prev: B10 B11 
+  succ: B13 B14 
+B13:
+  prev: B12 
+  succ: B15 
+B14:
+  prev: B12 
+  succ: B16 
+B15:
+  prev: B13 B22 
+  succ: B7 
+B16:
+  prev: B14 
+  succ: B17 B18 
+B17:
+  prev: B16 
+  succ: B19 
+B18:
+  prev: B16 
+  succ: B19 
+B19:
+  prev: B17 B18 
+  succ: B20 B21 
+B20:
+  prev: B19 
+  succ: B22 
+B21:
+  prev: B19 
+  succ: B22 
+B22:
+  prev: B20 B21 
+  succ: B15 
+B23:
   prev: 
   succ: 
 
 B0:
   prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 
+  succ: B4 
+B4:
+  prev: B2 B3 
+  succ: B5 B6 
+B5:
+  prev: B4 
   succ: 
+B6:
+  prev: B4 
+  succ: B9 
+B7:
+  prev: B15 
+  succ: 
+B9:
+  prev: B6 
+  succ: B10 B11 
+B10:
+  prev: B9 
+  succ: B12 
+B11:
+  prev: B9 
+  succ: B12 
+B12:
+  prev: B10 B11 
+  succ: B13 B14 
+B13:
+  prev: B12 
+  succ: B15 
+B14:
+  prev: B12 
+  succ: B16 
+B15:
+  prev: B13 B22 
+  succ: B7 
+B16:
+  prev: B14 
+  succ: B17 B18 
+B17:
+  prev: B16 
+  succ: B19 
+B18:
+  prev: B16 
+  succ: B19 
+B19:
+  prev: B17 B18 
+  succ: B20 B21 
+B20:
+  prev: B19 
+  succ: B22 
+B21:
+  prev: B19 
+  succ: B22 
+B22:
+  prev: B20 B21 
+  succ: B15 
 
 entryB0
+B1
+B2
+B3
+B4
+B5
+B6
+B7
+B9
+B10
+B11
+B12
+B13
+B14
+B15
+B16
+B17
+B18
+B19
+B20
+B21
+B22
 reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB6
+reverse_postorderB9
+reverse_postorderB11
+reverse_postorderB10
+reverse_postorderB12
+reverse_postorderB14
+reverse_postorderB16
+reverse_postorderB18
+reverse_postorderB17
+reverse_postorderB19
+reverse_postorderB21
+reverse_postorderB20
+reverse_postorderB22
+reverse_postorderB13
+reverse_postorderB15
+reverse_postorderB7
+reverse_postorderB5
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB6
+reverse_postorderB9
+reverse_postorderB11
+reverse_postorderB10
+reverse_postorderB12
+reverse_postorderB14
+reverse_postorderB16
+reverse_postorderB18
+reverse_postorderB17
+reverse_postorderB19
+reverse_postorderB21
+reverse_postorderB20
+reverse_postorderB22
+reverse_postorderB13
+reverse_postorderB15
+reverse_postorderB7
+reverse_postorderB5
 B0:
-  doms: 
+  doms: B1 
   domed_by: B0 
+B1:
+  doms: B2 B3 B4 
+  domed_by: B0 B1 
+B2:
+  doms: 
+  domed_by: B0 B1 B2 
+B3:
+  doms: 
+  domed_by: B0 B1 B3 
+B4:
+  doms: B5 B6 
+  domed_by: B0 B1 B4 
+B5:
+  doms: 
+  domed_by: B0 B1 B4 B5 
+B6:
+  doms: B9 
+  domed_by: B0 B1 B4 B6 
+B7:
+  doms: 
+  domed_by: B0 B1 B4 B6 B7 B9 B12 B15 
+B9:
+  doms: B10 B11 B12 
+  domed_by: B0 B1 B4 B6 B9 
+B10:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B10 
+B11:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B11 
+B12:
+  doms: B13 B14 B15 
+  domed_by: B0 B1 B4 B6 B9 B12 
+B13:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B13 
+B14:
+  doms: B16 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 
+B15:
+  doms: B7 
+  domed_by: B0 B1 B4 B6 B9 B12 B15 
+B16:
+  doms: B17 B18 B19 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 
+B17:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B17 
+B18:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B18 
+B19:
+  doms: B20 B21 B22 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 
+B20:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B20 
+B21:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B21 
+B22:
+  doms: 
+  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B22 
 
 B0:
   DF: 
+B1:
+  DF: 
+B2:
+  DF: B4 
+B3:
+  DF: B4 
+B4:
+  DF: 
+B5:
+  DF: 
+B6:
+  DF: 
+B7:
+  DF: 
+B9:
+  DF: 
+B10:
+  DF: B12 
+B11:
+  DF: B12 
+B12:
+  DF: 
+B13:
+  DF: B15 
+B14:
+  DF: B15 
+B15:
+  DF: 
+B16:
+  DF: B15 
+B17:
+  DF: B19 
+B18:
+  DF: B19 
+B19:
+  DF: B15 
+B20:
+  DF: B22 
+B21:
+  DF: B22 
+B22:
+  DF: B15 
 
 visitFunction main
 visitBlock 
 visitStatement
 visitExpression
 visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 function main has 3 regs
-B2:
+B24:
   prev: 
   succ: 
-B3:
-  prev: 
-  succ: 
-
-B2:
+B25:
   prev: 
   succ: 
 
-entryB2
-reverse_postorderB2
-B2:
+B24:
+  prev: 
+  succ: 
+
+entryB24
+reverse_postorderB24
+B24:
   doms: 
-  domed_by: B2 
+  domed_by: B24 
 
-B2:
+B24:
   DF: 
 
 ir:
 ; module
-@loopCount#0 = global int 0, 4
-@global#0 = global int 0, 4
 define i32 @main(){
-B2:
-  %2 = 100
-  %1 = call@func(i32 %2)
+B24:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
   %3 = 0
   ret i32 %3
 
 }
-define void @func(i32){
+define i32 @ifElseIf(){
 B0:
+  %1 = alloca int, 4
+  %2 = 5
+  store i32 %2, ptr %1
+  %3 = alloca int, 4
+  %4 = 10
+  store i32 %4, ptr %3
+  br label B1
+
+B1:
+  %5 = alloca int, 4
+  %6 = load i32, ptr %1
+  %7 = 6
+  %8 = icmp eq i32 %6, %7
+  br i32 %8, label B2, label B3
+
+B2:
+  %12 = 1
+  store i32 %12, ptr %5
+  br label B4
+
+B3:
+  %9 = load i32, ptr %3
+  %10 = 11
+  %11 = icmp eq i32 %9, %10
+  store i32 %11, ptr %5
+  br label B4
+
+B4:
+  %13 = load i32, ptr %5
+  br i32 %13, label B5, label B6
+
+B5:
+  %14 = load i32, ptr %1
+  ret i32 %14
+
+B6:
+  br label B9
+
+B7:
+  %42 = load i32, ptr %1
+  ret i32 %42
+
+B9:
+  %15 = alloca int, 4
+  %16 = load i32, ptr %3
+  %17 = 10
+  %18 = icmp eq i32 %16, %17
+  br i32 %18, label B10, label B11
+
+B10:
+  %19 = load i32, ptr %1
+  %20 = 1
+  %21 = icmp eq i32 %19, %20
+  store i32 %21, ptr %15
+  br label B12
+
+B11:
+  %22 = 0
+  store i32 %22, ptr %15
+  br label B12
+
+B12:
+  %23 = load i32, ptr %15
+  br i32 %23, label B13, label B14
+
+B13:
+  %24 = 25
+  store i32 %24, ptr %1
+  br label B15
+
+B14:
+  br label B16
+
+B15:
+  br label B7
+
+B16:
+  %25 = alloca int, 4
+  %26 = load i32, ptr %3
+  %27 = 10
+  %28 = icmp eq i32 %26, %27
+  br i32 %28, label B17, label B18
+
+B17:
+  %29 = load i32, ptr %1
+  %30 = 5
+  %32 = 0
+  %31 = sub i32 %32, %30
+  %33 = icmp eq i32 %29, %31
+  store i32 %33, ptr %25
+  br label B19
+
+B18:
+  %34 = 0
+  store i32 %34, ptr %25
+  br label B19
+
+B19:
+  %35 = load i32, ptr %25
+  br i32 %35, label B20, label B21
+
+B20:
+  %36 = load i32, ptr %1
+  %37 = 15
+  %38 = add i32 %36, %37
+  store i32 %38, ptr %1
+  br label B22
+
+B21:
+  %39 = load i32, ptr %1
+  %41 = 0
+  %40 = sub i32 %41, %39
+  store i32 %40, ptr %1
+  br label B22
+
+B22:
+  br label B15
+
+}
+---------------------------------ir after mem2reg-------------------------------------
+; module
+define i32 @main(){
+B24:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
+  %3 = 0
+  ret i32 %3
+
+}
+define i32 @ifElseIf(){
+B0:
+  %2 = 5
+  %4 = 10
+  br label B1
+
+B1:
+  %7 = 6
+  %8 = icmp eq i32 %2, %7
+  br i32 %8, label B2, label B3
+
+B2:
+  %12 = 1
+  br label B4
+
+B3:
+  %10 = 11
+  %11 = icmp eq i32 %4, %10
+  br label B4
+
+B4:
+  %4 = phi i32 [ %12, B2 ], [ %11, B3 ]
+  br i32 %4, label B5, label B6
+
+B5:
+  ret i32 %2
+
+B6:
+  br label B9
+
+B7:
+  ret i32 %9
+
+B9:
+  %17 = 10
+  %18 = icmp eq i32 %4, %17
+  br i32 %18, label B10, label B11
+
+B10:
+  %20 = 1
+  %21 = icmp eq i32 %2, %20
+  br label B12
+
+B11:
+  %22 = 0
+  br label B12
+
+B12:
+  %5 = phi i32 [ %21, B10 ], [ %22, B11 ]
+  br i32 %5, label B13, label B14
+
+B13:
+  %24 = 25
+  br label B15
+
+B14:
+  br label B16
+
+B15:
+  %8 = phi i32 [ %6, B22 ]
+  %9 = phi i32 [ %24, B13 ], [ %7, B22 ]
+  br label B7
+
+B16:
+  %27 = 10
+  %28 = icmp eq i32 %4, %27
+  br i32 %28, label B17, label B18
+
+B17:
+  %30 = 5
+  %32 = 0
+  %31 = sub i32 %32, %30
+  %33 = icmp eq i32 %2, %31
+  br label B19
+
+B18:
+  %34 = 0
+  br label B19
+
+B19:
+  %6 = phi i32 [ %33, B17 ], [ %34, B18 ]
+  br i32 %6, label B20, label B21
+
+B20:
+  %37 = 15
+  %38 = add i32 %2, %37
+  br label B22
+
+B21:
+  %41 = 0
+  %40 = sub i32 %41, %2
+  br label B22
+
+B22:
+  %7 = phi i32 [ %38, B20 ], [ %40, B21 ]
+  br label B15
+
+}
+---------------------------------ir after cp-------------------------------------
+main
+Info: visit bb: 24
+Info: LoadInt3
+ifElseIf
+Info: visit bb: 0
+Info: LoadInt2
+Info: LoadInt4
+Info: visit bb: 1
+Info: LoadInt7
+Info: Binary8
+Info: visit bb: 2
+Info: LoadInt12
+Info: visit bb: 3
+Info: LoadInt10
+Info: Binary11
+Info: visit bb: 4
+Info: Phi4
+Info: visit bb: 5
+Info: visit bb: 6
+Info: visit bb: 7
+Info: visit bb: 9
+Info: LoadInt17
+Info: Binary18
+Info: visit bb: 10
+Info: LoadInt20
+Info: Binary21
+Info: visit bb: 11
+Info: LoadInt22
+Info: visit bb: 12
+Info: Phi5
+Info: visit bb: 13
+Info: LoadInt24
+Info: visit bb: 14
+Info: visit bb: 15
+Info: Phi9
+Info: visit bb: 16
+Info: LoadInt27
+Info: Binary28
+Info: visit bb: 17
+Info: LoadInt30
+Info: LoadInt32
+Info: Binary31
+Info: Binary33
+Info: visit bb: 18
+Info: LoadInt34
+Info: visit bb: 19
+Info: Phi6
+Info: visit bb: 20
+Info: LoadInt37
+Info: Binary38
+Info: visit bb: 21
+Info: LoadInt41
+Info: Binary40
+Info: visit bb: 22
+Info: Phi7
+; module
+define i32 @main(){
+B24:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
+  %3 = 0
+  ret i32 %3
+
+}
+define i32 @ifElseIf(){
+B0:
+  %2 = 5
+  %4 = 10
+  br label B1
+
+B1:
+  %7 = 6
+  %8 = 0
+  br label B3
+
+B2:
+  %12 = 1
+  br label B4
+
+B3:
+  %10 = 11
+  %11 = 0
+  br label B4
+
+B4:
   %4 = 1
-  %6 = 2
-  %8 = 3
-  %10 = 4
-  %12 = 5
-  %14 = 6
-  %16 = 7
-  %18 = 8
-  %20 = 9
-  %22 = loadaddr @global#0
-  store i32 %1, ptr %22
-  %24 = 10
-  %26 = 11
-  %28 = 12
-  %30 = 13
-  %32 = 14
-  %34 = 15
-  %36 = 16
-  %38 = 17
-  %40 = 18
-  %42 = 19
-  %44 = 20
-  %45 = 0
-  ret i32 %45
+  br label B5
+
+B5:
+  ret i32 %2
+
+B6:
+  br label B9
+
+B7:
+  ret i32 %9
+
+B9:
+  %17 = 10
+  %18 = 0
+  br label B11
+
+B10:
+  %20 = 1
+  %21 = 0
+  br label B12
+
+B11:
+  %22 = 0
+  br label B12
+
+B12:
+  %5 = 0
+  br label B14
+
+B13:
+  %24 = 25
+  br label B15
+
+B14:
+  br label B16
+
+B15:
+  %8 = phi i32 [ %6, B22 ]
+  %9 = 25
+  br label B7
+
+B16:
+  %27 = 10
+  %28 = 0
+  br label B18
+
+B17:
+  %30 = 5
+  %32 = 0
+  %31 = -5
+  %33 = 0
+  br label B19
+
+B18:
+  %34 = 0
+  br label B19
+
+B19:
+  %6 = 0
+  br label B21
+
+B20:
+  %37 = 15
+  %38 = 20
+  br label B22
+
+B21:
+  %41 = 0
+  %40 = -5
+  br label B22
+
+B22:
+  %7 = 20
+  br label B15
 
 }
 ---------------------------------ir after dce-------------------------------------
 main
 Info: bbBasicBlock has no String!
-Info: LoadInt%2 = 100
-Info: Call%1 = call@func(i32 %2)
+Info: Call%2 = call i32 @ifElseIf()
+Info: Call%1 = call i32 @putint(i32 %2)
 Info: LoadInt%3 = 0
 Info: Returnret i32 %3
-func
+ifElseIf
+Info: bbBasicBlock has no String!
+Info: LoadInt%2 = 5
+Info: LoadInt%4 = 10
+Info: Unknownbr label B1
+Info: bbBasicBlock has no String!
+Info: LoadInt%7 = 6
+Info: LoadInt%8 = 0
+Info: Unknownbr label B3
+Info: bbBasicBlock has no String!
+Info: LoadInt%12 = 1
+Info: Unknownbr label B4
+Info: bbBasicBlock has no String!
+Info: LoadInt%10 = 11
+Info: LoadInt%11 = 0
+Info: Unknownbr label B4
 Info: bbBasicBlock has no String!
 Info: LoadInt%4 = 1
-Info: LoadInt%6 = 2
-Info: LoadInt%8 = 3
-Info: LoadInt%10 = 4
-Info: LoadInt%12 = 5
-Info: LoadInt%14 = 6
-Info: LoadInt%16 = 7
-Info: LoadInt%18 = 8
-Info: LoadInt%20 = 9
-Info: LoadAddr%22 = loadaddr @global#0
-Info: Storestore i32 %1, ptr %22
-Info: LoadInt%24 = 10
-Info: LoadInt%26 = 11
-Info: LoadInt%28 = 12
-Info: LoadInt%30 = 13
-Info: LoadInt%32 = 14
-Info: LoadInt%34 = 15
-Info: LoadInt%36 = 16
-Info: LoadInt%38 = 17
-Info: LoadInt%40 = 18
-Info: LoadInt%42 = 19
-Info: LoadInt%44 = 20
-Info: LoadInt%45 = 0
-Info: Returnret i32 %45
+Info: Unknownbr label B5
+Info: bbBasicBlock has no String!
+Info: Returnret i32 %2
+Info: bbBasicBlock has no String!
+Info: Unknownbr label B9
+Info: bbBasicBlock has no String!
+Info: Returnret i32 %9
+Info: bbBasicBlock has no String!
+Info: LoadInt%17 = 10
+Info: LoadInt%18 = 0
+Info: Unknownbr label B11
+Info: bbBasicBlock has no String!
+Info: LoadInt%20 = 1
+Info: LoadInt%21 = 0
+Info: Unknownbr label B12
+Info: bbBasicBlock has no String!
+Info: LoadInt%22 = 0
+Info: Unknownbr label B12
+Info: bbBasicBlock has no String!
+Info: LoadInt%5 = 0
+Info: Unknownbr label B14
+Info: bbBasicBlock has no String!
+Info: LoadInt%24 = 25
+Info: Unknownbr label B15
+Info: bbBasicBlock has no String!
+Info: Unknownbr label B16
+Info: bbBasicBlock has no String!
+Info: Phi%8 = phi i32 [ %6, B22 ]
+Info: LoadInt%9 = 25
+Info: Unknownbr label B7
+Info: bbBasicBlock has no String!
+Info: LoadInt%27 = 10
+Info: LoadInt%28 = 0
+Info: Unknownbr label B18
+Info: bbBasicBlock has no String!
+Info: LoadInt%30 = 5
+Info: LoadInt%32 = 0
+Info: LoadInt%31 = -5
+Info: LoadInt%33 = 0
+Info: Unknownbr label B19
+Info: bbBasicBlock has no String!
+Info: LoadInt%34 = 0
+Info: Unknownbr label B19
+Info: bbBasicBlock has no String!
+Info: LoadInt%6 = 0
+Info: Unknownbr label B21
+Info: bbBasicBlock has no String!
+Info: LoadInt%37 = 15
+Info: LoadInt%38 = 20
+Info: Unknownbr label B22
+Info: bbBasicBlock has no String!
+Info: LoadInt%41 = 0
+Info: LoadInt%40 = -5
+Info: Unknownbr label B22
+Info: bbBasicBlock has no String!
+Info: LoadInt%7 = 20
+Info: Unknownbr label B15
 dead var: 4
-dead var: 6
-dead var: 8
-dead var: 10
+dead var: 7
 dead var: 12
-dead var: 14
-dead var: 16
+dead var: 10
+dead var: 11
+dead var: 4
+dead var: 17
 dead var: 18
 dead var: 20
+dead var: 21
+dead var: 22
+dead var: 5
 dead var: 24
-dead var: 26
+dead var: 9
+dead var: 27
 dead var: 28
 dead var: 30
 dead var: 32
+dead var: 31
+dead var: 33
 dead var: 34
-dead var: 36
+dead var: 6
+dead var: 37
 dead var: 38
+dead var: 41
 dead var: 40
-dead var: 42
-dead var: 44
+dead var: 7
 ; module
-@loopCount#0 = global int 0, 4
-@global#0 = global int 0, 4
 define i32 @main(){
-B2:
-  %2 = 100
-  %1 = call@func(i32 %2)
+B24:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
   %3 = 0
   ret i32 %3
 
 }
-define void @func(i32){
+define i32 @ifElseIf(){
 B0:
-  %22 = loadaddr @global#0
-  store i32 %1, ptr %22
-  %45 = 0
-  ret i32 %45
+  %2 = 5
+  br label B1
+
+B1:
+  %8 = 0
+  br label B3
+
+B2:
+  br label B4
+
+B3:
+  br label B4
+
+B4:
+  br label B5
+
+B5:
+  ret i32 %2
+
+B6:
+  br label B9
+
+B7:
+  ret i32 %9
+
+B9:
+  br label B11
+
+B10:
+  br label B12
+
+B11:
+  br label B12
+
+B12:
+  br label B14
+
+B13:
+  br label B15
+
+B14:
+  br label B16
+
+B15:
+  %8 = phi i32 [ %6, B22 ]
+  br label B7
+
+B16:
+  br label B18
+
+B17:
+  br label B19
+
+B18:
+  br label B19
+
+B19:
+  br label B21
+
+B20:
+  br label B22
+
+B21:
+  br label B22
+
+B22:
+  br label B15
+
+}
+---------------------------------ir after cp-dce-cp -------------------------------------
+main
+Info: visit bb: 24
+Info: LoadInt3
+ifElseIf
+Info: visit bb: 0
+Info: LoadInt2
+Info: visit bb: 1
+Info: LoadInt8
+Info: visit bb: 2
+Info: visit bb: 3
+Info: visit bb: 4
+Info: visit bb: 5
+Info: visit bb: 6
+Info: visit bb: 7
+Info: visit bb: 9
+Info: visit bb: 10
+Info: visit bb: 11
+Info: visit bb: 12
+Info: visit bb: 13
+Info: visit bb: 14
+Info: visit bb: 15
+Info: visit bb: 16
+Info: visit bb: 17
+Info: visit bb: 18
+Info: visit bb: 19
+Info: visit bb: 20
+Info: visit bb: 21
+Info: visit bb: 22
+; module
+define i32 @main(){
+B24:
+  %2 = call i32 @ifElseIf()
+  %1 = call i32 @putint(i32 %2)
+  %3 = 0
+  ret i32 %3
+
+}
+define i32 @ifElseIf(){
+B0:
+  %2 = 5
+  br label B1
+
+B1:
+  %8 = 0
+  br label B3
+
+B2:
+  br label B4
+
+B3:
+  br label B4
+
+B4:
+  br label B5
+
+B5:
+  ret i32 %2
+
+B6:
+  br label B9
+
+B7:
+  ret i32 %9
+
+B9:
+  br label B11
+
+B10:
+  br label B12
+
+B11:
+  br label B12
+
+B12:
+  br label B14
+
+B13:
+  br label B15
+
+B14:
+  br label B16
+
+B15:
+  %8 = phi i32 [ %6, B22 ]
+  br label B7
+
+B16:
+  br label B18
+
+B17:
+  br label B19
+
+B18:
+  br label B19
+
+B19:
+  br label B21
+
+B20:
+  br label B22
+
+B21:
+  br label B22
+
+B22:
+  br label B15
 
 }
 --------------------------- building riscv ---------------------------
 riscv: 
-    li T[-2], 100
-    mv a1, T[-2]
-    call func
+    call ifElseIf
+    mv T[-2], a0
+    mv a0, T[-2]
+    call putint
     mv T[-1], a0
     li T[-3], 0
     mv a0, T[-3]
     ret
-    la T[-22], global
-    sw a1, 0(T[-22])
-    li T[-45], 0
-    mv a0, T[-45]
+T[-6] B24
+    li T[-2], 5
+    j B4
+    li T[-8], 0
+    j B6
+    j B7
+    j B7
+    j B8
+    mv a0, T[-2]
     ret
+    j B11
+    mv a0, T[-9]
+    ret
+    j B13
+    j B14
+    j B14
+    j B16
+    j B17
+    j B18
+    phi T[-8] = T[-6] B24
+[ T[-6], B24] 
+    j B10
+    j B20
+    j B21
+    j B21
+    j B23
+    j B24
+    j B24
+    j B17
 ?
-func
-func Main()
-func
+ifElseIf
+ifElseIf Main()
+ifElseIf
 after compute reg_used
 after prologue
 end of emitend

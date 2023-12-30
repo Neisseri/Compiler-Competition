@@ -286,7 +286,7 @@ public:
             return lhs * rhs;
             break;
         case BinaryOpEnum::DIV:
-            return lhs * rhs;
+            return lhs / rhs;
             break;
         case BinaryOpEnum::MOD:
             return lhs % rhs;
