@@ -5,8 +5,12 @@ if [ $# -eq 0 ]; then
 fi
 
 filename=$1
+# 移除第一个参数（文件名），剩下的都是编译选项
+shift
 
-rm -rf ir ast riscv
 
-python3 test.py -t testcases/$1
+rm -rf ir ast riscv ir_origin llvm_s ir_dce ir_cp
+mkdir llvm_s
+
+python3 test_ir.py -t "$1" -c "$*"
 

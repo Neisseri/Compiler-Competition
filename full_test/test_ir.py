@@ -37,8 +37,6 @@ class Config(NamedTuple):
     testcases: str
     compiler_args: str
     tempdir: str
-    parallel: bool
-
 
 class Result(Enum):
     LINKER_ERROR = auto()
@@ -47,25 +45,45 @@ class Result(Enum):
     TIME_LIMIT_EXCEEDED = auto()
     GCC_ERROR = auto()
 
+def enhance_ir(ir_file: str):
+    # 函数用于在IR文件中加入外部库引用声明
+    declarations = [
+        "declare i32 @getint()",
+        "declare i32 @getch()",
+        "declare float @getfloat()",
+        "declare void @putint(i32)",
+        "declare void @putch(i32)",
+        "declare void @putfloat(float)",
+    ]
+    with open(ir_file, 'r+') as file:
+        content = file.read()
+        file.seek(0, 0)
+        file.write('\n'.join(declarations) + '\n' + content)
 
 def get_config(argv: list[str]) -> Config:
     parser = ArgumentParser('simple-tester')
+
+    # 添加用于指定测试案例目录的参数
     parser.add_argument('-t', '--testcases',
                         metavar='<testcases>', required=True,
                         help='path to the directory containing testcases')
-    parser.add_argument('-p', '--parallel', action='store_true', default=False, help='run parallely')
-    index: int
-    try:
-        index = argv.index('--')
-    except ValueError:
-        index = len(argv)
-    args = parser.parse_args(argv[:index])
-    return Config(compiler=compiler_path,
-                  testcases=args.testcases,
-                  compiler_args=compiler_args,
-                  tempdir='build',
-                  parallel=args.parallel,
-                  )
+
+    # 添加-c选项用于指定编译器参数
+    parser.add_argument('-c', '--compileargs',
+                        dest='compileargs', default="",
+                        help='compiler arguments as a single string')
+
+    # 解析参数
+    args = parser.parse_args(argv)
+
+    return Config(
+        compiler=compiler_path,
+        testcases=args.testcases,
+        compiler_args=args.compileargs,  # 使用-c提供的参数
+        tempdir='build',
+    )
+
+
 
 
 def get_testcases(config: Config) -> list[str]:
@@ -99,7 +117,6 @@ def run(
     round: int = 1,
     timing: bool = False,
 ) -> Union[Result, float]:
-    assembly= "riscv/"+assembly+".s"
     name_body = os.path.basename(assembly).split('.')[0]
     executable = os.path.join(workdir, name_body + '.exec')
     output = os.path.join(workdir, name_body + '.stdout')
@@ -145,10 +162,13 @@ def test(config: Config, testcase: str) -> bool:
     answer = os.path.join(config.testcases, f'{testcase}.out')
     error_log=os.path.join(config.tempdir, f'{testcase}_compile_error.log')
 
-    assembly = os.path.join(f'{testcase}.s')
+    assembly = os.path.join(f'{testcase}')
     # NOTE: 你可以在这里修改调用你的编译器的方式
-    command = (f'{config.compiler} {config.compiler_args} {source}'
-                f' -A -o {assembly}')
+
+    command = (f'{config.compiler} {config.compiler_args} -f {source}'
+                f' -o {assembly}')
+
+    print ("command: ", command)
 
     proc = subprocess.Popen(command, shell=True,stderr=open(error_log, 'w'))
     try:
@@ -160,7 +180,23 @@ def test(config: Config, testcase: str) -> bool:
     if proc.returncode != 0:
         print(testcase, '\033[0;31mCompiler Error\033[0m')
         return False
-    result = run(config.tempdir, assembly, input, answer, TEST_ROUND)
+
+    # 生成IR文件后，使用外部库声明增强它
+    ir_file = os.path.join("ir", f'{testcase}.ll')
+    print("ir_file: ", ir_file)
+
+    enhance_ir(ir_file)
+    # 使用类似llc的命令将增强后的IR转换为汇编
+    test_case_name = testcase.split(".")[0]
+
+    assembly_file = os.path.join("llvm_s", f'{test_case_name}.s')
+    subprocess.run(f'llc -march=riscv32 -filetype=asm {ir_file} -o {assembly_file}', shell=True)
+
+    print("assembly_file: ", assembly_file)
+    print("command: ", f'llc -march=riscv32 -filetype=asm {ir_file} -o {assembly_file}')
+
+
+    result = run(config.tempdir, assembly_file, input, answer, TEST_ROUND)
     if result == Result.LINKER_ERROR:
         print(testcase, '\033[0;31mLinker Error\033[0m')
         return False
@@ -194,28 +230,26 @@ def test(config: Config, testcase: str) -> bool:
 
 if __name__ == '__main__':
     config = get_config(sys.argv[1:])
+    # show config
+    print('Compiler:', config.compiler)
+    print('Testcases:', config.testcases)
+    print('Compiler args:', config.compiler_args)
+    print('Tempdir:', config.tempdir)
+    print('')
+
+
     testcases = get_testcases(config)
 
     if os.path.exists(config.tempdir):
         shutil.rmtree(config.tempdir)
     os.mkdir(config.tempdir)
 
+
+
     failed = []
-    if config.parallel:
-        futures = []
-        f = lambda t: (t, test(config, t))
-        with ThreadPoolExecutor() as executor:
-            for testcase in testcases:
-                futures.append(executor.submit(f, testcase))
-            for future in as_completed(futures):
-                testcase, ok = future.result()
-                if not ok:
-                    failed.append(testcase)
-        failed.sort()
-    else:
-        for testcase in testcases:
-            if not test(config, testcase):
-                failed.append(testcase)
+    for testcase in testcases:
+        if not test(config, testcase):
+            failed.append(testcase)
     info = '\033[0;34m[info]\033[0m {}'
     if not failed:
         print(info.format('All Passed'))

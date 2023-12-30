@@ -1,6 +1,7 @@
-build
-riscv
-testcases/*
+*
+!test.py
+!test_ir.py
+!runtest.sh
 !testcases/step10
 !testcases/step11
 !testcases/step12
