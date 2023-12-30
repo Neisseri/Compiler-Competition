@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     std::string input_file_path;
     std::string output_file_name;
 
-    options.add_options()("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))("d,dce", "dead code elimination", cxxopts::value<bool>(dce_flag)->default_value("false"))("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))("A,all", "output all", cxxopts::value<bool>(out_all_flag)->default_value("false"))("h,help", "Print usage");
+    options.add_options()("m,m2r", "mem2reg", cxxopts::value<bool>(mem_to_reg_flag)->default_value("false"))("d,dce", "dead code elimination", cxxopts::value<bool>(dce_flag)->default_value("false"))("c,cp", "constant propagation", cxxopts::value<bool>(cp_flag)->default_value("false"))("O,o2", "O2", cxxopts::value<bool>(o2_flag)->default_value("false"))("o,output", "output file name", cxxopts::value<std::string>(output_file_name)->default_value("test"))("f,file", "input file path", cxxopts::value<std::string>(input_file_path)->default_value("test/sample.sy"))("a,ast", "output ast", cxxopts::value<bool>(out_ast_flag)->default_value("false"))("i,ir", "output ir", cxxopts::value<bool>(out_ir_flag)->default_value("false"))("r,riscv", "output riscv", cxxopts::value<bool>(out_riscv_flag)->default_value("false"))("A,all", "output all", cxxopts::value<bool>(out_all_flag)->default_value("false"))("h,help", "Print usage");
 
     // usage:
     // ("short_name,long_name", "description", cxxopts::value<type>()->default_value("default_value"))
@@ -136,6 +136,17 @@ int main(int argc, char *argv[])
         output_file.close();
     }
 
+    if (cp_flag)
+    {
+        cerr << "---------------------------------ir after cp -------------------------------------" << endl;
+        ir_optimizer.constant_propagation();
+        ir_generator.ir_program.print(cerr, 0);
+
+        ofstream output_file = openOrCreateFile("ir-cp", output_file_name, ".ll");
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+
     if (dce_flag)
     {
         cerr << "---------------------------------ir after dce-------------------------------------" << endl;
@@ -147,6 +158,17 @@ int main(int argc, char *argv[])
         output_file.close();
     }
 
+    if (cp_flag)
+    {
+        cerr << "---------------------------------ir after cp-dce-cp -------------------------------------" << endl;
+        ir_optimizer.constant_propagation();
+        ir_generator.ir_program.print(cerr, 0);
+
+        ofstream output_file = openOrCreateFile("ir-cp-dce-cp", output_file_name, ".ll");
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+
     if (out_ir_flag)
     {
         cerr << "---------------------------------ir -------------------------------------" << endl;
@@ -154,16 +176,6 @@ int main(int argc, char *argv[])
         ofstream output_file = openOrCreateFile("ir", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
-        if (cp_flag)
-        {
-            cerr << "---------------------------------ir after cp-dce-cp -------------------------------------" << endl;
-            ir_optimizer.constant_propagation();
-            ir_generator.ir_program.print(cerr, 0);
-
-            ofstream output_file = openOrCreateFile("ir-cp-dce-cp", output_file_name);
-            ir_generator.ir_program.print(output_file, 0);
-            output_file.close();
-        }
     }
 
     cerr << "--------------------------- building riscv ---------------------------" << endl;

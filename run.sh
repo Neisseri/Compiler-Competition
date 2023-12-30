@@ -6,7 +6,7 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-./build.sh
+# ./build.sh
 
 # 第一个参数是文件名
 filename=$1
