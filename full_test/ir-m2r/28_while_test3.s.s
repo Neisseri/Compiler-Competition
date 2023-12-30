@@ -30,26 +30,26 @@ B0:
   br label %B1
 
 B1:
-  %r10 = phi i32 [ %r8, %B0 ], [ %r14, %B6 ]
-  %r11 = phi i32 [ %r6, %B0 ], [ %r15, %B6 ]
-  %r12 = phi i32 [ %r5, %B0 ], [ %r97, %B6 ]
-  %r13 = phi i32 [ %r2, %B0 ], [ %r14, %B6 ]
+  %r125 = phi i32 [ %r8, %B0 ], [ %r124, %B6 ]
+  %r121 = phi i32 [ %r6, %B0 ], [ %r120, %B6 ]
+  %r118 = phi i32 [ %r5, %B0 ], [ %r97, %B6 ]
+  %r116 = phi i32 [ %r2, %B0 ], [ %r14, %B6 ]
   %r10 = add i32 0, 20 ; loadint
-  %r11 = icmp slt i32 %r13, %r10
+  %r11 = icmp slt i32 %r116, %r10
   br i1 %r11, label %B2, label %B3
 
 B2:
   %r13 = add i32 0, 3 ; loadint
-  %r14 = add i32 %r13, %r13
+  %r14 = add i32 %r116, %r13
   br label %B4
 
 B3:
-  %r101 = add i32 %r12, %r10
-  %r102 = add i32 %r13, %r101
-  %r104 = add i32 %r102, %r11
+  %r101 = add i32 %r118, %r125
+  %r102 = add i32 %r116, %r101
+  %r104 = add i32 %r102, %r121
   %r105 = loadaddr @e#0
   %r106 = load i32, ptr %r105
-  %r108 = add i32 %r106, %r10
+  %r108 = add i32 %r106, %r125
   %r109 = loadaddr @g#0
   %r110 = load i32, ptr %r109
   %r111 = sub i32 %r108, %r110
@@ -60,54 +60,54 @@ B3:
   ret i32 %r115
 
 B4:
-  %r14 = phi i32 [ %r10, %B2 ], [ %r17, %B9 ]
-  %r15 = phi i32 [ %r11, %B2 ], [ %r94, %B9 ]
-  %r16 = phi i32 [ %r12, %B2 ], [ %r20, %B9 ]
+  %r124 = phi i32 [ %r125, %B2 ], [ %r123, %B9 ]
+  %r120 = phi i32 [ %r121, %B2 ], [ %r94, %B9 ]
+  %r117 = phi i32 [ %r118, %B2 ], [ %r20, %B9 ]
   %r16 = add i32 0, 10 ; loadint
-  %r17 = icmp slt i32 %r16, %r16
+  %r17 = icmp slt i32 %r117, %r16
   br i1 %r17, label %B5, label %B6
 
 B5:
   %r19 = add i32 0, 1 ; loadint
-  %r20 = add i32 %r16, %r19
+  %r20 = add i32 %r117, %r19
   br label %B7
 
 B6:
   %r96 = add i32 0, 2 ; loadint
-  %r97 = sub i32 %r16, %r96
+  %r97 = sub i32 %r117, %r96
   br label %B1
 
 B7:
-  %r17 = phi i32 [ %r14, %B5 ], [ %r91, %B12 ]
-  %r18 = phi i32 [ %r15, %B5 ], [ %r26, %B12 ]
+  %r123 = phi i32 [ %r124, %B5 ], [ %r91, %B12 ]
+  %r119 = phi i32 [ %r120, %B5 ], [ %r26, %B12 ]
   %r22 = add i32 0, 7 ; loadint
-  %r23 = icmp eq i32 %r18, %r22
+  %r23 = icmp eq i32 %r119, %r22
   br i1 %r23, label %B8, label %B9
 
 B8:
   %r25 = add i32 0, 1 ; loadint
-  %r26 = sub i32 %r18, %r25
+  %r26 = sub i32 %r119, %r25
   br label %B10
 
 B9:
   %r93 = add i32 0, 1 ; loadint
-  %r94 = add i32 %r18, %r93
+  %r94 = add i32 %r119, %r93
   br label %B4
 
 B10:
-  %r19 = phi i32 [ %r17, %B8 ], [ %r32, %B15 ]
+  %r122 = phi i32 [ %r123, %B8 ], [ %r32, %B15 ]
   %r28 = add i32 0, 20 ; loadint
-  %r29 = icmp slt i32 %r19, %r28
+  %r29 = icmp slt i32 %r122, %r28
   br i1 %r29, label %B11, label %B12
 
 B11:
   %r31 = add i32 0, 3 ; loadint
-  %r32 = add i32 %r19, %r31
+  %r32 = add i32 %r122, %r31
   br label %B13
 
 B12:
   %r90 = add i32 0, 1 ; loadint
-  %r91 = sub i32 %r19, %r90
+  %r91 = sub i32 %r122, %r90
   br label %B7
 
 B13:

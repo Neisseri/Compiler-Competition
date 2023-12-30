@@ -50,7 +50,8 @@ struct Type
         switch (type)
         {//enum TypeEnum
         case static_cast<int>(TypeEnum::INT):
-            s = ir?"i32":"int";
+            // s = ir?"i32":"int";
+            s = "i32";
             break;
         case static_cast<int>(TypeEnum::FLOAT):
             s = "float";

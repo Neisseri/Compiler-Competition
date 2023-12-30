@@ -195,6 +195,7 @@ public:
             for (auto p : i->prevs){
                 std::shared_ptr<ir::BasicBlock> runner = p;
                 while (i->dom.find(runner) == i->dom.end()){
+                    std::cerr << "compute_dom_fro bb: " << i->label.toString() << " func: " << i->func->name << std::endl;
                     runner->DF.insert(i);
                     runner = runner->idom;
                 }

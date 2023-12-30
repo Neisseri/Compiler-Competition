@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
         cerr << "ir:" << endl;
         ir_generator.ir_program.print(cerr, 0);
 
-        ofstream output_file = openOrCreateFile("ir", output_file_name);
+        ofstream output_file = openOrCreateFile("ir", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
     }

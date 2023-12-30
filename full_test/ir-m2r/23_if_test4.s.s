@@ -20,8 +20,8 @@ B2:
   br label %B4
 
 B3:
-  %r3 = phi i32 [ %r2, %B1 ], [ %r2, %B7 ]
-  ret i32 %r3
+  %r17 = phi i32 [ %r2, %B1 ], [ %r16, %B7 ]
+  ret i32 %r17
 
 B4:
   %r9 = add i32 0, 10 ; loadint
@@ -38,7 +38,7 @@ B6:
   br label %B7
 
 B7:
-  %r2 = phi i32 [ %r11, %B5 ], [ %r14, %B6 ]
+  %r16 = phi i32 [ %r11, %B5 ], [ %r14, %B6 ]
   br label %B3
 
 }

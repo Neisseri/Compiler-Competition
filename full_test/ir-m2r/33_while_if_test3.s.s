@@ -12,11 +12,11 @@ B0:
   br label %B1
 
 B1:
-  %r6 = %r12
-  %r7 = %r13
-  %r8 = phi i32 [ %r8, %B0 ], [ %r13, %B6 ]
+  %r35 = phi i32 [ %r8, %B0 ], [ %r34, %B6 ]
+  %r41 = add i32 0, %r40 ; assign
+  %r38 = add i32 0, %r13 ; assign
   %r10 = add i32 0, 75 ; loadint
-  %r11 = icmp slt i32 %r8, %r10
+  %r11 = icmp slt i32 %r35, %r10
   br i1 %r11, label %B2, label %B3
 
 B2:
@@ -24,20 +24,20 @@ B2:
   br label %B4
 
 B3:
-  ret i32 %r8
+  ret i32 %r35
 
 B4:
   %r15 = add i32 0, 100 ; loadint
-  %r16 = icmp slt i32 %r8, %r15
+  %r16 = icmp slt i32 %r35, %r15
   br i1 %r16, label %B5, label %B6
 
 B5:
-  %r19 = add i32 %r8, %r13
+  %r19 = add i32 %r35, %r13
   br label %B7
 
 B6:
-  %r12 = phi i32 [ %r6, %B4 ], [ %r10, %B9 ]
-  %r13 = phi i32 [ %r8, %B4 ], [ %r11, %B9 ]
+  %r40 = phi i32 [ %r41, %B4 ], [ %r39, %B9 ]
+  %r34 = phi i32 [ %r35, %B4 ], [ %r37, %B9 ]
   br label %B1
 
 B7:
@@ -51,8 +51,8 @@ B8:
   br label %B10
 
 B9:
-  %r10 = phi i32 [ %r6, %B7 ], [ %r26, %B12 ]
-  %r11 = phi i32 [ %r19, %B7 ], [ %r9, %B12 ]
+  %r39 = phi i32 [ %r41, %B7 ], [ %r26, %B12 ]
+  %r37 = phi i32 [ %r19, %B7 ], [ %r36, %B12 ]
   br label %B6
 
 B10:
@@ -67,7 +67,7 @@ B11:
   br label %B12
 
 B12:
-  %r9 = phi i32 [ %r19, %B10 ], [ %r32, %B11 ]
+  %r36 = phi i32 [ %r19, %B10 ], [ %r32, %B11 ]
   br label %B9
 
 }

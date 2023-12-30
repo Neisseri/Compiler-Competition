@@ -4,192 +4,11 @@ parse tree:
         (compUnitItem 
             (funcDef 
                 (funcType 
-                    (bType int)) ifElseIf ( ) 
+                    (bType int)) get_one ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) a)) ) 
                 (block { 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef a) ;))) 
-                    (blockItem 
-                        (stmt 
-                            (lVal a) = 
-                            (exp 
-                                (addExp 
-                                    (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (number 
-                                                    (intConst 5))))))) ;)) 
-                    (blockItem 
-                        (decl 
-                            (varDecl 
-                                (bType int) 
-                                (varDef b) ;))) 
-                    (blockItem 
-                        (stmt 
-                            (lVal b) = 
-                            (exp 
-                                (addExp 
-                                    (mulExp 
-                                        (unaryExp 
-                                            (primaryExp 
-                                                (number 
-                                                    (intConst 10))))))) ;)) 
-                    (blockItem 
-                        (stmt if ( 
-                            (cond 
-                                (lOrExp 
-                                    (lOrExp 
-                                        (lAndExp 
-                                            (eqExp 
-                                                (eqExp 
-                                                    (relExp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (lVal a))))))) == 
-                                                (relExp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 6)))))))))) || 
-                                    (lAndExp 
-                                        (eqExp 
-                                            (eqExp 
-                                                (relExp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal b))))))) == 
-                                            (relExp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 0xb))))))))))) ) 
-                            (stmt 
-                                (block { 
-                                    (blockItem 
-                                        (stmt return 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (lVal a)))))) ;)) })) else 
-                            (stmt 
-                                (block { 
-                                    (blockItem 
-                                        (stmt if ( 
-                                            (cond 
-                                                (lOrExp 
-                                                    (lAndExp 
-                                                        (lAndExp 
-                                                            (eqExp 
-                                                                (eqExp 
-                                                                    (relExp 
-                                                                        (addExp 
-                                                                            (mulExp 
-                                                                                (unaryExp 
-                                                                                    (primaryExp 
-                                                                                        (lVal b))))))) == 
-                                                                (relExp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (number 
-                                                                                        (intConst 10))))))))) && 
-                                                        (eqExp 
-                                                            (eqExp 
-                                                                (relExp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (lVal a))))))) == 
-                                                            (relExp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 1))))))))))) ) 
-                                            (stmt 
-                                                (lVal a) = 
-                                                (exp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (number 
-                                                                        (intConst 25))))))) ;) else 
-                                            (stmt if ( 
-                                                (cond 
-                                                    (lOrExp 
-                                                        (lAndExp 
-                                                            (lAndExp 
-                                                                (eqExp 
-                                                                    (eqExp 
-                                                                        (relExp 
-                                                                            (addExp 
-                                                                                (mulExp 
-                                                                                    (unaryExp 
-                                                                                        (primaryExp 
-                                                                                            (lVal b))))))) == 
-                                                                    (relExp 
-                                                                        (addExp 
-                                                                            (mulExp 
-                                                                                (unaryExp 
-                                                                                    (primaryExp 
-                                                                                        (number 
-                                                                                            (intConst 10))))))))) && 
-                                                            (eqExp 
-                                                                (eqExp 
-                                                                    (relExp 
-                                                                        (addExp 
-                                                                            (mulExp 
-                                                                                (unaryExp 
-                                                                                    (primaryExp 
-                                                                                        (lVal a))))))) == 
-                                                                (relExp 
-                                                                    (addExp 
-                                                                        (mulExp 
-                                                                            (unaryExp - 
-                                                                                (unaryExp 
-                                                                                    (primaryExp 
-                                                                                        (number 
-                                                                                            (intConst 5)))))))))))) ) 
-                                                (stmt 
-                                                    (lVal a) = 
-                                                    (exp 
-                                                        (addExp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (lVal a))))) + 
-                                                            (mulExp 
-                                                                (unaryExp 
-                                                                    (primaryExp 
-                                                                        (number 
-                                                                            (intConst 15))))))) ;) else 
-                                                (stmt 
-                                                    (lVal a) = 
-                                                    (exp 
-                                                        (addExp 
-                                                            (mulExp 
-                                                                (unaryExp - 
-                                                                    (unaryExp + 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (lVal a)))))))) ;)))) })))) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -197,12 +16,246 @@ parse tree:
                                     (mulExp 
                                         (unaryExp 
                                             (primaryExp 
-                                                (lVal a)))))) ;)) }))) 
+                                                (number 
+                                                    (intConst 1))))))) ;)) }))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) deepWhileBr ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) a) , 
+                    (funcFParam 
+                        (bType int) b)) ) 
+                (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef c) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (lVal c) = 
+                            (exp 
+                                (addExp 
+                                    (addExp 
+                                        (mulExp 
+                                            (unaryExp 
+                                                (primaryExp 
+                                                    (lVal a))))) + 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal b)))))) ;)) 
+                    (blockItem 
+                        (stmt while ( 
+                            (cond 
+                                (lOrExp 
+                                    (lAndExp 
+                                        (eqExp 
+                                            (relExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal c)))))) < 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 75))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (decl 
+                                            (varDecl 
+                                                (bType int) 
+                                                (varDef d) ;))) 
+                                    (blockItem 
+                                        (stmt 
+                                            (lVal d) = 
+                                            (exp 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 42))))))) ;)) 
+                                    (blockItem 
+                                        (stmt if ( 
+                                            (cond 
+                                                (lOrExp 
+                                                    (lAndExp 
+                                                        (eqExp 
+                                                            (relExp 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal c)))))) < 
+                                                                (addExp 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 100))))))))))) ) 
+                                            (stmt 
+                                                (block { 
+                                                    (blockItem 
+                                                        (stmt 
+                                                            (lVal c) = 
+                                                            (exp 
+                                                                (addExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal c))))) + 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (lVal d)))))) ;)) 
+                                                    (blockItem 
+                                                        (stmt if ( 
+                                                            (cond 
+                                                                (lOrExp 
+                                                                    (lAndExp 
+                                                                        (eqExp 
+                                                                            (relExp 
+                                                                                (relExp 
+                                                                                    (addExp 
+                                                                                        (mulExp 
+                                                                                            (unaryExp 
+                                                                                                (primaryExp 
+                                                                                                    (lVal c)))))) > 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 99))))))))))) ) 
+                                                            (stmt 
+                                                                (block { 
+                                                                    (blockItem 
+                                                                        (decl 
+                                                                            (varDecl 
+                                                                                (bType int) 
+                                                                                (varDef e) ;))) 
+                                                                    (blockItem 
+                                                                        (stmt 
+                                                                            (lVal e) = 
+                                                                            (exp 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (mulExp 
+                                                                                            (unaryExp 
+                                                                                                (primaryExp 
+                                                                                                    (lVal d)))) * 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 2))))))) ;)) 
+                                                                    (blockItem 
+                                                                        (stmt if ( 
+                                                                            (cond 
+                                                                                (lOrExp 
+                                                                                    (lAndExp 
+                                                                                        (eqExp 
+                                                                                            (eqExp 
+                                                                                                (relExp 
+                                                                                                    (addExp 
+                                                                                                        (mulExp 
+                                                                                                            (unaryExp get_one ( 
+                                                                                                                (funcRParams 
+                                                                                                                    (funcRParam 
+                                                                                                                        (exp 
+                                                                                                                            (addExp 
+                                                                                                                                (mulExp 
+                                                                                                                                    (unaryExp 
+                                                                                                                                        (primaryExp 
+                                                                                                                                            (number 
+                                                                                                                                                (intConst 0))))))))) )))))) == 
+                                                                                            (relExp 
+                                                                                                (addExp 
+                                                                                                    (mulExp 
+                                                                                                        (unaryExp 
+                                                                                                            (primaryExp 
+                                                                                                                (number 
+                                                                                                                    (intConst 1))))))))))) ) 
+                                                                            (stmt 
+                                                                                (block { 
+                                                                                    (blockItem 
+                                                                                        (stmt 
+                                                                                            (lVal c) = 
+                                                                                            (exp 
+                                                                                                (addExp 
+                                                                                                    (mulExp 
+                                                                                                        (mulExp 
+                                                                                                            (unaryExp 
+                                                                                                                (primaryExp 
+                                                                                                                    (lVal e)))) * 
+                                                                                                        (unaryExp 
+                                                                                                            (primaryExp 
+                                                                                                                (number 
+                                                                                                                    (intConst 2))))))) ;)) })))) })))) })))) })))) 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp ( 
+                                                (exp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal c)))))) )))))) ;)) }))) 
         (compUnitItem 
             (funcDef 
                 (funcType 
                     (bType int)) main ( ) 
                 (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef p) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (lVal p) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 2))))))) ;)) 
+                    (blockItem 
+                        (stmt 
+                            (lVal p) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp deepWhileBr ( 
+                                            (funcRParams 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal p))))))) , 
+                                                (funcRParam 
+                                                    (exp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal p)))))))) ))))) ;)) 
                     (blockItem 
                         (stmt 
                             (exp 
@@ -214,7 +267,9 @@ parse tree:
                                                     (exp 
                                                         (addExp 
                                                             (mulExp 
-                                                                (unaryExp ifElseIf ( ))))))) ))))) ;)) 
+                                                                (unaryExp 
+                                                                    (primaryExp 
+                                                                        (lVal p)))))))) ))))) ;)) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -226,39 +281,58 @@ parse tree:
                                                     (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
 visitCompUnit: funcDef
-construct funct block: ifElseIf
+construct funct block: get_one
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit: funcDef
+construct funct block: deepWhileBr
 visitVarDecl: int start
-visitVarDecl: ident: a
-visitPrimaryExp_ number
+visitVarDecl: ident: c
 visitAssign done!
-visitVarDecl: int start
-visitVarDecl: ident: b
-visitPrimaryExp_ number
-visitAssign done!
-visitPrimaryExp_ number
 visitPrimaryExp_ number
 visit block stmt
-visitBlock done!
+visitVarDecl: int start
+visitVarDecl: ident: d
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visit block stmt
+visitAssign done!
+visitPrimaryExp_ number
+visit block stmt
+visitVarDecl: int start
+visitVarDecl: ident: e
+visitPrimaryExp_ number
+visitAssign done!
+visitCall ident: get_one
+visitFuncRParams
+visitPrimaryExp_ number
+visitCall args_list size: 1
+visitPrimaryExp_ number
 visit block stmt
 visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitAssign done!
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitPrimaryExp_ number
-visitAssign done!
 visitAssign done!
 visitBlock done!
+visitBlock done!
+visitBlock done!
+visitBlock done!
+visitPrimaryExp_ exp
 visitBlock done!
 construct funct block done!
 visitCompUnit: funcDef
 construct funct block: main
+visitVarDecl: int start
+visitVarDecl: ident: p
+visitPrimaryExp_ number
+visitAssign done!
+visitCall ident: deepWhileBr
+visitFuncRParams
+visitCall args_list size: 2
+visitAssign done!
 visitExprStmt
 visitCall ident: putint
 visitFuncRParams
-visitCall ident: ifElseIf
-visitCall args_list size: 0
 visitCall args_list size: 1
 visitPrimaryExp_ number
 visitBlock done!
@@ -267,934 +341,744 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitFuncDefint @ifElseIf()
+Info: visitFuncDefi32 @get_one(i32 @a)
+Info: visitParamDefi32 @a
 Info: visitBlock
-Info: visitVarDef int @a
-Info: visitStatementAssign@a = 5
-Info: visitAssignStmtAssign@a = 5
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitAssignStmtint
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x564736b688f0
-Info: visitVarDef int @b
-Info: visitStatementAssign@b = 10
-Info: visitAssignStmtAssign@b = 10
-Info: visitExpr@b
-Info: visitLvalExpr@b
-Info: visitAssignStmtint
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x564736b68920
-Info: visitStatementIfElse
-Info: visitExpr@a==6||@b==11
-Info: visitBinopExpr@a==6||@b==11
-Info: visitExpr@a==6
-Info: visitBinopExpr@a==6
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitExpr6
-Info: visitIntLiteralExpr6
-ret->type 0x564736b689a0
-Info: visitExpr@b==11
-Info: visitBinopExpr@b==11
-Info: visitExpr@b
-Info: visitLvalExpr@b
-Info: visitExpr11
-Info: visitIntLiteralExpr11
-ret->type 0x564736b689d0
-Info: visitStatement
-Info: visitBlock
-Info: visitStatementReturn @a
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitReturnStmtReturn @a#2function has returnscope id1
-Info: visitStatement
-Info: visitBlock
-Info: visitStatementIfElse
-Info: visitExpr@b==10&&@a==1
-Info: visitBinopExpr@b==10&&@a==1
-Info: visitExpr@b==10
-Info: visitBinopExpr@b==10
-Info: visitExpr@b
-Info: visitLvalExpr@b
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x564736b68a50
-Info: visitExpr@a==1
-Info: visitBinopExpr@a==1
-Info: visitExpr@a
-Info: visitLvalExpr@a
+Info: visitStatementReturn 1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x564736b68ad0
-Info: visitStatementAssign@a = 25
-Info: visitAssignStmtAssign@a = 25
+ret->type 0x559f8a1cb4b0
+Info: visitReturnStmtReturn 1function has returnscope id1
+Info: visitFuncDefi32 @deepWhileBr(i32 @a, i32 @b)
+Info: visitParamDefi32 @a
+Info: visitParamDefi32 @b
+Info: visitBlock
+Info: visitVarDef i32 @c
+Info: visitStatementAssign@c = @a+@b
+Info: visitAssignStmtAssign@c = @a+@b
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmti32
+Info: visitExpr@a+@b
+Info: visitBinopExpr@a+@b
 Info: visitExpr@a
 Info: visitLvalExpr@a
-Info: visitAssignStmtint
-Info: visitExpr25
-Info: visitIntLiteralExpr25
-ret->type 0x564736b68b00
-Info: visitStatementIfElse
-Info: visitExpr@b==10&&@a==-5
-Info: visitBinopExpr@b==10&&@a==-5
-Info: visitExpr@b==10
-Info: visitBinopExpr@b==10
 Info: visitExpr@b
 Info: visitLvalExpr@b
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x564736b68b30
-Info: visitExpr@a==-5
-Info: visitBinopExpr@a==-5
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitExpr-5
-Info: visitUnonExpr-5
-Info: visitExpr5
-Info: visitIntLiteralExpr5
-ret->type 0x564736b68b60
-Info: visitStatementAssign@a = @a+15
-Info: visitAssignStmtAssign@a = @a+15
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitAssignStmtint
-Info: visitExpr@a+15
-Info: visitBinopExpr@a+15
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitExpr15
-Info: visitIntLiteralExpr15
-ret->type 0x564736b68b90
-Info: visitStatementAssign@a = -+@a
-Info: visitAssignStmtAssign@a = -+@a
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitAssignStmtint
-Info: visitExpr-+@a
-Info: visitUnonExpr-+@a
-Info: visitExpr+@a
-Info: visitUnonExpr+@a
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitStatementReturn @a
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitReturnStmtReturn @a#2function has returnscope id1
-Info: visitFuncDefint @main()
+Info: visitStatementWhile
+Info: visitExpr@c<75
+Info: visitBinopExpr@c<75
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr75
+Info: visitIntLiteralExpr75
+ret->type 0x559f8a1cb560
+Info: visitStatement
 Info: visitBlock
-Info: visitStatementCall @putint(Call @ifElseIf())
-Info: visitExprStmtCall @putint(Call @ifElseIf())
-Info: visitExprCall @putint(Call @ifElseIf())
-Info: visiCalltExprCall @putint(Call @ifElseIf())
+Info: visitVarDef i32 @d
+Info: visitStatementAssign@d = 42
+Info: visitAssignStmtAssign@d = 42
+Info: visitExpr@d
+Info: visitLvalExpr@d
+Info: visitAssignStmti32
+Info: visitExpr42
+Info: visitIntLiteralExpr42
+ret->type 0x559f8a1cb370
+Info: visitStatementIfElse
+Info: visitExpr@c<100
+Info: visitBinopExpr@c<100
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr100
+Info: visitIntLiteralExpr100
+ret->type 0x559f8a1cb4e0
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementAssign@c = @c+@d
+Info: visitAssignStmtAssign@c = @c+@d
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmti32
+Info: visitExpr@c+@d
+Info: visitBinopExpr@c+@d
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr@d
+Info: visitLvalExpr@d
+Info: visitStatementIfElse
+Info: visitExpr@c>99
+Info: visitBinopExpr@c>99
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr99
+Info: visitIntLiteralExpr99
+ret->type 0x559f8a1cb770
+Info: visitStatement
+Info: visitBlock
+Info: visitVarDef i32 @e
+Info: visitStatementAssign@e = @d*2
+Info: visitAssignStmtAssign@e = @d*2
+Info: visitExpr@e
+Info: visitLvalExpr@e
+Info: visitAssignStmti32
+Info: visitExpr@d*2
+Info: visitBinopExpr@d*2
+Info: visitExpr@d
+Info: visitLvalExpr@d
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x559f8a1cb7f0
+Info: visitStatementIfElse
+Info: visitExprCall @get_one(0)==1
+Info: visitBinopExprCall @get_one(0)==1
+Info: visitExprCall @get_one(0)
+Info: visiCalltExprCall @get_one(0)
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x559f8a1cb870
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x559f8a1cb8f0
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementAssign@c = @e*2
+Info: visitAssignStmtAssign@c = @e*2
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmti32
+Info: visitExpr@e*2
+Info: visitBinopExpr@e*2
+Info: visitExpr@e
+Info: visitLvalExpr@e
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x559f8a1cb920
+Info: visitStatementReturn @c
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitReturnStmtReturn @c#4function has returnscope id3
+Info: visitFuncDefi32 @main()
+Info: visitBlock
+Info: visitVarDef i32 @p
+Info: visitStatementAssign@p = 2
+Info: visitAssignStmtAssign@p = 2
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitAssignStmti32
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x559f8a1cb950
+Info: visitStatementAssign@p = Call @deepWhileBr(@p, @p)
+Info: visitAssignStmtAssign@p = Call @deepWhileBr(@p, @p)
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitAssignStmti32
+Info: visitExprCall @deepWhileBr(@p, @p)
+Info: visiCalltExprCall @deepWhileBr(@p, @p)
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitExpr@p
+Info: visitLvalExpr@p
+Info: visitStatementCall @putint(@p)
+Info: visitExprStmtCall @putint(@p)
+Info: visitExprCall @putint(@p)
+Info: visiCalltExprCall @putint(@p)
 Info: use of undeclared function putint
-Info: visitExprCall @ifElseIf()
-Info: visiCalltExprCall @ifElseIf()
+Info: visitExpr@p
+Info: visitLvalExpr@p
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x564736b68bc0
-Info: visitReturnStmtReturn 0function has returnscope id5
+ret->type 0x559f8a1cb9e0
+Info: visitReturnStmtReturn 0function has returnscope id10
 ast: 
 Program
-  int @ifElseIf()
+  i32 @get_one(i32 @a#1)
     {
-      int @a#2
-      Assign@a#2 = 5
-      int @b#2
-      Assign@b#2 = 10
-      If        @a#2==6||@b#2==11
-        {
-          Return @a#2
-        }
-      Else
-        {
-          If            @b#2==10&&@a#2==1
-            Assign@a#2 = 25
-          Else
-            If              @b#2==10&&@a#2==-5
-              Assign@a#2 = @a#2+15
-            Else
-              Assign@a#2 = -+@a#2
-        }
-      Return @a#2
+      Return 1
     }
-  int @main()
+  i32 @deepWhileBr(i32 @a#3, i32 @b#3)
     {
-      Call @putint        Call @ifElseIf()
+      i32 @c#4
+      Assign@c#4 = @a#3+@b#3
+      While        @c#4<75
+        {
+          i32 @d#6
+          Assign@d#6 = 42
+          If            @c#4<100
+            {
+              Assign@c#4 = @c#4+@d#6
+              If                @c#4>99
+                {
+                  i32 @e#8
+                  Assign@e#8 = @d#6*2
+                  If                    Call @get_one(0)==1
+                    {
+                      Assign@c#4 = @e#8*2
+                    }
+                }
+            }
+        }
+      Return @c#4
+    }
+  i32 @main()
+    {
+      i32 @p#11
+      Assign@p#11 = 2
+      Assign@p#11 = Call @deepWhileBr(@p#11, @p#11)
+      Call @putint        @p#11
       Return 0
     }
 End of Program
 --------------------------- building ir ---------------------------
 visitProgram
-visitFunction ifElseIf
+visitFunction get_one
+visitFunction param decl: a#1
 visitBlock 
 visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue a#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionLValue b#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitBlock 
-visitStatement
-visitExpression
-visitExpressionLValue a#2
-visitStatement
-visitBlock 
-visitStatement
-visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue b#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionLValue a#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue b#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
-visitExpressionLValue a#2
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpression
-visitExpressionLValue a#2
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue a#2
-visitStatement
-visitExpression
-visitExpressionLValue a#2
-function ifElseIf has 42 regs
+function get_one has 3 regs
 B0:
   prev: 
-  succ: B1 
+  succ: 
 B1:
-  prev: B0 
-  succ: B2 B3 
-B2:
-  prev: B1 
-  succ: B4 
-B3:
-  prev: B1 
-  succ: B4 
-B4:
-  prev: B2 B3 
-  succ: B5 B6 
-B5:
-  prev: B4 
-  succ: 
-B6:
-  prev: B4 
-  succ: B9 
-B7:
-  prev: B8 B15 
-  succ: 
-B8:
-  prev: 
-  succ: B7 
-B9:
-  prev: B6 
-  succ: B10 B11 
-B10:
-  prev: B9 
-  succ: B12 
-B11:
-  prev: B9 
-  succ: B12 
-B12:
-  prev: B10 B11 
-  succ: B13 B14 
-B13:
-  prev: B12 
-  succ: B15 
-B14:
-  prev: B12 
-  succ: B16 
-B15:
-  prev: B13 B22 
-  succ: B7 
-B16:
-  prev: B14 
-  succ: B17 B18 
-B17:
-  prev: B16 
-  succ: B19 
-B18:
-  prev: B16 
-  succ: B19 
-B19:
-  prev: B17 B18 
-  succ: B20 B21 
-B20:
-  prev: B19 
-  succ: B22 
-B21:
-  prev: B19 
-  succ: B22 
-B22:
-  prev: B20 B21 
-  succ: B15 
-B23:
   prev: 
   succ: 
 
 B0:
   prev: 
-  succ: B1 
-B1:
-  prev: B0 
-  succ: B2 B3 
-B2:
-  prev: B1 
-  succ: B4 
-B3:
-  prev: B1 
-  succ: B4 
-B4:
-  prev: B2 B3 
-  succ: B5 B6 
-B5:
-  prev: B4 
   succ: 
-B6:
-  prev: B4 
-  succ: B9 
-B7:
-  prev: B15 
-  succ: 
-B9:
-  prev: B6 
-  succ: B10 B11 
-B10:
-  prev: B9 
-  succ: B12 
-B11:
-  prev: B9 
-  succ: B12 
-B12:
-  prev: B10 B11 
-  succ: B13 B14 
-B13:
-  prev: B12 
-  succ: B15 
-B14:
-  prev: B12 
-  succ: B16 
-B15:
-  prev: B13 B22 
-  succ: B7 
-B16:
-  prev: B14 
-  succ: B17 B18 
-B17:
-  prev: B16 
-  succ: B19 
-B18:
-  prev: B16 
-  succ: B19 
-B19:
-  prev: B17 B18 
-  succ: B20 B21 
-B20:
-  prev: B19 
-  succ: B22 
-B21:
-  prev: B19 
-  succ: B22 
-B22:
-  prev: B20 B21 
-  succ: B15 
 
 entryB0
-B1
-B2
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visitFunction deepWhileBr
+visitFunction param decl: a#3
+visitFunction param decl: b#3
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue a#3
+visitExpression
+visitExpressionLValue b#3
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#4
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#4
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#4
+visitExpression
+visitExpressionLValue d#6
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#4
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue d#6
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue e#8
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionLValue c#4
+function deepWhileBr has 34 regs
+B2:
+  prev: 
+  succ: B3 
+B3:
+  prev: B2 B8 
+  succ: B4 B5 
+B4:
+  prev: B3 
+  succ: B6 
+B5:
+  prev: B3 
+  succ: 
+B6:
+  prev: B4 
+  succ: B7 B8 
+B7:
+  prev: B6 
+  succ: B9 
+B8:
+  prev: B6 B11 
+  succ: B3 
+B9:
+  prev: B7 
+  succ: B10 B11 
+B10:
+  prev: B9 
+  succ: B12 
+B11:
+  prev: B9 B14 
+  succ: B8 
+B12:
+  prev: B10 
+  succ: B13 B14 
+B13:
+  prev: B12 
+  succ: B14 
+B14:
+  prev: B12 B13 
+  succ: B11 
+B15:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: B3 
+B3:
+  prev: B2 B8 
+  succ: B4 B5 
+B4:
+  prev: B3 
+  succ: B6 
+B5:
+  prev: B3 
+  succ: 
+B6:
+  prev: B4 
+  succ: B7 B8 
+B7:
+  prev: B6 
+  succ: B9 
+B8:
+  prev: B6 B11 
+  succ: B3 
+B9:
+  prev: B7 
+  succ: B10 B11 
+B10:
+  prev: B9 
+  succ: B12 
+B11:
+  prev: B9 B14 
+  succ: B8 
+B12:
+  prev: B10 
+  succ: B13 B14 
+B13:
+  prev: B12 
+  succ: B14 
+B14:
+  prev: B12 B13 
+  succ: B11 
+
+entryB2
 B3
 B4
 B5
 B6
 B7
+B8
 B9
 B10
 B11
 B12
 B13
 B14
-B15
-B16
-B17
-B18
-B19
-B20
-B21
-B22
-reverse_postorderB0
-reverse_postorderB1
-reverse_postorderB3
 reverse_postorderB2
+reverse_postorderB3
+reverse_postorderB5
 reverse_postorderB4
 reverse_postorderB6
+reverse_postorderB7
 reverse_postorderB9
-reverse_postorderB11
 reverse_postorderB10
 reverse_postorderB12
-reverse_postorderB14
-reverse_postorderB16
-reverse_postorderB18
-reverse_postorderB17
-reverse_postorderB19
-reverse_postorderB21
-reverse_postorderB20
-reverse_postorderB22
 reverse_postorderB13
-reverse_postorderB15
-reverse_postorderB7
-reverse_postorderB5
-reverse_postorderB0
-reverse_postorderB1
-reverse_postorderB3
+reverse_postorderB14
+reverse_postorderB11
+reverse_postorderB8
 reverse_postorderB2
+reverse_postorderB3
+reverse_postorderB5
 reverse_postorderB4
 reverse_postorderB6
+reverse_postorderB7
 reverse_postorderB9
-reverse_postorderB11
 reverse_postorderB10
 reverse_postorderB12
-reverse_postorderB14
-reverse_postorderB16
-reverse_postorderB18
-reverse_postorderB17
-reverse_postorderB19
-reverse_postorderB21
-reverse_postorderB20
-reverse_postorderB22
 reverse_postorderB13
-reverse_postorderB15
-reverse_postorderB7
-reverse_postorderB5
-B0:
-  doms: B1 
-  domed_by: B0 
-B1:
-  doms: B2 B3 B4 
-  domed_by: B0 B1 
+reverse_postorderB14
+reverse_postorderB11
+reverse_postorderB8
+compute_dom_fro bb: B3 func: deepWhileBr
+compute_dom_fro bb: B3 func: deepWhileBr
+compute_dom_fro bb: B3 func: deepWhileBr
+compute_dom_fro bb: B8 func: deepWhileBr
+compute_dom_fro bb: B8 func: deepWhileBr
+compute_dom_fro bb: B8 func: deepWhileBr
+compute_dom_fro bb: B11 func: deepWhileBr
+compute_dom_fro bb: B11 func: deepWhileBr
+compute_dom_fro bb: B11 func: deepWhileBr
+compute_dom_fro bb: B14 func: deepWhileBr
 B2:
-  doms: 
-  domed_by: B0 B1 B2 
+  doms: B3 
+  domed_by: B2 
 B3:
-  doms: 
-  domed_by: B0 B1 B3 
+  doms: B4 B5 
+  domed_by: B2 B3 
 B4:
-  doms: B5 B6 
-  domed_by: B0 B1 B4 
+  doms: B6 
+  domed_by: B2 B3 B4 
 B5:
   doms: 
-  domed_by: B0 B1 B4 B5 
+  domed_by: B2 B3 B5 
 B6:
+  doms: B7 B8 
+  domed_by: B2 B3 B4 B6 
+B7:
   doms: B9 
-  domed_by: B0 B1 B4 B6 
-B7:
+  domed_by: B2 B3 B4 B6 B7 
+B8:
   doms: 
-  domed_by: B0 B1 B4 B6 B7 B9 B12 B15 
+  domed_by: B2 B3 B4 B6 B8 
 B9:
-  doms: B10 B11 B12 
-  domed_by: B0 B1 B4 B6 B9 
+  doms: B10 B11 
+  domed_by: B2 B3 B4 B6 B7 B9 
 B10:
-  doms: 
-  domed_by: B0 B1 B4 B6 B9 B10 
+  doms: B12 
+  domed_by: B2 B3 B4 B6 B7 B9 B10 
 B11:
   doms: 
-  domed_by: B0 B1 B4 B6 B9 B11 
+  domed_by: B2 B3 B4 B6 B7 B9 B11 
 B12:
-  doms: B13 B14 B15 
-  domed_by: B0 B1 B4 B6 B9 B12 
+  doms: B13 B14 
+  domed_by: B2 B3 B4 B6 B7 B9 B10 B12 
 B13:
   doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B13 
+  domed_by: B2 B3 B4 B6 B7 B9 B10 B12 B13 
 B14:
-  doms: B16 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 
-B15:
-  doms: B7 
-  domed_by: B0 B1 B4 B6 B9 B12 B15 
-B16:
-  doms: B17 B18 B19 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 
-B17:
   doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B17 
-B18:
-  doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B18 
-B19:
-  doms: B20 B21 B22 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 
-B20:
-  doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B20 
-B21:
-  doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B21 
-B22:
-  doms: 
-  domed_by: B0 B1 B4 B6 B9 B12 B14 B16 B19 B22 
+  domed_by: B2 B3 B4 B6 B7 B9 B10 B12 B14 
 
-B0:
-  DF: 
-B1:
-  DF: 
 B2:
-  DF: B4 
-B3:
-  DF: B4 
-B4:
   DF: 
+B3:
+  DF: 
+B4:
+  DF: B3 
 B5:
   DF: 
 B6:
-  DF: 
+  DF: B3 
 B7:
-  DF: 
+  DF: B8 
+B8:
+  DF: B3 
 B9:
-  DF: 
+  DF: B8 
 B10:
-  DF: B12 
+  DF: B11 
 B11:
-  DF: B12 
+  DF: B8 
 B12:
-  DF: 
+  DF: B11 
 B13:
-  DF: B15 
+  DF: B14 
 B14:
-  DF: B15 
-B15:
-  DF: 
-B16:
-  DF: B15 
-B17:
-  DF: B19 
-B18:
-  DF: B19 
-B19:
-  DF: B15 
-B20:
-  DF: B22 
-B21:
-  DF: B22 
-B22:
-  DF: B15 
+  DF: B11 
 
 visitFunction main
 visitBlock 
 visitStatement
 visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
 visitExpression
+visitExpression
+visitExpressionLValue p#11
+visitExpression
+visitExpressionLValue p#11
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue p#11
 visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-function main has 3 regs
-B24:
+function main has 8 regs
+B16:
   prev: 
   succ: 
-B25:
-  prev: 
-  succ: 
-
-B24:
+B17:
   prev: 
   succ: 
 
-entryB24
-reverse_postorderB24
-B24:
+B16:
+  prev: 
+  succ: 
+
+entryB16
+reverse_postorderB16
+B16:
   doms: 
-  domed_by: B24 
+  domed_by: B16 
 
-B24:
+B16:
   DF: 
 
 ir:
 ; module
 define i32 @main(){
-B24:
-  %r2 = call i32 @ifElseIf()
-  %r1 = call i32 @putint(i32 %r2)
-  %r3 = add i32 0, 0 ; loadint
-  ret i32 %r3
-
-}
-define i32 @ifElseIf(){
-B0:
-  %r1 = alloca int, 4
-  %r2 = add i32 0, 5 ; loadint
+B16:
+  %r1 = alloca i32, i32 4
+  %r2 = add i32 0, 2 ; loadint
   store i32 %r2, ptr %r1
-  %r3 = alloca int, 4
-  %r4 = add i32 0, 10 ; loadint
-  store i32 %r4, ptr %r3
-  br label %B1
+  %r4 = load i32, ptr %r1
+  %r5 = load i32, ptr %r1
+  %r3 = call i32 @deepWhileBr(i32 %r4, i32 %r5)
+  store i32 %r3, ptr %r1
+  %r7 = load i32, ptr %r1
+  %r6 = call i32 @putint(i32 %r7)
+  %r8 = add i32 0, 0 ; loadint
+  ret i32 %r8
 
-B1:
-  %r5 = alloca int, 4
-  %r6 = load i32, ptr %r1
-  %r7 = add i32 0, 6 ; loadint
-  %r8 = icmp eq i32 %r6, %r7
-  br i1 %r8, label %B2, label %B3
-
+}
+define i32 @deepWhileBr(i32 %r1, i32 %r2){
 B2:
-  %r12 = add i32 0, 1 ; loadint
-  store i32 %r12, ptr %r5
-  br label %B4
+  %r3 = alloca i32, i32 4
+  store i32 %r1, ptr %r3
+  %r4 = alloca i32, i32 4
+  store i32 %r2, ptr %r4
+  %r5 = alloca i32, i32 4
+  %r6 = load i32, ptr %r3
+  %r7 = load i32, ptr %r4
+  %r8 = add i32 %r6, %r7
+  store i32 %r8, ptr %r5
+  br label %B3
 
 B3:
-  %r9 = load i32, ptr %r3
-  %r10 = add i32 0, 11 ; loadint
-  %r11 = icmp eq i32 %r9, %r10
-  store i32 %r11, ptr %r5
-  br label %B4
+  %r9 = load i32, ptr %r5
+  %r10 = add i32 0, 75 ; loadint
+  %r11 = icmp slt i32 %r9, %r10
+  br i1 %r11, label %B4, label %B5
 
 B4:
-  %r13 = load i32, ptr %r5
-  br i1 %r13, label %B5, label %B6
+  %r12 = alloca i32, i32 4
+  %r13 = add i32 0, 42 ; loadint
+  store i32 %r13, ptr %r12
+  br label %B6
 
 B5:
-  %r14 = load i32, ptr %r1
-  ret i32 %r14
+  %r34 = load i32, ptr %r5
+  ret i32 %r34
 
 B6:
-  br label %B9
+  %r14 = load i32, ptr %r5
+  %r15 = add i32 0, 100 ; loadint
+  %r16 = icmp slt i32 %r14, %r15
+  br i1 %r16, label %B7, label %B8
 
 B7:
-  %r42 = load i32, ptr %r1
-  ret i32 %r42
+  %r17 = load i32, ptr %r5
+  %r18 = load i32, ptr %r12
+  %r19 = add i32 %r17, %r18
+  store i32 %r19, ptr %r5
+  br label %B9
+
+B8:
+  br label %B3
 
 B9:
-  %r15 = alloca int, 4
-  %r16 = load i32, ptr %r3
-  %r17 = add i32 0, 10 ; loadint
-  %r18 = icmp eq i32 %r16, %r17
-  br i1 %r18, label %B10, label %B11
+  %r20 = load i32, ptr %r5
+  %r21 = add i32 0, 99 ; loadint
+  %r22 = icmp sgt i32 %r20, %r21
+  br i1 %r22, label %B10, label %B11
 
 B10:
-  %r19 = load i32, ptr %r1
-  %r20 = add i32 0, 1 ; loadint
-  %r21 = icmp eq i32 %r19, %r20
-  store i32 %r21, ptr %r15
+  %r23 = alloca i32, i32 4
+  %r24 = load i32, ptr %r12
+  %r25 = add i32 0, 2 ; loadint
+  %r26 = mul i32 %r24, %r25
+  store i32 %r26, ptr %r23
   br label %B12
 
 B11:
-  %r22 = add i32 0, 0 ; loadint
-  store i32 %r22, ptr %r15
-  br label %B12
+  br label %B8
 
 B12:
-  %r23 = load i32, ptr %r15
-  br i1 %r23, label %B13, label %B14
+  %r28 = add i32 0, 0 ; loadint
+  %r27 = call i32 @get_one(i32 %r28)
+  %r29 = add i32 0, 1 ; loadint
+  %r30 = icmp eq i32 %r27, %r29
+  br i1 %r30, label %B13, label %B14
 
 B13:
-  %r24 = add i32 0, 25 ; loadint
-  store i32 %r24, ptr %r1
-  br label %B15
+  %r31 = load i32, ptr %r23
+  %r32 = add i32 0, 2 ; loadint
+  %r33 = mul i32 %r31, %r32
+  store i32 %r33, ptr %r5
+  br label %B14
 
 B14:
-  br label %B16
-
-B15:
-  br label %B7
-
-B16:
-  %r25 = alloca int, 4
-  %r26 = load i32, ptr %r3
-  %r27 = add i32 0, 10 ; loadint
-  %r28 = icmp eq i32 %r26, %r27
-  br i1 %r28, label %B17, label %B18
-
-B17:
-  %r29 = load i32, ptr %r1
-  %r30 = add i32 0, 5 ; loadint
-  %r32 = add i32 0, 0 ; loadint
-  %r31 = sub i32 %r32, %r30
-  %r33 = icmp eq i32 %r29, %r31
-  store i32 %r33, ptr %r25
-  br label %B19
-
-B18:
-  %r34 = add i32 0, 0 ; loadint
-  store i32 %r34, ptr %r25
-  br label %B19
-
-B19:
-  %r35 = load i32, ptr %r25
-  br i1 %r35, label %B20, label %B21
-
-B20:
-  %r36 = load i32, ptr %r1
-  %r37 = add i32 0, 15 ; loadint
-  %r38 = add i32 %r36, %r37
-  store i32 %r38, ptr %r1
-  br label %B22
-
-B21:
-  %r39 = load i32, ptr %r1
-  %r41 = add i32 0, 0 ; loadint
-  %r40 = sub i32 %r41, %r39
-  store i32 %r40, ptr %r1
-  br label %B22
-
-B22:
-  br label %B15
+  br label %B11
 
 }
----------------------------------ir after mem2reg-------------------------------------
-; module
-define i32 @main(){
-B24:
-  %r2 = call i32 @ifElseIf()
-  %r1 = call i32 @putint(i32 %r2)
-  %r3 = add i32 0, 0 ; loadint
-  ret i32 %r3
-
-}
-define i32 @ifElseIf(){
+define i32 @get_one(i32 %r1){
 B0:
-  %r2 = add i32 0, 5 ; loadint
-  %r4 = add i32 0, 10 ; loadint
-  br label %B1
-
-B1:
-  %r7 = add i32 0, 6 ; loadint
-  %r8 = icmp eq i32 %r2, %r7
-  br i1 %r8, label %B2, label %B3
-
-B2:
-  %r12 = add i32 0, 1 ; loadint
-  br label %B4
-
-B3:
-  %r10 = add i32 0, 11 ; loadint
-  %r11 = icmp eq i32 %r4, %r10
-  br label %B4
-
-B4:
-  %r4 = phi i32 [ %r12, %B2 ], [ %r11, %B3 ]
-  br i1 %r4, label %B5, label %B6
-
-B5:
-  ret i32 %r2
-
-B6:
-  br label %B9
-
-B7:
-  ret i32 %r9
-
-B9:
-  %r17 = add i32 0, 10 ; loadint
-  %r18 = icmp eq i32 %r4, %r17
-  br i1 %r18, label %B10, label %B11
-
-B10:
-  %r20 = add i32 0, 1 ; loadint
-  %r21 = icmp eq i32 %r2, %r20
-  br label %B12
-
-B11:
-  %r22 = add i32 0, 0 ; loadint
-  br label %B12
-
-B12:
-  %r5 = phi i32 [ %r21, %B10 ], [ %r22, %B11 ]
-  br i1 %r5, label %B13, label %B14
-
-B13:
-  %r24 = add i32 0, 25 ; loadint
-  br label %B15
-
-B14:
-  br label %B16
-
-B15:
-  %r9 = phi i32 [ %r24, %B13 ], [ %r7, %B22 ]
-  %r8 = add i32 0, %r6 ; assign
-  br label %B7
-
-B16:
-  %r27 = add i32 0, 10 ; loadint
-  %r28 = icmp eq i32 %r4, %r27
-  br i1 %r28, label %B17, label %B18
-
-B17:
-  %r30 = add i32 0, 5 ; loadint
-  %r32 = add i32 0, 0 ; loadint
-  %r31 = sub i32 %r32, %r30
-  %r33 = icmp eq i32 %r2, %r31
-  br label %B19
-
-B18:
-  %r34 = add i32 0, 0 ; loadint
-  br label %B19
-
-B19:
-  %r6 = phi i32 [ %r33, %B17 ], [ %r34, %B18 ]
-  br i1 %r6, label %B20, label %B21
-
-B20:
-  %r37 = add i32 0, 15 ; loadint
-  %r38 = add i32 %r2, %r37
-  br label %B22
-
-B21:
-  %r41 = add i32 0, 0 ; loadint
-  %r40 = sub i32 %r41, %r2
-  br label %B22
-
-B22:
-  %r7 = phi i32 [ %r38, %B20 ], [ %r40, %B21 ]
-  br label %B15
+  %r2 = alloca i32, i32 4
+  store i32 %r1, ptr %r2
+  %r3 = add i32 0, 1 ; loadint
+  ret i32 %r3
 
 }
 --------------------------- building riscv ---------------------------
 riscv: 
-    call ifElseIf
-    mv T[-2], a0
-    mv a0, T[-2]
+    addi T[-1], sp, 48
+    li T[-2], 2
+    sw T[-2], 0(T[-1])
+    lw T[-4], 0(T[-1])
+    lw T[-5], 0(T[-1])
+    mv a1, T[-4]
+    mv a2, T[-5]
+    call deepWhileBr
+    mv T[-3], a0
+    sw T[-3], 0(T[-1])
+    lw T[-7], 0(T[-1])
+    mv a0, T[-7]
     call putint
-    mv T[-1], a0
-    li T[-3], 0
+    mv T[-6], a0
+    li T[-8], 0
+    mv a0, T[-8]
+    ret
+    addi T[-3], sp, 56
+    sw a1, 0(T[-3])
+    addi T[-4], sp, 60
+    sw a2, 0(T[-4])
+    addi T[-5], sp, 64
+    lw T[-6], 0(T[-3])
+    lw T[-7], 0(T[-4])
+    add T[-8], T[-6], T[-7]
+    sw T[-8], 0(T[-5])
+    j B4
+    lw T[-9], 0(T[-5])
+    li T[-10], 75
+    slt T[-11], T[-9], T[-10]
+    beq x0, T[-11], B6
+    j B5
+    addi T[-12], sp, 68
+    li T[-13], 42
+    sw T[-13], 0(T[-12])
+    j B7
+    lw T[-34], 0(T[-5])
+    mv a0, T[-34]
+    ret
+    lw T[-14], 0(T[-5])
+    li T[-15], 100
+    slt T[-16], T[-14], T[-15]
+    beq x0, T[-16], B9
+    j B8
+    lw T[-17], 0(T[-5])
+    lw T[-18], 0(T[-12])
+    add T[-19], T[-17], T[-18]
+    sw T[-19], 0(T[-5])
+    j B10
+    j B4
+    lw T[-20], 0(T[-5])
+    li T[-21], 99
+    sgt T[-22], T[-20], T[-21]
+    beq x0, T[-22], B12
+    j B11
+    addi T[-23], sp, 72
+    lw T[-24], 0(T[-12])
+    li T[-25], 2
+    mul T[-26], T[-24], T[-25]
+    sw T[-26], 0(T[-23])
+    j B13
+    j B9
+    li T[-28], 0
+    sw a1, 48(sp)
+    sw a2, 52(sp)
+    mv a1, T[-28]
+    call get_one
+    mv T[-27], a0
+    lw a1, 48(sp)
+    lw a2, 52(sp)
+    li T[-29], 1
+    sub T[-30], T[-27], T[-29]
+    seqz T[-30], T[-30]
+    beq x0, T[-30], B15
+    j B14
+    lw T[-31], 0(T[-23])
+    li T[-32], 2
+    mul T[-33], T[-31], T[-32]
+    sw T[-33], 0(T[-5])
+    j B15
+    j B12
+    addi T[-2], sp, 52
+    sw a1, 0(T[-2])
+    li T[-3], 1
     mv a0, T[-3]
     ret
-T[-12] B5
-T[-11] B6
-T[-21] B12
-T[-22] B13
-T[-24] B15
-T[-7] B24
-T[-33] B19
-T[-34] B20
-T[-38] B22
-T[-40] B23
-    li T[-2], 5
-    li T[-4], 10
-    j B4
-    li T[-7], 6
-    sub T[-8], T[-2], T[-7]
-    seqz T[-8], T[-8]
-    beq x0, T[-8], B6
-    j B5
-    li T[-12], 1
-    j B7
-    li T[-10], 11
-    sub T[-11], T[-4], T[-10]
-    seqz T[-11], T[-11]
-    j B7
-    phi T[-4] = T[-12] B5
-[ T[-12], B5] T[-11] B6
-[ T[-11], B6] 
-    beq x0, T[-4], B9
-    j B8
-    mv a0, T[-2]
-    ret
-    j B11
-    mv a0, T[-9]
-    ret
-    li T[-17], 10
-    sub T[-18], T[-4], T[-17]
-    seqz T[-18], T[-18]
-    beq x0, T[-18], B13
-    j B12
-    li T[-20], 1
-    sub T[-21], T[-2], T[-20]
-    seqz T[-21], T[-21]
-    j B14
-    li T[-22], 0
-    j B14
-    phi T[-5] = T[-21] B12
-[ T[-21], B12] T[-22] B13
-[ T[-22], B13] 
-    beq x0, T[-5], B16
-    j B15
-    li T[-24], 25
-    j B17
-    j B18
-    phi T[-9] = T[-24] B15
-[ T[-24], B15] T[-7] B24
-[ T[-7], B24] 
-    j B10
-    li T[-27], 10
-    sub T[-28], T[-4], T[-27]
-    seqz T[-28], T[-28]
-    beq x0, T[-28], B20
-    j B19
-    li T[-30], 5
-    li T[-32], 0
-    sub T[-31], T[-32], T[-30]
-    sub T[-33], T[-2], T[-31]
-    seqz T[-33], T[-33]
-    j B21
-    li T[-34], 0
-    j B21
-    phi T[-6] = T[-33] B19
-[ T[-33], B19] T[-34] B20
-[ T[-34], B20] 
-    beq x0, T[-6], B23
-    j B22
-    li T[-37], 15
-    add T[-38], T[-2], T[-37]
-    j B24
-    li T[-41], 0
-    sub T[-40], T[-41], T[-2]
-    j B24
-    phi T[-7] = T[-38] B22
-[ T[-38], B22] T[-40] B23
-[ T[-40], B23] 
-    j B17
 ?
-ifElseIf
-ifElseIf Main()
-ifElseIf
+get_one
+get_one Main()
+get_one
+after compute reg_used
+after prologue
+end of emitend
+deepWhileBr
+deepWhileBr Main()
+deepWhileBr
 after compute reg_used
 after prologue
 end of emitend

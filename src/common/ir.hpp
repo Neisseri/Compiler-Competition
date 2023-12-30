@@ -165,7 +165,7 @@ struct Alloca: Instruction {
     Alloca(Reg ret_val, Type type, int size) : Instruction(InstType::ALLOCA), ret_val(ret_val), type(type), size(size) {};
 
     std::string toString() {
-        return ret_val.toString() + " = alloca " + type.toString() + ", " + std::to_string(size);
+        return ret_val.toString() + " = alloca " + type.toString() + ", i32 " + std::to_string(size);
     }
 
     void print(std::ostream &os, int indent) {
@@ -418,14 +418,17 @@ struct CondBranch : Instruction {
 struct Function {
     std::string name;
     Type ret_type;
-    int num_regs;
+    int num_regs = 0;
     std::vector<Type> param_types;
     std::list<std::shared_ptr<BasicBlock>> bbs;
+
+    Function(std::string name, Type ret_type) : name(name), ret_type(ret_type) {}
+    Function() {}
 
     std::string toString(){
         std::string ret = " @" + name + "(";
         for (int i = 0; i < param_types.size(); i++){
-            ret += param_types[i].toString(1);
+            ret += param_types[i].toString(1) + " %r" + std::to_string(i + 1);
             if (i + 1 < param_types.size()){
                 ret += ", ";
             }
@@ -443,6 +446,12 @@ struct Function {
         }
 
         os << std::string(indent, ' ') << '}' << std::endl;
+    }
+
+    ir::Reg get_new_reg(int type)
+    {
+        // std::cerr << "get_new_reg " << name << " numregs: " << num_regs << std::endl;
+        return ir::Reg(type, ++num_regs);
     }
 };
 
