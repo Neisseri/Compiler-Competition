@@ -22,7 +22,7 @@ TIMEOUT = 10
 compiler_path = "../build/compiler"
 # compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"
 # compiler_args = "-O2 -march=rv32gc -mabi=ilp32f -xc++ -S -include ./runtime/sylib.h"
-compiler_args = "-d -f"
+compiler_args = " -f"
 qemu_command = "qemu-riscv32"
 
 # 调用gcc进行链接的参数

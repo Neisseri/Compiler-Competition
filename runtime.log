@@ -1,0 +1,460 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef c = 
+                                    (initVal 
+                                        (exp 
+                                            (addExp 
+                                                (mulExp 
+                                                    (unaryExp 
+                                                        (primaryExp 
+                                                            (number 
+                                                                (intConst 4))))))))) ;))) 
+                    (blockItem 
+                        (stmt if ( 
+                            (cond 
+                                (lOrExp 
+                                    (lAndExp 
+                                        (eqExp 
+                                            (relExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (lVal c)))))) < 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 75))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (decl 
+                                            (varDecl 
+                                                (bType int) 
+                                                (varDef d = 
+                                                    (initVal 
+                                                        (exp 
+                                                            (addExp 
+                                                                (mulExp 
+                                                                    (unaryExp 
+                                                                        (primaryExp 
+                                                                            (number 
+                                                                                (intConst 42))))))))) ;))) 
+                                    (blockItem 
+                                        (stmt if ( 
+                                            (cond 
+                                                (lOrExp 
+                                                    (lAndExp 
+                                                        (eqExp 
+                                                            (relExp 
+                                                                (relExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal c)))))) < 
+                                                                (addExp 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 100))))))))))) ) 
+                                            (stmt 
+                                                (block { 
+                                                    (blockItem 
+                                                        (stmt 
+                                                            (lVal c) = 
+                                                            (exp 
+                                                                (addExp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (lVal c))))) + 
+                                                                    (mulExp 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 42))))))) ;)) 
+                                                    (blockItem 
+                                                        (stmt if ( 
+                                                            (cond 
+                                                                (lOrExp 
+                                                                    (lAndExp 
+                                                                        (eqExp 
+                                                                            (relExp 
+                                                                                (relExp 
+                                                                                    (addExp 
+                                                                                        (mulExp 
+                                                                                            (unaryExp 
+                                                                                                (primaryExp 
+                                                                                                    (lVal c)))))) > 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 99))))))))))) ) 
+                                                            (stmt 
+                                                                (block { 
+                                                                    (blockItem 
+                                                                        (decl 
+                                                                            (varDecl 
+                                                                                (bType int) 
+                                                                                (varDef e = 
+                                                                                    (initVal 
+                                                                                        (exp 
+                                                                                            (addExp 
+                                                                                                (mulExp 
+                                                                                                    (unaryExp 
+                                                                                                        (primaryExp 
+                                                                                                            (number 
+                                                                                                                (intConst 84))))))))) ;))) 
+                                                                    (blockItem 
+                                                                        (stmt 
+                                                                            (lVal c) = 
+                                                                            (exp 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 168))))))) ;)) })))) })))) })))) 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (lVal c)))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+construct funct block: main
+visitVarDecl: int start
+visitVarDecl: ident: c
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visit block stmt
+visitVarDecl: int start
+visitVarDecl: ident: d
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visit block stmt
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visit block stmt
+visitVarDecl: int start
+visitVarDecl: ident: e
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitAssign done!
+visitBlock done!
+visitBlock done!
+visitBlock done!
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefint @main()
+Info: visitBlock
+Info: visitVarDef int @c = 4
+Info: visitExpr4
+Info: visitAssignmentExpr4
+Info: visitExpr4
+Info: visitIntLiteralExpr4
+ret->type 0x55cb05c0f8f0
+Info: visitStatementIfElse
+Info: visitExpr@c<75
+Info: visitBinopExpr@c<75
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr75
+Info: visitIntLiteralExpr75
+ret->type 0x55cb05c0f920
+Info: visitStatement
+Info: visitBlock
+Info: visitVarDef int @d = 42
+Info: visitExpr42
+Info: visitAssignmentExpr42
+Info: visitExpr42
+Info: visitIntLiteralExpr42
+ret->type 0x55cb05c0f950
+Info: visitStatementIfElse
+Info: visitExpr@c<100
+Info: visitBinopExpr@c<100
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr100
+Info: visitIntLiteralExpr100
+ret->type 0x55cb05c0f980
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementAssign@c = @c+42
+Info: visitAssignStmtAssign@c = @c+42
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmtint
+Info: visitExpr@c+42
+Info: visitBinopExpr@c+42
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr42
+Info: visitIntLiteralExpr42
+ret->type 0x55cb05c0f8c0
+Info: visitStatementIfElse
+Info: visitExpr@c>99
+Info: visitBinopExpr@c>99
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr99
+Info: visitIntLiteralExpr99
+ret->type 0x55cb05c0fbe0
+Info: visitStatement
+Info: visitBlock
+Info: visitVarDef int @e = 84
+Info: visitExpr84
+Info: visitAssignmentExpr84
+Info: visitExpr84
+Info: visitIntLiteralExpr84
+ret->type 0x55cb05c0fc10
+Info: visitStatementAssign@c = 168
+Info: visitAssignStmtAssign@c = 168
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmtint
+Info: visitExpr168
+Info: visitIntLiteralExpr168
+ret->type 0x55cb05c0fc90
+Info: visitStatementReturn @c
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitReturnStmtReturn @c#2function has returnscope id1
+--------------------------- building ir ---------------------------
+visitProgram
+visitFunction main
+visitBlock 
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue c#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionLValue c#2
+function main has 20 regs
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 B6 
+  succ: 
+B4:
+  prev: B2 
+  succ: B5 B6 
+B5:
+  prev: B4 
+  succ: B7 
+B6:
+  prev: B4 B9 
+  succ: B3 
+B7:
+  prev: B5 
+  succ: B8 B9 
+B8:
+  prev: B7 
+  succ: B9 
+B9:
+  prev: B7 B8 
+  succ: B6 
+B10:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 B6 
+  succ: 
+B4:
+  prev: B2 
+  succ: B5 B6 
+B5:
+  prev: B4 
+  succ: B7 
+B6:
+  prev: B4 B9 
+  succ: B3 
+B7:
+  prev: B5 
+  succ: B8 B9 
+B8:
+  prev: B7 
+  succ: B9 
+B9:
+  prev: B7 B8 
+  succ: B6 
+
+entryB0
+B1
+B2
+B3
+B4
+B5
+B6
+B7
+B8
+B9
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB5
+reverse_postorderB7
+reverse_postorderB8
+reverse_postorderB9
+reverse_postorderB6
+reverse_postorderB3
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB5
+reverse_postorderB7
+reverse_postorderB8
+reverse_postorderB9
+reverse_postorderB6
+reverse_postorderB3
+B0:
+  doms: B1 
+  domed_by: B0 
+B1:
+  doms: B2 B3 
+  domed_by: B0 B1 
+B2:
+  doms: B4 
+  domed_by: B0 B1 B2 
+B3:
+  doms: 
+  domed_by: B0 B1 B3 
+B4:
+  doms: B5 B6 
+  domed_by: B0 B1 B2 B4 
+B5:
+  doms: B7 
+  domed_by: B0 B1 B2 B4 B5 
+B6:
+  doms: 
+  domed_by: B0 B1 B2 B4 B6 
+B7:
+  doms: B8 B9 
+  domed_by: B0 B1 B2 B4 B5 B7 
+B8:
+  doms: 
+  domed_by: B0 B1 B2 B4 B5 B7 B8 
+B9:
+  doms: 
+  domed_by: B0 B1 B2 B4 B5 B7 B9 
+
+B0:
+  DF: 
+B1:
+  DF: 
+B2:
+  DF: B3 
+B3:
+  DF: 
+B4:
+  DF: B3 
+B5:
+  DF: B6 
+B6:
+  DF: B3 
+B7:
+  DF: B6 
+B8:
+  DF: B9 
+B9:
+  DF: B6 
+
+--------------------------- building riscv ---------------------------
