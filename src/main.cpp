@@ -129,9 +129,6 @@ int main(int argc, char *argv[])
     IRGenerator ir_generator;
     ir_generator.visitPromgram(AST);
     IROptimizer ir_optimizer(&ir_generator);
-    if (mem_to_reg_flag || o2_flag){
-        ir_optimizer.mem_to_reg();
-    }
     if (out_ir_flag)
     {
         cerr << "ir:" << endl;
@@ -142,6 +139,15 @@ int main(int argc, char *argv[])
         output_file.close();
     }
 
+    if (mem_to_reg_flag){
+        cerr << "---------------------------------ir after mem2reg-------------------------------------" << endl;
+        ir_optimizer.mem_to_reg();
+        ir_generator.ir_program.print(cerr, 0);
+        ofstream output_file= openOrCreateFile("ir-m2r", output_file_name);
+        ir_generator.ir_program.print(output_file, 0);
+        output_file.close();
+    }
+    
     if (dce_flag)
     {
         cerr << "---------------------------------ir after dce-------------------------------------" << endl;

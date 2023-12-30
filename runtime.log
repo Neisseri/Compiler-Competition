@@ -469,13 +469,13 @@ Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55ea67a5ff10
+ret->type 0x5644cfc31f20
 Info: visitVarDef int @global = 0
 Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55ea67a5ff90
+ret->type 0x5644cfc31fa0
 Info: visitFuncDefvoid @func(int @i0)
 Info: visitParamDefint @i0
 Info: visitBlock
@@ -484,55 +484,55 @@ Info: visitExpr1
 Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55ea67a60150
+ret->type 0x5644cfc32160
 Info: visitVarDef int @i2 = 2
 Info: visitExpr2
 Info: visitAssignmentExpr2
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55ea67a601d0
+ret->type 0x5644cfc321e0
 Info: visitVarDef int @i3 = 3
 Info: visitExpr3
 Info: visitAssignmentExpr3
 Info: visitExpr3
 Info: visitIntLiteralExpr3
-ret->type 0x55ea67a60250
+ret->type 0x5644cfc32260
 Info: visitVarDef int @i4 = 4
 Info: visitExpr4
 Info: visitAssignmentExpr4
 Info: visitExpr4
 Info: visitIntLiteralExpr4
-ret->type 0x55ea67a602d0
+ret->type 0x5644cfc322e0
 Info: visitVarDef int @i5 = 5
 Info: visitExpr5
 Info: visitAssignmentExpr5
 Info: visitExpr5
 Info: visitIntLiteralExpr5
-ret->type 0x55ea67a603b0
+ret->type 0x5644cfc323c0
 Info: visitVarDef int @i6 = 6
 Info: visitExpr6
 Info: visitAssignmentExpr6
 Info: visitExpr6
 Info: visitIntLiteralExpr6
-ret->type 0x55ea67a60490
+ret->type 0x5644cfc324a0
 Info: visitVarDef int @i7 = 7
 Info: visitExpr7
 Info: visitAssignmentExpr7
 Info: visitExpr7
 Info: visitIntLiteralExpr7
-ret->type 0x55ea67a60570
+ret->type 0x5644cfc32580
 Info: visitVarDef int @i8 = 8
 Info: visitExpr8
 Info: visitAssignmentExpr8
 Info: visitExpr8
 Info: visitIntLiteralExpr8
-ret->type 0x55ea67a60650
+ret->type 0x5644cfc32660
 Info: visitVarDef int @i9 = 9
 Info: visitExpr9
 Info: visitAssignmentExpr9
 Info: visitExpr9
 Info: visitIntLiteralExpr9
-ret->type 0x55ea67a60730
+ret->type 0x5644cfc32740
 Info: visitStatementAssign@global = @i0
 Info: visitAssignStmtAssign@global = @i0
 Info: visitExpr@global
@@ -545,67 +545,67 @@ Info: visitExpr10
 Info: visitAssignmentExpr10
 Info: visitExpr10
 Info: visitIntLiteralExpr10
-ret->type 0x55ea67a60810
+ret->type 0x5644cfc32820
 Info: visitVarDef int @i11 = 11
 Info: visitExpr11
 Info: visitAssignmentExpr11
 Info: visitExpr11
 Info: visitIntLiteralExpr11
-ret->type 0x55ea67a608f0
+ret->type 0x5644cfc32900
 Info: visitVarDef int @i12 = 12
 Info: visitExpr12
 Info: visitAssignmentExpr12
 Info: visitExpr12
 Info: visitIntLiteralExpr12
-ret->type 0x55ea67a609d0
+ret->type 0x5644cfc329e0
 Info: visitVarDef int @i13 = 13
 Info: visitExpr13
 Info: visitAssignmentExpr13
 Info: visitExpr13
 Info: visitIntLiteralExpr13
-ret->type 0x55ea67a60ab0
+ret->type 0x5644cfc32ac0
 Info: visitVarDef int @i14 = 14
 Info: visitExpr14
 Info: visitAssignmentExpr14
 Info: visitExpr14
 Info: visitIntLiteralExpr14
-ret->type 0x55ea67a60b90
+ret->type 0x5644cfc32ba0
 Info: visitVarDef int @i15 = 15
 Info: visitExpr15
 Info: visitAssignmentExpr15
 Info: visitExpr15
 Info: visitIntLiteralExpr15
-ret->type 0x55ea67a60c70
+ret->type 0x5644cfc32c80
 Info: visitVarDef int @i16 = 16
 Info: visitExpr16
 Info: visitAssignmentExpr16
 Info: visitExpr16
 Info: visitIntLiteralExpr16
-ret->type 0x55ea67a60d50
+ret->type 0x5644cfc32d60
 Info: visitVarDef int @i17 = 17
 Info: visitExpr17
 Info: visitAssignmentExpr17
 Info: visitExpr17
 Info: visitIntLiteralExpr17
-ret->type 0x55ea67a60e30
+ret->type 0x5644cfc32e40
 Info: visitVarDef int @i18 = 18
 Info: visitExpr18
 Info: visitAssignmentExpr18
 Info: visitExpr18
 Info: visitIntLiteralExpr18
-ret->type 0x55ea67a60f10
+ret->type 0x5644cfc32f20
 Info: visitVarDef int @i19 = 19
 Info: visitExpr19
 Info: visitAssignmentExpr19
 Info: visitExpr19
 Info: visitIntLiteralExpr19
-ret->type 0x55ea67a60ff0
+ret->type 0x5644cfc33000
 Info: visitVarDef int @i20 = 20
 Info: visitExpr20
 Info: visitAssignmentExpr20
 Info: visitExpr20
 Info: visitIntLiteralExpr20
-ret->type 0x55ea67a610d0
+ret->type 0x5644cfc330e0
 Info: visitStatementReturn  nullptr_for_void_func
 Info: visitReturnStmtReturn 0function has returnscope id1
 Info: visitFuncDefint @main()
@@ -616,11 +616,11 @@ Info: visitExprCall @func(100)
 Info: visiCalltExprCall @func(100)
 Info: visitExpr100
 Info: visitIntLiteralExpr100
-ret->type 0x55ea67a612b0
+ret->type 0x5644cfc332c0
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55ea67a61330
+ret->type 0x5644cfc33340
 Info: visitReturnStmtReturn 0function has returnscope id3
 ast: 
 Program
@@ -824,71 +824,28 @@ B2:
 }
 define void @func(i32){
 B0:
-  %2 = alloca int, 4
-  store i32 %1, ptr %2
-  %3 = alloca int, 4
   %4 = 1
-  store i32 %4, ptr %3
-  %5 = alloca int, 4
   %6 = 2
-  store i32 %6, ptr %5
-  %7 = alloca int, 4
   %8 = 3
-  store i32 %8, ptr %7
-  %9 = alloca int, 4
   %10 = 4
-  store i32 %10, ptr %9
-  %11 = alloca int, 4
   %12 = 5
-  store i32 %12, ptr %11
-  %13 = alloca int, 4
   %14 = 6
-  store i32 %14, ptr %13
-  %15 = alloca int, 4
   %16 = 7
-  store i32 %16, ptr %15
-  %17 = alloca int, 4
   %18 = 8
-  store i32 %18, ptr %17
-  %19 = alloca int, 4
   %20 = 9
-  store i32 %20, ptr %19
-  %21 = load i32, ptr %2
   %22 = loadaddr @global#0
-  store i32 %21, ptr %22
-  %23 = alloca int, 4
+  store i32 %1, ptr %22
   %24 = 10
-  store i32 %24, ptr %23
-  %25 = alloca int, 4
   %26 = 11
-  store i32 %26, ptr %25
-  %27 = alloca int, 4
   %28 = 12
-  store i32 %28, ptr %27
-  %29 = alloca int, 4
   %30 = 13
-  store i32 %30, ptr %29
-  %31 = alloca int, 4
   %32 = 14
-  store i32 %32, ptr %31
-  %33 = alloca int, 4
   %34 = 15
-  store i32 %34, ptr %33
-  %35 = alloca int, 4
   %36 = 16
-  store i32 %36, ptr %35
-  %37 = alloca int, 4
   %38 = 17
-  store i32 %38, ptr %37
-  %39 = alloca int, 4
   %40 = 18
-  store i32 %40, ptr %39
-  %41 = alloca int, 4
   %42 = 19
-  store i32 %42, ptr %41
-  %43 = alloca int, 4
   %44 = 20
-  store i32 %44, ptr %43
   %45 = 0
   ret i32 %45
 
@@ -902,94 +859,50 @@ Info: LoadInt%3 = 0
 Info: Returnret i32 %3
 func
 Info: bbBasicBlock has no String!
-Info: Alloca%2 = alloca int, 4
-Info: Storestore i32 %1, ptr %2
-Info: Alloca%3 = alloca int, 4
 Info: LoadInt%4 = 1
-Info: Storestore i32 %4, ptr %3
-Info: Alloca%5 = alloca int, 4
 Info: LoadInt%6 = 2
-Info: Storestore i32 %6, ptr %5
-Info: Alloca%7 = alloca int, 4
 Info: LoadInt%8 = 3
-Info: Storestore i32 %8, ptr %7
-Info: Alloca%9 = alloca int, 4
 Info: LoadInt%10 = 4
-Info: Storestore i32 %10, ptr %9
-Info: Alloca%11 = alloca int, 4
 Info: LoadInt%12 = 5
-Info: Storestore i32 %12, ptr %11
-Info: Alloca%13 = alloca int, 4
 Info: LoadInt%14 = 6
-Info: Storestore i32 %14, ptr %13
-Info: Alloca%15 = alloca int, 4
 Info: LoadInt%16 = 7
-Info: Storestore i32 %16, ptr %15
-Info: Alloca%17 = alloca int, 4
 Info: LoadInt%18 = 8
-Info: Storestore i32 %18, ptr %17
-Info: Alloca%19 = alloca int, 4
 Info: LoadInt%20 = 9
-Info: Storestore i32 %20, ptr %19
-Info: Unknown%21 = load i32, ptr %2
 Info: LoadAddr%22 = loadaddr @global#0
-Info: Storestore i32 %21, ptr %22
-Info: Alloca%23 = alloca int, 4
+Info: Storestore i32 %1, ptr %22
 Info: LoadInt%24 = 10
-Info: Storestore i32 %24, ptr %23
-Info: Alloca%25 = alloca int, 4
 Info: LoadInt%26 = 11
-Info: Storestore i32 %26, ptr %25
-Info: Alloca%27 = alloca int, 4
 Info: LoadInt%28 = 12
-Info: Storestore i32 %28, ptr %27
-Info: Alloca%29 = alloca int, 4
 Info: LoadInt%30 = 13
-Info: Storestore i32 %30, ptr %29
-Info: Alloca%31 = alloca int, 4
 Info: LoadInt%32 = 14
-Info: Storestore i32 %32, ptr %31
-Info: Alloca%33 = alloca int, 4
 Info: LoadInt%34 = 15
-Info: Storestore i32 %34, ptr %33
-Info: Alloca%35 = alloca int, 4
 Info: LoadInt%36 = 16
-Info: Storestore i32 %36, ptr %35
-Info: Alloca%37 = alloca int, 4
 Info: LoadInt%38 = 17
-Info: Storestore i32 %38, ptr %37
-Info: Alloca%39 = alloca int, 4
 Info: LoadInt%40 = 18
-Info: Storestore i32 %40, ptr %39
-Info: Alloca%41 = alloca int, 4
 Info: LoadInt%42 = 19
-Info: Storestore i32 %42, ptr %41
-Info: Alloca%43 = alloca int, 4
 Info: LoadInt%44 = 20
-Info: Storestore i32 %44, ptr %43
 Info: LoadInt%45 = 0
 Info: Returnret i32 %45
-dead var: 2
-dead var: 3
-dead var: 5
-dead var: 7
-dead var: 9
-dead var: 11
-dead var: 13
-dead var: 15
-dead var: 17
-dead var: 19
-dead var: 23
-dead var: 25
-dead var: 27
-dead var: 29
-dead var: 31
-dead var: 33
-dead var: 35
-dead var: 37
-dead var: 39
-dead var: 41
-dead var: 43
+dead var: 4
+dead var: 6
+dead var: 8
+dead var: 10
+dead var: 12
+dead var: 14
+dead var: 16
+dead var: 18
+dead var: 20
+dead var: 24
+dead var: 26
+dead var: 28
+dead var: 30
+dead var: 32
+dead var: 34
+dead var: 36
+dead var: 38
+dead var: 40
+dead var: 42
+dead var: 44
 ; module
 @loopCount#0 = global int 0, 4
 @global#0 = global int 0, 4
@@ -1003,71 +916,8 @@ B2:
 }
 define void @func(i32){
 B0:
-  %2 = alloca int, 4
-  store i32 %1, ptr %2
-  %3 = alloca int, 4
-  %4 = 1
-  store i32 %4, ptr %3
-  %5 = alloca int, 4
-  %6 = 2
-  store i32 %6, ptr %5
-  %7 = alloca int, 4
-  %8 = 3
-  store i32 %8, ptr %7
-  %9 = alloca int, 4
-  %10 = 4
-  store i32 %10, ptr %9
-  %11 = alloca int, 4
-  %12 = 5
-  store i32 %12, ptr %11
-  %13 = alloca int, 4
-  %14 = 6
-  store i32 %14, ptr %13
-  %15 = alloca int, 4
-  %16 = 7
-  store i32 %16, ptr %15
-  %17 = alloca int, 4
-  %18 = 8
-  store i32 %18, ptr %17
-  %19 = alloca int, 4
-  %20 = 9
-  store i32 %20, ptr %19
-  %21 = load i32, ptr %2
   %22 = loadaddr @global#0
-  store i32 %21, ptr %22
-  %23 = alloca int, 4
-  %24 = 10
-  store i32 %24, ptr %23
-  %25 = alloca int, 4
-  %26 = 11
-  store i32 %26, ptr %25
-  %27 = alloca int, 4
-  %28 = 12
-  store i32 %28, ptr %27
-  %29 = alloca int, 4
-  %30 = 13
-  store i32 %30, ptr %29
-  %31 = alloca int, 4
-  %32 = 14
-  store i32 %32, ptr %31
-  %33 = alloca int, 4
-  %34 = 15
-  store i32 %34, ptr %33
-  %35 = alloca int, 4
-  %36 = 16
-  store i32 %36, ptr %35
-  %37 = alloca int, 4
-  %38 = 17
-  store i32 %38, ptr %37
-  %39 = alloca int, 4
-  %40 = 18
-  store i32 %40, ptr %39
-  %41 = alloca int, 4
-  %42 = 19
-  store i32 %42, ptr %41
-  %43 = alloca int, 4
-  %44 = 20
-  store i32 %44, ptr %43
+  store i32 %1, ptr %22
   %45 = 0
   ret i32 %45
 
@@ -1081,71 +931,8 @@ riscv:
     li T[-3], 0
     mv a0, T[-3]
     ret
-    addi T[-2], sp, 52
-    sw a1, 0(T[-2])
-    addi T[-3], sp, 56
-    li T[-4], 1
-    sw T[-4], 0(T[-3])
-    addi T[-5], sp, 60
-    li T[-6], 2
-    sw T[-6], 0(T[-5])
-    addi T[-7], sp, 64
-    li T[-8], 3
-    sw T[-8], 0(T[-7])
-    addi T[-9], sp, 68
-    li T[-10], 4
-    sw T[-10], 0(T[-9])
-    addi T[-11], sp, 72
-    li T[-12], 5
-    sw T[-12], 0(T[-11])
-    addi T[-13], sp, 76
-    li T[-14], 6
-    sw T[-14], 0(T[-13])
-    addi T[-15], sp, 80
-    li T[-16], 7
-    sw T[-16], 0(T[-15])
-    addi T[-17], sp, 84
-    li T[-18], 8
-    sw T[-18], 0(T[-17])
-    addi T[-19], sp, 88
-    li T[-20], 9
-    sw T[-20], 0(T[-19])
-    lw T[-21], 0(T[-2])
     la T[-22], global
-    sw T[-21], 0(T[-22])
-    addi T[-23], sp, 92
-    li T[-24], 10
-    sw T[-24], 0(T[-23])
-    addi T[-25], sp, 96
-    li T[-26], 11
-    sw T[-26], 0(T[-25])
-    addi T[-27], sp, 100
-    li T[-28], 12
-    sw T[-28], 0(T[-27])
-    addi T[-29], sp, 104
-    li T[-30], 13
-    sw T[-30], 0(T[-29])
-    addi T[-31], sp, 108
-    li T[-32], 14
-    sw T[-32], 0(T[-31])
-    addi T[-33], sp, 112
-    li T[-34], 15
-    sw T[-34], 0(T[-33])
-    addi T[-35], sp, 116
-    li T[-36], 16
-    sw T[-36], 0(T[-35])
-    addi T[-37], sp, 120
-    li T[-38], 17
-    sw T[-38], 0(T[-37])
-    addi T[-39], sp, 124
-    li T[-40], 18
-    sw T[-40], 0(T[-39])
-    addi T[-41], sp, 128
-    li T[-42], 19
-    sw T[-42], 0(T[-41])
-    addi T[-43], sp, 132
-    li T[-44], 20
-    sw T[-44], 0(T[-43])
+    sw a1, 0(T[-22])
     li T[-45], 0
     mv a0, T[-45]
     ret
