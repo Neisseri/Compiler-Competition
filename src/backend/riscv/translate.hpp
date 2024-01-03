@@ -16,9 +16,8 @@ namespace riscv {
       alloca_sizes[r] = alloca->size;
       frame_size += alloca->size;
       if (alloca_offsets[r] >= 2048) {
-        bb->instructions.emplace_back(new LUI(r, alloca_offsets[r]/2048));
+        bb->instructions.emplace_back(new LoadImm(r, alloca_offsets[r]));
         bb->instructions.emplace_back(new Binary(r, RiscvBinaryOp::ADD, r, Reg(General, sp)));
-        bb->instructions.emplace_back(new ADDI(r, r, alloca_offsets[r]%2048));
       }
       else {
         bb->instructions.emplace_back(new ADDI(r, Reg(General, sp), alloca_offsets[r]));
