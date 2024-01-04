@@ -131,6 +131,7 @@ namespace riscv {
           }
           else {
             bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), (i-7)*4));
+            frame_size += 4;
           }
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
@@ -226,17 +227,8 @@ namespace riscv {
     num_regs = ir_function.num_regs;
     stackParamSize = 0;
     bbs.emplace_back(entry_bb);
-    num_params = ir_function.param_types.size();
-    frame_size = 4 * 11 + 4;
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
     std::set<int> arg_idxs;
-    for (int i = 0; i < num_params; i++) {
-      if (i < 7) {
-        arg_idxs.insert(-(i+1));
-        offsets[Reg(General, argregs[i])] = frame_size;
-        frame_size += 4;
-      }
-    }
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = new BasicBlock;
         bbs.emplace_back(bb);
@@ -254,7 +246,15 @@ namespace riscv {
         }
       }
     }
-    frame_size += stackParamSize;
+    frame_size += stackParamSize + 4 * 11 + 4;
+    num_params = ir_function.param_types.size();
+    for (int i = 0; i < num_params; i++) {
+      if (i < 7) {
+        arg_idxs.insert(-(i+1));
+        offsets[Reg(General, argregs[i])] = frame_size;
+        frame_size += 4;
+      }
+    }
     for (auto &ir_bb: ir_function.bbs) {
         auto bb = bb_map[ir_bb.get()];
         bb->instructions.clear();
