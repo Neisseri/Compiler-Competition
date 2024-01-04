@@ -29,7 +29,7 @@ namespace riscv {
         std::set<Reg> initial;
 
         Function* func;
-        int K;
+        int const K = 26;
         void Build();
         void MkWorklist();
         void Simplify();
@@ -100,7 +100,7 @@ namespace riscv {
                 }
             }
             Main();
-            return ;
+            // return ;
         }
         ReplaceRegs();
     }
@@ -121,7 +121,7 @@ namespace riscv {
     }
 
     bool coloringregalloc::isPrecolored(Reg u) {
-        return u.id > 0;
+        return u.id >= 0;
     }
 
     void coloringregalloc::Build() {
@@ -129,7 +129,7 @@ namespace riscv {
         adjSet.clear();
         degree.clear();
         int inf = 2147483647;
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 32; i++) {
             degree[Reg(General, i)] = inf;
         }
         for (auto bb: func->bbs) {
@@ -376,7 +376,15 @@ namespace riscv {
     }
 
     void coloringregalloc::SelectSpill() {
+        std::cerr << "select spill entry\n" << std::endl;
         auto m = *(std::prev(spillWorklist.end()));
+        int mid = m.id;
+        for (auto i : spillWorklist) {
+            if (i.id > mid) {
+                m = i;
+                mid = i.id;
+            }
+        }
         spillWorklist.erase(m);
         // std::cerr << "simplify reg SelectSpill insert " << print_reg(m) << "\n";
         simplifyWorklist.insert(m);
