@@ -164,7 +164,9 @@ int main(int argc, char *argv[])
         std::cerr << "?\n";
         for (auto [name, func] : program.functions)
         {
-            func->resolve_phi();
+            if (mem_to_reg_flag) {
+                func->resolve_phi();
+            }
             std::cerr << name << "\n";
             riscv::coloringregalloc RegAllocator(func);
             // func->do_reg_alloc();

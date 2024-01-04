@@ -64,23 +64,43 @@ namespace riscv {
     void coloringregalloc::Main() {
         std::cerr << func->name << " Main()\n";
         func->do_liveness_analysis();
+        std::cerr << func->name << " do_liveness_analysis() done\n";
         Build();
+        std::cerr << func->name << " Build() done\n";
         initial.clear();
         MkWorklist();
+        std::cerr << func->name << " MkWorklist() done\n";
         do {
-            if (!simplifyWorklist.empty()) Simplify();
-            else if (!worklistMoves.empty()) Coalesce();
-            else if (!freezeWorklist.empty()) Freeze();
-            else if (!spillWorklist.empty()) SelectSpill();
+            if (!simplifyWorklist.empty()){
+                std::cerr << func->name << " Simplify()\n";
+                Simplify();
+            } else if (!worklistMoves.empty()) {
+                std::cerr << func->name << " Coalesce()\n";
+                Coalesce();
+            } else if (!freezeWorklist.empty()) {
+                std::cerr << func->name << " Freeze()\n";
+                Freeze();
+            } else if (!spillWorklist.empty()) {
+                std::cerr << func->name << " SelectSpill()\n";
+                SelectSpill();
+            }
         } while (
             !(simplifyWorklist.empty() && worklistMoves.empty() && freezeWorklist.empty() && spillWorklist.empty())
         );
         AssignColors();
+        std::cerr << func->name << " AssignColors() done\n";
         if (!spilledNodes.empty()) {
             // for (auto s: spilledNodes)
-                // std::cout << "spill node " << print_reg(s) << "\n";
+            //     std::cerr << "spill node " << print_reg(s) << "\n";
             RewriteProgram();
+            std::cerr << func->name << " RewriteProgram() done\n";
+            for (auto bb: func->bbs) {
+                for (auto inst: bb->instructions) {
+                    inst->emit(std::cerr);
+                }
+            }
             Main();
+            return ;
         }
         ReplaceRegs();
     }
@@ -179,18 +199,24 @@ namespace riscv {
             }
         }
         for (auto r: initial) {
-            if (degree[r] >= K)
+            if (degree[r] >= K){
+                std::cerr << "spill reg MkWorklist insert " << print_reg(r) << "\n";
                 spillWorklist.insert(r);
-            else if (MoveRelated(r))
+            }
+            else if (MoveRelated(r)) {
+                std::cerr << "freeze reg MkWorklist insert " << print_reg(r) << "\n";
                 freezeWorklist.insert(r);
-            else
+            }
+            else {
+                std::cerr << "simplify reg MkWorklist insert " << print_reg(r) << "\n";
                 simplifyWorklist.insert(r);
+            }
         }
     }
 
     void coloringregalloc::Simplify() {
         auto it = *simplifyWorklist.begin();
-        // std::cout << "simplify reg " << print_reg(it) << "\n";
+        // std::cerr << "simplify reg erase " << print_reg(it) << "\n";
         simplifyWorklist.erase(it);
         selectStack.push_back(it);
         for (Reg m: Adjacent(it))
@@ -209,6 +235,7 @@ namespace riscv {
                 freezeWorklist.insert(m);
             }
             else {
+                // std::cerr << "simplify reg DecrementDegree insert " << print_reg(m) << "\n";
                 simplifyWorklist.insert(m);
             }
         }
@@ -285,6 +312,7 @@ namespace riscv {
     void coloringregalloc::AddWorklist(Reg u) {
         if (!isPrecolored(u) && !MoveRelated(u) && degree[u] < K) {
             freezeWorklist.erase(u);
+            // std::cerr << "simplify reg AddWorklist insert " << print_reg(u) << "\n";
             simplifyWorklist.insert(u);
         }
     }
@@ -326,6 +354,7 @@ namespace riscv {
     void coloringregalloc::Freeze() {
         auto u = *freezeWorklist.begin();
         freezeWorklist.erase(u);
+        // std::cerr << "simplify reg Freeze insert " << print_reg(u) << "\n";
         simplifyWorklist.insert(u);
         FreezeMoves(u);
     }
@@ -340,14 +369,16 @@ namespace riscv {
             Reg v = (u == m->dst) ? m->src : m->dst;
             if (NodeMoves(v).empty() && degree[v] < K) {
                 freezeWorklist.erase(v);
+                // std::cerr << "simplify reg FreezeMoves insert " << print_reg(v) << "\n";
                 simplifyWorklist.insert(v);
             }
         }
     }
 
     void coloringregalloc::SelectSpill() {
-        auto m = *spillWorklist.begin();
+        auto m = *(std::prev(spillWorklist.end()));
         spillWorklist.erase(m);
+        // std::cerr << "simplify reg SelectSpill insert " << print_reg(m) << "\n";
         simplifyWorklist.insert(m);
         FreezeMoves(m);
     }
@@ -392,6 +423,7 @@ namespace riscv {
         // for (auto n: color) {
         //     std::cout << "assign " << print_reg(n.first) << " to " << print_reg(Reg(General, n.second)) << std::endl;
         // }
+        std::cerr << "replace regs\n" << std::endl;
         for (auto &bb: func->bbs) {
             for (auto &inst: bb->instructions) {
                 auto reg_ptrs = inst->reg_ptrs();

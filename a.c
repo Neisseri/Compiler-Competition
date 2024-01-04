@@ -1,31 +1,18 @@
-int get_one(int a) {
-  return 1;
-}
-
-int deepWhileBr(int a, int b) {
-  int c;
-  c = a + b;
+int main() {
+  int c = 4;
   while (c < 75) {
     int d;
     d = 42;
     if (c < 100) {
-      c = c + d;
+      c = c + 42;
       if (c > 99) {
         int e;
-        e = d * 2;
-        if (get_one(0) == 1) {
-          c = e * 2;
+        e = 84;
+        if (1) {
+          c = 168;
         }
       }
     }
   }
   return (c);
-}
-
-int main() {
-  int p;
-  p = 2;
-  p = deepWhileBr(p, p);
-  putint(p);
-  return 0;
 }
