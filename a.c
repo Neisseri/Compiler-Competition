@@ -1,19 +1,19 @@
-int main(){
-  int a1 = 1, a2 =2, a3 = 3;
-  int a4 = 4, a5 = 5, a6 = 6;
-  int a7 = 7, a8 = 8, a9 = 9;
-  int a10 = 10, a11 = 11, a12 = 12;
-  int a13 = 13, a14 = 14, a15 = 15;
-  int a16 = 16, a17 = 17, a18 = 18;
-  int a19 = 19, a20 = 20, a21 = 21;
-  int a22 = 22, a23 = 23, a24 = 24;
-  int a25 = 25, a26 = 26, a27 = 27;
+int foo(int a, int b){
+  return a + b;
+}
 
-  return a1 + a2 + a3 + a4
-    + a5 + a6 + a7 + a8
-    + a9 + a10 + a11 + a12
-    + a13 + a14 + a15 + a16
-    + a17 + a18 + a19 + a20
-    + a21 + a22 + a23 + a24
-    + a25 + a26 + a27;
+int goo(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int l, int m, int n){
+  return foo(g, f);
+}
+
+int main(){
+  int a = 1;
+  int b = 2;
+  int c = 2;
+  int d = 4;
+  int e = 5;
+  int f = 6;
+  int g = 8;
+  d = goo(a, b, b, c, d, e, g, f, g, f, c, d, c, e);
+  return d;
 }

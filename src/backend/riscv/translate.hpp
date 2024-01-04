@@ -122,7 +122,7 @@ namespace riscv {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
       if (func_defined.count(call->func_name)) {
-        for (int i = 0; i < num_params; i++)
+        for (int i = 0; i < num_params && i < 7; i++)
           bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
@@ -135,11 +135,11 @@ namespace riscv {
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        for (int i = 0; i < num_params; i++)
+        for (int i = 0; i < num_params && i < 7; i++)
           bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
       }
       else {
-        for (int i = 0; i < num_params; i++)
+        for (int i = 0; i < num_params && i < 7; i++)
           bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
@@ -147,7 +147,7 @@ namespace riscv {
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        for (int i = 0; i < num_params; i++)
+        for (int i = 0; i < num_params && i < 7; i++)
           bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
       }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
