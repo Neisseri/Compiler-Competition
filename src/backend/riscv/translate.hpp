@@ -227,6 +227,8 @@ namespace riscv {
     num_regs = ir_function.num_regs;
     stackParamSize = 0;
     bbs.emplace_back(entry_bb);
+    num_params = ir_function.param_types.size();
+    frame_size = 4 * 11 + 4;
     std::unordered_map<ir::BasicBlock*, BasicBlock*> bb_map;
     std::set<int> arg_idxs;
     for (auto &ir_bb: ir_function.bbs) {
@@ -246,8 +248,7 @@ namespace riscv {
         }
       }
     }
-    frame_size += stackParamSize + 4 * 11 + 4;
-    num_params = ir_function.param_types.size();
+    frame_size += stackParamSize;
     for (int i = 0; i < num_params; i++) {
       if (i < 7) {
         arg_idxs.insert(-(i+1));
