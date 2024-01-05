@@ -53,6 +53,8 @@ struct Instruction {
     virtual std::set<Reg> use() const { return {}; }
     std::set<Reg> livein, liveout;
     virtual std::vector<Reg*> reg_ptrs() { return {}; }
+    virtual std::vector<Reg*> def_ptrs() { return {}; }
+    virtual std::vector<Reg*> use_ptrs() { return {}; }
     void replace_reg(Reg src, Reg dst);
 };
 
@@ -66,6 +68,8 @@ struct Unary: Instruction {
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {&src}; }
 };
 
 struct Binary: Instruction {
@@ -76,6 +80,8 @@ struct Binary: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src1, src2}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src1, &src2}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {&src1, &src2}; }
 };
 
 struct Return: Instruction {
@@ -88,6 +94,8 @@ struct Return: Instruction {
     std::set<Reg> def() const override { return {}; }
     std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&src}; }
+    std::vector<Reg*> def_ptrs() override { return {}; }
+    std::vector<Reg*> use_ptrs() override { return {&src}; }
 };
 
 struct StoreWord: Instruction {
@@ -98,6 +106,8 @@ struct StoreWord: Instruction {
     std::set<Reg> def() const override { return {}; }
     std::set<Reg> use() const override { return {src, base}; }
     std::vector<Reg*> reg_ptrs() override { return {&src, &base}; }
+    std::vector<Reg*> def_ptrs() override { return {}; }
+    std::vector<Reg*> use_ptrs() override { return {&src, &base}; }
 };
 
 struct LoadWord: Instruction {
@@ -108,6 +118,8 @@ struct LoadWord: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {base}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &base}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {&base}; }
 };
 
 struct SPAdd: Instruction {
@@ -124,6 +136,8 @@ struct Branch: Instruction {
     void emit(std::ostream &os) const override;
     std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&src}; }
+    std::vector<Reg*> def_ptrs() override { return {}; }
+    std::vector<Reg*> use_ptrs() override { return {&src}; }
 };
 
 struct ADDI: Instruction {
@@ -133,6 +147,8 @@ struct ADDI: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {&src}; }
     void emit(std::ostream &os) const override;
 };
 
@@ -144,6 +160,8 @@ struct LUI: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {}; }
     void emit(std::ostream &os) const override;
 };
 
@@ -160,6 +178,8 @@ struct LoadImm: Instruction {
     LoadImm(Reg dst, int imm): imm(imm), dst(dst) {}
     std::set<Reg> def() const override { return {dst}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {}; }
     void emit(std::ostream &os) const override;
 };
 
@@ -170,6 +190,8 @@ struct Move: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {&src}; }
     void emit(std::ostream &os) const override;
 };
 
@@ -225,6 +247,8 @@ struct LoadAddr: Instruction {
     std::set<Reg> def() const override { return {dst}; }
     std::set<Reg> use() const override { return {}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst}; }
+    std::vector<Reg*> def_ptrs() override { return {&dst}; }
+    std::vector<Reg*> use_ptrs() override { return {}; }
     void emit(std::ostream &os) const override;
 };
 

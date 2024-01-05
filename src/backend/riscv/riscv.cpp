@@ -87,7 +87,13 @@ namespace riscv {
   }
 
   void LoadWord::emit(std::ostream &os) const {
-    os << tab << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
+    if (offset < 2048)
+      os << tab << "lw " << print_reg(dst) << ", " << offset << "(" << print_reg(base) << ")\n";
+    else {
+      os << tab << "li " << print_reg(dst) << ", " << offset << "\n";
+      os << tab << "add " << print_reg(dst) << ", " << print_reg(dst) << ", " << print_reg(base) << "\n";
+      os << tab << "lw " << print_reg(dst) << ", " << 0 << "(" << print_reg(dst) << ")\n";
+    }
   }
 
   void SPAdd::emit(std::ostream &os) const {
