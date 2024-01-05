@@ -462,7 +462,14 @@ namespace riscv {
                         for (auto &p: (*inst)->def_ptrs())
                             if (*p == n && def.count(*p))
                                 *p = ni;
-                        bb->instructions.emplace(std::next(inst), new StoreWord(ni, Reg(General, sp), func->offsets[n]));
+                        if (func->offsets[n] < 2048)
+                            bb->instructions.emplace(std::next(inst), new StoreWord(ni, Reg(General, sp), func->offsets[n]));
+                        else {
+                            auto offset_temp = func->freshTemp();
+                            bb->instructions.emplace(std::next(inst), new LoadImm(offset_temp, func->offsets[n]));
+                            bb->instructions.emplace(std::next(std::next(inst)), new Binary(offset_temp, RiscvBinaryOp::ADD, offset_temp, Reg(General, sp)));
+                            bb->instructions.emplace(std::next(std::next(std::next(inst))), new StoreWord(ni, offset_temp, 0));
+                        }
                     }
                     if (use.count(n)) {
                         Reg ni = func->freshTemp();
