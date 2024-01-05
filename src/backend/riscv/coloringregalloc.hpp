@@ -459,15 +459,15 @@ namespace riscv {
                     if (def.count(n)) {
                         Reg ni = func->freshTemp();
                         newTemps.insert(ni);
-                        for (auto &p: (*inst)->reg_ptrs())
-                            if (*p == n)
+                        for (auto &p: (*inst)->def_ptrs())
+                            if (*p == n && def.count(*p))
                                 *p = ni;
                         bb->instructions.emplace(std::next(inst), new StoreWord(ni, Reg(General, sp), func->offsets[n]));
                     }
-                    else if (use.count(n)) {
+                    if (use.count(n)) {
                         Reg ni = func->freshTemp();
                         newTemps.insert(ni);
-                        for (auto &p: (*inst)->reg_ptrs())
+                        for (auto &p: (*inst)->use_ptrs())
                             if (*p == n)
                                 *p = ni;
                         bb->instructions.emplace(inst, new LoadWord(ni, Reg(General, sp), func->offsets[n]));

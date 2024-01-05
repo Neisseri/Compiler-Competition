@@ -122,8 +122,10 @@ namespace riscv {
       Reg ret_val = Reg(call->ret_val);
       int num_args = call->params.size();
       if (func_defined.count(call->func_name)) {
-        for (int i = 0; i < num_params && i < 7; i++)
-          bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
+        for (int i = 0; i < 32; i++) {
+          if (REG_ATTR[i] == CallerSaved)
+            bb->instructions.emplace_back(new StoreWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+        }
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           if (i < 7) {
@@ -136,8 +138,10 @@ namespace riscv {
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        for (int i = 0; i < num_params && i < 7; i++)
-          bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
+        for (int i = 0; i < 32; i++) {
+          if (REG_ATTR[i] == CallerSaved)
+            bb->instructions.emplace_back(new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+        }
       }
       else {
         for (int i = 0; i < num_params && i < 7; i++)
@@ -249,11 +253,15 @@ namespace riscv {
       }
     }
     frame_size += stackParamSize;
+    for (int i = 0; i < 32; i++) {
+      if (REG_ATTR[i] == CallerSaved) {
+        offsets[Reg(General, i)] = frame_size;
+        frame_size += 4;
+      }
+    }
     for (int i = 0; i < num_params; i++) {
       if (i < 7) {
         arg_idxs.insert(-(i+1));
-        offsets[Reg(General, argregs[i])] = frame_size;
-        frame_size += 4;
       }
     }
     for (auto &ir_bb: ir_function.bbs) {
