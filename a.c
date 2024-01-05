@@ -1,17 +1,16 @@
-// Use complex expression in if structure
-int main () {
-    int a;
-    int b;
-    int c;
-    int d;
-    int result;
-    a = 5;
-    b = 5;
-    c = 1;
-    d = -2;
-    result = 2;
-    if ((d * 1 / 2) < 0 || (a - b) != 0 && (c + 3) % 2 != 0) {
-        putint(result);
-    }
-    return 0;
+const int N = 1024;
+
+void mm(int A[][N]){
+
+int k = A[1][2];
+
+}
+
+int A[N][N];
+int B[N][N];
+int C[N][N];
+
+int main(){
+
+return 0;
 }

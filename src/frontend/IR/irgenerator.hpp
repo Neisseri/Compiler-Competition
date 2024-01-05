@@ -70,7 +70,7 @@ public:
                 ir_bb->instrs.push_back(std::move(addoffset_instr));
             }
             if (i > 0){
-                std::cerr << "visitIndex calc blocksize " << i << std::endl;
+                std::cerr << "visitIndex calc blocksize " << i << " " << var_type_table[lvalue->ident->name].dim[i] << std::endl;
                 ir::Reg dim_size = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::LoadInt> loaddim_instr(new ir::LoadInt(dim_size, var_type_table[lvalue->ident->name].dim[i]));
                 ir::Reg old_block_size = block_size;
@@ -187,7 +187,9 @@ public:
             if (decl->is_const)
             {
                 std::string temp_name = decl->ident->name;
-                const_val_table.insert(std::make_pair<std::string, int>(std::move(temp_name), visitExpressionVal(decl->init_expr)));
+                int const_val = visitExpressionVal(decl->init_expr);
+                std::cerr << "visit decl global const var " << temp_name << ": " << const_val << std::endl;
+                const_val_table.insert(std::make_pair<std::string, int>(std::move(temp_name), std::move(const_val)));
             }
             std::cerr << "visit decl global var done" << std::endl;
         }
@@ -219,14 +221,16 @@ public:
             std::cerr << "visitFunction param decl: " << i->ident->name << std::endl;
             ir::Reg init_reg(i->var_type->type, ++param_id);
             if (i->is_array){ // 传入的是数组指针
-                std::cerr << "visitFunction param decl array" << std::endl;
+                std::cerr << "visitFunction param decl array dim:";
                 for (auto &exp: i->indices->children) {
                     int dim = visitExpressionVal(exp);
+                    std::cerr << " " << dim;
                     if (dim == 0) {
                         dim = 1;
                     }
                     i->var_type->dim.push_back(dim);
                 }
+                std::cerr << std::endl;
                 std::string tem_name = i->ident->name;
                 ir::Reg temp_reg = init_reg;
                 var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
@@ -370,6 +374,11 @@ public:
         else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get()))
         { // TODO:consider the case of const array
             std::string name = lvalue->ident->name;
+            if (const_val_table.find(name) == const_val_table.end())
+            {
+                std::cerr << "const vat not found: " << name << std::endl;
+                assert(false);
+            }
             int ret = const_val_table[name];
             return ret;
         }

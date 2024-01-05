@@ -46,7 +46,7 @@ namespace frontend
         visitBlock(func_def->body.get());
         if (!scope_stack->get_top_scope()->has_return)
         {
-            SyError().throw_info("function " + name + " has no return"+"scope id"+std::to_string(scope_stack->get_top_scope()->scope_id));
+            SyError().throw_info("function " + name + " has no return" + "scope id" + std::to_string(scope_stack->get_top_scope()->scope_id));
             auto const_0 = std::make_unique<ast::IntLiteral>(0);
             auto return_stmt = std::make_unique<ast::Return>(std::move(const_0));
             func_def->body->children.push_back(std::move(return_stmt));
@@ -101,6 +101,14 @@ namespace frontend
         auto var_symbol = std::make_shared<VarSymbol>(param_def->ident.get()->name, std::move(param_def->var_type.get()), false);
         scope_stack->declare_symbol(param_def->ident.get()->name, var_symbol);
         param_def->ident->name = param_def->ident.get()->name + "#" + std::to_string(scope_stack->stack.back()->scope_id);
+        if (param_def->is_array)
+        {
+            for (auto &child : param_def->indices->children)
+            {
+                if (child)
+                    auto expr_type = visitExpr(child.get());
+            }
+        }
     }
 
     void TyperVisitor::visitBlock(ast::Block *block)
@@ -262,7 +270,7 @@ namespace frontend
             }
         }
         scope_stack->set_has_return();
-        SyError().throw_info("visitReturnStmt" + return_stmt->toString()+"function has return"+"scope id"+std::to_string(cur_func_scope->scope_id));
+        SyError().throw_info("visitReturnStmt" + return_stmt->toString() + "function has return" + "scope id" + std::to_string(cur_func_scope->scope_id));
     }
 
     void TyperVisitor::visitLVal(const ast::LValue *lval)
