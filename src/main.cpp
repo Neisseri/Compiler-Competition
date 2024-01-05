@@ -164,16 +164,16 @@ int main(int argc, char *argv[])
         std::cerr << "?\n";
         for (auto [name, func] : program.functions)
         {
-            std::cerr << "ir before resolve phi\n";
-            func->emit(std::cerr);
-            std::cerr << "ir before resolve phi end\n";
+            // std::cerr << "ir before resolve phi\n";
+            // func->emit(std::cerr);
+            // std::cerr << "ir before resolve phi end\n";
             if (mem_to_reg_flag) {
                 func->resolve_phi();
                 std::cerr << "---------------------------------ir after resolve phi-------------------------------------" << std::endl;
                 func->emit(std::cerr);
                 std::cerr << "---------------------------------ir after resolve phi end --------------------------------" << std::endl;
             }
-            std::cerr << name << "\n";
+            // std::cerr << name << "\n";
             riscv::coloringregalloc RegAllocator(func);
             // func->do_reg_alloc();
             RegAllocator.Main();
