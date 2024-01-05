@@ -1,4 +1,3 @@
-#include <iostream>
 void sort(int arr[], int len) {
   int i = 0;
   while (i < len - 1) {
@@ -22,18 +21,13 @@ int param32_rec(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8,
                 int a23, int a24, int a25, int a26, int a27, int a28, int a29,
                 int a30, int a31, int a32) {
   if (a1 == 0) {
-    // std::cout << a2 << std::endl;
     return a2;
   }
   else {
-    std::cout << a1 -1 << " " << a2 << " " << a3 << " ";
-    std::cout << (a2 + a3) % 998244353 << std::endl;
-    int ans = param32_rec(a1 - 1, (a2 + a3) % 998244353, a4, a5, a6, a7, a8, a9,
+    return param32_rec(a1 - 1, (a2 + a3) % 998244353, a4, a5, a6, a7, a8, a9,
                        a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20,
                        a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31,
                        a32, 0);
-    // std::cout << ans << std::endl;
-    return ans;
   }
 }
 
@@ -84,8 +78,6 @@ int param16(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8,
   int arr[16] = {a1, a2,  a3,  a4,  a5,  a6,  a7,  a8,
                  a9, a10, a11, a12, a13, a14, a15, a16};
   sort(arr, 16);
-  // for (int i = 0; i < 16; i++)
-  //   std::cout << arr[i] << std::endl;
   return param32_rec(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6],
                      arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], arr[13],
                      arr[14], arr[15], a1, a2, a3, a4, a5, a6, a7, a8, a9, a10,
@@ -93,19 +85,19 @@ int param16(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8,
 }
 
 int main() {
-  int arr[32][2] = {{param16(17, 13, 80, 55, 81, 91, 95, 58, 13, 5, 63, 19, 54, 45, 67, 63),
-                     8848}},
-      i = 1;
-  std::cout << arr[0][0] << std::endl;
+  int arr[32][2] = {{param16(17, 13, 80, 55, 81, 91, 95,
+                              58, 13, 5, 63, 19, 54, 45,
+                              67, 63), 8848}}, i = 1;
   while (i < 32) {
     arr[i][0] = arr[i - 1][1] - 1;
     arr[i][1] = arr[i - 1][0] - 2;
     i = i + 1;
   }
-  std::cout << param32_arr(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6],
+  putint(param32_arr(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6],
                      arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], arr[13],
                      arr[14], arr[15], arr[16], arr[17], arr[18], arr[19],
                      arr[20], arr[21], arr[22], arr[23], arr[24], arr[25],
-                     arr[26], arr[27], arr[28], arr[29], arr[30], arr[31]) << std::endl;
+                     arr[26], arr[27], arr[28], arr[29], arr[30], arr[31]));
+  putch(10);
   return 0;
 }
