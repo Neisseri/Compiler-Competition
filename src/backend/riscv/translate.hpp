@@ -125,7 +125,14 @@ namespace riscv {
       if (func_defined.count(call->func_name)) {
         for (int i = 0; i < 32; i++) {
           if (REG_ATTR[i] == CallerSaved)
-            bb->instructions.emplace_back(new StoreWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+            if (offsets[Reg(General, i)] < 2048)
+              bb->instructions.emplace_back(new StoreWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+            else {
+              Reg temp = freshTemp();
+              bb->instructions.emplace_back(new LoadImm(temp, offsets[Reg(General, i)]));
+              bb->instructions.emplace_back(new Binary(temp, RiscvBinaryOp::ADD, temp, Reg(General, sp)));
+              bb->instructions.emplace_back(new StoreWord(Reg(General, i), temp, 0));
+            }
         }
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
@@ -145,8 +152,16 @@ namespace riscv {
         }
       }
       else {
-        for (int i = 0; i < num_params && i < 7; i++)
-          bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
+        for (int i = 0; i < num_params && i < 7; i++) {
+          if (offsets[Reg(General, i)] < 2048)
+            bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
+          else {
+            Reg temp = freshTemp();
+            bb->instructions.emplace_back(new LoadImm(temp, offsets[Reg(General, argregs[i])]));
+            bb->instructions.emplace_back(new Binary(temp, RiscvBinaryOp::ADD, temp, Reg(General, sp)));
+            bb->instructions.emplace_back(new StoreWord(Reg(General, argregs[i]), temp, 0));
+          }
+        }
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs_full[i])));

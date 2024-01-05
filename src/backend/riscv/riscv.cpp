@@ -64,8 +64,8 @@ namespace riscv {
       }
     }
     os << "\n.text\n";
+    os << ".globl main\n";
     for (auto &[name, func]: functions) {
-      os << ".globl " << func->name << "\n";
       func->emit(os);
     }
   }
