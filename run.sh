@@ -16,7 +16,7 @@ shift
 rm -rf ir ast riscv
 
 # 使用"$@"来传递所有剩余的参数作为编译选项
-build/compiler "$@" -f "$filename" > "runtime.log" 2>&1
+build/compiler "$@" -A -f "$filename" > "runtime.log" 2>&1
 
 riscv64-unknown-elf-gcc -march=rv32gc -mabi=ilp32f riscv/test.s full_test/runtime/libsysy.a -o test.exec
 qemu-riscv32 test.exec
