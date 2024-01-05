@@ -1,31 +1,21 @@
-int get_one(int a) {
-  return 1;
-}
-
-int deepWhileBr(int a, int b) {
-  int c;
-  c = a + b;
-  while (c < 75) {
+// Use complex expression in if structure
+int main () {
+    int a;
+    int b;
+    int c;
     int d;
-    d = 42;
-    if (c < 100) {
-      c = c + d;
-      if (c > 99) {
-        int e;
-        e = d * 2;
-        if (get_one(0) == 1) {
-          c = e * 2;
-        }
-      }
+    int result;
+    a = 5;
+    b = 5;
+    c = 1;
+    d = -2;
+    result = 2;
+    if ((d * 1 / 2) < 0 || (a - b) != 0 && (c + 3) % 2 != 0) {
+        putint(result);
     }
-  }
-  return (c);
-}
-
-int main() {
-  int p;
-  p = 2;
-  p = deepWhileBr(p, p);
-  putint(p);
-  return 0;
+    if ((d % 2 + 67) < 0 || (a - b) != 0 && (c + 2) % 2 != 0) {
+        result = 4;
+        putint(result);
+    }
+    return 0;
 }
