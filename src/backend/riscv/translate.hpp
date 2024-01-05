@@ -190,7 +190,7 @@ namespace riscv {
         }
       }
     }
-    for (auto [bb, pairs]: pair_map) {
+    for (auto &[bb, pairs]: pair_map) {
       while (!std::all_of(pairs.begin(), pairs.end(), [](const auto p){ return p.first == p.second; })) {
         std::set<Reg> livein;
         for (auto [dst, src]: pairs) 

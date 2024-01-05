@@ -14,8 +14,8 @@ B2:
   br label %B3
 
 B3:
-  %r42 = phi i32 [ %r42, %B2 ], [ %r41, %B8 ]
-  %r39 = phi i32 [ %r39, %B2 ], [ %r13, %B8 ]
+  %r42 = phi i32 [ %r1, %B2 ], [ %r41, %B8 ]
+  %r39 = phi i32 [ %r1, %B2 ], [ %r13, %B8 ]
   %r36 = phi i32 [ %r8, %B2 ], [ %r35, %B8 ]
   %r10 = add i32 0, 75 ; loadint
   %r11 = icmp slt i32 %r36, %r10
