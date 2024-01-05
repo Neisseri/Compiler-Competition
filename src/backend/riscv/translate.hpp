@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <string>
+#include <iostream>
 
 #include "riscv.hpp"
 #include "../../common/const.hpp"
@@ -177,6 +178,7 @@ namespace riscv {
 
   void Function::resolve_phi() {
     std::unordered_map<BasicBlock*, std::set<std::pair<Reg, Reg>>> pair_map;
+    // BasicBlock, <dst, src>
     for (auto bb: bbs) {
       auto it = bb->instructions.begin();
       while (it != bb->instructions.end()) {
@@ -216,7 +218,20 @@ namespace riscv {
             }
           }
         }
-        bb->instructions.emplace(std::prev(bb->instructions.end()), mov);
+        auto insert_tag = std::prev(bb->instructions.end());
+        // if 'insert_tag' is beq
+        std::cerr << "insert_tag: ";
+        (*insert_tag)->emit(std::cerr);
+        std::cerr << "\n";
+        auto pre_insert_tag = std::prev(insert_tag);
+        while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
+          branch->emit(std::cerr);
+          insert_tag = pre_insert_tag;
+          std::cerr << "insert_tag: branch ";
+          (*insert_tag)->emit(std::cerr);
+          std::cerr << "\n";
+        }
+        bb->instructions.emplace(insert_tag, mov);
         phi_moves.insert(mov);
       }
     }
