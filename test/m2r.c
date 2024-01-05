@@ -1,66 +1,82 @@
+int array[110];
 int n;
-int QuickSort(int arr[], int low, int high)
-{
-    if (low < high)
-    {
-        int i;
-        i = low;
-        int j;
-        j = high;
-        int k;
-        k = arr[low];
-        while (i < j)
-        {
-            while(i < j && arr[j] > k - 1)
-            {
-                j = j - 1;
-            }
- 
-            if(i < j)
-            {
-                arr[i] = arr[j];
-                i = i + 1;
-            }
- 
-            while(i < j && arr[i] < k)
-            {
-                i = i + 1;
-            }
- 
-            if(i < j)
-            {
-                arr[j] = arr[i];
-                j = j - 1;
-            }
-        }
- 
-        arr[i] = k;
-        int tmp;
-        tmp = i - 1;
-        tmp = QuickSort(arr, low, tmp);
-        tmp = i + 1;
-        tmp = QuickSort(arr, tmp, high);
-    }
-    return 0;
+void init(int n) {
+  int i = 1;
+  while (i <= n * n + 1) {
+    array[i] = -1;
+    i = i + 1;
+  }
 }
 
-int main(){
-    n = 10;
-    int a[10];
-    a[0]=4;a[1]=3;a[2]=9;a[3]=2;a[4]=0;
-    a[5]=1;a[6]=6;a[7]=5;a[8]=7;a[9]=8;
-    int i;
-    i = 0;
-    int tmp;
-    tmp = 9;
-    i = QuickSort(a, i, tmp);
-    while (i < n) {
-        int tmp;
-        tmp = a[i];
-        putint(tmp);
-        tmp = 10;
-        putch(tmp);
-        i = i + 1;
+int findfa(int a) {
+  if (array[a] == a)
+    return a;
+  else {
+    array[a] = findfa(array[a]);
+    return array[a];
+  }
+}
+void mmerge(int a, int b) {
+  int m = findfa(a);
+  int n = findfa(b);
+  if (m != n) array[m] = n;
+}
+int main() {
+  int t, m;
+  int a, b;
+  t = 1;
+  while (t) {
+    t = t - 1;
+    n = 4;
+    m = 10;
+    int i = 0;
+    int flag = 0;
+    init(n);
+    int k = n * n + 1;
+
+    while (i < m) {
+      a = getint();
+      b = getint();
+
+      if (!flag) {
+        int loc = n * (a - 1) + b;
+
+        array[loc] = loc;
+        if (a == 1) {
+          array[0] = 0;
+          mmerge(loc, 0);
+        }
+        if (a == n) {
+          array[k] = k;
+          mmerge(loc, k);
+        }
+        if (b < n && array[loc + 1] != -1) {
+          mmerge(loc, loc + 1);
+        }
+        if (b > 1 && array[loc - 1] != -1) {
+          mmerge(loc, loc - 1);
+        }
+        if (a < n && array[loc + n] != -1) {
+          mmerge(loc, loc + n);
+        }
+        if (a > 1 && array[loc - n] != -1) {
+          mmerge(loc, loc - n);
+        }
+
+        if (array[0] != -1 && array[k] != -1 && findfa(0) == findfa(k)) {
+          flag = 1;
+          int tmp = i + 1;
+          putint(tmp);
+          putch(10);
+        }
+      }
+
+      i = i + 1;
     }
-    return 0;
+    if (!flag) {
+      putint(-1);
+      putch(10);
+    }
+  }
+  return 0;
 }

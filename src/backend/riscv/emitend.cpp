@@ -101,7 +101,7 @@ namespace riscv {
 
 
 void Function::emitend() {
-    std::cerr << name << "\n";
+    // std::cerr << name << "\n";
     int reg_used[NUM_REGS] = {false};
     for (auto &bb : bbs) {
         for (auto &insn : bb->instructions) {
@@ -110,7 +110,7 @@ void Function::emitend() {
                 reg_used[r.id] = true;
         }
     }
-    std::cerr << "after compute reg_used\n";
+    // std::cerr << "after compute reg_used\n";
 
     auto entry = *bbs.begin();
     auto exit = new BasicBlock;
@@ -140,7 +140,7 @@ void Function::emitend() {
     if (num_params > 7)
         prologue.emplace(prologue.begin(), new Move(Reg(General, sp), Reg(General, t1)));
     
-    std::cerr << "after prologue\n";
+    // std::cerr << "after prologue\n";
 
     auto &epilogue = exit->instructions;
     id = 0;
@@ -171,6 +171,6 @@ void Function::emitend() {
         }
     }
     bbs.emplace_back(exit);
-    std::cerr << "end of emitend\n";
+    // std::cerr << "end of emitend\n";
 }
 }

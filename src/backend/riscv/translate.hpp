@@ -159,8 +159,8 @@ namespace riscv {
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
       for (auto i: phi->srcs) {
-        std::cerr << print_reg(Reg(i.first)) << " ";
-        std::cerr << print_bb(bb_map[i.second.get()]) << "\n";
+        // std::cerr << print_reg(Reg(i.first)) << " ";
+        // std::cerr << print_bb(bb_map[i.second.get()]) << "\n";
         scrs.push_back(std::pair(Reg(i.first), bb_map[i.second.get()]));
       }
       bb->instructions.emplace_back(new Phi(Reg(phi->dst), scrs));
@@ -207,7 +207,12 @@ namespace riscv {
         for (auto p: pairs) {
           if (!livein.count(p.first)) {
             auto [dst, src] = p;
-            mov = new Move(src, dst);
+            // Parameter Regs: A0 - A7
+            if ((-src.id) <= num_params) {
+              mov = new Move(Reg(General, argregs[-src.id-1]), dst);
+            } else {
+              mov = new Move(src, dst);
+            }
             pairs.erase(p);
             has_erase = true;
             break;
@@ -217,28 +222,33 @@ namespace riscv {
           for (auto p: pairs) {
             if (p.first != p.second) {
               Reg tmp = freshTemp();
-              mov = new Move(p.second, tmp);
+              auto src = p.second;
+              if ((-src.id) <= num_params) {
+                mov = new Move(Reg(General, argregs[-src.id-1]), tmp);
+              } else {
+                mov = new Move(src, tmp);
+              }
               p.second = tmp;
             }
           }
         }
         auto insert_tag = std::prev(bb->instructions.end());
         // if 'insert_tag' is beq
-        std::cerr << "insert_tag: ";
-        (*insert_tag)->emit(std::cerr);
-        std::cerr << "\n";
+        // std::cerr << "insert_tag: ";
+        // (*insert_tag)->emit(std::cerr);
+        // std::cerr << "\n";
         if (insert_tag != bb->instructions.begin()) {
           auto pre_insert_tag = std::prev(insert_tag);
           while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
-            branch->emit(std::cerr);
+            // branch->emit(std::cerr);
             insert_tag = pre_insert_tag;
             if (insert_tag == bb->instructions.begin()) {
               break;
             }
             pre_insert_tag = std::prev(insert_tag);
-            std::cerr << "insert_tag: branch ";
-            (*insert_tag)->emit(std::cerr);
-            std::cerr << "\n";
+            // std::cerr << "insert_tag: branch ";
+            // (*insert_tag)->emit(std::cerr);
+            // std::cerr << "\n";
           }
         }
         bb->instructions.emplace(insert_tag, mov);
@@ -310,7 +320,7 @@ namespace riscv {
 
     for (auto bb: bbs) {
       for (auto inst: bb->instructions) {
-        inst->emit(std::cerr);
+        // inst->emit(std::cerr);
       }
     }
   }
