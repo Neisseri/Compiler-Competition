@@ -1,0 +1,1117 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef a) ;))) 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef b) ;))) 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef c) ;))) 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef d) ;))) 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef result) ;))) 
+                    (blockItem 
+                        (stmt 
+                            (lVal a) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 5))))))) ;)) 
+                    (blockItem 
+                        (stmt 
+                            (lVal b) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 5))))))) ;)) 
+                    (blockItem 
+                        (stmt 
+                            (lVal c) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 1))))))) ;)) 
+                    (blockItem 
+                        (stmt 
+                            (lVal d) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp - 
+                                            (unaryExp 
+                                                (primaryExp 
+                                                    (number 
+                                                        (intConst 2)))))))) ;)) 
+                    (blockItem 
+                        (stmt 
+                            (lVal result) = 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 2))))))) ;)) 
+                    (blockItem 
+                        (stmt if ( 
+                            (cond 
+                                (lOrExp 
+                                    (lOrExp 
+                                        (lAndExp 
+                                            (eqExp 
+                                                (relExp 
+                                                    (relExp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp ( 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (mulExp 
+                                                                                        (mulExp 
+                                                                                            (unaryExp 
+                                                                                                (primaryExp 
+                                                                                                    (lVal d)))) * 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 1))))) / 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (number 
+                                                                                                (intConst 2))))))) )))))) < 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 0)))))))))) || 
+                                    (lAndExp 
+                                        (lAndExp 
+                                            (eqExp 
+                                                (eqExp 
+                                                    (relExp 
+                                                        (addExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp ( 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (lVal a))))) - 
+                                                                                (mulExp 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (lVal b)))))) ))))))) != 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 0))))))))) && 
+                                        (eqExp 
+                                            (eqExp 
+                                                (relExp 
+                                                    (addExp 
+                                                        (mulExp 
+                                                            (mulExp 
+                                                                (unaryExp 
+                                                                    (primaryExp ( 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (addExp 
+                                                                                    (mulExp 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (lVal c))))) + 
+                                                                                (mulExp 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (number 
+                                                                                                (intConst 3))))))) )))) % 
+                                                            (unaryExp 
+                                                                (primaryExp 
+                                                                    (number 
+                                                                        (intConst 2)))))))) != 
+                                            (relExp 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp 
+                                                            (primaryExp 
+                                                                (number 
+                                                                    (intConst 0))))))))))) ) 
+                            (stmt 
+                                (block { 
+                                    (blockItem 
+                                        (stmt 
+                                            (exp 
+                                                (addExp 
+                                                    (mulExp 
+                                                        (unaryExp putint ( 
+                                                            (funcRParams 
+                                                                (funcRParam 
+                                                                    (exp 
+                                                                        (addExp 
+                                                                            (mulExp 
+                                                                                (unaryExp 
+                                                                                    (primaryExp 
+                                                                                        (lVal result)))))))) ))))) ;)) })))) 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
+visitCompUnit
+visitCompUnit: funcDef
+construct funct block: main
+visitVarDecl: int start
+visitVarDecl: ident: a
+visitVarDecl: int start
+visitVarDecl: ident: b
+visitVarDecl: int start
+visitVarDecl: ident: c
+visitVarDecl: int start
+visitVarDecl: ident: d
+visitVarDecl: int start
+visitVarDecl: ident: result
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ number
+visitAssign done!
+visitPrimaryExp_ exp
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitPrimaryExp_ exp
+visitPrimaryExp_ number
+visitPrimaryExp_ exp
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visit block stmt
+visitExprStmt
+visitCall ident: putint
+visitFuncRParams
+visitCall args_list size: 1
+visitBlock done!
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitFuncDefi32 @main()
+Info: visitBlock
+Info: visitVarDef i32 @a
+Info: visitVarDef i32 @b
+Info: visitVarDef i32 @c
+Info: visitVarDef i32 @d
+Info: visitVarDef i32 @result
+Info: visitStatementAssign@a = 5
+Info: visitAssignStmtAssign@a = 5
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitAssignStmti32
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5560832f0960
+Info: visitStatementAssign@b = 5
+Info: visitAssignStmtAssign@b = 5
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitAssignStmti32
+Info: visitExpr5
+Info: visitIntLiteralExpr5
+ret->type 0x5560832f09e0
+Info: visitStatementAssign@c = 1
+Info: visitAssignStmtAssign@c = 1
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitAssignStmti32
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x5560832f0a10
+Info: visitStatementAssign@d = -2
+Info: visitAssignStmtAssign@d = -2
+Info: visitExpr@d
+Info: visitLvalExpr@d
+Info: visitAssignStmti32
+Info: visitExpr-2
+Info: visitUnonExpr-2
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x5560832f0a40
+Info: visitStatementAssign@result = 2
+Info: visitAssignStmtAssign@result = 2
+Info: visitExpr@result
+Info: visitLvalExpr@result
+Info: visitAssignStmti32
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x5560832f0a70
+Info: visitStatementIfElse
+Info: visitExpr@d*1/2<0||@a-@b!=0&&@c+3%2!=0
+Info: visitBinopExpr@d*1/2<0||@a-@b!=0&&@c+3%2!=0
+Info: visitExpr@d*1/2<0
+Info: visitBinopExpr@d*1/2<0
+Info: visitExpr@d*1/2
+Info: visitBinopExpr@d*1/2
+Info: visitExpr@d*1
+Info: visitBinopExpr@d*1
+Info: visitExpr@d
+Info: visitLvalExpr@d
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x5560832f0af0
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x5560832f0b20
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5560832f0b50
+Info: visitExpr@a-@b!=0&&@c+3%2!=0
+Info: visitBinopExpr@a-@b!=0&&@c+3%2!=0
+Info: visitExpr@a-@b!=0
+Info: visitBinopExpr@a-@b!=0
+Info: visitExpr@a-@b
+Info: visitBinopExpr@a-@b
+Info: visitExpr@a
+Info: visitLvalExpr@a
+Info: visitExpr@b
+Info: visitLvalExpr@b
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5560832f0b80
+Info: visitExpr@c+3%2!=0
+Info: visitBinopExpr@c+3%2!=0
+Info: visitExpr@c+3%2
+Info: visitBinopExpr@c+3%2
+Info: visitExpr@c+3
+Info: visitBinopExpr@c+3
+Info: visitExpr@c
+Info: visitLvalExpr@c
+Info: visitExpr3
+Info: visitIntLiteralExpr3
+ret->type 0x5560832f0bb0
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x5560832f0be0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5560832f0c10
+Info: visitStatement
+Info: visitBlock
+Info: visitStatementCall @putint(@result)
+Info: visitExprStmtCall @putint(@result)
+Info: visitExprCall @putint(@result)
+Info: visiCalltExprCall @putint(@result)
+Info: use of undeclared function putint
+Info: visitExpr@result
+Info: visitLvalExpr@result
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x5560832f0c40
+Info: visitReturnStmtReturn 0function has returnscope id1
+ast: 
+Program
+  i32 @main()
+    {
+      i32 @a#2
+      i32 @b#2
+      i32 @c#2
+      i32 @d#2
+      i32 @result#2
+      Assign@a#2 = 5
+      Assign@b#2 = 5
+      Assign@c#2 = 1
+      Assign@d#2 = -2
+      Assign@result#2 = 2
+      If        @d#2*1/2<0||@a#2-@b#2!=0&&@c#2+3%2!=0
+        {
+          Call @putint            @result#2
+        }
+      Return 0
+    }
+End of Program
+--------------------------- building ir_origin ---------------------------
+visitProgram
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue d#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue a#2
+visitExpression
+visitExpressionLValue b#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpression
+visitExpression
+visitExpressionLValue c#2
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitBlock 
+visitStatement
+visitExpression
+visitExpression
+visitExpressionLValue result#2
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 40 regs
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 
+  succ: B5 B6 
+B4:
+  prev: B2 B7 
+  succ: B8 B9 
+B5:
+  prev: B3 
+  succ: B7 
+B6:
+  prev: B3 
+  succ: B7 
+B7:
+  prev: B5 B6 
+  succ: B4 
+B8:
+  prev: B4 
+  succ: B9 
+B9:
+  prev: B4 B8 
+  succ: 
+B10:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: B1 
+B1:
+  prev: B0 
+  succ: B2 B3 
+B2:
+  prev: B1 
+  succ: B4 
+B3:
+  prev: B1 
+  succ: B5 B6 
+B4:
+  prev: B2 B7 
+  succ: B8 B9 
+B5:
+  prev: B3 
+  succ: B7 
+B6:
+  prev: B3 
+  succ: B7 
+B7:
+  prev: B5 B6 
+  succ: B4 
+B8:
+  prev: B4 
+  succ: B9 
+B9:
+  prev: B4 B8 
+  succ: 
+
+entryB0
+B1
+B2
+B3
+B4
+B5
+B6
+B7
+B8
+B9
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB6
+reverse_postorderB5
+reverse_postorderB7
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB8
+reverse_postorderB9
+reverse_postorderB0
+reverse_postorderB1
+reverse_postorderB3
+reverse_postorderB6
+reverse_postorderB5
+reverse_postorderB7
+reverse_postorderB2
+reverse_postorderB4
+reverse_postorderB8
+reverse_postorderB9
+compute_dom_fro bb: B4 func: main
+compute_dom_fro bb: B4 func: main
+compute_dom_fro bb: B4 func: main
+compute_dom_fro bb: B7 func: main
+compute_dom_fro bb: B7 func: main
+compute_dom_fro bb: B9 func: main
+B0:
+  doms: B1 
+  domed_by: B0 
+B1:
+  doms: B2 B3 B4 
+  domed_by: B0 B1 
+B2:
+  doms: 
+  domed_by: B0 B1 B2 
+B3:
+  doms: B5 B6 B7 
+  domed_by: B0 B1 B3 
+B4:
+  doms: B8 B9 
+  domed_by: B0 B1 B4 
+B5:
+  doms: 
+  domed_by: B0 B1 B3 B5 
+B6:
+  doms: 
+  domed_by: B0 B1 B3 B6 
+B7:
+  doms: 
+  domed_by: B0 B1 B3 B7 
+B8:
+  doms: 
+  domed_by: B0 B1 B4 B8 
+B9:
+  doms: 
+  domed_by: B0 B1 B4 B9 
+
+B0:
+  DF: 
+B1:
+  DF: 
+B2:
+  DF: B4 
+B3:
+  DF: B4 
+B4:
+  DF: 
+B5:
+  DF: B7 
+B6:
+  DF: B7 
+B7:
+  DF: B4 
+B8:
+  DF: B9 
+B9:
+  DF: 
+
+ir_origin:
+; module
+define i32 @main(){
+B0:
+  %r1 = alloca i32, i32 4
+  %r2 = alloca i32, i32 4
+  %r3 = alloca i32, i32 4
+  %r4 = alloca i32, i32 4
+  %r5 = alloca i32, i32 4
+  %r6 = add i32 0, 5 ; loadint
+  store a#2 i32 %r6, ptr %r1
+  %r7 = add i32 0, 5 ; loadint
+  store b#2 i32 %r7, ptr %r2
+  %r8 = add i32 0, 1 ; loadint
+  store c#2 i32 %r8, ptr %r3
+  %r9 = add i32 0, 2 ; loadint
+  %r11 = add i32 0, 0 ; loadint
+  %r10 = sub i32 %r11, %r9
+  store d#2 i32 %r10, ptr %r4
+  %r12 = add i32 0, 2 ; loadint
+  store result#2 i32 %r12, ptr %r5
+  br label %B1
+
+B1:
+  %r13 = alloca i32, i32 4
+  %r14 = load d#2 i32, ptr %r4
+  %r15 = add i32 0, 1 ; loadint
+  %r16 = mul i32 %r14, %r15
+  %r17 = add i32 0, 2 ; loadint
+  %r18 = sdiv i32 %r16, %r17
+  %r19 = add i32 0, 0 ; loadint
+  %r20 = icmp slt i32 %r18, %r19
+  br i1 %r20, label %B2, label %B3
+
+B2:
+  %r36 = add i32 0, 1 ; loadint
+  store logic_expr@#13 i32 %r36, ptr %r13
+  br label %B4
+
+B3:
+  %r21 = alloca i32, i32 4
+  %r22 = load a#2 i32, ptr %r1
+  %r23 = load b#2 i32, ptr %r2
+  %r24 = sub i32 %r22, %r23
+  %r25 = add i32 0, 0 ; loadint
+  %r26 = icmp ne i32 %r24, %r25
+  br i1 %r26, label %B5, label %B6
+
+B4:
+  %r37 = load logic_expr@#13 i32, ptr %r13
+  br i1 %r37, label %B8, label %B9
+
+B5:
+  %r27 = load c#2 i32, ptr %r3
+  %r28 = add i32 0, 3 ; loadint
+  %r29 = add i32 %r27, %r28
+  %r30 = add i32 0, 2 ; loadint
+  %r31 = srem i32 %r29, %r30
+  %r32 = add i32 0, 0 ; loadint
+  %r33 = icmp ne i32 %r31, %r32
+  store logic_expr@#21 i32 %r33, ptr %r21
+  br label %B7
+
+B6:
+  %r34 = add i32 0, 0 ; loadint
+  store logic_expr@#21 i32 %r34, ptr %r21
+  br label %B7
+
+B7:
+  %r35 = load logic_expr@#21 i32, ptr %r21
+  store logic_expr@#13 i32 %r35, ptr %r13
+  br label %B4
+
+B8:
+  %r39 = load result#2 i32, ptr %r5
+  %r38 = call i32 @putint(i32 %r39)
+  br label %B9
+
+B9:
+  %r40 = add i32 0, 0 ; loadint
+  ret i32 %r40
+
+}
+---------------------------------ir after mem2reg-------------------------------------
+; module
+define i32 @main(){
+B0:
+  %r6 = add i32 0, 5 ; loadint
+  %r7 = add i32 0, 5 ; loadint
+  %r8 = add i32 0, 1 ; loadint
+  %r9 = add i32 0, 2 ; loadint
+  %r11 = add i32 0, 0 ; loadint
+  %r10 = sub i32 %r11, %r9
+  %r12 = add i32 0, 2 ; loadint
+  br label %B1
+
+B1:
+  %r15 = add i32 0, 1 ; loadint
+  %r16 = mul i32 %r10, %r15
+  %r17 = add i32 0, 2 ; loadint
+  %r18 = sdiv i32 %r16, %r17
+  %r19 = add i32 0, 0 ; loadint
+  %r20 = icmp slt i32 %r18, %r19
+  br i1 %r20, label %B2, label %B3
+
+B2:
+  %r36 = add i32 0, 1 ; loadint
+  br label %B4
+
+B3:
+  %r24 = sub i32 %r6, %r7
+  %r25 = add i32 0, 0 ; loadint
+  %r26 = icmp ne i32 %r24, %r25
+  br i1 %r26, label %B5, label %B6
+
+B4:
+  %r43 = phi logic_expr@#21 i32 [ %r42, %B7 ]
+  %r41 = phi logic_expr@#13 i32 [ %r36, %B2 ], [ %r42, %B7 ]
+  br i1 %r41, label %B8, label %B9
+
+B5:
+  %r28 = add i32 0, 3 ; loadint
+  %r29 = add i32 %r8, %r28
+  %r30 = add i32 0, 2 ; loadint
+  %r31 = srem i32 %r29, %r30
+  %r32 = add i32 0, 0 ; loadint
+  %r33 = icmp ne i32 %r31, %r32
+  br label %B7
+
+B6:
+  %r34 = add i32 0, 0 ; loadint
+  br label %B7
+
+B7:
+  %r42 = phi logic_expr@#21 i32 [ %r33, %B5 ], [ %r34, %B6 ]
+  br label %B4
+
+B8:
+  %r38 = call i32 @putint(i32 %r12)
+  br label %B9
+
+B9:
+  %r40 = add i32 0, 0 ; loadint
+  ret i32 %r40
+
+}
+---------------------------------ir -------------------------------------
+; module
+define i32 @main(){
+B0:
+  %r6 = add i32 0, 5 ; loadint
+  %r7 = add i32 0, 5 ; loadint
+  %r8 = add i32 0, 1 ; loadint
+  %r9 = add i32 0, 2 ; loadint
+  %r11 = add i32 0, 0 ; loadint
+  %r10 = sub i32 %r11, %r9
+  %r12 = add i32 0, 2 ; loadint
+  br label %B1
+
+B1:
+  %r15 = add i32 0, 1 ; loadint
+  %r16 = mul i32 %r10, %r15
+  %r17 = add i32 0, 2 ; loadint
+  %r18 = sdiv i32 %r16, %r17
+  %r19 = add i32 0, 0 ; loadint
+  %r20 = icmp slt i32 %r18, %r19
+  br i1 %r20, label %B2, label %B3
+
+B2:
+  %r36 = add i32 0, 1 ; loadint
+  br label %B4
+
+B3:
+  %r24 = sub i32 %r6, %r7
+  %r25 = add i32 0, 0 ; loadint
+  %r26 = icmp ne i32 %r24, %r25
+  br i1 %r26, label %B5, label %B6
+
+B4:
+  %r43 = phi logic_expr@#21 i32 [ %r42, %B7 ]
+  %r41 = phi logic_expr@#13 i32 [ %r36, %B2 ], [ %r42, %B7 ]
+  br i1 %r41, label %B8, label %B9
+
+B5:
+  %r28 = add i32 0, 3 ; loadint
+  %r29 = add i32 %r8, %r28
+  %r30 = add i32 0, 2 ; loadint
+  %r31 = srem i32 %r29, %r30
+  %r32 = add i32 0, 0 ; loadint
+  %r33 = icmp ne i32 %r31, %r32
+  br label %B7
+
+B6:
+  %r34 = add i32 0, 0 ; loadint
+  br label %B7
+
+B7:
+  %r42 = phi logic_expr@#21 i32 [ %r33, %B5 ], [ %r34, %B6 ]
+  br label %B4
+
+B8:
+  %r38 = call i32 @putint(i32 %r12)
+  br label %B9
+
+B9:
+  %r40 = add i32 0, 0 ; loadint
+  ret i32 %r40
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
+T[-42] B8
+T[-36] B3
+T[-42] B8
+T[-33] B6
+T[-34] B7
+    li T[-6], 5
+    li T[-7], 5
+    li T[-8], 1
+    li T[-9], 2
+    li T[-11], 0
+    sub T[-10], T[-11], T[-9]
+    li T[-12], 2
+    j B2
+    li T[-15], 1
+    mul T[-16], T[-10], T[-15]
+    li T[-17], 2
+    div T[-18], T[-16], T[-17]
+    li T[-19], 0
+    slt T[-20], T[-18], T[-19]
+    beq x0, T[-20], B4
+    j B3
+    li T[-36], 1
+    j B5
+    sub T[-24], T[-6], T[-7]
+    li T[-25], 0
+    sub T[-26], T[-24], T[-25]
+    snez T[-26], T[-26]
+    beq x0, T[-26], B7
+    j B6
+    phi T[-43] = T[-42] B8
+[ T[-42], B8] 
+    phi T[-41] = T[-36] B3
+[ T[-36], B3] T[-42] B8
+[ T[-42], B8] 
+    beq x0, T[-41], B10
+    j B9
+    li T[-28], 3
+    add T[-29], T[-8], T[-28]
+    li T[-30], 2
+    div T[-31], T[-29], T[-30]
+    mul T[-31], T[-31], T[-30]
+    sub T[-31], T[-29], T[-31]
+    li T[-32], 0
+    sub T[-33], T[-31], T[-32]
+    snez T[-33], T[-33]
+    j B8
+    li T[-34], 0
+    j B8
+    phi T[-42] = T[-33] B6
+[ T[-33], B6] T[-34] B7
+[ T[-34], B7] 
+    j B5
+    mv a0, T[-12]
+    call putint
+    mv T[-38], a0
+    j B10
+    li T[-40], 0
+    mv a0, T[-40]
+    ret
+?
+ir before resolve phi
+main:
+B0:
+
+B1:
+    li T[-6], 5
+    li T[-7], 5
+    li T[-8], 1
+    li T[-9], 2
+    li T[-11], 0
+    sub T[-10], T[-11], T[-9]
+    li T[-12], 2
+    j B2
+
+B2:
+    li T[-15], 1
+    mul T[-16], T[-10], T[-15]
+    li T[-17], 2
+    div T[-18], T[-16], T[-17]
+    li T[-19], 0
+    slt T[-20], T[-18], T[-19]
+    beq x0, T[-20], B4
+    j B3
+
+B3:
+    li T[-36], 1
+    j B5
+
+B4:
+    sub T[-24], T[-6], T[-7]
+    li T[-25], 0
+    sub T[-26], T[-24], T[-25]
+    snez T[-26], T[-26]
+    beq x0, T[-26], B7
+    j B6
+
+B5:
+    phi T[-43] = T[-42] B8
+[ T[-42], B8] 
+    phi T[-41] = T[-36] B3
+[ T[-36], B3] T[-42] B8
+[ T[-42], B8] 
+    beq x0, T[-41], B10
+    j B9
+
+B6:
+    li T[-28], 3
+    add T[-29], T[-8], T[-28]
+    li T[-30], 2
+    div T[-31], T[-29], T[-30]
+    mul T[-31], T[-31], T[-30]
+    sub T[-31], T[-29], T[-31]
+    li T[-32], 0
+    sub T[-33], T[-31], T[-32]
+    snez T[-33], T[-33]
+    j B8
+
+B7:
+    li T[-34], 0
+    j B8
+
+B8:
+    phi T[-42] = T[-33] B6
+[ T[-33], B6] T[-34] B7
+[ T[-34], B7] 
+    j B5
+
+B9:
+    mv a0, T[-12]
+    call putint
+    mv T[-38], a0
+    j B10
+
+B10:
+    li T[-40], 0
+    mv a0, T[-40]
+    ret
+
+ir before resolve phi end
+insert_tag:     j B8
+
+insert_tag:     j B8
+
+insert_tag:     j B5
+
+insert_tag:     j B5
+
+insert_tag:     j B5
+
+---------------------------------ir after resolve phi-------------------------------------
+main:
+B0:
+
+B1:
+    li T[-6], 5
+    li T[-7], 5
+    li T[-8], 1
+    li T[-9], 2
+    li T[-11], 0
+    sub T[-10], T[-11], T[-9]
+    li T[-12], 2
+    j B2
+
+B2:
+    li T[-15], 1
+    mul T[-16], T[-10], T[-15]
+    li T[-17], 2
+    div T[-18], T[-16], T[-17]
+    li T[-19], 0
+    slt T[-20], T[-18], T[-19]
+    beq x0, T[-20], B4
+    j B3
+
+B3:
+    li T[-36], 1
+    mv T[-41], T[-36]
+    j B5
+
+B4:
+    sub T[-24], T[-6], T[-7]
+    li T[-25], 0
+    sub T[-26], T[-24], T[-25]
+    snez T[-26], T[-26]
+    beq x0, T[-26], B7
+    j B6
+
+B5:
+    beq x0, T[-41], B10
+    j B9
+
+B6:
+    li T[-28], 3
+    add T[-29], T[-8], T[-28]
+    li T[-30], 2
+    div T[-31], T[-29], T[-30]
+    mul T[-31], T[-31], T[-30]
+    sub T[-31], T[-29], T[-31]
+    li T[-32], 0
+    sub T[-33], T[-31], T[-32]
+    snez T[-33], T[-33]
+    mv T[-42], T[-33]
+    j B8
+
+B7:
+    li T[-34], 0
+    mv T[-42], T[-34]
+    j B8
+
+B8:
+    mv T[-43], T[-42]
+    mv T[-41], T[-42]
+    j B5
+
+B9:
+    mv a0, T[-12]
+    call putint
+    mv T[-38], a0
+    j B10
+
+B10:
+    li T[-40], 0
+    mv a0, T[-40]
+    ret
+
+---------------------------------ir after resolve phi end --------------------------------
+main
+main Main()
+main do_liveness_analysis() done
+main Build() done
+simplify reg MkWorklist insert T[-43]
+simplify reg MkWorklist insert T[-42]
+simplify reg MkWorklist insert T[-41]
+freeze reg MkWorklist insert T[-40]
+freeze reg MkWorklist insert T[-38]
+simplify reg MkWorklist insert T[-36]
+simplify reg MkWorklist insert T[-34]
+simplify reg MkWorklist insert T[-33]
+simplify reg MkWorklist insert T[-32]
+simplify reg MkWorklist insert T[-31]
+simplify reg MkWorklist insert T[-30]
+simplify reg MkWorklist insert T[-29]
+simplify reg MkWorklist insert T[-28]
+simplify reg MkWorklist insert T[-26]
+simplify reg MkWorklist insert T[-25]
+simplify reg MkWorklist insert T[-24]
+simplify reg MkWorklist insert T[-20]
+simplify reg MkWorklist insert T[-19]
+simplify reg MkWorklist insert T[-18]
+simplify reg MkWorklist insert T[-17]
+simplify reg MkWorklist insert T[-16]
+simplify reg MkWorklist insert T[-15]
+freeze reg MkWorklist insert T[-12]
+simplify reg MkWorklist insert T[-11]
+simplify reg MkWorklist insert T[-10]
+simplify reg MkWorklist insert T[-9]
+simplify reg MkWorklist insert T[-8]
+simplify reg MkWorklist insert T[-7]
+simplify reg MkWorklist insert T[-6]
+main MkWorklist() done
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Coalesce()
+main Coalesce()
+main Coalesce()
+main AssignColors() done
+replace regs
+
+main
+after compute reg_used
+after prologue
+end of emitend

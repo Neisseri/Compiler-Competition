@@ -113,17 +113,7 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
             restore_stack.push_back(std::make_pair<std::string, ir::Reg>(std::move(res_name), std::move(res_reg)));
             reaching_def[store->var_name] = store->src_val;
             it = ir_bb->instrs.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
-    for (auto it = ir_bb->instrs.begin(); it != ir_bb->instrs.end(); it++)
-    {
-        auto &instr = *it;
-        if (auto phi = dynamic_cast<ir::Phi *>(instr.get()))
-        {
+        } else if (auto phi = dynamic_cast<ir::Phi *>(instr.get())) {
             std::string name = phi->var_name;
             ir::Reg used = reaching_def[name];
             ir::Reg new_used = phi->dst;
@@ -204,12 +194,104 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
                     }
                 }
             }
+            it ++;
         }
         else
         {
-            break;
+            it++;
         }
     }
+    // for (auto it = ir_bb->instrs.begin(); it != ir_bb->instrs.end(); it++)
+    // {
+    //     auto &instr = *it;
+    //     if (auto phi = dynamic_cast<ir::Phi *>(instr.get()))
+    //     {
+    //         std::string name = phi->var_name;
+    //         ir::Reg used = reaching_def[name];
+    //         ir::Reg new_used = phi->dst;
+
+    //         std::string res_name = phi->var_name;
+    //         ir::Reg res_reg;
+    //         if (reaching_def.find(phi->var_name) == reaching_def.end())
+    //         {
+    //             res_reg = ir::Reg(1, -1);
+    //         }
+    //         else
+    //         {
+    //             res_reg = reaching_def[phi->var_name];
+    //         }
+    //         restore_stack.push_back(std::make_pair<std::string, ir::Reg>(std::move(res_name), std::move(res_reg)));
+    //         reaching_def[phi->var_name] = phi->dst;
+    //         for (auto later = it; later != ir_bb->instrs.end(); later++)
+    //         {
+    //             auto &later_instr = *later;
+    //             if (auto store = dynamic_cast<ir::Store *>(later_instr.get()))
+    //             {
+    //                 if (store->ptr.id == used.id)
+    //                 {
+    //                     store->ptr = new_used;
+    //                 }
+    //                 if (store->src_val.id == used.id)
+    //                 {
+    //                     store->src_val = new_used;
+    //                 }
+    //             }
+    //             else if (auto load = dynamic_cast<ir::Load *>(later_instr.get()))
+    //             {
+    //                 if (load->ptr.id == used.id)
+    //                 {
+    //                     load->ptr = new_used;
+    //                 }
+    //             }
+    //             else if (auto binary = dynamic_cast<ir::Binary *>(later_instr.get()))
+    //             {
+    //                 if (binary->src1.id == used.id)
+    //                 {
+    //                     binary->src1 = new_used;
+    //                 }
+    //                 if (binary->src2.id == used.id)
+    //                 {
+    //                     binary->src2 = new_used;
+    //                 }
+    //             }
+    //             else if (auto assign = dynamic_cast<ir::Assign *>(later_instr.get()))
+    //             {
+    //                 if (assign->src.id == used.id)
+    //                 {
+    //                     assign->src = new_used;
+    //                 }
+    //             }
+    //             else if (auto ret = dynamic_cast<ir::Return *>(later_instr.get()))
+    //             {
+    //                 if (ret->ret_val.id == used.id)
+    //                 {
+    //                     ret->ret_val = new_used;
+    //                 }
+    //             }
+    //             else if (auto call = dynamic_cast<ir::Call *>(later_instr.get()))
+    //             {
+    //                 for (auto &param : call->params)
+    //                 {
+    //                     if (param.id == used.id)
+    //                     {
+    //                         param = new_used;
+    //                     }
+    //                 }
+    //             }
+    //             else if (auto condbranch = dynamic_cast<ir::CondBranch *>(later_instr.get()))
+    //             {
+    //                 if (condbranch->cond.id == used.id)
+    //                 {
+    //                     condbranch->cond = new_used;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         break;
+    //     }
+    // }
 
     for (auto succ : ir_bb->succs)
     {

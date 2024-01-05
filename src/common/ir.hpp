@@ -90,7 +90,7 @@ struct Phi: Instruction {
     Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name){}
     
     std::string toString() {
-        std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
+        std::string ret = dst.toString() + " = phi " + var_name + " " + type.toString(1) + " ";
         for (auto i = srcs.begin(); i != srcs.end(); i ++){
             ret += "[ " + i->first.toString() + ", %" + i->second->label.toString() + " ]";
             if (i + 1 != srcs.end()){
@@ -185,7 +185,7 @@ struct Store: Instruction {
     Store(Type type, Reg src_val, Reg ptr, std::string var_name) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
-        return "store " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
+        return "store " + var_name + " " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
@@ -203,7 +203,7 @@ struct Load: Instruction {
     Load(Reg ret_val, Type type, Reg ptr, std::string var_name) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
-        return ret_val.toString() + " = load " + type.toString(1) + ", ptr " + ptr.toString();
+        return ret_val.toString() + " = load " + var_name + " " + type.toString(1) + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
