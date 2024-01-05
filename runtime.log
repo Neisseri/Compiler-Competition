@@ -1,0 +1,454 @@
+--------------------------- building ast ---------------------------
+parse tree: 
+(compUnit 
+        (compUnitItem 
+            (decl 
+                (constDecl const 
+                    (bType int) 
+                    (constDef N = 
+                        (initVal 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 1024))))))))) ;))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType void) mm ( 
+                (funcFParams 
+                    (funcFParam 
+                        (bType int) A [ ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ])) ) 
+                (block { 
+                    (blockItem 
+                        (decl 
+                            (varDecl 
+                                (bType int) 
+                                (varDef k = 
+                                    (initVal 
+                                        (exp 
+                                            (addExp 
+                                                (mulExp 
+                                                    (unaryExp 
+                                                        (primaryExp 
+                                                            (lVal A [ 
+                                                                (exp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (number 
+                                                                                        (intConst 1))))))) ] [ 
+                                                                (exp 
+                                                                    (addExp 
+                                                                        (mulExp 
+                                                                            (unaryExp 
+                                                                                (primaryExp 
+                                                                                    (number 
+                                                                                        (intConst 2))))))) ])))))))) ;))) }))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef A [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ]) ;))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef B [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ]) ;))) 
+        (compUnitItem 
+            (decl 
+                (varDecl 
+                    (bType int) 
+                    (varDef C [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ] [ 
+                        (exp 
+                            (addExp 
+                                (mulExp 
+                                    (unaryExp 
+                                        (primaryExp 
+                                            (lVal N)))))) ]) ;))) 
+        (compUnitItem 
+            (funcDef 
+                (funcType 
+                    (bType int)) main ( ) 
+                (block { 
+                    (blockItem 
+                        (stmt return 
+                            (exp 
+                                (addExp 
+                                    (mulExp 
+                                        (unaryExp 
+                                            (primaryExp 
+                                                (number 
+                                                    (intConst 0))))))) ;)) }))) <EOF>)
+visitCompUnit
+visitConstDecl: int start
+visitConstDecl: ident: N
+visitConstDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitCompUnit: funcDef
+visitArrayParam
+visitArrayParam: dim_ is not nullptr
+construct funct block: mm
+visitVarDecl: int start
+visitVarDecl: ident: k
+visitVarDecl: initVal
+visitInit
+visitPrimaryExp_ number
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitVarDecl: int start
+visitVarDecl: array dim_size=2
+visitVarDecl: ident: A
+visitVarDecl: int start
+visitVarDecl: array dim_size=2
+visitVarDecl: ident: B
+visitVarDecl: int start
+visitVarDecl: array dim_size=2
+visitVarDecl: ident: C
+visitCompUnit: funcDef
+construct funct block: main
+visitPrimaryExp_ number
+visitBlock done!
+construct funct block done!
+visitCompUnit end create new program
+visitCompUnit end create new program end
+------------------------------type check------------------------------
+Info: visitProgramProgram
+Info: visitVarDef i32 @N = 1024
+Info: visitExpr1024
+Info: visitAssignmentExpr1024
+Info: visitExpr1024
+Info: visitIntLiteralExpr1024
+ret->type 0x55e34c6cf7d0
+Info: visitFuncDefvoid @mm(i32 @A[0, @N])
+Info: visitParamDefi32 @A[0, @N]
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55e34c6cf800
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitBlock
+Info: visitVarDef i32 @k = @A[1][2]
+Info: visitExpr@A[1][2]
+Info: visitAssignmentExpr@A[1][2]
+Info: visitExpr@A[1][2]
+Info: visitLvalExpr@A[1][2]
+Info: lval->indices->children.size() 2
+Info: visitDims 1
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55e34c6cfcc0
+Info: visitDims 2
+Info: visitExpr2
+Info: visitIntLiteralExpr2
+ret->type 0x55e34c6cf490
+Info: function mm has no returnscope id1
+Info: visitVarDef i32 @A[@N, @N]
+Info: var_def->indices->children.size() 2
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitVarDef i32 @B[@N, @N]
+Info: var_def->indices->children.size() 2
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitVarDef i32 @C[@N, @N]
+Info: var_def->indices->children.size() 2
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitDims @N
+Info: visitExpr@N
+Info: visitLvalExpr@N
+Info: visitFuncDefi32 @main()
+Info: visitBlock
+Info: visitStatementReturn 0
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55e34c6cf4c0
+Info: visitReturnStmtReturn 0function has returnscope id3
+ast: 
+Program
+  i32 @N#0 = 1024
+  void @mm(i32 @A#1[0, @N#0])
+    {
+      i32 @k#2 = @A#1[1][2]
+      Return 0
+    }
+  i32 @A#0[@N#0, @N#0]
+  i32 @B#0[@N#0, @N#0]
+  i32 @C#0[@N#0, @N#0]
+  i32 @main()
+    {
+      Return 0
+    }
+End of Program
+--------------------------- building ir_origin ---------------------------
+visitProgram
+visit decl global var
+visit_global_init
+visitExpressionVal
+visitExpressionVal
+visitExpressionVal
+visit decl global const var N#0: 1024
+visit decl global var done
+visitFunction mm
+visitFunction param decl: A#1
+visitFunction param decl array dim:visitExpressionVal
+ 0visitExpressionVal
+ 1024
+visitBlock 
+visitExpression
+visitExpression
+visitExpressionLValue A#1
+visitIndex
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitIndex calc blocksize 1 1024
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function mm has 13 regs
+B0:
+  prev: 
+  succ: 
+B1:
+  prev: 
+  succ: 
+
+B0:
+  prev: 
+  succ: 
+
+entryB0
+reverse_postorderB0
+B0:
+  doms: 
+  domed_by: B0 
+
+B0:
+  DF: 
+
+visit decl global array
+visitExpressionVal
+visitExpressionVal
+global array size: 1048576
+visit decl global array done
+visit decl global array
+visitExpressionVal
+visitExpressionVal
+global array size: 1048576
+visit decl global array done
+visit decl global array
+visitExpressionVal
+visitExpressionVal
+global array size: 1048576
+visit decl global array done
+visitFunction main
+visitBlock 
+visitStatement
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+function main has 1 regs
+B2:
+  prev: 
+  succ: 
+B3:
+  prev: 
+  succ: 
+
+B2:
+  prev: 
+  succ: 
+
+entryB2
+reverse_postorderB2
+B2:
+  doms: 
+  domed_by: B2 
+
+B2:
+  DF: 
+
+ir_origin:
+; module
+@N = global i32 1024, i32 4
+@A = global i32, i32 4194304
+@B = global i32, i32 4194304
+@C = global i32, i32 4194304
+define i32 @main(){
+B2:
+  %r1 = add i32 0, 0 ; loadint
+  ret i32 %r1
+
+}
+define void @mm(i32 %r1){
+B0:
+  %r2 = alloca i32, i32 4
+  %r3 = add i32 0, 4 ; loadint
+  %r4 = add i32 0, 2 ; loadint
+  %r5 = mul i32 %r4, %r3
+  %r6 = add i32 %r1, %r5
+  %r7 = add i32 0, 1024 ; loadint
+  %r8 = mul i32 %r3, %r7
+  %r9 = add i32 0, 1 ; loadint
+  %r10 = mul i32 %r9, %r8
+  %r11 = add i32 %r6, %r10
+  %r12 = load A#1 i32, ptr %r11
+  store k#2 i32 %r12, ptr %r2
+  %r13 = add i32 0, 0 ; loadint
+  ret i32 %r13
+
+}
+---------------------------------ir -------------------------------------
+; module
+@N = global i32 1024, i32 4
+@A = global i32, i32 4194304
+@B = global i32, i32 4194304
+@C = global i32, i32 4194304
+define i32 @main(){
+B2:
+  %r1 = add i32 0, 0 ; loadint
+  ret i32 %r1
+
+}
+define void @mm(i32 %r1){
+B0:
+  %r2 = alloca i32, i32 4
+  %r3 = add i32 0, 4 ; loadint
+  %r4 = add i32 0, 2 ; loadint
+  %r5 = mul i32 %r4, %r3
+  %r6 = add i32 %r1, %r5
+  %r7 = add i32 0, 1024 ; loadint
+  %r8 = mul i32 %r3, %r7
+  %r9 = add i32 0, 1 ; loadint
+  %r10 = mul i32 %r9, %r8
+  %r11 = add i32 %r6, %r10
+  %r12 = load A#1 i32, ptr %r11
+  store k#2 i32 %r12, ptr %r2
+  %r13 = add i32 0, 0 ; loadint
+  ret i32 %r13
+
+}
+--------------------------- building riscv ---------------------------
+riscv: 
+    li T[-1], 0
+    mv a0, T[-1]
+    ret
+    addi T[-2], sp, 108
+    li T[-3], 4
+    li T[-4], 2
+    mul T[-5], T[-4], T[-3]
+    add T[-6], a1, T[-5]
+    li T[-7], 1024
+    mul T[-8], T[-3], T[-7]
+    li T[-9], 1
+    mul T[-10], T[-9], T[-8]
+    add T[-11], T[-6], T[-10]
+    lw T[-12], 0(T[-11])
+    sw T[-12], 0(T[-2])
+    li T[-13], 0
+    mv a0, T[-13]
+    ret
+?
+mm Main()
+mm do_liveness_analysis() done
+mm Build() done
+freeze reg MkWorklist insert T[-13]
+simplify reg MkWorklist insert T[-12]
+simplify reg MkWorklist insert T[-11]
+simplify reg MkWorklist insert T[-10]
+simplify reg MkWorklist insert T[-9]
+simplify reg MkWorklist insert T[-8]
+simplify reg MkWorklist insert T[-7]
+simplify reg MkWorklist insert T[-6]
+simplify reg MkWorklist insert T[-5]
+simplify reg MkWorklist insert T[-4]
+simplify reg MkWorklist insert T[-3]
+simplify reg MkWorklist insert T[-2]
+mm MkWorklist() done
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Simplify()
+mm Coalesce()
+mm AssignColors() done
+replace regs
+
+mm
+after compute reg_used
+after prologue
+end of emitend
+main Main()
+main do_liveness_analysis() done
+main Build() done
+freeze reg MkWorklist insert T[-1]
+main MkWorklist() done
+main Coalesce()
+main AssignColors() done
+replace regs
+
+main
+after compute reg_used
+after prologue
+end of emitend

@@ -16,7 +16,7 @@ B0:
   %r4 = add i32 0, 2 ; loadint
   %r5 = mul i32 %r4, %r3
   %r6 = add i32 %r1, %r5
-  %r7 = add i32 0, 1 ; loadint
+  %r7 = add i32 0, 1024 ; loadint
   %r8 = mul i32 %r3, %r7
   %r9 = add i32 0, 1 ; loadint
   %r10 = mul i32 %r9, %r8
