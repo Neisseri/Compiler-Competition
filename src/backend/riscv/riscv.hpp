@@ -67,6 +67,7 @@ struct Unary: Instruction {
     Unary(Reg dst, RiscvUnaryOp op, Reg src): dst(dst), op(op), src(src), Instruction() {}
     void emit(std::ostream &os) const override;
     std::set<Reg> def() const override { return {dst}; }
+    std::set<Reg> use() const override { return {src}; }
     std::vector<Reg*> reg_ptrs() override { return {&dst, &src}; }
     std::vector<Reg*> def_ptrs() override { return {&dst}; }
     std::vector<Reg*> use_ptrs() override { return {&src}; }
