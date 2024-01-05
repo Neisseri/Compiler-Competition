@@ -219,9 +219,9 @@ void IROptimizer::visit_rename_regs(std::shared_ptr<ir::BasicBlock> ir_bb)
             {
                 if (reaching_def.find(phi->var_name) == reaching_def.end())
                 {
-                    // ir::Reg temp_reg = ir::Reg(1, 1);
-                    // std::shared_ptr<ir::BasicBlock> temp_bb = ir_bb;
-                    // phi->srcs.push_back(std::make_pair<ir::Reg, std::shared_ptr<ir::BasicBlock>>(std::move(temp_reg), std::move(temp_bb)));
+                    ir::Reg temp_reg = ir::Reg(1, 1);
+                    std::shared_ptr<ir::BasicBlock> temp_bb = ir_bb;
+                    phi->srcs.push_back(std::make_pair<ir::Reg, std::shared_ptr<ir::BasicBlock>>(std::move(temp_reg), std::move(temp_bb)));
 
                     continue;
                 }

@@ -169,9 +169,9 @@ int main(int argc, char *argv[])
             std::cerr << "ir before resolve phi end\n";
             if (mem_to_reg_flag) {
                 func->resolve_phi();
-                // std::cerr << "---------------------------------ir after resolve phi-------------------------------------" << std::endl;
-                // func->emit(std::cerr);
-                // std::cerr << "---------------------------------ir after resolve phi end --------------------------------" << std::endl;
+                std::cerr << "---------------------------------ir after resolve phi-------------------------------------" << std::endl;
+                func->emit(std::cerr);
+                std::cerr << "---------------------------------ir after resolve phi end --------------------------------" << std::endl;
             }
             std::cerr << name << "\n";
             riscv::coloringregalloc RegAllocator(func);

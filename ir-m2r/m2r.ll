@@ -30,7 +30,7 @@ B3:
   br i1 %r26, label %B5, label %B6
 
 B4:
-  %r71 = phi i32 [ %r70, %B7 ]
+  %r71 = phi i32 [ %r1, %B2 ], [ %r70, %B7 ]
   %r69 = phi i32 [ %r36, %B2 ], [ %r34, %B7 ]
   br i1 %r71, label %B8, label %B9
 
@@ -78,8 +78,8 @@ B12:
   br i1 %r53, label %B14, label %B15
 
 B13:
-  %r74 = phi i32 [ %r73, %B16 ]
-  %r72 = phi i32 [ %r63, %B11 ], [ %r61, %B16 ]
+  %r74 = phi i32 [ %r1, %B11 ], [ %r73, %B16 ]
+  %r72 = phi i32 [ %r63, %B11 ], [ %r21898, %B16 ]
   br i1 %r74, label %B17, label %B18
 
 B14:
