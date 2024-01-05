@@ -223,13 +223,19 @@ namespace riscv {
         std::cerr << "insert_tag: ";
         (*insert_tag)->emit(std::cerr);
         std::cerr << "\n";
-        auto pre_insert_tag = std::prev(insert_tag);
-        while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
-          branch->emit(std::cerr);
-          insert_tag = pre_insert_tag;
-          std::cerr << "insert_tag: branch ";
-          (*insert_tag)->emit(std::cerr);
-          std::cerr << "\n";
+        if (insert_tag != bb->instructions.begin()) {
+          auto pre_insert_tag = std::prev(insert_tag);
+          while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
+            branch->emit(std::cerr);
+            insert_tag = pre_insert_tag;
+            if (insert_tag == bb->instructions.begin()) {
+              break;
+            }
+            pre_insert_tag = std::prev(insert_tag);
+            std::cerr << "insert_tag: branch ";
+            (*insert_tag)->emit(std::cerr);
+            std::cerr << "\n";
+          }
         }
         bb->instructions.emplace(insert_tag, mov);
         phi_moves.insert(mov);
