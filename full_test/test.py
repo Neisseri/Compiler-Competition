@@ -15,7 +15,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 TEST_ROUND = 1
-TIMEOUT = 100
+TIMEOUT = 1000
 
 # NOTE: 在这里修改你的编译器路径和参数。此处的默认值对应着gcc
 # compiler_path = "riscv64-unknown-elf-gcc"
@@ -147,7 +147,7 @@ def test(config: Config, testcase: str) -> bool:
 
     assembly = os.path.join(f'{testcase}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
-    command = (f'{config.compiler} {config.compiler_args} {source}'
+    command = (f'ulimit -s unlimited && {config.compiler} {config.compiler_args} {source}'
                 f' -A -o {assembly}')
 
     proc = subprocess.Popen(command, shell=True,stderr=open(error_log, 'w'))

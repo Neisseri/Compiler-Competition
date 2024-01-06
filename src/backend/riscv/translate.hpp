@@ -140,7 +140,14 @@ namespace riscv {
             bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
           }
           else {
-            bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), (i-7)*4));
+            if ((i-7)*4 < 2048)
+              bb->instructions.emplace_back(new StoreWord(src_reg, Reg(General, sp), (i-7)*4));
+            else {
+              Reg temp = freshTemp();
+              bb->instructions.emplace_back(new LoadImm(temp, (i-7)*4));
+              bb->instructions.emplace_back(new Binary(temp, RiscvBinaryOp::ADD, temp, Reg(General, sp)));
+              bb->instructions.emplace_back(new StoreWord(src_reg, temp, 0));
+            }
             frame_size += 4;
           }
         }
