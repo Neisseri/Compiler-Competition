@@ -121,14 +121,27 @@ void Function::emitend() {
     int id = 0;
     for (int i = 0; i < NUM_REGS; i++) {
         if (REG_ATTR[i] == CalleeSaved) {
-            if (reg_used[i])
-                prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), 4 * id + stackParamSize));
+            if (reg_used[i]) {
+                int offset = 4 * id + stackParamSize;
+                if (offset < 2048)
+                    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, sp), offset));
+                else {
+                    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, i), Reg(General, t2), 0));
+                    prologue.emplace(prologue.begin(), new Binary(Reg(General, t2), RiscvBinaryOp::ADD, Reg(General, t2), Reg(General, sp)));
+                    prologue.emplace(prologue.begin(), new LoadImm(Reg(General, t2), offset));
+                }
+            }
             id++;
         }
     }
-    prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), 44 + stackParamSize));
-
-    // frame_size += stackParamSize;
+    int offset = 44 + stackParamSize;
+    if (offset < 2048)
+        prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, sp), offset));
+    else {
+        prologue.emplace(prologue.begin(), new StoreWord(Reg(General, ra), Reg(General, t2), 0));
+        prologue.emplace(prologue.begin(), new Binary(Reg(General, t2), RiscvBinaryOp::ADD, Reg(General, t2), Reg(General, sp)));
+        prologue.emplace(prologue.begin(), new LoadImm(Reg(General, t2), offset));
+    }
 
     if (frame_size >= 2048) {
         prologue.emplace(prologue.begin(), new Binary(Reg(General, sp), RiscvBinaryOp::ADD, Reg(General, t6), Reg(General, sp)));
