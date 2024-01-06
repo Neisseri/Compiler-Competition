@@ -26,8 +26,8 @@ B4:
   br label %B6
 
 B5:
-  %r47 = add i32 0, 0 ; loadint
-  ret i32 %r47
+  %r49 = add i32 0, 0 ; loadint
+  ret i32 %r49
 
 B6:
   %r12 = load i#6 i32, ptr %r7
@@ -58,10 +58,10 @@ B10:
   br label %B12
 
 B11:
-  %r43 = load i#6 i32, ptr %r7
-  %r44 = add i32 0, 1 ; loadint
-  %r45 = add i32 %r43, %r44
-  store i#6 i32 %r45, ptr %r7
+  %r45 = load i#6 i32, ptr %r7
+  %r46 = add i32 0, 1 ; loadint
+  %r47 = add i32 %r45, %r46
+  store i#6 i32 %r47, ptr %r7
   br label %B6
 
 B12:
@@ -93,34 +93,36 @@ B15:
   br i1 %r35, label %B16, label %B17
 
 B16:
-  %r36 = add i32 0, 1 ; loadint
-  store logic_expr@#22 i32 %r36, ptr %r22
+  %r36 = add i32 0, 0 ; loadint
+  %r37 = load k#6 i32, ptr %r10
+  %r38 = icmp eq i32 %r36, %r37
+  store logic_expr@#22 i32 %r38, ptr %r22
   br label %B18
 
 B17:
-  %r37 = add i32 0, 0 ; loadint
-  store logic_expr@#22 i32 %r37, ptr %r22
+  %r39 = add i32 0, 0 ; loadint
+  store logic_expr@#22 i32 %r39, ptr %r22
   br label %B18
 
 B18:
-  %r38 = load logic_expr@#22 i32, ptr %r22
-  br i1 %r38, label %B19, label %B20
+  %r40 = load logic_expr@#22 i32, ptr %r22
+  br i1 %r40, label %B19, label %B20
 
 B19:
-  %r39 = alloca i32, i32 4
-  %r40 = add i32 0, 1 ; loadint
-  store flag#10 i32 %r40, ptr %r39
   %r41 = alloca i32, i32 4
   %r42 = add i32 0, 1 ; loadint
-  store tmp#10 i32 %r42, ptr %r41
+  store flag#10 i32 %r42, ptr %r41
+  %r43 = alloca i32, i32 4
+  %r44 = add i32 0, 1 ; loadint
+  store tmp#10 i32 %r44, ptr %r43
   br label %B20
 
 B20:
   br label %B11
 
 B21:
-  %r46 = add i32 0, 1 ; loadint
-  br i1 %r46, label %B22, label %B23
+  %r48 = add i32 0, 1 ; loadint
+  br i1 %r48, label %B22, label %B23
 
 B22:
   br label %B23
