@@ -1,36 +1,25 @@
-int array[1];
-int n;
-void init(int n) {
-}
-
+void init() {}
 int main() {
   int t = 1;
-  int a, b;
+  int c = 1;
   while (t) {
-    t = t - 1;
-    n = 1;
+    t = 0;
     int i = 0;
-    int flag = 0;
-    init(n);
-    int k = 17;
-
-    while (i < 10) {
-      a = 1;
-      b = 2;
-
-      if (!flag) {
-        int loc = n * (a - 1) + b;
-        if (array[0] != -1 && array[k] != -1 && 0 == k) {
-          flag = 1;
-          int tmp = i + 1;
+    init();
+    int k = 0;
+    while (i < 3) {
+      int a = 1;
+      int b = 1;
+      if (1) {`
+        int loc = a;
+        if (c != -1 && c != -1 && 0 == k) {
+          int flag = 1;
+          int tmp = 1;
         }
       }
-
       i = i + 1;
     }
-    if (!flag) {
-      putint(-1);
-    }
+    if (1) {}
   }
   return 0;
 }

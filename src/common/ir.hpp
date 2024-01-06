@@ -90,7 +90,8 @@ struct Phi: Instruction {
     Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name){}
     
     std::string toString() {
-        std::string ret = dst.toString() + " = phi " + var_name + " " + type.toString(1) + " ";
+        // std::string ret = dst.toString() + " = phi " + var_name + " " + type.toString(1) + " ";
+        std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
         for (auto i = srcs.begin(); i != srcs.end(); i ++){
             ret += "[ " + i->first.toString() + ", %" + i->second->label.toString() + " ]";
             if (i + 1 != srcs.end()){

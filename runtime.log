@@ -2,28 +2,8 @@
 parse tree: 
 (compUnit 
         (compUnitItem 
-            (decl 
-                (varDecl 
-                    (bType int) 
-                    (varDef array [ 
-                        (exp 
-                            (addExp 
-                                (mulExp 
-                                    (unaryExp 
-                                        (primaryExp 
-                                            (number 
-                                                (intConst 1))))))) ]) ;))) 
-        (compUnitItem 
-            (decl 
-                (varDecl 
-                    (bType int) 
-                    (varDef n) ;))) 
-        (compUnitItem 
             (funcDef 
-                (funcType void) init ( 
-                (funcFParams 
-                    (funcFParam 
-                        (bType int) n)) ) 
+                (funcType void) init ( ) 
                 (block { }))) 
         (compUnitItem 
             (funcDef 
@@ -47,8 +27,15 @@ parse tree:
                         (decl 
                             (varDecl 
                                 (bType int) 
-                                (varDef a) , 
-                                (varDef b) ;))) 
+                                (varDef c = 
+                                    (initVal 
+                                        (exp 
+                                            (addExp 
+                                                (mulExp 
+                                                    (unaryExp 
+                                                        (primaryExp 
+                                                            (number 
+                                                                (intConst 1))))))))) ;))) 
                     (blockItem 
                         (stmt while ( 
                             (cond 
@@ -68,26 +55,11 @@ parse tree:
                                             (lVal t) = 
                                             (exp 
                                                 (addExp 
-                                                    (addExp 
-                                                        (mulExp 
-                                                            (unaryExp 
-                                                                (primaryExp 
-                                                                    (lVal t))))) - 
                                                     (mulExp 
                                                         (unaryExp 
                                                             (primaryExp 
                                                                 (number 
-                                                                    (intConst 1))))))) ;)) 
-                                    (blockItem 
-                                        (stmt 
-                                            (lVal n) = 
-                                            (exp 
-                                                (addExp 
-                                                    (mulExp 
-                                                        (unaryExp 
-                                                            (primaryExp 
-                                                                (number 
-                                                                    (intConst 1))))))) ;)) 
+                                                                    (intConst 0))))))) ;)) 
                                     (blockItem 
                                         (decl 
                                             (varDecl 
@@ -102,32 +74,11 @@ parse tree:
                                                                             (number 
                                                                                 (intConst 0))))))))) ;))) 
                                     (blockItem 
-                                        (decl 
-                                            (varDecl 
-                                                (bType int) 
-                                                (varDef flag = 
-                                                    (initVal 
-                                                        (exp 
-                                                            (addExp 
-                                                                (mulExp 
-                                                                    (unaryExp 
-                                                                        (primaryExp 
-                                                                            (number 
-                                                                                (intConst 0))))))))) ;))) 
-                                    (blockItem 
                                         (stmt 
                                             (exp 
                                                 (addExp 
                                                     (mulExp 
-                                                        (unaryExp init ( 
-                                                            (funcRParams 
-                                                                (funcRParam 
-                                                                    (exp 
-                                                                        (addExp 
-                                                                            (mulExp 
-                                                                                (unaryExp 
-                                                                                    (primaryExp 
-                                                                                        (lVal n)))))))) ))))) ;)) 
+                                                        (unaryExp init ( ))))) ;)) 
                                     (blockItem 
                                         (decl 
                                             (varDecl 
@@ -140,7 +91,7 @@ parse tree:
                                                                     (unaryExp 
                                                                         (primaryExp 
                                                                             (number 
-                                                                                (intConst 17))))))))) ;))) 
+                                                                                (intConst 0))))))))) ;))) 
                                     (blockItem 
                                         (stmt while ( 
                                             (cond 
@@ -159,29 +110,35 @@ parse tree:
                                                                         (unaryExp 
                                                                             (primaryExp 
                                                                                 (number 
-                                                                                    (intConst 10))))))))))) ) 
+                                                                                    (intConst 3))))))))))) ) 
                                             (stmt 
                                                 (block { 
                                                     (blockItem 
-                                                        (stmt 
-                                                            (lVal a) = 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 1))))))) ;)) 
+                                                        (decl 
+                                                            (varDecl 
+                                                                (bType int) 
+                                                                (varDef a = 
+                                                                    (initVal 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (number 
+                                                                                                (intConst 1))))))))) ;))) 
                                                     (blockItem 
-                                                        (stmt 
-                                                            (lVal b) = 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp 
-                                                                            (primaryExp 
-                                                                                (number 
-                                                                                    (intConst 2))))))) ;)) 
+                                                        (decl 
+                                                            (varDecl 
+                                                                (bType int) 
+                                                                (varDef b = 
+                                                                    (initVal 
+                                                                        (exp 
+                                                                            (addExp 
+                                                                                (mulExp 
+                                                                                    (unaryExp 
+                                                                                        (primaryExp 
+                                                                                            (number 
+                                                                                                (intConst 1))))))))) ;))) 
                                                     (blockItem 
                                                         (stmt if ( 
                                                             (cond 
@@ -191,10 +148,10 @@ parse tree:
                                                                             (relExp 
                                                                                 (addExp 
                                                                                     (mulExp 
-                                                                                        (unaryExp ! 
-                                                                                            (unaryExp 
-                                                                                                (primaryExp 
-                                                                                                    (lVal flag))))))))))) ) 
+                                                                                        (unaryExp 
+                                                                                            (primaryExp 
+                                                                                                (number 
+                                                                                                    (intConst 1))))))))))) ) 
                                                             (stmt 
                                                                 (block { 
                                                                     (blockItem 
@@ -205,30 +162,10 @@ parse tree:
                                                                                     (initVal 
                                                                                         (exp 
                                                                                             (addExp 
-                                                                                                (addExp 
-                                                                                                    (mulExp 
-                                                                                                        (mulExp 
-                                                                                                            (unaryExp 
-                                                                                                                (primaryExp 
-                                                                                                                    (lVal n)))) * 
-                                                                                                        (unaryExp 
-                                                                                                            (primaryExp ( 
-                                                                                                                (exp 
-                                                                                                                    (addExp 
-                                                                                                                        (addExp 
-                                                                                                                            (mulExp 
-                                                                                                                                (unaryExp 
-                                                                                                                                    (primaryExp 
-                                                                                                                                        (lVal a))))) - 
-                                                                                                                        (mulExp 
-                                                                                                                            (unaryExp 
-                                                                                                                                (primaryExp 
-                                                                                                                                    (number 
-                                                                                                                                        (intConst 1))))))) ))))) + 
                                                                                                 (mulExp 
                                                                                                     (unaryExp 
                                                                                                         (primaryExp 
-                                                                                                            (lVal b)))))))) ;))) 
+                                                                                                            (lVal a)))))))) ;))) 
                                                                     (blockItem 
                                                                         (stmt if ( 
                                                                             (cond 
@@ -243,14 +180,7 @@ parse tree:
                                                                                                                 (mulExp 
                                                                                                                     (unaryExp 
                                                                                                                         (primaryExp 
-                                                                                                                            (lVal array [ 
-                                                                                                                                (exp 
-                                                                                                                                    (addExp 
-                                                                                                                                        (mulExp 
-                                                                                                                                            (unaryExp 
-                                                                                                                                                (primaryExp 
-                                                                                                                                                    (number 
-                                                                                                                                                        (intConst 0))))))) ]))))))) != 
+                                                                                                                            (lVal c))))))) != 
                                                                                                     (relExp 
                                                                                                         (addExp 
                                                                                                             (mulExp 
@@ -266,13 +196,7 @@ parse tree:
                                                                                                             (mulExp 
                                                                                                                 (unaryExp 
                                                                                                                     (primaryExp 
-                                                                                                                        (lVal array [ 
-                                                                                                                            (exp 
-                                                                                                                                (addExp 
-                                                                                                                                    (mulExp 
-                                                                                                                                        (unaryExp 
-                                                                                                                                            (primaryExp 
-                                                                                                                                                (lVal k)))))) ]))))))) != 
+                                                                                                                        (lVal c))))))) != 
                                                                                                 (relExp 
                                                                                                     (addExp 
                                                                                                         (mulExp 
@@ -282,32 +206,28 @@ parse tree:
                                                                                                                         (number 
                                                                                                                             (intConst 1)))))))))) && 
                                                                                         (eqExp 
-                                                                                            (eqExp 
-                                                                                                (relExp 
-                                                                                                    (addExp 
-                                                                                                        (mulExp 
-                                                                                                            (unaryExp 
-                                                                                                                (primaryExp 
-                                                                                                                    (number 
-                                                                                                                        (intConst 0)))))))) == 
                                                                                             (relExp 
                                                                                                 (addExp 
                                                                                                     (mulExp 
                                                                                                         (unaryExp 
                                                                                                             (primaryExp 
-                                                                                                                (lVal k)))))))))) ) 
+                                                                                                                (number 
+                                                                                                                    (intConst 1))))))))))) ) 
                                                                             (stmt 
                                                                                 (block { 
                                                                                     (blockItem 
-                                                                                        (stmt 
-                                                                                            (lVal flag) = 
-                                                                                            (exp 
-                                                                                                (addExp 
-                                                                                                    (mulExp 
-                                                                                                        (unaryExp 
-                                                                                                            (primaryExp 
-                                                                                                                (number 
-                                                                                                                    (intConst 1))))))) ;)) 
+                                                                                        (decl 
+                                                                                            (varDecl 
+                                                                                                (bType int) 
+                                                                                                (varDef flag = 
+                                                                                                    (initVal 
+                                                                                                        (exp 
+                                                                                                            (addExp 
+                                                                                                                (mulExp 
+                                                                                                                    (unaryExp 
+                                                                                                                        (primaryExp 
+                                                                                                                            (number 
+                                                                                                                                (intConst 1))))))))) ;))) 
                                                                                     (blockItem 
                                                                                         (decl 
                                                                                             (varDecl 
@@ -316,11 +236,6 @@ parse tree:
                                                                                                     (initVal 
                                                                                                         (exp 
                                                                                                             (addExp 
-                                                                                                                (addExp 
-                                                                                                                    (mulExp 
-                                                                                                                        (unaryExp 
-                                                                                                                            (primaryExp 
-                                                                                                                                (lVal i))))) + 
                                                                                                                 (mulExp 
                                                                                                                     (unaryExp 
                                                                                                                         (primaryExp 
@@ -350,28 +265,12 @@ parse tree:
                                                             (relExp 
                                                                 (addExp 
                                                                     (mulExp 
-                                                                        (unaryExp ! 
-                                                                            (unaryExp 
-                                                                                (primaryExp 
-                                                                                    (lVal flag))))))))))) ) 
+                                                                        (unaryExp 
+                                                                            (primaryExp 
+                                                                                (number 
+                                                                                    (intConst 1))))))))))) ) 
                                             (stmt 
-                                                (block { 
-                                                    (blockItem 
-                                                        (stmt 
-                                                            (exp 
-                                                                (addExp 
-                                                                    (mulExp 
-                                                                        (unaryExp putint ( 
-                                                                            (funcRParams 
-                                                                                (funcRParam 
-                                                                                    (exp 
-                                                                                        (addExp 
-                                                                                            (mulExp 
-                                                                                                (unaryExp - 
-                                                                                                    (unaryExp 
-                                                                                                        (primaryExp 
-                                                                                                            (number 
-                                                                                                                (intConst 1)))))))))) ))))) ;)) })))) })))) 
+                                                (block { })))) })))) 
                     (blockItem 
                         (stmt return 
                             (exp 
@@ -382,12 +281,6 @@ parse tree:
                                                 (number 
                                                     (intConst 0))))))) ;)) }))) <EOF>)
 visitCompUnit
-visitVarDecl: int start
-visitVarDecl: array dim_size=1
-visitPrimaryExp_ number
-visitVarDecl: ident: array
-visitVarDecl: int start
-visitVarDecl: ident: n
 visitCompUnit: funcDef
 construct funct block: init
 visitBlock done!
@@ -400,11 +293,11 @@ visitVarDecl: initVal
 visitInit
 visitPrimaryExp_ number
 visitVarDecl: int start
-visitVarDecl: ident: a
-visitVarDecl: ident: b
-visit block stmt
+visitVarDecl: ident: c
+visitVarDecl: initVal
+visitInit
 visitPrimaryExp_ number
-visitAssign done!
+visit block stmt
 visitPrimaryExp_ number
 visitAssign done!
 visitVarDecl: int start
@@ -412,15 +305,9 @@ visitVarDecl: ident: i
 visitVarDecl: initVal
 visitInit
 visitPrimaryExp_ number
-visitVarDecl: int start
-visitVarDecl: ident: flag
-visitVarDecl: initVal
-visitInit
-visitPrimaryExp_ number
 visitExprStmt
 visitCall ident: init
-visitFuncRParams
-visitCall args_list size: 1
+visitCall args_list size: 0
 visitVarDecl: int start
 visitVarDecl: ident: k
 visitVarDecl: initVal
@@ -428,24 +315,31 @@ visitInit
 visitPrimaryExp_ number
 visitPrimaryExp_ number
 visit block stmt
+visitVarDecl: int start
+visitVarDecl: ident: a
+visitVarDecl: initVal
+visitInit
 visitPrimaryExp_ number
-visitAssign done!
+visitVarDecl: int start
+visitVarDecl: ident: b
+visitVarDecl: initVal
+visitInit
 visitPrimaryExp_ number
-visitAssign done!
+visitPrimaryExp_ number
 visit block stmt
 visitVarDecl: int start
 visitVarDecl: ident: loc
 visitVarDecl: initVal
 visitInit
-visitPrimaryExp_ exp
-visitPrimaryExp_ number
-visitPrimaryExp_ number
 visitPrimaryExp_ number
 visitPrimaryExp_ number
 visitPrimaryExp_ number
 visit block stmt
+visitVarDecl: int start
+visitVarDecl: ident: flag
+visitVarDecl: initVal
+visitInit
 visitPrimaryExp_ number
-visitAssign done!
 visitVarDecl: int start
 visitVarDecl: ident: tmp
 visitVarDecl: initVal
@@ -456,12 +350,8 @@ visitBlock done!
 visitPrimaryExp_ number
 visitAssign done!
 visitBlock done!
-visit block stmt
-visitExprStmt
-visitCall ident: putint
-visitFuncRParams
 visitPrimaryExp_ number
-visitCall args_list size: 1
+visit block stmt
 visitBlock done!
 visitBlock done!
 visitPrimaryExp_ number
@@ -471,15 +361,7 @@ visitCompUnit end create new program
 visitCompUnit end create new program end
 ------------------------------type check------------------------------
 Info: visitProgramProgram
-Info: visitVarDef i32 @array[1]
-Info: var_def->indices->children.size() 1
-Info: visitDims 1
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f0a0
-Info: visitVarDef i32 @n
-Info: visitFuncDefvoid @init(i32 @n)
-Info: visitParamDefi32 @n
+Info: visitFuncDefvoid @init()
 Info: visitBlock
 Info: function init has no returnscope id1
 Info: visitFuncDefi32 @main()
@@ -489,168 +371,115 @@ Info: visitExpr1
 Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f2d0
-Info: visitVarDef i32 @a
-Info: visitVarDef i32 @b
+ret->type 0x55ec749a3e40
+Info: visitVarDef i32 @c = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55ec749a3f50
 Info: visitStatementWhile
 Info: visitExpr@t
 Info: visitLvalExpr@t
 Info: visitStatement
 Info: visitBlock
-Info: visitStatementAssign@t = @t-1
-Info: visitAssignStmtAssign@t = @t-1
+Info: visitStatementAssign@t = 0
+Info: visitAssignStmtAssign@t = 0
 Info: visitExpr@t
 Info: visitLvalExpr@t
 Info: visitAssignStmti32
-Info: visitExpr@t-1
-Info: visitBinopExpr@t-1
-Info: visitExpr@t
-Info: visitLvalExpr@t
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f120
-Info: visitStatementAssign@n = 1
-Info: visitAssignStmtAssign@n = 1
-Info: visitExpr@n
-Info: visitLvalExpr@n
-Info: visitAssignStmti32
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f390
+Info: visitExpr0
+Info: visitIntLiteralExpr0
+ret->type 0x55ec749a3d70
 Info: visitVarDef i32 @i = 0
 Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f1fe38f550
-Info: visitVarDef i32 @flag = 0
+ret->type 0x55ec749a3fd0
+Info: visitStatementCall @init()
+Info: visitExprStmtCall @init()
+Info: visitExprCall @init()
+Info: visiCalltExprCall @init()
+Info: visitVarDef i32 @k = 0
 Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f1fe38f630
-Info: visitStatementCall @init(@n)
-Info: visitExprStmtCall @init(@n)
-Info: visitExprCall @init(@n)
-Info: visiCalltExprCall @init(@n)
-Info: visitExpr@n
-Info: visitLvalExpr@n
-Info: visitVarDef i32 @k = 17
-Info: visitExpr17
-Info: visitAssignmentExpr17
-Info: visitExpr17
-Info: visitIntLiteralExpr17
-ret->type 0x55f1fe38f710
+ret->type 0x55ec749a4140
 Info: visitStatementWhile
-Info: visitExpr@i<10
-Info: visitBinopExpr@i<10
+Info: visitExpr@i<3
+Info: visitBinopExpr@i<3
 Info: visitExpr@i
 Info: visitLvalExpr@i
-Info: visitExpr10
-Info: visitIntLiteralExpr10
-ret->type 0x55f1fe38f7f0
+Info: visitExpr3
+Info: visitIntLiteralExpr3
+ret->type 0x55ec749a41c0
 Info: visitStatement
 Info: visitBlock
-Info: visitStatementAssign@a = 1
-Info: visitAssignStmtAssign@a = 1
-Info: visitExpr@a
-Info: visitLvalExpr@a
-Info: visitAssignStmti32
+Info: visitVarDef i32 @a = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f8c0
-Info: visitStatementAssign@b = 2
-Info: visitAssignStmtAssign@b = 2
-Info: visitExpr@b
-Info: visitLvalExpr@b
-Info: visitAssignStmti32
-Info: visitExpr2
-Info: visitIntLiteralExpr2
-ret->type 0x55f1fe38f8f0
+ret->type 0x55ec749a4290
+Info: visitVarDef i32 @b = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55ec749a4310
 Info: visitStatementIfElse
-Info: visitExpr!@flag
-Info: visitUnonExpr!@flag
-Info: visitExpr@flag
-Info: visitLvalExpr@flag
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55ec749a43f0
 Info: visitStatement
 Info: visitBlock
-Info: visitVarDef i32 @loc = @n*@a-1+@b
-Info: visitExpr@n*@a-1+@b
-Info: visitAssignmentExpr@n*@a-1+@b
-Info: visitExpr@n*@a-1+@b
-Info: visitBinopExpr@n*@a-1+@b
-Info: visitExpr@n*@a-1
-Info: visitBinopExpr@n*@a-1
-Info: visitExpr@n
-Info: visitLvalExpr@n
-Info: visitExpr@a-1
-Info: visitBinopExpr@a-1
+Info: visitVarDef i32 @loc = @a
+Info: visitExpr@a
+Info: visitAssignmentExpr@a
 Info: visitExpr@a
 Info: visitLvalExpr@a
-Info: visitExpr1
-Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38f920
-Info: visitExpr@b
-Info: visitLvalExpr@b
 Info: visitStatementIfElse
-Info: visitExpr@array[0]!=-1&&@array[@k]!=-1&&0==@k
-Info: visitBinopExpr@array[0]!=-1&&@array[@k]!=-1&&0==@k
-Info: visitExpr@array[0]!=-1&&@array[@k]!=-1
-Info: visitBinopExpr@array[0]!=-1&&@array[@k]!=-1
-Info: visitExpr@array[0]!=-1
-Info: visitBinopExpr@array[0]!=-1
-Info: visitExpr@array[0]
-Info: visitLvalExpr@array[0]
-Info: lval->indices->children.size() 1
-Info: visitDims 0
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x55f1fe38fa50
+Info: visitExpr@c!=-1&&@c!=-1&&1
+Info: visitBinopExpr@c!=-1&&@c!=-1&&1
+Info: visitExpr@c!=-1&&@c!=-1
+Info: visitBinopExpr@c!=-1&&@c!=-1
+Info: visitExpr@c!=-1
+Info: visitBinopExpr@c!=-1
+Info: visitExpr@c
+Info: visitLvalExpr@c
 Info: visitExpr-1
 Info: visitUnonExpr-1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fad0
-Info: visitExpr@array[@k]!=-1
-Info: visitBinopExpr@array[@k]!=-1
-Info: visitExpr@array[@k]
-Info: visitLvalExpr@array[@k]
-Info: lval->indices->children.size() 1
-Info: visitDims @k
-Info: visitExpr@k
-Info: visitLvalExpr@k
+ret->type 0x55ec749a4470
+Info: visitExpr@c!=-1
+Info: visitBinopExpr@c!=-1
+Info: visitExpr@c
+Info: visitLvalExpr@c
 Info: visitExpr-1
 Info: visitUnonExpr-1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fb00
-Info: visitExpr0==@k
-Info: visitBinopExpr0==@k
-Info: visitExpr0
-Info: visitIntLiteralExpr0
-ret->type 0x55f1fe38fb30
-Info: visitExpr@k
-Info: visitLvalExpr@k
+ret->type 0x55ec749a45a0
+Info: visitExpr1
+Info: visitIntLiteralExpr1
+ret->type 0x55ec749a45d0
 Info: visitStatement
 Info: visitBlock
-Info: visitStatementAssign@flag = 1
-Info: visitAssignStmtAssign@flag = 1
-Info: visitExpr@flag
-Info: visitLvalExpr@flag
-Info: visitAssignStmti32
+Info: visitVarDef i32 @flag = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fb60
-Info: visitVarDef i32 @tmp = @i+1
-Info: visitExpr@i+1
-Info: visitAssignmentExpr@i+1
-Info: visitExpr@i+1
-Info: visitBinopExpr@i+1
-Info: visitExpr@i
-Info: visitLvalExpr@i
+ret->type 0x55ec749a4600
+Info: visitVarDef i32 @tmp = 1
+Info: visitExpr1
+Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fb90
+ret->type 0x55ec749a4690
 Info: visitStatementAssign@i = @i+1
 Info: visitAssignStmtAssign@i = @i+1
 Info: visitExpr@i
@@ -662,67 +491,50 @@ Info: visitExpr@i
 Info: visitLvalExpr@i
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fc20
+ret->type 0x55ec749a4770
 Info: visitStatementIfElse
-Info: visitExpr!@flag
-Info: visitUnonExpr!@flag
-Info: visitExpr@flag
-Info: visitLvalExpr@flag
-Info: visitStatement
-Info: visitBlock
-Info: visitStatementCall @putint(-1)
-Info: visitExprStmtCall @putint(-1)
-Info: visitExprCall @putint(-1)
-Info: visiCalltExprCall @putint(-1)
-Info: use of undeclared function putint
-Info: visitExpr-1
-Info: visitUnonExpr-1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f1fe38fc50
+ret->type 0x55ec749a47a0
+Info: visitStatement
+Info: visitBlock
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f1fe38fc80
+ret->type 0x55ec749a47d0
 Info: visitReturnStmtReturn 0function has returnscope id3
 ast: 
 Program
-  i32 @array#0[1]
-  i32 @n#0
-  void @init(i32 @n#1)
+  void @init()
     {
       Return 0
     }
   i32 @main()
     {
       i32 @t#4 = 1
-      i32 @a#4
-      i32 @b#4
+      i32 @c#4 = 1
       While        @t#4        {
-          Assign@t#4 = @t#4-1
-          Assign@n#0 = 1
+          Assign@t#4 = 0
           i32 @i#6 = 0
-          i32 @flag#6 = 0
-          Call @init            @n#0
-          i32 @k#6 = 17
-          While            @i#6<10
+          Call @init            
+          i32 @k#6 = 0
+          While            @i#6<3
             {
-              Assign@a#4 = 1
-              Assign@b#4 = 2
-              If                !@flag#6
+              i32 @a#8 = 1
+              i32 @b#8 = 1
+              If                1
                 {
-                  i32 @loc#9 = @n#0*@a#4-1+@b#4
-                  If                    @array#0[0]!=-1&&@array#0[@k#6]!=-1&&0==@k#6
+                  i32 @loc#9 = @a#8
+                  If                    @c#4!=-1&&@c#4!=-1&&1
                     {
-                      Assign@flag#6 = 1
-                      i32 @tmp#10 = @i#6+1
+                      i32 @flag#10 = 1
+                      i32 @tmp#10 = 1
                     }
                 }
               Assign@i#6 = @i#6+1
             }
-          If            !@flag#6
+          If            1
             {
-              Call @putint                -1
             }
         }
       Return 0
@@ -730,20 +542,13 @@ Program
 End of Program
 --------------------------- building ir_origin ---------------------------
 visitProgram
-visit decl global array
-visitExpressionVal
-global array size: 1
-visit decl global array done
-visit decl global var
-visit decl global var done
 visitFunction init
-visitFunction param decl: n#1
 visitBlock 
 visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-function init has 3 regs
+function init has 1 regs
 B0:
   prev: 
   succ: 
@@ -770,6 +575,10 @@ visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpressionLValue t#4
@@ -777,17 +586,6 @@ visitStatement
 visitBlock 
 visitStatement
 visitExpression
-visitExpression
-visitExpressionLValue t#4
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
@@ -796,8 +594,6 @@ visitExpressionintliteral
 visitExpressionintliteral done
 visitStatement
 visitExpression
-visitExpression
-visitExpressionLValue n#0
 visitExpression
 visitExpression
 visitExpressionintliteral
@@ -811,7 +607,11 @@ visitExpressionintliteral
 visitExpressionintliteral done
 visitStatement
 visitBlock 
-visitStatement
+visitExpression
+visitExpression
+visitExpressionintliteral
+visitExpressionintliteral done
+visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
@@ -819,65 +619,38 @@ visitStatement
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpression
-visitExpressionLValue flag#6
 visitStatement
 visitBlock 
 visitExpression
 visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue n#0
-visitExpression
-visitExpression
-visitExpressionLValue a#4
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpressionLValue b#4
+visitExpressionLValue a#8
 visitStatement
 visitExpression
 visitExpression
 visitExpression
 visitExpression
-visitExpressionLValue array#0
-visitIndex
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
+visitExpressionLValue c#4
 visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
 visitExpression
-visitExpressionLValue array#0
-visitIndex
-visitExpression
-visitExpressionLValue k#6
+visitExpressionLValue c#4
 visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
-visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitExpression
-visitExpressionLValue k#6
 visitStatement
 visitBlock 
-visitStatement
+visitExpression
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
 visitExpression
-visitExpression
-visitExpression
-visitExpressionLValue i#6
 visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
@@ -890,21 +663,15 @@ visitExpressionintliteral
 visitExpressionintliteral done
 visitStatement
 visitExpression
-visitExpression
-visitExpressionLValue flag#6
+visitExpressionintliteral
+visitExpressionintliteral done
 visitStatement
 visitBlock 
 visitStatement
 visitExpression
-visitExpression
-visitExpression
 visitExpressionintliteral
 visitExpressionintliteral done
-visitStatement
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-function main has 81 regs
+function main has 47 regs
 B2:
   prev: 
   succ: B3 
@@ -1241,15 +1008,14 @@ B23:
 
 ir_origin:
 ; module
-@array = global i32, i32 4
-@n = global i32, i32 4
 define i32 @main(){
 B2:
   %r1 = alloca i32, i32 4
   %r2 = add i32 0, 1 ; loadint
   store t#4 i32 %r2, ptr %r1
   %r3 = alloca i32, i32 4
-  %r4 = alloca i32, i32 4
+  %r4 = add i32 0, 1 ; loadint
+  store c#4 i32 %r4, ptr %r3
   br label %B3
 
 B3:
@@ -1257,491 +1023,387 @@ B3:
   br i1 %r5, label %B4, label %B5
 
 B4:
-  %r6 = load t#4 i32, ptr %r1
-  %r7 = add i32 0, 1 ; loadint
-  %r8 = sub i32 %r6, %r7
-  store t#4 i32 %r8, ptr %r1
-  %r9 = add i32 0, 1 ; loadint
-  %r10 = loadaddr @n#0
-  store n#0 i32 %r9, ptr %r10
-  %r11 = alloca i32, i32 4
-  %r12 = add i32 0, 0 ; loadint
-  store i#6 i32 %r12, ptr %r11
-  %r13 = alloca i32, i32 4
-  %r14 = add i32 0, 0 ; loadint
-  store flag#6 i32 %r14, ptr %r13
-  %r16 = loadaddr @n#0
-  %r17 = load n#0 i32, ptr %r16
-  %r15 = call i32 @init(i32 %r17)
-  %r18 = alloca i32, i32 4
-  %r19 = add i32 0, 17 ; loadint
-  store k#6 i32 %r19, ptr %r18
+  %r6 = add i32 0, 0 ; loadint
+  store t#4 i32 %r6, ptr %r1
+  %r7 = alloca i32, i32 4
+  %r8 = add i32 0, 0 ; loadint
+  store i#6 i32 %r8, ptr %r7
+  %r9 = call i32 @init()
+  %r10 = alloca i32, i32 4
+  %r11 = add i32 0, 0 ; loadint
+  store k#6 i32 %r11, ptr %r10
   br label %B6
 
 B5:
-  %r81 = add i32 0, 0 ; loadint
-  ret i32 %r81
+  %r47 = add i32 0, 0 ; loadint
+  ret i32 %r47
 
 B6:
-  %r20 = load i#6 i32, ptr %r11
-  %r21 = add i32 0, 10 ; loadint
-  %r22 = icmp slt i32 %r20, %r21
-  br i1 %r22, label %B7, label %B8
+  %r12 = load i#6 i32, ptr %r7
+  %r13 = add i32 0, 3 ; loadint
+  %r14 = icmp slt i32 %r12, %r13
+  br i1 %r14, label %B7, label %B8
 
 B7:
-  %r23 = add i32 0, 1 ; loadint
-  store a#4 i32 %r23, ptr %r3
-  %r24 = add i32 0, 2 ; loadint
-  store b#4 i32 %r24, ptr %r4
+  %r15 = alloca i32, i32 4
+  %r16 = add i32 0, 1 ; loadint
+  store a#8 i32 %r16, ptr %r15
+  %r17 = alloca i32, i32 4
+  %r18 = add i32 0, 1 ; loadint
+  store b#8 i32 %r18, ptr %r17
   br label %B9
 
 B8:
   br label %B21
 
 B9:
-  %r25 = load flag#6 i32, ptr %r13
-  %r27 = add i32 0, 0 ; loadint
-  %r26 = icmp eq i32 %r27, %r25
-  br i1 %r26, label %B10, label %B11
+  %r19 = add i32 0, 1 ; loadint
+  br i1 %r19, label %B10, label %B11
 
 B10:
-  %r28 = alloca i32, i32 4
-  %r29 = loadaddr @n#0
-  %r30 = load n#0 i32, ptr %r29
-  %r31 = load a#4 i32, ptr %r3
-  %r32 = add i32 0, 1 ; loadint
-  %r33 = sub i32 %r31, %r32
-  %r34 = mul i32 %r30, %r33
-  %r35 = load b#4 i32, ptr %r4
-  %r36 = add i32 %r34, %r35
-  store loc#9 i32 %r36, ptr %r28
+  %r20 = alloca i32, i32 4
+  %r21 = load a#8 i32, ptr %r15
+  store loc#9 i32 %r21, ptr %r20
   br label %B12
 
 B11:
-  %r71 = load i#6 i32, ptr %r11
-  %r72 = add i32 0, 1 ; loadint
-  %r73 = add i32 %r71, %r72
-  store i#6 i32 %r73, ptr %r11
+  %r43 = load i#6 i32, ptr %r7
+  %r44 = add i32 0, 1 ; loadint
+  %r45 = add i32 %r43, %r44
+  store i#6 i32 %r45, ptr %r7
   br label %B6
 
 B12:
-  %r37 = alloca i32, i32 4
-  %r38 = alloca i32, i32 4
-  %r39 = loadaddr @array#0
-  %r40 = add i32 0, 4 ; loadint
-  %r41 = add i32 0, 0 ; loadint
-  %r42 = mul i32 %r41, %r40
-  %r43 = add i32 %r39, %r42
-  %r44 = load array#0 i32, ptr %r43
-  %r45 = add i32 0, 1 ; loadint
-  %r47 = add i32 0, 0 ; loadint
-  %r46 = sub i32 %r47, %r45
-  %r48 = icmp ne i32 %r44, %r46
-  br i1 %r48, label %B13, label %B14
+  %r22 = alloca i32, i32 4
+  %r23 = alloca i32, i32 4
+  %r24 = load c#4 i32, ptr %r3
+  %r25 = add i32 0, 1 ; loadint
+  %r27 = add i32 0, 0 ; loadint
+  %r26 = sub i32 %r27, %r25
+  %r28 = icmp ne i32 %r24, %r26
+  br i1 %r28, label %B13, label %B14
 
 B13:
-  %r49 = loadaddr @array#0
-  %r50 = add i32 0, 4 ; loadint
-  %r51 = load k#6 i32, ptr %r18
-  %r52 = mul i32 %r51, %r50
-  %r53 = add i32 %r49, %r52
-  %r54 = load array#0 i32, ptr %r53
-  %r55 = add i32 0, 1 ; loadint
-  %r57 = add i32 0, 0 ; loadint
-  %r56 = sub i32 %r57, %r55
-  %r58 = icmp ne i32 %r54, %r56
-  store logic_expr@#38 i32 %r58, ptr %r38
+  %r29 = load c#4 i32, ptr %r3
+  %r30 = add i32 0, 1 ; loadint
+  %r32 = add i32 0, 0 ; loadint
+  %r31 = sub i32 %r32, %r30
+  %r33 = icmp ne i32 %r29, %r31
+  store logic_expr@#23 i32 %r33, ptr %r23
   br label %B15
 
 B14:
-  %r59 = add i32 0, 0 ; loadint
-  store logic_expr@#38 i32 %r59, ptr %r38
+  %r34 = add i32 0, 0 ; loadint
+  store logic_expr@#23 i32 %r34, ptr %r23
   br label %B15
 
 B15:
-  %r60 = load logic_expr@#38 i32, ptr %r38
-  br i1 %r60, label %B16, label %B17
+  %r35 = load logic_expr@#23 i32, ptr %r23
+  br i1 %r35, label %B16, label %B17
 
 B16:
-  %r61 = add i32 0, 0 ; loadint
-  %r62 = load k#6 i32, ptr %r18
-  %r63 = icmp eq i32 %r61, %r62
-  store logic_expr@#37 i32 %r63, ptr %r37
+  %r36 = add i32 0, 1 ; loadint
+  store logic_expr@#22 i32 %r36, ptr %r22
   br label %B18
 
 B17:
-  %r64 = add i32 0, 0 ; loadint
-  store logic_expr@#37 i32 %r64, ptr %r37
+  %r37 = add i32 0, 0 ; loadint
+  store logic_expr@#22 i32 %r37, ptr %r22
   br label %B18
 
 B18:
-  %r65 = load logic_expr@#37 i32, ptr %r37
-  br i1 %r65, label %B19, label %B20
+  %r38 = load logic_expr@#22 i32, ptr %r22
+  br i1 %r38, label %B19, label %B20
 
 B19:
-  %r66 = add i32 0, 1 ; loadint
-  store flag#6 i32 %r66, ptr %r13
-  %r67 = alloca i32, i32 4
-  %r68 = load i#6 i32, ptr %r11
-  %r69 = add i32 0, 1 ; loadint
-  %r70 = add i32 %r68, %r69
-  store tmp#10 i32 %r70, ptr %r67
+  %r39 = alloca i32, i32 4
+  %r40 = add i32 0, 1 ; loadint
+  store flag#10 i32 %r40, ptr %r39
+  %r41 = alloca i32, i32 4
+  %r42 = add i32 0, 1 ; loadint
+  store tmp#10 i32 %r42, ptr %r41
   br label %B20
 
 B20:
   br label %B11
 
 B21:
-  %r74 = load flag#6 i32, ptr %r13
-  %r76 = add i32 0, 0 ; loadint
-  %r75 = icmp eq i32 %r76, %r74
-  br i1 %r75, label %B22, label %B23
+  %r46 = add i32 0, 1 ; loadint
+  br i1 %r46, label %B22, label %B23
 
 B22:
-  %r78 = add i32 0, 1 ; loadint
-  %r80 = add i32 0, 0 ; loadint
-  %r79 = sub i32 %r80, %r78
-  %r77 = call i32 @putint(i32 %r79)
   br label %B23
 
 B23:
   br label %B3
 
 }
-define void @init(i32 %r1){
+define void @init(){
 B0:
-  %r2 = alloca i32, i32 4
-  store n#1 i32 %r1, ptr %r2
-  %r3 = add i32 0, 0 ; loadint
-  ret i32 %r3
+  %r1 = add i32 0, 0 ; loadint
+  ret i32 %r1
 
 }
 ---------------------------------ir after mem2reg-------------------------------------
 ; module
-@array = global i32, i32 4
-@n = global i32, i32 4
 define i32 @main(){
 B2:
   %r2 = add i32 0, 1 ; loadint
+  %r4 = add i32 0, 1 ; loadint
   br label %B3
 
 B3:
-  %r108 = phi tmp#10 i32 [ %r107, %B23 ]
-  %r104 = phi t#4 i32 [ %r2, %B2 ], [ %r8, %B23 ]
-  %r103 = phi logic_expr@#38 i32 [ %r102, %B23 ]
-  %r99 = phi logic_expr@#37 i32 [ %r98, %B23 ]
-  %r95 = phi loc#9 i32 [ %r94, %B23 ]
-  %r92 = phi k#6 i32 [ %r19, %B23 ]
-  %r90 = phi i#6 i32 [ %r91, %B23 ]
-  %r86 = phi flag#6 i32 [ %r89, %B23 ]
-  %r85 = phi b#4 i32 [ %r84, %B23 ]
-  %r83 = phi a#4 i32 [ %r82, %B23 ]
-  br i1 %r104, label %B4, label %B5
+  %r74 = phi i32 [ %r73, %B23 ]
+  %r70 = phi i32 [ %r2, %B2 ], [ %r6, %B23 ]
+  %r69 = phi i32 [ %r68, %B23 ]
+  %r65 = phi i32 [ %r64, %B23 ]
+  %r61 = phi i32 [ %r60, %B23 ]
+  %r58 = phi i32 [ %r11, %B23 ]
+  %r56 = phi i32 [ %r57, %B23 ]
+  %r55 = phi i32 [ %r54, %B23 ]
+  %r51 = phi i32 [ %r50, %B23 ]
+  %r49 = phi i32 [ %r48, %B23 ]
+  br i1 %r70, label %B4, label %B5
 
 B4:
-  %r7 = add i32 0, 1 ; loadint
-  %r8 = sub i32 %r104, %r7
-  %r9 = add i32 0, 1 ; loadint
-  %r10 = loadaddr @n#0
-  store n#0 i32 %r9, ptr %r10
-  %r12 = add i32 0, 0 ; loadint
-  %r14 = add i32 0, 0 ; loadint
-  %r16 = loadaddr @n#0
-  %r17 = load n#0 i32, ptr %r16
-  %r15 = call i32 @init(i32 %r17)
-  %r19 = add i32 0, 17 ; loadint
+  %r6 = add i32 0, 0 ; loadint
+  %r8 = add i32 0, 0 ; loadint
+  %r9 = call i32 @init()
+  %r11 = add i32 0, 0 ; loadint
   br label %B6
 
 B5:
-  %r81 = add i32 0, 0 ; loadint
-  ret i32 %r81
+  %r47 = add i32 0, 0 ; loadint
+  ret i32 %r47
 
 B6:
-  %r107 = phi tmp#10 i32 [ %r108, %B4 ], [ %r106, %B11 ]
-  %r102 = phi logic_expr@#38 i32 [ %r103, %B4 ], [ %r101, %B11 ]
-  %r98 = phi logic_expr@#37 i32 [ %r99, %B4 ], [ %r97, %B11 ]
-  %r94 = phi loc#9 i32 [ %r95, %B4 ], [ %r93, %B11 ]
-  %r91 = phi i#6 i32 [ %r12, %B4 ], [ %r73, %B11 ]
-  %r89 = phi flag#6 i32 [ %r14, %B4 ], [ %r88, %B11 ]
-  %r84 = phi b#4 i32 [ %r85, %B4 ], [ %r24, %B11 ]
-  %r82 = phi a#4 i32 [ %r83, %B4 ], [ %r23, %B11 ]
-  %r21 = add i32 0, 10 ; loadint
-  %r22 = icmp slt i32 %r91, %r21
-  br i1 %r22, label %B7, label %B8
+  %r73 = phi i32 [ %r74, %B4 ], [ %r72, %B11 ]
+  %r68 = phi i32 [ %r69, %B4 ], [ %r67, %B11 ]
+  %r64 = phi i32 [ %r65, %B4 ], [ %r63, %B11 ]
+  %r60 = phi i32 [ %r61, %B4 ], [ %r59, %B11 ]
+  %r57 = phi i32 [ %r8, %B4 ], [ %r45, %B11 ]
+  %r54 = phi i32 [ %r55, %B4 ], [ %r53, %B11 ]
+  %r50 = phi i32 [ %r51, %B4 ], [ %r18, %B11 ]
+  %r48 = phi i32 [ %r49, %B4 ], [ %r16, %B11 ]
+  %r13 = add i32 0, 3 ; loadint
+  %r14 = icmp slt i32 %r57, %r13
+  br i1 %r14, label %B7, label %B8
 
 B7:
-  %r23 = add i32 0, 1 ; loadint
-  %r24 = add i32 0, 2 ; loadint
+  %r16 = add i32 0, 1 ; loadint
+  %r18 = add i32 0, 1 ; loadint
   br label %B9
 
 B8:
   br label %B21
 
 B9:
-  %r27 = add i32 0, 0 ; loadint
-  %r26 = icmp eq i32 %r27, %r89
-  br i1 %r26, label %B10, label %B11
+  %r19 = add i32 0, 1 ; loadint
+  br i1 %r19, label %B10, label %B11
 
 B10:
-  %r29 = loadaddr @n#0
-  %r30 = load n#0 i32, ptr %r29
-  %r32 = add i32 0, 1 ; loadint
-  %r33 = sub i32 %r23, %r32
-  %r34 = mul i32 %r30, %r33
-  %r36 = add i32 %r34, %r24
   br label %B12
 
 B11:
-  %r106 = phi tmp#10 i32 [ %r107, %B9 ], [ %r105, %B20 ]
-  %r101 = phi logic_expr@#38 i32 [ %r102, %B9 ], [ %r100, %B20 ]
-  %r97 = phi logic_expr@#37 i32 [ %r98, %B9 ], [ %r96, %B20 ]
-  %r93 = phi loc#9 i32 [ %r94, %B9 ], [ %r36, %B20 ]
-  %r88 = phi flag#6 i32 [ %r89, %B9 ], [ %r87, %B20 ]
-  %r72 = add i32 0, 1 ; loadint
-  %r73 = add i32 %r91, %r72
+  %r72 = phi i32 [ %r73, %B9 ], [ %r71, %B20 ]
+  %r67 = phi i32 [ %r68, %B9 ], [ %r66, %B20 ]
+  %r63 = phi i32 [ %r64, %B9 ], [ %r62, %B20 ]
+  %r59 = phi i32 [ %r60, %B9 ], [ %r16, %B20 ]
+  %r53 = phi i32 [ %r54, %B9 ], [ %r52, %B20 ]
+  %r44 = add i32 0, 1 ; loadint
+  %r45 = add i32 %r57, %r44
   br label %B6
 
 B12:
-  %r39 = loadaddr @array#0
-  %r40 = add i32 0, 4 ; loadint
-  %r41 = add i32 0, 0 ; loadint
-  %r42 = mul i32 %r41, %r40
-  %r43 = add i32 %r39, %r42
-  %r44 = load array#0 i32, ptr %r43
-  %r45 = add i32 0, 1 ; loadint
-  %r47 = add i32 0, 0 ; loadint
-  %r46 = sub i32 %r47, %r45
-  %r48 = icmp ne i32 %r44, %r46
-  br i1 %r48, label %B13, label %B14
+  %r25 = add i32 0, 1 ; loadint
+  %r27 = add i32 0, 0 ; loadint
+  %r26 = sub i32 %r27, %r25
+  %r28 = icmp ne i32 %r4, %r26
+  br i1 %r28, label %B13, label %B14
 
 B13:
-  %r49 = loadaddr @array#0
-  %r50 = add i32 0, 4 ; loadint
-  %r52 = mul i32 %r19, %r50
-  %r53 = add i32 %r49, %r52
-  %r54 = load array#0 i32, ptr %r53
-  %r55 = add i32 0, 1 ; loadint
-  %r57 = add i32 0, 0 ; loadint
-  %r56 = sub i32 %r57, %r55
-  %r58 = icmp ne i32 %r54, %r56
+  %r30 = add i32 0, 1 ; loadint
+  %r32 = add i32 0, 0 ; loadint
+  %r31 = sub i32 %r32, %r30
+  %r33 = icmp ne i32 %r4, %r31
   br label %B15
 
 B14:
-  %r59 = add i32 0, 0 ; loadint
+  %r34 = add i32 0, 0 ; loadint
   br label %B15
 
 B15:
-  %r100 = phi logic_expr@#38 i32 [ %r58, %B13 ], [ %r59, %B14 ]
-  br i1 %r100, label %B16, label %B17
+  %r66 = phi i32 [ %r33, %B13 ], [ %r34, %B14 ]
+  br i1 %r66, label %B16, label %B17
 
 B16:
-  %r61 = add i32 0, 0 ; loadint
-  %r63 = icmp eq i32 %r61, %r19
+  %r36 = add i32 0, 1 ; loadint
   br label %B18
 
 B17:
-  %r64 = add i32 0, 0 ; loadint
+  %r37 = add i32 0, 0 ; loadint
   br label %B18
 
 B18:
-  %r96 = phi logic_expr@#37 i32 [ %r63, %B16 ], [ %r64, %B17 ]
-  br i1 %r96, label %B19, label %B20
+  %r62 = phi i32 [ %r36, %B16 ], [ %r37, %B17 ]
+  br i1 %r62, label %B19, label %B20
 
 B19:
-  %r66 = add i32 0, 1 ; loadint
-  %r69 = add i32 0, 1 ; loadint
-  %r70 = add i32 %r91, %r69
+  %r40 = add i32 0, 1 ; loadint
+  %r42 = add i32 0, 1 ; loadint
   br label %B20
 
 B20:
-  %r105 = phi tmp#10 i32 [ %r107, %B18 ], [ %r70, %B19 ]
-  %r87 = phi flag#6 i32 [ %r89, %B18 ], [ %r66, %B19 ]
+  %r71 = phi i32 [ %r73, %B18 ], [ %r42, %B19 ]
+  %r52 = phi i32 [ %r54, %B18 ], [ %r40, %B19 ]
   br label %B11
 
 B21:
-  %r76 = add i32 0, 0 ; loadint
-  %r75 = icmp eq i32 %r76, %r89
-  br i1 %r75, label %B22, label %B23
+  %r46 = add i32 0, 1 ; loadint
+  br i1 %r46, label %B22, label %B23
 
 B22:
-  %r78 = add i32 0, 1 ; loadint
-  %r80 = add i32 0, 0 ; loadint
-  %r79 = sub i32 %r80, %r78
-  %r77 = call i32 @putint(i32 %r79)
   br label %B23
 
 B23:
   br label %B3
 
 }
-define void @init(i32 %r1){
+define void @init(){
 B0:
-  %r3 = add i32 0, 0 ; loadint
-  ret i32 %r3
+  %r1 = add i32 0, 0 ; loadint
+  ret i32 %r1
 
 }
 ---------------------------------ir -------------------------------------
 ; module
-@array = global i32, i32 4
-@n = global i32, i32 4
 define i32 @main(){
 B2:
   %r2 = add i32 0, 1 ; loadint
+  %r4 = add i32 0, 1 ; loadint
   br label %B3
 
 B3:
-  %r108 = phi tmp#10 i32 [ %r107, %B23 ]
-  %r104 = phi t#4 i32 [ %r2, %B2 ], [ %r8, %B23 ]
-  %r103 = phi logic_expr@#38 i32 [ %r102, %B23 ]
-  %r99 = phi logic_expr@#37 i32 [ %r98, %B23 ]
-  %r95 = phi loc#9 i32 [ %r94, %B23 ]
-  %r92 = phi k#6 i32 [ %r19, %B23 ]
-  %r90 = phi i#6 i32 [ %r91, %B23 ]
-  %r86 = phi flag#6 i32 [ %r89, %B23 ]
-  %r85 = phi b#4 i32 [ %r84, %B23 ]
-  %r83 = phi a#4 i32 [ %r82, %B23 ]
-  br i1 %r104, label %B4, label %B5
+  %r74 = phi i32 [ %r73, %B23 ]
+  %r70 = phi i32 [ %r2, %B2 ], [ %r6, %B23 ]
+  %r69 = phi i32 [ %r68, %B23 ]
+  %r65 = phi i32 [ %r64, %B23 ]
+  %r61 = phi i32 [ %r60, %B23 ]
+  %r58 = phi i32 [ %r11, %B23 ]
+  %r56 = phi i32 [ %r57, %B23 ]
+  %r55 = phi i32 [ %r54, %B23 ]
+  %r51 = phi i32 [ %r50, %B23 ]
+  %r49 = phi i32 [ %r48, %B23 ]
+  br i1 %r70, label %B4, label %B5
 
 B4:
-  %r7 = add i32 0, 1 ; loadint
-  %r8 = sub i32 %r104, %r7
-  %r9 = add i32 0, 1 ; loadint
-  %r10 = loadaddr @n#0
-  store n#0 i32 %r9, ptr %r10
-  %r12 = add i32 0, 0 ; loadint
-  %r14 = add i32 0, 0 ; loadint
-  %r16 = loadaddr @n#0
-  %r17 = load n#0 i32, ptr %r16
-  %r15 = call i32 @init(i32 %r17)
-  %r19 = add i32 0, 17 ; loadint
+  %r6 = add i32 0, 0 ; loadint
+  %r8 = add i32 0, 0 ; loadint
+  %r9 = call i32 @init()
+  %r11 = add i32 0, 0 ; loadint
   br label %B6
 
 B5:
-  %r81 = add i32 0, 0 ; loadint
-  ret i32 %r81
+  %r47 = add i32 0, 0 ; loadint
+  ret i32 %r47
 
 B6:
-  %r107 = phi tmp#10 i32 [ %r108, %B4 ], [ %r106, %B11 ]
-  %r102 = phi logic_expr@#38 i32 [ %r103, %B4 ], [ %r101, %B11 ]
-  %r98 = phi logic_expr@#37 i32 [ %r99, %B4 ], [ %r97, %B11 ]
-  %r94 = phi loc#9 i32 [ %r95, %B4 ], [ %r93, %B11 ]
-  %r91 = phi i#6 i32 [ %r12, %B4 ], [ %r73, %B11 ]
-  %r89 = phi flag#6 i32 [ %r14, %B4 ], [ %r88, %B11 ]
-  %r84 = phi b#4 i32 [ %r85, %B4 ], [ %r24, %B11 ]
-  %r82 = phi a#4 i32 [ %r83, %B4 ], [ %r23, %B11 ]
-  %r21 = add i32 0, 10 ; loadint
-  %r22 = icmp slt i32 %r91, %r21
-  br i1 %r22, label %B7, label %B8
+  %r73 = phi i32 [ %r74, %B4 ], [ %r72, %B11 ]
+  %r68 = phi i32 [ %r69, %B4 ], [ %r67, %B11 ]
+  %r64 = phi i32 [ %r65, %B4 ], [ %r63, %B11 ]
+  %r60 = phi i32 [ %r61, %B4 ], [ %r59, %B11 ]
+  %r57 = phi i32 [ %r8, %B4 ], [ %r45, %B11 ]
+  %r54 = phi i32 [ %r55, %B4 ], [ %r53, %B11 ]
+  %r50 = phi i32 [ %r51, %B4 ], [ %r18, %B11 ]
+  %r48 = phi i32 [ %r49, %B4 ], [ %r16, %B11 ]
+  %r13 = add i32 0, 3 ; loadint
+  %r14 = icmp slt i32 %r57, %r13
+  br i1 %r14, label %B7, label %B8
 
 B7:
-  %r23 = add i32 0, 1 ; loadint
-  %r24 = add i32 0, 2 ; loadint
+  %r16 = add i32 0, 1 ; loadint
+  %r18 = add i32 0, 1 ; loadint
   br label %B9
 
 B8:
   br label %B21
 
 B9:
-  %r27 = add i32 0, 0 ; loadint
-  %r26 = icmp eq i32 %r27, %r89
-  br i1 %r26, label %B10, label %B11
+  %r19 = add i32 0, 1 ; loadint
+  br i1 %r19, label %B10, label %B11
 
 B10:
-  %r29 = loadaddr @n#0
-  %r30 = load n#0 i32, ptr %r29
-  %r32 = add i32 0, 1 ; loadint
-  %r33 = sub i32 %r23, %r32
-  %r34 = mul i32 %r30, %r33
-  %r36 = add i32 %r34, %r24
   br label %B12
 
 B11:
-  %r106 = phi tmp#10 i32 [ %r107, %B9 ], [ %r105, %B20 ]
-  %r101 = phi logic_expr@#38 i32 [ %r102, %B9 ], [ %r100, %B20 ]
-  %r97 = phi logic_expr@#37 i32 [ %r98, %B9 ], [ %r96, %B20 ]
-  %r93 = phi loc#9 i32 [ %r94, %B9 ], [ %r36, %B20 ]
-  %r88 = phi flag#6 i32 [ %r89, %B9 ], [ %r87, %B20 ]
-  %r72 = add i32 0, 1 ; loadint
-  %r73 = add i32 %r91, %r72
+  %r72 = phi i32 [ %r73, %B9 ], [ %r71, %B20 ]
+  %r67 = phi i32 [ %r68, %B9 ], [ %r66, %B20 ]
+  %r63 = phi i32 [ %r64, %B9 ], [ %r62, %B20 ]
+  %r59 = phi i32 [ %r60, %B9 ], [ %r16, %B20 ]
+  %r53 = phi i32 [ %r54, %B9 ], [ %r52, %B20 ]
+  %r44 = add i32 0, 1 ; loadint
+  %r45 = add i32 %r57, %r44
   br label %B6
 
 B12:
-  %r39 = loadaddr @array#0
-  %r40 = add i32 0, 4 ; loadint
-  %r41 = add i32 0, 0 ; loadint
-  %r42 = mul i32 %r41, %r40
-  %r43 = add i32 %r39, %r42
-  %r44 = load array#0 i32, ptr %r43
-  %r45 = add i32 0, 1 ; loadint
-  %r47 = add i32 0, 0 ; loadint
-  %r46 = sub i32 %r47, %r45
-  %r48 = icmp ne i32 %r44, %r46
-  br i1 %r48, label %B13, label %B14
+  %r25 = add i32 0, 1 ; loadint
+  %r27 = add i32 0, 0 ; loadint
+  %r26 = sub i32 %r27, %r25
+  %r28 = icmp ne i32 %r4, %r26
+  br i1 %r28, label %B13, label %B14
 
 B13:
-  %r49 = loadaddr @array#0
-  %r50 = add i32 0, 4 ; loadint
-  %r52 = mul i32 %r19, %r50
-  %r53 = add i32 %r49, %r52
-  %r54 = load array#0 i32, ptr %r53
-  %r55 = add i32 0, 1 ; loadint
-  %r57 = add i32 0, 0 ; loadint
-  %r56 = sub i32 %r57, %r55
-  %r58 = icmp ne i32 %r54, %r56
+  %r30 = add i32 0, 1 ; loadint
+  %r32 = add i32 0, 0 ; loadint
+  %r31 = sub i32 %r32, %r30
+  %r33 = icmp ne i32 %r4, %r31
   br label %B15
 
 B14:
-  %r59 = add i32 0, 0 ; loadint
+  %r34 = add i32 0, 0 ; loadint
   br label %B15
 
 B15:
-  %r100 = phi logic_expr@#38 i32 [ %r58, %B13 ], [ %r59, %B14 ]
-  br i1 %r100, label %B16, label %B17
+  %r66 = phi i32 [ %r33, %B13 ], [ %r34, %B14 ]
+  br i1 %r66, label %B16, label %B17
 
 B16:
-  %r61 = add i32 0, 0 ; loadint
-  %r63 = icmp eq i32 %r61, %r19
+  %r36 = add i32 0, 1 ; loadint
   br label %B18
 
 B17:
-  %r64 = add i32 0, 0 ; loadint
+  %r37 = add i32 0, 0 ; loadint
   br label %B18
 
 B18:
-  %r96 = phi logic_expr@#37 i32 [ %r63, %B16 ], [ %r64, %B17 ]
-  br i1 %r96, label %B19, label %B20
+  %r62 = phi i32 [ %r36, %B16 ], [ %r37, %B17 ]
+  br i1 %r62, label %B19, label %B20
 
 B19:
-  %r66 = add i32 0, 1 ; loadint
-  %r69 = add i32 0, 1 ; loadint
-  %r70 = add i32 %r91, %r69
+  %r40 = add i32 0, 1 ; loadint
+  %r42 = add i32 0, 1 ; loadint
   br label %B20
 
 B20:
-  %r105 = phi tmp#10 i32 [ %r107, %B18 ], [ %r70, %B19 ]
-  %r87 = phi flag#6 i32 [ %r89, %B18 ], [ %r66, %B19 ]
+  %r71 = phi i32 [ %r73, %B18 ], [ %r42, %B19 ]
+  %r52 = phi i32 [ %r54, %B18 ], [ %r40, %B19 ]
   br label %B11
 
 B21:
-  %r76 = add i32 0, 0 ; loadint
-  %r75 = icmp eq i32 %r76, %r89
-  br i1 %r75, label %B22, label %B23
+  %r46 = add i32 0, 1 ; loadint
+  br i1 %r46, label %B22, label %B23
 
 B22:
-  %r78 = add i32 0, 1 ; loadint
-  %r80 = add i32 0, 0 ; loadint
-  %r79 = sub i32 %r80, %r78
-  %r77 = call i32 @putint(i32 %r79)
   br label %B23
 
 B23:
   br label %B3
 
 }
-define void @init(i32 %r1){
+define void @init(){
 B0:
-  %r3 = add i32 0, 0 ; loadint
-  ret i32 %r3
+  %r1 = add i32 0, 0 ; loadint
+  ret i32 %r1
 
 }
 --------------------------- building riscv ---------------------------
@@ -1750,8 +1412,8 @@ init:
 B23:
 
 B24:
-    li T[-3], 0
-    mv a0, T[-3]
+    li T[-1], 0
+    mv a0, T[-1]
     ret
 
 ---------------------------------ir after resolve phi end --------------------------------
@@ -1761,23 +1423,17 @@ B0:
 
 B1:
     li T[-2], 1
-    mv T[-104], T[-2]
+    li T[-4], 1
+    mv T[-70], T[-2]
     j B2
 
 B2:
-    beq x0, T[-104], B4
+    beq x0, T[-70], B4
     j B3
 
 B3:
-    li T[-7], 1
-    sub T[-8], T[-104], T[-7]
-    li T[-9], 1
-    la T[-10], n
-    sw T[-9], 0(T[-10])
-    li T[-12], 0
-    li T[-14], 0
-    la T[-16], n
-    lw T[-17], 0(T[-16])
+    li T[-6], 0
+    li T[-8], 0
     sw t0, 48(sp)
     sw t1, 52(sp)
     sw t2, 56(sp)
@@ -1793,9 +1449,8 @@ B3:
     sw t4, 96(sp)
     sw t5, 100(sp)
     sw t6, 104(sp)
-    mv a1, T[-17]
     call init
-    mv T[-15], a0
+    mv T[-9], a0
     lw t0, 48(sp)
     lw t1, 52(sp)
     lw t2, 56(sp)
@@ -1811,169 +1466,139 @@ B3:
     lw t4, 96(sp)
     lw t5, 100(sp)
     lw t6, 104(sp)
-    li T[-19], 17
-    mv T[-107], T[-108]
-    mv T[-102], T[-103]
-    mv T[-98], T[-99]
-    mv T[-94], T[-95]
-    mv T[-91], T[-12]
-    mv T[-89], T[-14]
-    mv T[-84], T[-85]
-    mv T[-82], T[-83]
+    li T[-11], 0
+    mv T[-73], T[-74]
+    mv T[-68], T[-69]
+    mv T[-64], T[-65]
+    mv T[-60], T[-61]
+    mv T[-57], T[-8]
+    mv T[-54], T[-55]
+    mv T[-50], T[-51]
+    mv T[-48], T[-49]
     j B5
 
 B4:
-    li T[-81], 0
-    mv a0, T[-81]
+    li T[-47], 0
+    mv a0, T[-47]
     ret
 
 B5:
-    li T[-21], 10
-    slt T[-22], T[-91], T[-21]
-    beq x0, T[-22], B7
+    li T[-13], 3
+    slt T[-14], T[-57], T[-13]
+    beq x0, T[-14], B7
     j B6
 
 B6:
-    li T[-23], 1
-    li T[-24], 2
+    li T[-16], 1
+    li T[-18], 1
     j B8
 
 B7:
     j B20
 
 B8:
-    li T[-27], 0
-    sub T[-26], T[-27], T[-89]
-    seqz T[-26], T[-26]
-    mv T[-106], T[-107]
-    mv T[-101], T[-102]
-    mv T[-97], T[-98]
-    mv T[-93], T[-94]
-    mv T[-88], T[-89]
-    beq x0, T[-26], B10
+    li T[-19], 1
+    mv T[-72], T[-73]
+    mv T[-67], T[-68]
+    mv T[-63], T[-64]
+    mv T[-59], T[-60]
+    mv T[-53], T[-54]
+    beq x0, T[-19], B10
     j B9
 
 B9:
-    la T[-29], n
-    lw T[-30], 0(T[-29])
-    li T[-32], 1
-    sub T[-33], T[-23], T[-32]
-    mul T[-34], T[-30], T[-33]
-    add T[-36], T[-34], T[-24]
     j B11
 
 B10:
-    li T[-72], 1
-    add T[-73], T[-91], T[-72]
-    mv T[-107], T[-106]
-    mv T[-102], T[-101]
-    mv T[-98], T[-97]
-    mv T[-94], T[-93]
-    mv T[-91], T[-73]
-    mv T[-89], T[-88]
-    mv T[-84], T[-24]
-    mv T[-82], T[-23]
+    li T[-44], 1
+    add T[-45], T[-57], T[-44]
+    mv T[-73], T[-72]
+    mv T[-68], T[-67]
+    mv T[-64], T[-63]
+    mv T[-60], T[-59]
+    mv T[-57], T[-45]
+    mv T[-54], T[-53]
+    mv T[-50], T[-18]
+    mv T[-48], T[-16]
     j B5
 
 B11:
-    la T[-39], array
-    li T[-40], 4
-    li T[-41], 0
-    mul T[-42], T[-41], T[-40]
-    add T[-43], T[-39], T[-42]
-    lw T[-44], 0(T[-43])
-    li T[-45], 1
-    li T[-47], 0
-    sub T[-46], T[-47], T[-45]
-    sub T[-48], T[-44], T[-46]
-    snez T[-48], T[-48]
-    beq x0, T[-48], B13
+    li T[-25], 1
+    li T[-27], 0
+    sub T[-26], T[-27], T[-25]
+    sub T[-28], T[-4], T[-26]
+    snez T[-28], T[-28]
+    beq x0, T[-28], B13
     j B12
 
 B12:
-    la T[-49], array
-    li T[-50], 4
-    mul T[-52], T[-19], T[-50]
-    add T[-53], T[-49], T[-52]
-    lw T[-54], 0(T[-53])
-    li T[-55], 1
-    li T[-57], 0
-    sub T[-56], T[-57], T[-55]
-    sub T[-58], T[-54], T[-56]
-    snez T[-58], T[-58]
-    mv T[-100], T[-58]
+    li T[-30], 1
+    li T[-32], 0
+    sub T[-31], T[-32], T[-30]
+    sub T[-33], T[-4], T[-31]
+    snez T[-33], T[-33]
+    mv T[-66], T[-33]
     j B14
 
 B13:
-    li T[-59], 0
-    mv T[-100], T[-59]
+    li T[-34], 0
+    mv T[-66], T[-34]
     j B14
 
 B14:
-    beq x0, T[-100], B16
+    beq x0, T[-66], B16
     j B15
 
 B15:
-    li T[-61], 0
-    sub T[-63], T[-61], T[-19]
-    seqz T[-63], T[-63]
-    mv T[-96], T[-63]
+    li T[-36], 1
+    mv T[-62], T[-36]
     j B17
 
 B16:
-    li T[-64], 0
-    mv T[-96], T[-64]
+    li T[-37], 0
+    mv T[-62], T[-37]
     j B17
 
 B17:
-    mv T[-105], T[-107]
-    mv T[-87], T[-89]
-    beq x0, T[-96], B19
+    mv T[-71], T[-73]
+    mv T[-52], T[-54]
+    beq x0, T[-62], B19
     j B18
 
 B18:
-    li T[-66], 1
-    li T[-69], 1
-    add T[-70], T[-91], T[-69]
-    mv T[-105], T[-70]
-    mv T[-87], T[-66]
+    li T[-40], 1
+    li T[-42], 1
+    mv T[-71], T[-42]
+    mv T[-52], T[-40]
     j B19
 
 B19:
-    mv T[-106], T[-105]
-    mv T[-101], T[-100]
-    mv T[-97], T[-96]
-    mv T[-93], T[-36]
-    mv T[-88], T[-87]
+    mv T[-72], T[-71]
+    mv T[-67], T[-66]
+    mv T[-63], T[-62]
+    mv T[-59], T[-16]
+    mv T[-53], T[-52]
     j B10
 
 B20:
-    li T[-76], 0
-    sub T[-75], T[-76], T[-89]
-    seqz T[-75], T[-75]
-    beq x0, T[-75], B22
+    li T[-46], 1
+    beq x0, T[-46], B22
     j B21
 
 B21:
-    li T[-78], 1
-    li T[-80], 0
-    sub T[-79], T[-80], T[-78]
-    mv a0, T[-79]
-    call putint
-    mv T[-77], a0
     j B22
 
 B22:
-    mv T[-108], T[-107]
-    mv T[-104], T[-8]
-    mv T[-103], T[-102]
-    mv T[-99], T[-98]
-    mv T[-95], T[-94]
-    mv T[-92], T[-19]
-    mv T[-90], T[-91]
-    mv T[-86], T[-89]
-    mv T[-85], T[-84]
-    mv T[-83], T[-82]
+    mv T[-74], T[-73]
+    mv T[-70], T[-6]
+    mv T[-69], T[-68]
+    mv T[-65], T[-64]
+    mv T[-61], T[-60]
+    mv T[-58], T[-11]
+    mv T[-56], T[-57]
+    mv T[-55], T[-54]
+    mv T[-51], T[-50]
+    mv T[-49], T[-48]
     j B2
 
 ---------------------------------ir after resolve phi end --------------------------------
