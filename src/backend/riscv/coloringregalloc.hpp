@@ -215,11 +215,13 @@ namespace riscv {
     }
 
     void coloringregalloc::Simplify() {
-        auto it = *simplifyWorklist.begin();
+        auto it = simplifyWorklist.begin();
+        auto r = *it;
         // std::cerr << "simplify reg erase " << print_reg(it) << "\n";
+        // simplifyWorklist.erase(it);
         simplifyWorklist.erase(it);
-        selectStack.push_back(it);
-        for (Reg m: Adjacent(it))
+        selectStack.push_back(r);
+        for (Reg m: Adjacent(r))
             DecrementDegree(m);
     }
 
@@ -378,13 +380,13 @@ namespace riscv {
     void coloringregalloc::SelectSpill() {
         std::cerr << "select spill entry\n" << std::endl;
         auto m = *(std::prev(spillWorklist.end()));
-        int mid = m.id;
-        for (auto i : spillWorklist) {
-            if (i.id > mid) {
-                m = i;
-                mid = i.id;
-            }
-        }
+        // int mid = m.id;
+        // for (auto i : spillWorklist) {
+        //     if (i.id > mid) {
+        //         m = i;
+        //         mid = i.id;
+        //     }
+        // }
         spillWorklist.erase(m);
         // std::cerr << "simplify reg SelectSpill insert " << print_reg(m) << "\n";
         simplifyWorklist.insert(m);
@@ -483,12 +485,12 @@ namespace riscv {
             }
         }
         spilledNodes.clear();
-        for (auto n: coloredNodes)
-            initial.insert(n);
-        for (auto n: coalescedNodes)
-            initial.insert(n);
-        for (auto n: newTemps)
-            initial.insert(n);
+        // for (auto n: coloredNodes)
+        //     initial.insert(n);
+        // for (auto n: coalescedNodes)
+        //     initial.insert(n);
+        // for (auto n: newTemps)
+        //     initial.insert(n);
         coloredNodes.clear();
         coalescedNodes.clear();
     }

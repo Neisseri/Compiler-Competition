@@ -20,7 +20,7 @@ TIMEOUT = 1000
 # NOTE: 在这里修改你的编译器路径和参数。此处的默认值对应着gcc
 # compiler_path = "riscv64-unknown-elf-gcc"
 compiler_path = "../build/compiler"
-# compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"
+# compiler_args = "-O2 -march=rv64gc -mabi=lp64f -xc++ -S -include ./runtime/sylib.h"[]
 # compiler_args = "-O2 -march=rv32gc -mabi=ilp32f -xc++ -S -include ./runtime/sylib.h"
 compiler_args = " -f"
 qemu_command = "qemu-riscv32"

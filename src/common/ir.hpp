@@ -90,7 +90,7 @@ struct Phi: Instruction {
     Phi(Type type, std::string var_name) : Instruction(InstType::PHI), type(type), var_name(var_name){}
     
     std::string toString() {
-        std::string ret = dst.toString() + " = phi " + var_name + " " + type.toString(1) + " ";
+        std::string ret = dst.toString() + " = phi " + type.toString(1) + " ";
         for (auto i = srcs.begin(); i != srcs.end(); i ++){
             ret += "[ " + i->first.toString() + ", %" + i->second->label.toString() + " ]";
             if (i + 1 != srcs.end()){
@@ -185,7 +185,7 @@ struct Store: Instruction {
     Store(Type type, Reg src_val, Reg ptr, std::string var_name) : Instruction(InstType::STORE), src_val(src_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
-        return "store " + var_name + " " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
+        return "store " + type.toString(1) + " " + src_val.toString() + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
@@ -203,7 +203,7 @@ struct Load: Instruction {
     Load(Reg ret_val, Type type, Reg ptr, std::string var_name) : Instruction(InstType::LOAD), ret_val(ret_val), type(type), ptr(ptr), var_name(var_name) {}
     
     std::string toString() {
-        return ret_val.toString() + " = load " + var_name + " " + type.toString(1) + ", ptr " + ptr.toString();
+        return ret_val.toString() + " = load " + type.toString(1) + ", ptr " + ptr.toString();
     }
 
     void print(std::ostream &os, int indent) {
@@ -281,9 +281,15 @@ struct Binary: Instruction {
 
     virtual std::string toString() override {
         std::string ret;
-        ret += dst.toString() + " = ";
-        ret += get_instr_type();
-        ret += " " + src1.toString() + ", " + src2.toString();
+        if (op == BinaryOpEnum::SGT || op == BinaryOpEnum::SLT || op == BinaryOpEnum::SGE || op == BinaryOpEnum::SLE || op == BinaryOpEnum::EQ || op == BinaryOpEnum::NE || op == BinaryOpEnum::SHL || op == BinaryOpEnum::LSHR || op == BinaryOpEnum::ASHR){
+            ret += "%tmpcmp" + std::to_string(dst.id) + " = " + get_instr_type() + " " + src1.toString() + ", " + src2.toString();
+            ret += "\n  " + dst.toString() + " = zext i1 %tmpcmp" + std::to_string(dst.id) + " to i32";
+        }
+        else{
+            ret += dst.toString() + " = ";
+            ret += get_instr_type();
+            ret += " " + src1.toString() + ", " + src2.toString();
+        }
         return ret;
     }
 
@@ -408,7 +414,11 @@ struct CondBranch : Instruction {
         else if (cond.type == static_cast<int>(TypeEnum::FLOAT)){
             cond_type_str += "float";
         }
-        return "br " + cond_type_str + " " + cond.toString() + ", label %" + bb_true->label.toString() + ", label %" + bb_false->label.toString();
+        std::string ret;
+        ret += "%tmpconbr" + std::to_string(cond.id) + " = trunc i32 " + cond.toString() + " to i1";
+        ret += "\n  br i1 %tmpconbr" + std::to_string(cond.id) + ", label %" + bb_true->label.toString() + ", label %" + bb_false->label.toString();
+
+        return ret;
     }
 
     void print(std::ostream &os, int indent){
@@ -440,7 +450,8 @@ struct Function {
     }
 
     void print(std::ostream &os, int indent){
-        os << std::string(indent, ' ')  << "define " + ret_type.toString(1);
+        // os << std::string(indent, ' ')  << "define " + ret_type.toString(1);
+        os << std::string(indent, ' ')  << "define i32";
         os << toString() << '{' << std::endl;
 
         for (auto i : bbs){
