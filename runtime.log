@@ -335,13 +335,13 @@ Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2210
+ret->type 0x55d75645b210
 Info: visitVarDef i32 @i = 0
 Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2410
+ret->type 0x55d75645b410
 Info: visitStatementWhile
 Info: visitExpr@i<2
 Info: visitBinopExpr@i<2
@@ -349,7 +349,7 @@ Info: visitExpr@i
 Info: visitLvalExpr@i
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa2490
+ret->type 0x55d75645b490
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@a = 1
@@ -359,7 +359,7 @@ Info: visitLvalExpr@a
 Info: visitAssignStmti32
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa2140
+ret->type 0x55d75645b140
 Info: visitStatementAssign@b = 2
 Info: visitAssignStmtAssign@b = 2
 Info: visitExpr@b
@@ -367,11 +367,11 @@ Info: visitLvalExpr@b
 Info: visitAssignStmti32
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa25b0
+ret->type 0x55d75645b5b0
 Info: visitStatementIfElse
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa25e0
+ret->type 0x55d75645b5e0
 Info: visitStatement
 Info: visitBlock
 Info: visitVarDef i32 @loc = @a+@b
@@ -388,10 +388,10 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2660
+ret->type 0x55d75645b660
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2740
+ret->type 0x55d75645b740
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementIfElse
@@ -399,10 +399,10 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa27c0
+ret->type 0x55d75645b7c0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa27f0
+ret->type 0x55d75645b7f0
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementCall @init()
@@ -416,13 +416,13 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2820
+ret->type 0x55d75645b820
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2850
+ret->type 0x55d75645b850
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2880
+ret->type 0x55d75645b880
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@flag = 1
@@ -432,13 +432,13 @@ Info: visitLvalExpr@flag
 Info: visitAssignStmti32
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa28b0
+ret->type 0x55d75645b8b0
 Info: visitVarDef i32 @tmp = 1
 Info: visitExpr1
 Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa28e0
+ret->type 0x55d75645b8e0
 Info: visitStatementAssign@i = @i+2
 Info: visitAssignStmtAssign@i = @i+2
 Info: visitExpr@i
@@ -450,11 +450,11 @@ Info: visitExpr@i
 Info: visitLvalExpr@i
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa29c0
+ret->type 0x55d75645b9c0
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa29f0
+ret->type 0x55d75645b9f0
 Info: visitReturnStmtReturn 0function has returnscope id3
 ast: 
 Program
