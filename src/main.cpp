@@ -89,36 +89,36 @@ int main(int argc, char *argv[])
     frontend::SysYParser parser(&tokens);
     ParseTree *tree = parser.compUnit();
     // 输出parse tree，这里的visit的作用是什么？
-    cerr << "parse tree: " << endl;
+    // cerr << "parse tree: " << endl;
     frontend::SysYBaseVisitor parse_visitor;
     parse_visitor.visit(tree);
-    cerr << tree->toStringTree(&parser, true) << endl;
+    // cerr << tree->toStringTree(&parser, true) << endl;
     // ast构建
     ASTVisitor ast_visitor;
     auto AST = ast_visitor.visit(tree).as<ast::Program *>();
-    cerr << "------------------------------type check------------------------------" << endl;
+    // cerr << "------------------------------type check------------------------------" << endl;
 
     TyperVisitor typer;
     typer.visitPromgram(AST);
 
     if (out_ast_flag)
     {
-        cerr << "ast: " << endl;
-        AST->print(cerr, 0);
+        // cerr << "ast: " << endl;
+        // AST->print(cerr, 0);
         ofstream output_file = openOrCreateFile("ast", output_file_name, ".c");
         AST->print(output_file, 0);
         output_file.close();
     }
 
-    cerr << "--------------------------- building ir_origin ---------------------------" << endl;
+    // cerr << "--------------------------- building ir_origin ---------------------------" << endl;
 
     IRGenerator ir_generator;
     ir_generator.visitPromgram(AST);
     IROptimizer ir_optimizer(&ir_generator);
     if (out_ir_flag)
     {
-        cerr << "ir_origin:" << endl;
-        ir_generator.ir_program.print(cerr, 0);
+        // cerr << "ir_origin:" << endl;
+        // ir_generator.ir_program.print(cerr, 0);
 
         ofstream output_file = openOrCreateFile("ir_origin", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
@@ -127,9 +127,9 @@ int main(int argc, char *argv[])
 
     if (mem_to_reg_flag)
     {
-        cerr << "---------------------------------ir after mem2reg-------------------------------------" << endl;
+        // cerr << "---------------------------------ir after mem2reg-------------------------------------" << endl;
         ir_optimizer.mem_to_reg();
-        ir_generator.ir_program.print(cerr, 0);
+        // ir_generator.ir_program.print(cerr, 0);
         ofstream output_file = openOrCreateFile("ir-m2r", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
 
     if (dce_flag)
     {
-        cerr << "---------------------------------ir after dce-------------------------------------" << endl;
+        // cerr << "---------------------------------ir after dce-------------------------------------" << endl;
         ir_optimizer.dead_code_elimination();
-        ir_generator.ir_program.print(cerr, 0);
+        // ir_generator.ir_program.print(cerr, 0);
 
         ofstream output_file = openOrCreateFile("ir-dce", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
@@ -148,20 +148,20 @@ int main(int argc, char *argv[])
 
     if (out_ir_flag)
     {
-        cerr << "---------------------------------ir -------------------------------------" << endl;
-        ir_generator.ir_program.print(cerr, 0);
+        // cerr << "---------------------------------ir -------------------------------------" << endl;
+        // ir_generator.ir_program.print(cerr, 0);
         ofstream output_file = openOrCreateFile("ir", output_file_name, ".ll");
         ir_generator.ir_program.print(output_file, 0);
         output_file.close();
     }
 
-    cerr << "--------------------------- building riscv ---------------------------" << endl;
+    // cerr << "--------------------------- building riscv ---------------------------" << endl;
 
     if (out_riscv_flag)
     {
         cerr << "riscv: " << endl;
         riscv::Program program(ir_generator.ir_program);
-        std::cerr << "?\n";
+        // std::cerr << "?\n";
         for (auto [name, func] : program.functions)
         {
             // std::cerr << "ir before resolve phi\n";

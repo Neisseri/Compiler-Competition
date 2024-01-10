@@ -37,7 +37,7 @@ public:
 
     ir::Reg visitIndex(LValue *lvalue, std::shared_ptr<ir::BasicBlock> &ir_bb)
     { // get index of array.
-        std::cerr << "visitIndex" << std::endl;
+        // std::cerr << "visitIndex" << std::endl;
         assert(lvalue->has_index);
 
         ir::Reg dst_adr_ptr;
@@ -70,7 +70,7 @@ public:
                 ir_bb->instrs.push_back(std::move(addoffset_instr));
             }
             if (i > 0){
-                std::cerr << "visitIndex calc blocksize " << i << " " << var_type_table[lvalue->ident->name].dim[i] << std::endl;
+                // std::cerr << "visitIndex calc blocksize " << i << " " << var_type_table[lvalue->ident->name].dim[i] << std::endl;
                 ir::Reg dim_size = ir_bb->func->get_new_reg(lvalue->var_type->type);
                 std::unique_ptr<ir::LoadInt> loaddim_instr(new ir::LoadInt(dim_size, var_type_table[lvalue->ident->name].dim[i]));
                 ir::Reg old_block_size = block_size;
@@ -85,7 +85,7 @@ public:
 
     void visitPromgram(ast::Program *ast_program)
     {
-        std::cerr << "visitProgram" << std::endl;
+        // std::cerr << "visitProgram" << std::endl;
         std::unique_ptr<ir::Program> ir_program(new ir::Program);
         for (auto &i : ast_program->children)
         {
@@ -106,7 +106,7 @@ public:
 
     std::vector<int> visit_global_init(ast::Declaration *decl, ast::Expression *exp, int dim_len, int dim, int ele_start)
     {
-        std::cerr << "visit_global_init" << std::endl;
+        // std::cerr << "visit_global_init" << std::endl;
 
         int ele_cnt = 0;
         auto assignment = dynamic_cast<ast::Assignment *>(exp);
@@ -148,12 +148,12 @@ public:
         // TODO:consider the const val
         if (decl->var_type->is_array)
         { // 数组
-            std::cerr << "visit decl global array" << std::endl;
+            // std::cerr << "visit decl global array" << std::endl;
             for (auto &exp : decl->indices->children)
             {
                 decl->var_type->dim.push_back(visitExpressionVal(exp));
             }
-            std::cerr << "global array size: " << decl->var_type->get_array_size() << std::endl;
+            // std::cerr << "global array size: " << decl->var_type->get_array_size() << std::endl;
             std::vector<int> init_vals;
             if (decl->has_init)
             {
@@ -167,11 +167,11 @@ public:
             Type array_type = *decl->var_type;
             std::string temp_name2 = decl->ident->name;
             var_type_table.insert(std::make_pair<std::string, Type>(std::move(temp_name2), std::move(array_type)));
-            std::cerr << "visit decl global array done" << std::endl;
+            // std::cerr << "visit decl global array done" << std::endl;
         }
         else
         {
-            std::cerr << "visit decl global var" << std::endl;
+            // std::cerr << "visit decl global var" << std::endl;
             std::vector<int> init_vals;
             if (decl->has_init)
             {
@@ -188,16 +188,16 @@ public:
             {
                 std::string temp_name = decl->ident->name;
                 int const_val = visitExpressionVal(decl->init_expr);
-                std::cerr << "visit decl global const var " << temp_name << ": " << const_val << std::endl;
+                // std::cerr << "visit decl global const var " << temp_name << ": " << const_val << std::endl;
                 const_val_table.insert(std::make_pair<std::string, int>(std::move(temp_name), std::move(const_val)));
             }
-            std::cerr << "visit decl global var done" << std::endl;
+            // std::cerr << "visit decl global var done" << std::endl;
         }
     }
 
     void visitFunction(ast::Function &func)
     {
-        std::cerr << "visitFunction " << func.ident->name << std::endl;
+        // std::cerr << "visitFunction " << func.ident->name << std::endl;
 
         // reg_num = 0;
         ir::Function *ir_function(new ir::Function(func.ident->name, *(func.ret_type.get())));
@@ -218,19 +218,19 @@ public:
         }
         int param_id = 0;
         for (auto &i : func.params->children){
-            std::cerr << "visitFunction param decl: " << i->ident->name << std::endl;
+            // std::cerr << "visitFunction param decl: " << i->ident->name << std::endl;
             ir::Reg init_reg(i->var_type->type, ++param_id);
             if (i->is_array){ // 传入的是数组指针
-                std::cerr << "visitFunction param decl array dim:";
+                // std::cerr << "visitFunction param decl array dim:";
                 for (auto &exp: i->indices->children) {
                     int dim = visitExpressionVal(exp);
-                    std::cerr << " " << dim;
+                    // std::cerr << " " << dim;
                     if (dim == 0) {
                         dim = 1;
                     }
                     i->var_type->dim.push_back(dim);
                 }
-                std::cerr << std::endl;
+                // std::cerr << std::endl;
                 std::string tem_name = i->ident->name;
                 ir::Reg temp_reg = init_reg;
                 var_ptr_table.insert(std::make_pair<std::string, ir::Reg>(std::move(tem_name), std::move(temp_reg)));
@@ -260,17 +260,17 @@ public:
 
         // ir_function.num_regs = reg_num;
 
-        std::cerr << "function " << ir_function->name << " has " << ir_function->num_regs << " regs" << std::endl;
+        // std::cerr << "function " << ir_function->name << " has " << ir_function->num_regs << " regs" << std::endl;
 
         CFGbuilder cfg_builder(ir_function);
         cfg_builder.CFG_build();
-        cfg_builder.CFG_print(std::cerr, 0);
+        // cfg_builder.CFG_print(std::cerr, 0);
         cfg_builder.remove_unreachable_bb();
-        cfg_builder.CFG_print(std::cerr, 0);
+        // cfg_builder.CFG_print(std::cerr, 0);
         cfg_builder.build_dominator_tree();
         cfg_builder.compute_dom_fro();
-        cfg_builder.dom_tree_print(std::cerr, 0);
-        cfg_builder.dom_fro_print(std::cerr, 0);
+        // cfg_builder.dom_tree_print(std::cerr, 0);
+        // cfg_builder.dom_fro_print(std::cerr, 0);
 
         std::string temp_name = func.ident->name;
         ir_program.functions[temp_name] = *ir_function;
@@ -334,7 +334,7 @@ public:
 
     int visitExpressionVal(std::unique_ptr<ast::Expression> &expr)
     { // only int type (for decl of array type)
-        std::cerr << "visitExpressionVal" << std::endl;
+        // std::cerr << "visitExpressionVal" << std::endl;
 
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get()))
         {
@@ -376,7 +376,7 @@ public:
             std::string name = lvalue->ident->name;
             if (const_val_table.find(name) == const_val_table.end())
             {
-                std::cerr << "const vat not found: " << name << std::endl;
+                // std::cerr << "const vat not found: " << name << std::endl;
                 assert(false);
             }
             int ret = const_val_table[name];
@@ -396,14 +396,14 @@ public:
         // }
         else
         {
-            expr->print(std::cerr, 0);
+            // expr->print(std::cerr, 0);
             assert(false);
         }
     }
 
     ir::Reg visitExpression(std::unique_ptr<ast::Expression> &expr, std::shared_ptr<ir::BasicBlock> &ir_bb)
     {
-        std::cerr << "visitExpression" << std::endl;
+        // std::cerr << "visitExpression" << std::endl;
 
         if (auto binary = dynamic_cast<ast::Binary *>(expr.get()))
         {
@@ -518,11 +518,11 @@ public:
         }
         else if (auto intliteral = dynamic_cast<ast::IntLiteral *>(expr.get()))
         {
-            std::cerr << "visitExpressionintliteral" << std::endl;
+            // std::cerr << "visitExpressionintliteral" << std::endl;
             ir::Reg ret = ir_bb->func->get_new_reg(static_cast<int>(TypeEnum::INT));
             std::unique_ptr<ir::LoadInt> loadint_instr(new ir::LoadInt(ret, intliteral->value));
             ir_bb->instrs.push_back(std::move(loadint_instr));
-            std::cerr << "visitExpressionintliteral done" << std::endl;
+            // std::cerr << "visitExpressionintliteral done" << std::endl;
             return ret;
         }
         else if (auto assignment = dynamic_cast<ast::Assignment *>(expr.get()))
@@ -530,7 +530,7 @@ public:
             return visitExpression(assignment->value, ir_bb);
         }
         else if (auto lvalue = dynamic_cast<ast::LValue *>(expr.get())){
-            std::cerr << "visitExpressionLValue " << lvalue->ident->name << std::endl;
+            // std::cerr << "visitExpressionLValue " << lvalue->ident->name << std::endl;
             std::string name = lvalue->ident->name;
             ir::Reg val_ptr;
             if (lvalue->has_index)
@@ -552,7 +552,7 @@ public:
             }
             ir::Reg ret;
             if (lvalue->indices.size() < var_type_table[lvalue->ident->name].dim.size() && var_type_table[name].is_array){
-                std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
+                // std::cerr << "visitExpressionLValue array ptr pass" << std::endl;
                 ret = val_ptr;
             } else {
                 ret = ir_bb->func->get_new_reg(lvalue->var_type->type);
@@ -588,7 +588,7 @@ public:
         }
         else
         {
-            expr->print(std::cerr, 0);
+            // expr->print(std::cerr, 0);
             assert(false);
         }
     }
@@ -638,7 +638,7 @@ public:
 
     void visitStatement(ast::Statement *statement, std::shared_ptr<ir::BasicBlock> &ir_bb)
     {
-        std::cerr << "visitStatement" << std::endl;
+        // std::cerr << "visitStatement" << std::endl;
         if (auto assign = dynamic_cast<ast::Assign *>(statement))
         {
             ir::Reg src = visitExpression(assign->expr, ir_bb);
@@ -795,7 +795,7 @@ public:
 
     void visitBlock(const ast::Block &block, std::shared_ptr<ir::BasicBlock> &ir_bb)
     {
-        std::cerr << "visitBlock " << std::endl;
+        // std::cerr << "visitBlock " << std::endl;
 
         for (auto &child : block.children)
         {
@@ -808,7 +808,7 @@ public:
                 ir::Reg dst_ptr = ir_bb->func->get_new_reg(decl->var_type->type);
                 if (decl->var_type->is_array)
                 { // 数组
-                    std::cerr << "visit decl array" << std::endl;
+                    // std::cerr << "visit decl array" << std::endl;
                     for (auto &exp : decl->indices->children)
                     {
                         decl->var_type->dim.push_back(visitExpressionVal(exp));
@@ -825,8 +825,8 @@ public:
                     {
                         visit_array_init(decl, ir_bb, dst_ptr, decl->init_expr.get(), decl->var_type->get_array_size(), 0, 0);
                     }
-                    std::cerr << "visit decl array store type done " << decl->ident->name << " " << var_type_table[decl->ident->name].is_array << std::endl;
-                    std::cerr << "visit decl array done" << std::endl;
+                    // std::cerr << "visit decl array store type done " << decl->ident->name << " " << var_type_table[decl->ident->name].is_array << std::endl;
+                    // std::cerr << "visit decl array done" << std::endl;
                 }
                 else
                 {

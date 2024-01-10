@@ -27,6 +27,10 @@ namespace riscv {
       Reg dst = Reg(load->ret_val);
       Reg src = Reg(load->ptr);
       bb->instructions.emplace_back(new LoadWord(dst, src, 0));
+
+      auto inst = new LoadWord(dst, src, 0);
+      std::cerr << "Break 1 Insert LoadWord: ";
+      inst->emit(std::cerr);
     } else if (auto store = dynamic_cast<ir::Store*>(ir_inst)) {
       Reg dst = Reg(store->ptr);
       Reg src = Reg(store->src_val);
@@ -154,8 +158,13 @@ namespace riscv {
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
         for (int i = 0; i < 32; i++) {
-          if (REG_ATTR[i] == CallerSaved)
+          if (REG_ATTR[i] == CallerSaved) {
             bb->instructions.emplace_back(new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]));
+
+            auto inst = new LoadWord(Reg(General, i), Reg(General, sp), offsets[Reg(General, i)]);
+            std::cerr << "Break 2 Insert LoadWord: ";
+            inst->emit(std::cerr);
+          }
         }
       }
       else {
@@ -175,8 +184,13 @@ namespace riscv {
         }
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
-        for (int i = 0; i < num_params && i < 7; i++)
+        for (int i = 0; i < num_params && i < 7; i++) {
           bb->instructions.emplace_back(new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]));
+          
+          auto inst = new LoadWord(Reg(General, argregs[i]), Reg(General, sp), offsets[Reg(General, argregs[i])]);
+          std::cerr << "Break 3 Insert LoadWord: ";
+          inst->emit(std::cerr);
+        }
       }
     } else if (auto phi = dynamic_cast<ir::Phi*>(ir_inst)) {
       std::vector<std::pair<Reg, BasicBlock*>> scrs;
@@ -252,9 +266,9 @@ namespace riscv {
         }
         auto insert_tag = std::prev(bb->instructions.end());
         // if 'insert_tag' is beq
-        std::cerr << "insert_tag: ";
-        (*insert_tag)->emit(std::cerr);
-        std::cerr << "\n";
+        // std::cerr << "insert_tag: ";
+        // (*insert_tag)->emit(std::cerr);
+        // std::cerr << "\n";
         if (insert_tag != bb->instructions.begin()) {
           auto pre_insert_tag = std::prev(insert_tag);
           while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
@@ -264,9 +278,9 @@ namespace riscv {
               break;
             }
             pre_insert_tag = std::prev(insert_tag);
-            std::cerr << "insert_tag: branch ";
-            (*insert_tag)->emit(std::cerr);
-            std::cerr << "\n";
+            // std::cerr << "insert_tag: branch ";
+            // (*insert_tag)->emit(std::cerr);
+            // std::cerr << "\n";
           }
         }
         bb->instructions.emplace(insert_tag, mov);
@@ -332,13 +346,18 @@ namespace riscv {
     }
     auto prologue = *bbs.begin();
     for (int i=0; i<num_params; i++) {
-      if (i >= 7)
+      if (i >= 7) {
         prologue->instructions.emplace(prologue->instructions.begin(), new LoadWord(Reg(General, -(i+1)), Reg(General, t1), (i-7)*4));
+        
+        auto inst = new LoadWord(Reg(General, -(i+1)), Reg(General, t1), (i-7)*4);
+        std::cerr << "Break 4 Insert LoadWord: ";
+        inst->emit(std::cerr);
+      }
     }
 
     for (auto bb: bbs) {
       for (auto inst: bb->instructions) {
-        inst->emit(std::cerr);
+        // inst->emit(std::cerr);
       }
     }
   }

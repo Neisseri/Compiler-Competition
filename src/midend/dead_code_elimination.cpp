@@ -4,7 +4,7 @@ void IROptimizer::dead_code_elimination()
 {
     for (auto &func : ir_generator->ir_program.functions)
     {
-        std::cerr << func.first << std::endl;
+        // std::cerr << func.first << std::endl;
         // dead variable declaration
         std::list<int> dead_vars;
         for (auto &bb : func.second.bbs)
@@ -124,7 +124,7 @@ void IROptimizer::dead_code_elimination()
 
         for (auto dead_var : dead_vars)
         {
-            std::cerr << "dead var: " << dead_var << std::endl;
+            // std::cerr << "dead var: " << dead_var << std::endl;
         }
 
         for (auto &bb : func.second.bbs)

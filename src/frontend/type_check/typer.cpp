@@ -308,7 +308,7 @@ namespace frontend
         {
             SyError().throw_info("visitIntLiteralExpr" + int_literal->toString());
             Type *ret = new Type(TypeEnum::INT);
-            std::cerr << "ret->type " << ret << std::endl;
+            // std::cerr << "ret->type " << ret << std::endl;
             return ret;
         }
         else if (auto float_literal = dynamic_cast<const ast::FloatLiteral *>(expr))
