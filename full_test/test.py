@@ -148,7 +148,7 @@ def test(config: Config, testcase: str) -> bool:
     assembly = os.path.join(f'{testcase}.s')
     # NOTE: 你可以在这里修改调用你的编译器的方式
     command = (f'ulimit -s unlimited && {config.compiler} {config.compiler_args} {source}'
-                f' -A -o {assembly}')
+                f' -A -m -o {assembly}')
 
     proc = subprocess.Popen(command, shell=True,stderr=open(error_log, 'w'))
     try:

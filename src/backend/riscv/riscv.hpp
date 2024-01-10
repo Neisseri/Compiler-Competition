@@ -257,6 +257,7 @@ struct Function {
     std::string name;
     ir::Label label;
     Reg freshTemp() {
+        std::cerr << "fresh temp " << num_regs << "\n";
         return Reg(General, -(++num_regs));
     }
     std::set<Move*> phi_moves;

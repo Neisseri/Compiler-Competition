@@ -86,7 +86,7 @@ public:
     void visitPromgram(ast::Program *ast_program)
     {
         std::cerr << "visitProgram" << std::endl;
-        std::unique_ptr<ir::Program> ir_program(new ir::Program);
+        // std::unique_ptr<ir::Program> ir_program(new ir::Program);
         for (auto &i : ast_program->children)
         {
             if (auto child = dynamic_cast<ast::Declaration *>(i.get()))
@@ -199,8 +199,12 @@ public:
     {
         std::cerr << "visitFunction " << func.ident->name << std::endl;
 
+
+        std::string temp_name = func.ident->name;
+        ir_program.functions[temp_name] = *(new ir::Function(func.ident->name, *(func.ret_type.get())));
+
         // reg_num = 0;
-        ir::Function *ir_function(new ir::Function(func.ident->name, *(func.ret_type.get())));
+        ir::Function *ir_function = &ir_program.functions[temp_name];
         // ir_function.name = func.ident->name;
         // ir_function.ret_type = *(func.ret_type.get());
 
@@ -272,8 +276,8 @@ public:
         cfg_builder.dom_tree_print(std::cerr, 0);
         cfg_builder.dom_fro_print(std::cerr, 0);
 
-        std::string temp_name = func.ident->name;
-        ir_program.functions[temp_name] = *ir_function;
+        // std::string temp_name = func.ident->name;
+        // ir_program.functions[temp_name] = *ir_function;
     }
 
     int visitBinaryVal(BinaryOpEnum binaryop, int lhs, int rhs)

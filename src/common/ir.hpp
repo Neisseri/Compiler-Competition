@@ -463,7 +463,7 @@ struct Function {
 
     ir::Reg get_new_reg(int type)
     {
-        // std::cerr << "get_new_reg " << name << " numregs: " << num_regs << std::endl;
+        std::cerr << "get_new_reg " << name << " numregs: " << num_regs << std::endl;
         return ir::Reg(type, ++num_regs);
     }
 };

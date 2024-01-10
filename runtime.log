@@ -335,13 +335,13 @@ Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2210
+ret->type 0x558dfa5fe210
 Info: visitVarDef i32 @i = 0
 Info: visitExpr0
 Info: visitAssignmentExpr0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2410
+ret->type 0x558dfa5fe410
 Info: visitStatementWhile
 Info: visitExpr@i<2
 Info: visitBinopExpr@i<2
@@ -349,7 +349,7 @@ Info: visitExpr@i
 Info: visitLvalExpr@i
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa2490
+ret->type 0x558dfa5fe490
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@a = 1
@@ -359,7 +359,7 @@ Info: visitLvalExpr@a
 Info: visitAssignStmti32
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa2140
+ret->type 0x558dfa5fe140
 Info: visitStatementAssign@b = 2
 Info: visitAssignStmtAssign@b = 2
 Info: visitExpr@b
@@ -367,11 +367,11 @@ Info: visitLvalExpr@b
 Info: visitAssignStmti32
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa25b0
+ret->type 0x558dfa5fe5b0
 Info: visitStatementIfElse
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa25e0
+ret->type 0x558dfa5fe5e0
 Info: visitStatement
 Info: visitBlock
 Info: visitVarDef i32 @loc = @a+@b
@@ -388,10 +388,10 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2660
+ret->type 0x558dfa5fe660
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2740
+ret->type 0x558dfa5fe740
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementIfElse
@@ -399,10 +399,10 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa27c0
+ret->type 0x558dfa5fe7c0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa27f0
+ret->type 0x558dfa5fe7f0
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementCall @init()
@@ -416,13 +416,13 @@ Info: visitExpr0&&0
 Info: visitBinopExpr0&&0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2820
+ret->type 0x558dfa5fe820
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2850
+ret->type 0x558dfa5fe850
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa2880
+ret->type 0x558dfa5fe880
 Info: visitStatement
 Info: visitBlock
 Info: visitStatementAssign@flag = 1
@@ -432,13 +432,13 @@ Info: visitLvalExpr@flag
 Info: visitAssignStmti32
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa28b0
+ret->type 0x558dfa5fe8b0
 Info: visitVarDef i32 @tmp = 1
 Info: visitExpr1
 Info: visitAssignmentExpr1
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x55f882fa28e0
+ret->type 0x558dfa5fe8e0
 Info: visitStatementAssign@i = @i+2
 Info: visitAssignStmtAssign@i = @i+2
 Info: visitExpr@i
@@ -450,11 +450,11 @@ Info: visitExpr@i
 Info: visitLvalExpr@i
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x55f882fa29c0
+ret->type 0x558dfa5fe9c0
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x55f882fa29f0
+ret->type 0x558dfa5fe9f0
 Info: visitReturnStmtReturn 0function has returnscope id3
 ast: 
 Program
@@ -501,6 +501,7 @@ visitBlock
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg init numregs: 0
 visitExpressionintliteral done
 function init has 1 regs
 B0:
@@ -525,97 +526,141 @@ B0:
 
 visitFunction main
 visitBlock 
+get_new_reg main numregs: 0
+get_new_reg main numregs: 1
+get_new_reg main numregs: 2
+get_new_reg main numregs: 3
 visitExpression
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 4
 visitExpressionintliteral done
+get_new_reg main numregs: 5
 visitExpression
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 6
 visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpression
 visitExpressionLValue i#4
+get_new_reg main numregs: 7
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 8
 visitExpressionintliteral done
+get_new_reg main numregs: 9
 visitStatement
 visitBlock 
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 10
 visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 11
 visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 12
 visitExpressionintliteral done
 visitStatement
 visitBlock 
+get_new_reg main numregs: 13
 visitExpression
 visitExpression
 visitExpression
 visitExpressionLValue a#4
+get_new_reg main numregs: 14
 visitExpression
 visitExpressionLValue b#4
+get_new_reg main numregs: 15
+get_new_reg main numregs: 16
 visitStatement
 visitExpression
+get_new_reg main numregs: 17
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 18
 visitExpressionintliteral done
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 19
 visitExpressionintliteral done
-visitStatement
-visitBlock 
-visitStatement
-visitExpression
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
-visitExpression
-visitExpressionintliteral
-visitExpressionintliteral done
+get_new_reg main numregs: 20
+get_new_reg main numregs: 21
 visitStatement
 visitBlock 
 visitStatement
 visitExpression
+get_new_reg main numregs: 22
+visitExpression
+visitExpressionintliteral
+get_new_reg main numregs: 23
+visitExpressionintliteral done
+visitExpression
+visitExpressionintliteral
+get_new_reg main numregs: 24
+visitExpressionintliteral done
+get_new_reg main numregs: 25
+get_new_reg main numregs: 26
+visitStatement
+visitBlock 
 visitStatement
 visitExpression
+get_new_reg main numregs: 27
+visitStatement
 visitExpression
+get_new_reg main numregs: 28
+visitExpression
+get_new_reg main numregs: 29
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 30
 visitExpressionintliteral done
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 31
 visitExpressionintliteral done
+get_new_reg main numregs: 32
+get_new_reg main numregs: 33
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 34
 visitExpressionintliteral done
+get_new_reg main numregs: 35
+get_new_reg main numregs: 36
 visitStatement
 visitBlock 
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 37
 visitExpressionintliteral done
+get_new_reg main numregs: 38
 visitExpression
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 39
 visitExpressionintliteral done
 visitStatement
 visitExpression
 visitExpression
 visitExpressionLValue i#4
+get_new_reg main numregs: 40
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 41
 visitExpressionintliteral done
+get_new_reg main numregs: 42
 visitStatement
 visitExpression
 visitExpressionintliteral
+get_new_reg main numregs: 43
 visitExpressionintliteral done
 function main has 44 regs
 B2:
@@ -1207,6 +1252,29 @@ B0:
 
 }
 ---------------------------------ir after mem2reg-------------------------------------
+get_new_reg main numregs: 44
+get_new_reg main numregs: 45
+get_new_reg main numregs: 46
+get_new_reg main numregs: 47
+get_new_reg main numregs: 48
+get_new_reg main numregs: 49
+get_new_reg main numregs: 50
+get_new_reg main numregs: 51
+get_new_reg main numregs: 52
+get_new_reg main numregs: 53
+get_new_reg main numregs: 54
+get_new_reg main numregs: 55
+get_new_reg main numregs: 56
+get_new_reg main numregs: 57
+get_new_reg main numregs: 58
+get_new_reg main numregs: 59
+get_new_reg main numregs: 60
+get_new_reg main numregs: 61
+get_new_reg main numregs: 62
+get_new_reg main numregs: 63
+get_new_reg main numregs: 64
+get_new_reg main numregs: 65
+get_new_reg main numregs: 66
 ; module
 define i32 @main(){
 B2:
@@ -1861,9 +1929,9 @@ insert_tag:     j B17
 
 insert_tag:     j B17
 
-insert_tag:     j B23
-
 insert_tag:     j B26
+
+insert_tag:     j B23
 
 ---------------------------------ir after resolve phi-------------------------------------
 main:
@@ -2191,6 +2259,12 @@ main Simplify()
 main Simplify()
 main Simplify()
 main AssignColors() done
+fresh temp 67
+fresh temp 68
+fresh temp 69
+fresh temp 70
+fresh temp 71
+fresh temp 72
 main RewriteProgram() done
     li T[-5], 0
     li T[-7], 0
@@ -2209,10 +2283,10 @@ main RewriteProgram() done
     slt T[-10], T[-50], T[-9]
     beq x0, T[-10], B4
     j B3
-    li T[-48], 1
-    sw T[-48], 112(sp)
-    li T[-45], 2
-    sw T[-45], 108(sp)
+    li T[-71], 1
+    sw T[-71], 112(sp)
+    li T[-68], 2
+    sw T[-68], 108(sp)
     j B5
     li T[-44], 0
     mv a0, T[-44]
@@ -2227,9 +2301,9 @@ main RewriteProgram() done
     mv T[-48], T[-49]
     beq x0, T[-13], B7
     j B6
-    lw T[-46], 108(sp)
-    lw T[-49], 112(sp)
-    add T[-17], T[-49], T[-46]
+    lw T[-69], 108(sp)
+    lw T[-72], 112(sp)
+    add T[-17], T[-72], T[-69]
     j B8
     li T[-42], 2
     add T[-43], T[-50], T[-42]
@@ -2241,10 +2315,10 @@ main RewriteProgram() done
     mv T[-52], T[-51]
     mv T[-50], T[-43]
     mv T[-49], T[-48]
-    lw T[-47], 108(sp)
-    mv T[-46], T[-47]
-    lw T[-50], 112(sp)
-    mv T[-45], T[-50]
+    lw T[-70], 108(sp)
+    mv T[-46], T[-70]
+    lw T[-73], 112(sp)
+    mv T[-45], T[-73]
     j B2
     li T[-19], 0
     beq x0, T[-19], B10
@@ -2341,6 +2415,12 @@ main RewriteProgram() done
 main Main()
 main do_liveness_analysis() done
 main Build() done
+simplify reg MkWorklist insert T[-73]
+simplify reg MkWorklist insert T[-72]
+simplify reg MkWorklist insert T[-71]
+simplify reg MkWorklist insert T[-70]
+simplify reg MkWorklist insert T[-69]
+simplify reg MkWorklist insert T[-68]
 spill reg MkWorklist insert T[-67]
 spill reg MkWorklist insert T[-66]
 simplify reg MkWorklist insert T[-65]
@@ -2411,14 +2491,17 @@ main Simplify()
 main Simplify()
 main Simplify()
 main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
+main Simplify()
 main Coalesce()
 main Coalesce()
 main Simplify()
 main Simplify()
 main Simplify()
-main SelectSpill()
-select spill entry
-
 main Simplify()
 main SelectSpill()
 select spill entry
