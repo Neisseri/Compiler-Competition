@@ -1,106 +1,48 @@
 ; module
 define i32 @main(){
-B8:
-  %r1 = alloca i32, i32 4
-  %r2 = call i32 @getint()
-  store i32 %r2, ptr %r1
-  br label %B9
-
-B9:
-  %r3 = load i32, ptr %r1
-  %r4 = add i32 0, 0 ; loadint
-  %tmpcmp5 = icmp sgt i32 %r3, %r4
-  %r5 = zext i1 %tmpcmp5 to i32
-  %tmpconbr5 = trunc i32 %r5 to i1
-  br i1 %tmpconbr5, label %B10, label %B11
-
-B10:
-  %r7 = call i32 @getint()
-  %r8 = add i32 0, 1 ; loadint
-  %r9 = add i32 0, 2 ; loadint
-  %r10 = add i32 0, 3 ; loadint
-  %r6 = call i32 @hanoi(i32 %r7, i32 %r8, i32 %r9, i32 %r10)
-  %r12 = add i32 0, 10 ; loadint
-  %r11 = call i32 @putch(i32 %r12)
-  %r13 = load i32, ptr %r1
-  %r14 = add i32 0, 1 ; loadint
-  %r15 = sub i32 %r13, %r14
-  store i32 %r15, ptr %r1
-  br label %B9
-
-B11:
-  %r16 = add i32 0, 0 ; loadint
-  ret i32 %r16
+B6:
+  %r2 = add i32 0, 2 ; loadint
+  %r3 = add i32 0, 2 ; loadint
+  %r4 = add i32 0, 3 ; loadint
+  %r1 = call i32 @hanoi(i32 %r2, i32 %r3, i32 %r4)
+  %r5 = add i32 0, 0 ; loadint
+  ret i32 %r5
 
 }
-define i32 @hanoi(i32 %r1, i32 %r2, i32 %r3, i32 %r4){
-B2:
+define i32 @hanoi(i32 %r1, i32 %r2, i32 %r3){
+B0:
+  %r4 = alloca i32, i32 4
+  store i32 %r1, ptr %r4
   %r5 = alloca i32, i32 4
-  store i32 %r1, ptr %r5
+  store i32 %r2, ptr %r5
   %r6 = alloca i32, i32 4
-  store i32 %r2, ptr %r6
-  %r7 = alloca i32, i32 4
-  store i32 %r3, ptr %r7
-  %r8 = alloca i32, i32 4
-  store i32 %r4, ptr %r8
-  br label %B3
+  store i32 %r3, ptr %r6
+  br label %B1
+
+B1:
+  %r7 = load i32, ptr %r4
+  %r8 = add i32 0, 1 ; loadint
+  %tmpcmp9 = icmp eq i32 %r7, %r8
+  %r9 = zext i1 %tmpcmp9 to i32
+  %tmpconbr9 = trunc i32 %r9 to i1
+  br i1 %tmpconbr9, label %B2, label %B3
+
+B2:
+  %r11 = load i32, ptr %r6
+  %r10 = call i32 @putint(i32 %r11)
+  br label %B4
 
 B3:
-  %r9 = load i32, ptr %r5
-  %r10 = add i32 0, 1 ; loadint
-  %tmpcmp11 = icmp eq i32 %r9, %r10
-  %r11 = zext i1 %tmpcmp11 to i32
-  %tmpconbr11 = trunc i32 %r11 to i1
-  br i1 %tmpconbr11, label %B4, label %B5
+  %r13 = load i32, ptr %r4
+  %r14 = add i32 0, 1 ; loadint
+  %r15 = sub i32 %r13, %r14
+  %r16 = load i32, ptr %r6
+  %r17 = load i32, ptr %r5
+  %r12 = call i32 @hanoi(i32 %r15, i32 %r16, i32 %r17)
+  br label %B4
 
 B4:
-  %r13 = load i32, ptr %r6
-  %r14 = load i32, ptr %r8
-  %r12 = call i32 @move(i32 %r13, i32 %r14)
-  br label %B6
-
-B5:
-  %r16 = load i32, ptr %r5
-  %r17 = add i32 0, 1 ; loadint
-  %r18 = sub i32 %r16, %r17
-  %r19 = load i32, ptr %r6
-  %r20 = load i32, ptr %r8
-  %r21 = load i32, ptr %r7
-  %r15 = call i32 @hanoi(i32 %r18, i32 %r19, i32 %r20, i32 %r21)
-  %r23 = load i32, ptr %r6
-  %r24 = load i32, ptr %r8
-  %r22 = call i32 @move(i32 %r23, i32 %r24)
-  %r26 = load i32, ptr %r5
-  %r27 = add i32 0, 1 ; loadint
-  %r28 = sub i32 %r26, %r27
-  %r29 = load i32, ptr %r7
-  %r30 = load i32, ptr %r6
-  %r31 = load i32, ptr %r8
-  %r25 = call i32 @hanoi(i32 %r28, i32 %r29, i32 %r30, i32 %r31)
-  br label %B6
-
-B6:
-  %r32 = add i32 0, 0 ; loadint
-  ret i32 %r32
-
-}
-define i32 @move(i32 %r1, i32 %r2){
-B0:
-  %r3 = alloca i32, i32 4
-  store i32 %r1, ptr %r3
-  %r4 = alloca i32, i32 4
-  store i32 %r2, ptr %r4
-  %r6 = load i32, ptr %r3
-  %r5 = call i32 @putint(i32 %r6)
-  %r8 = add i32 0, 32 ; loadint
-  %r7 = call i32 @putch(i32 %r8)
-  %r10 = load i32, ptr %r4
-  %r9 = call i32 @putint(i32 %r10)
-  %r12 = add i32 0, 44 ; loadint
-  %r11 = call i32 @putch(i32 %r12)
-  %r14 = add i32 0, 32 ; loadint
-  %r13 = call i32 @putch(i32 %r14)
-  %r15 = add i32 0, 0 ; loadint
-  ret i32 %r15
+  %r18 = add i32 0, 0 ; loadint
+  ret i32 %r18
 
 }

@@ -137,6 +137,7 @@ namespace riscv {
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           if (i < 7) {
+            // TODO: if src_reg is parameter
             bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
           }
           else {
@@ -201,73 +202,6 @@ namespace riscv {
     for (auto &[name, func]: ir_program.functions)
       functions[name] = new Function(func, name, func_defined);
   }
-
-  // void Function::resolve_phi() {
-  //   std::unordered_map<BasicBlock*, std::set<std::pair<Reg, Reg>>> pair_map;
-  //   // BasicBlock, <dst, src>
-  //   for (auto bb: bbs) {
-  //     auto it = bb->instructions.begin();
-  //     while (it != bb->instructions.end()) {
-  //       auto inst = *it;
-  //       if (auto phi = dynamic_cast<Phi*>(inst)) {
-  //         for (auto i: phi->srcs)
-  //           pair_map[i.second].insert({phi->dst, i.first});
-  //         it = bb->instructions.erase(it);
-  //       }
-  //       else {
-  //         it++;
-  //       }
-  //     }
-  //   }
-  //   for (auto &[bb, pairs]: pair_map) {
-  //     while (!std::all_of(pairs.begin(), pairs.end(), [](const auto p){ return p.first == p.second; })) {
-  //       std::set<Reg> livein;
-  //       for (auto [dst, src]: pairs) 
-  //         livein.insert(src);
-  //       Move* mov = nullptr;
-  //       bool has_erase = false;
-  //       for (auto p: pairs) {
-  //         if (!livein.count(p.first)) {
-  //           auto [dst, src] = p;
-  //           mov = new Move(src, dst);
-  //           pairs.erase(p);
-  //           has_erase = true;
-  //           break;
-  //         }
-  //       }
-  //       if (!has_erase) {
-  //         for (auto p: pairs) {
-  //           if (p.first != p.second) {
-  //             Reg tmp = freshTemp();
-  //             mov = new Move(p.second, tmp);
-  //             p.second = tmp;
-  //           }
-  //         }
-  //       }
-  //       auto insert_tag = std::prev(bb->instructions.end());
-  //       // if 'insert_tag' is beq
-  //       std::cerr << "insert_tag: ";
-  //       (*insert_tag)->emit(std::cerr);
-  //       std::cerr << "\n";
-  //       if (insert_tag != bb->instructions.begin()) {
-  //         auto pre_insert_tag = std::prev(insert_tag);
-  //         while (auto branch = dynamic_cast<Branch*>(*pre_insert_tag)) {
-  //           branch->emit(std::cerr);
-  //           insert_tag = pre_insert_tag;
-  //           if (insert_tag == bb->instructions.begin()) {
-  //             break;
-  //           }
-  //           pre_insert_tag = std::prev(insert_tag);
-  //           std::cerr << "insert_tag: branch ";
-  //           (*insert_tag)->emit(std::cerr);
-  //           std::cerr << "\n";
-  //         }
-  //       }
-  //       bb->instructions.emplace(insert_tag, mov);
-  //       phi_moves.insert(mov);
-  //     }
-  //   }
-  // }
 
   void Function::resolve_phi() {
     std::unordered_map<BasicBlock*, std::set<std::pair<Reg, Reg>>> pair_map;
