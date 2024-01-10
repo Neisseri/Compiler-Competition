@@ -134,11 +134,15 @@ namespace riscv {
               bb->instructions.emplace_back(new StoreWord(Reg(General, i), temp, 0));
             }
         }
+
+        std::vector<std::pair<Reg, Reg>> argregs_swap;
         for (int i = 0; i < num_args; i++) {
           Reg src_reg = Reg(call->params[i]);
           if (i < 7) {
-            // TODO: if src_reg is parameter
-            bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
+            Reg temp = freshTemp();
+            bb->instructions.emplace_back(new Move(src_reg, temp));
+            argregs_swap.push_back(std::pair(temp, Reg(General, argregs[i])));
+            // bb->instructions.emplace_back(new Move(src_reg, Reg(General, argregs[i])));
           }
           else {
             if ((i-7)*4 < 2048)
@@ -152,6 +156,12 @@ namespace riscv {
             frame_size += 4;
           }
         }
+
+        // arg regs swap 
+        for (auto [src, dst]: argregs_swap) {
+          bb->instructions.emplace_back(new Move(src, dst));
+        }
+
         bb->instructions.emplace_back(new Call(call->func_name, num_args));
         bb->instructions.emplace_back(new Move(Reg(General, a0), ret_val));
         for (int i = 0; i < 32; i++) {

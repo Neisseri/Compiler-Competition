@@ -171,7 +171,7 @@ Info: visitExpr@n
 Info: visitLvalExpr@n
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x56546cc70170
+ret->type 0x55f5e9ea4e00
 Info: visitStatementCall @putint(@three)
 Info: visitExprStmtCall @putint(@three)
 Info: visitExprCall @putint(@three)
@@ -191,7 +191,7 @@ Info: visitExpr@n
 Info: visitLvalExpr@n
 Info: visitExpr1
 Info: visitIntLiteralExpr1
-ret->type 0x56546cc701a0
+ret->type 0x55f5e9ea4e30
 Info: visitExpr@three
 Info: visitLvalExpr@three
 Info: visitExpr@two
@@ -205,17 +205,17 @@ Info: visitExprCall @hanoi(2, 2, 3)
 Info: visiCalltExprCall @hanoi(2, 2, 3)
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x56546cc70270
+ret->type 0x55f5e9ea4f00
 Info: visitExpr2
 Info: visitIntLiteralExpr2
-ret->type 0x56546cc70300
+ret->type 0x55f5e9ea4f90
 Info: visitExpr3
 Info: visitIntLiteralExpr3
-ret->type 0x56546cc70330
+ret->type 0x55f5e9ea4fc0
 Info: visitStatementReturn 0
 Info: visitExpr0
 Info: visitIntLiteralExpr0
-ret->type 0x56546cc70360
+ret->type 0x55f5e9ea4ff0
 Info: visitReturnStmtReturn 0function has returnscope id4
 ast: 
 Program
@@ -461,44 +461,6 @@ B4:
   ret i32 %r18
 
 }
----------------------------------ir after mem2reg-------------------------------------
-; module
-define i32 @main(){
-B6:
-  %r2 = add i32 0, 2 ; loadint
-  %r3 = add i32 0, 2 ; loadint
-  %r4 = add i32 0, 3 ; loadint
-  %r1 = call i32 @hanoi(i32 %r2, i32 %r3, i32 %r4)
-  %r5 = add i32 0, 0 ; loadint
-  ret i32 %r5
-
-}
-define i32 @hanoi(i32 %r1, i32 %r2, i32 %r3){
-B0:
-  br label %B1
-
-B1:
-  %r8 = add i32 0, 1 ; loadint
-  %tmpcmp9 = icmp eq i32 %r1, %r8
-  %r9 = zext i1 %tmpcmp9 to i32
-  %tmpconbr9 = trunc i32 %r9 to i1
-  br i1 %tmpconbr9, label %B2, label %B3
-
-B2:
-  %r10 = call i32 @putint(i32 %r3)
-  br label %B4
-
-B3:
-  %r14 = add i32 0, 1 ; loadint
-  %r15 = sub i32 %r1, %r14
-  %r12 = call i32 @hanoi(i32 %r15, i32 %r3, i32 %r2)
-  br label %B4
-
-B4:
-  %r18 = add i32 0, 0 ; loadint
-  ret i32 %r18
-
-}
 ---------------------------------ir -------------------------------------
 ; module
 define i32 @main(){
@@ -513,23 +475,34 @@ B6:
 }
 define i32 @hanoi(i32 %r1, i32 %r2, i32 %r3){
 B0:
+  %r4 = alloca i32, i32 4
+  store i32 %r1, ptr %r4
+  %r5 = alloca i32, i32 4
+  store i32 %r2, ptr %r5
+  %r6 = alloca i32, i32 4
+  store i32 %r3, ptr %r6
   br label %B1
 
 B1:
+  %r7 = load i32, ptr %r4
   %r8 = add i32 0, 1 ; loadint
-  %tmpcmp9 = icmp eq i32 %r1, %r8
+  %tmpcmp9 = icmp eq i32 %r7, %r8
   %r9 = zext i1 %tmpcmp9 to i32
   %tmpconbr9 = trunc i32 %r9 to i1
   br i1 %tmpconbr9, label %B2, label %B3
 
 B2:
-  %r10 = call i32 @putint(i32 %r3)
+  %r11 = load i32, ptr %r6
+  %r10 = call i32 @putint(i32 %r11)
   br label %B4
 
 B3:
+  %r13 = load i32, ptr %r4
   %r14 = add i32 0, 1 ; loadint
-  %r15 = sub i32 %r1, %r14
-  %r12 = call i32 @hanoi(i32 %r15, i32 %r3, i32 %r2)
+  %r15 = sub i32 %r13, %r14
+  %r16 = load i32, ptr %r6
+  %r17 = load i32, ptr %r5
+  %r12 = call i32 @hanoi(i32 %r15, i32 %r16, i32 %r17)
   br label %B4
 
 B4:
@@ -539,6 +512,9 @@ B4:
 }
 --------------------------- building riscv ---------------------------
 riscv: 
+fresh temp 5
+fresh temp 6
+fresh temp 7
     li T[-2], 2
     li T[-3], 2
     li T[-4], 3
@@ -557,9 +533,12 @@ riscv:
     sw t4, 96(sp)
     sw t5, 100(sp)
     sw t6, 104(sp)
-    mv a1, T[-2]
-    mv a2, T[-3]
-    mv a3, T[-4]
+    mv T[-6], T[-2]
+    mv T[-7], T[-3]
+    mv T[-8], T[-4]
+    mv a1, T[-6]
+    mv a2, T[-7]
+    mv a3, T[-8]
     call hanoi
     mv T[-1], a0
     lw t0, 48(sp)
@@ -580,24 +559,38 @@ riscv:
     li T[-5], 0
     mv a0, T[-5]
     ret
+fresh temp 18
+fresh temp 19
+fresh temp 20
+    addi T[-4], sp, 108
+    sw a1, 0(T[-4])
+    addi T[-5], sp, 112
+    sw a2, 0(T[-5])
+    addi T[-6], sp, 116
+    sw a3, 0(T[-6])
     j B4
+    lw T[-7], 0(T[-4])
     li T[-8], 1
-    sub T[-9], a1, T[-8]
+    sub T[-9], T[-7], T[-8]
     seqz T[-9], T[-9]
     beq x0, T[-9], B6
     j B5
+    lw T[-11], 0(T[-6])
     sw a1, 64(sp)
     sw a2, 68(sp)
     sw a3, 72(sp)
-    mv a0, a3
+    mv a0, T[-11]
     call putint
     mv T[-10], a0
     lw a1, 64(sp)
     lw a2, 68(sp)
     lw a3, 72(sp)
     j B7
+    lw T[-13], 0(T[-4])
     li T[-14], 1
-    sub T[-15], a1, T[-14]
+    sub T[-15], T[-13], T[-14]
+    lw T[-16], 0(T[-6])
+    lw T[-17], 0(T[-5])
     sw t0, 48(sp)
     sw t1, 52(sp)
     sw t2, 56(sp)
@@ -613,9 +606,12 @@ riscv:
     sw t4, 96(sp)
     sw t5, 100(sp)
     sw t6, 104(sp)
-    mv a1, T[-15]
-    mv a2, a3
-    mv a3, a2
+    mv T[-19], T[-15]
+    mv T[-20], T[-16]
+    mv T[-21], T[-17]
+    mv a1, T[-19]
+    mv a2, T[-20]
+    mv a3, T[-21]
     call hanoi
     mv T[-12], a0
     lw t0, 48(sp)
@@ -638,98 +634,47 @@ riscv:
     mv a0, T[-18]
     ret
 ?
----------------------------------ir after resolve phi-------------------------------------
-hanoi:
-B2:
-
-B3:
-    j B4
-
-B4:
-    li T[-8], 1
-    sub T[-9], a1, T[-8]
-    seqz T[-9], T[-9]
-    beq x0, T[-9], B6
-    j B5
-
-B5:
-    sw a1, 64(sp)
-    sw a2, 68(sp)
-    sw a3, 72(sp)
-    mv a0, a3
-    call putint
-    mv T[-10], a0
-    lw a1, 64(sp)
-    lw a2, 68(sp)
-    lw a3, 72(sp)
-    j B7
-
-B6:
-    li T[-14], 1
-    sub T[-15], a1, T[-14]
-    sw t0, 48(sp)
-    sw t1, 52(sp)
-    sw t2, 56(sp)
-    sw a0, 60(sp)
-    sw a1, 64(sp)
-    sw a2, 68(sp)
-    sw a3, 72(sp)
-    sw a4, 76(sp)
-    sw a5, 80(sp)
-    sw a6, 84(sp)
-    sw a7, 88(sp)
-    sw t3, 92(sp)
-    sw t4, 96(sp)
-    sw t5, 100(sp)
-    sw t6, 104(sp)
-    mv a1, T[-15]
-    mv a2, a3
-    mv a3, a2
-    call hanoi
-    mv T[-12], a0
-    lw t0, 48(sp)
-    lw t1, 52(sp)
-    lw t2, 56(sp)
-    lw a0, 60(sp)
-    lw a1, 64(sp)
-    lw a2, 68(sp)
-    lw a3, 72(sp)
-    lw a4, 76(sp)
-    lw a5, 80(sp)
-    lw a6, 84(sp)
-    lw a7, 88(sp)
-    lw t3, 92(sp)
-    lw t4, 96(sp)
-    lw t5, 100(sp)
-    lw t6, 104(sp)
-    j B7
-
-B7:
-    li T[-18], 0
-    mv a0, T[-18]
-    ret
-
----------------------------------ir after resolve phi end --------------------------------
 hanoi Main()
 hanoi do_liveness_analysis() done
 hanoi Build() done
+freeze reg MkWorklist insert T[-21]
+freeze reg MkWorklist insert T[-20]
+freeze reg MkWorklist insert T[-19]
 freeze reg MkWorklist insert T[-18]
+freeze reg MkWorklist insert T[-17]
+freeze reg MkWorklist insert T[-16]
 freeze reg MkWorklist insert T[-15]
 simplify reg MkWorklist insert T[-14]
+simplify reg MkWorklist insert T[-13]
 freeze reg MkWorklist insert T[-12]
+freeze reg MkWorklist insert T[-11]
 freeze reg MkWorklist insert T[-10]
 simplify reg MkWorklist insert T[-9]
 simplify reg MkWorklist insert T[-8]
+simplify reg MkWorklist insert T[-7]
+simplify reg MkWorklist insert T[-6]
+simplify reg MkWorklist insert T[-5]
+simplify reg MkWorklist insert T[-4]
 hanoi MkWorklist() done
 hanoi Simplify()
 hanoi Simplify()
 hanoi Simplify()
+hanoi Simplify()
+hanoi Simplify()
+hanoi Simplify()
+hanoi Simplify()
+hanoi Simplify()
+hanoi Coalesce()
+hanoi Coalesce()
+hanoi Coalesce()
 hanoi Coalesce()
 hanoi Coalesce()
 hanoi Coalesce()
 hanoi Simplify()
 hanoi Coalesce()
+hanoi Simplify()
 hanoi Coalesce()
+hanoi Simplify()
 hanoi Coalesce()
 hanoi Coalesce()
 hanoi AssignColors() done
@@ -739,63 +684,21 @@ hanoi
 after compute reg_used
 after prologue
 end of emitend
----------------------------------ir after resolve phi-------------------------------------
-main:
-B0:
-
-B1:
-    li T[-2], 2
-    li T[-3], 2
-    li T[-4], 3
-    sw t0, 48(sp)
-    sw t1, 52(sp)
-    sw t2, 56(sp)
-    sw a0, 60(sp)
-    sw a1, 64(sp)
-    sw a2, 68(sp)
-    sw a3, 72(sp)
-    sw a4, 76(sp)
-    sw a5, 80(sp)
-    sw a6, 84(sp)
-    sw a7, 88(sp)
-    sw t3, 92(sp)
-    sw t4, 96(sp)
-    sw t5, 100(sp)
-    sw t6, 104(sp)
-    mv a1, T[-2]
-    mv a2, T[-3]
-    mv a3, T[-4]
-    call hanoi
-    mv T[-1], a0
-    lw t0, 48(sp)
-    lw t1, 52(sp)
-    lw t2, 56(sp)
-    lw a0, 60(sp)
-    lw a1, 64(sp)
-    lw a2, 68(sp)
-    lw a3, 72(sp)
-    lw a4, 76(sp)
-    lw a5, 80(sp)
-    lw a6, 84(sp)
-    lw a7, 88(sp)
-    lw t3, 92(sp)
-    lw t4, 96(sp)
-    lw t5, 100(sp)
-    lw t6, 104(sp)
-    li T[-5], 0
-    mv a0, T[-5]
-    ret
-
----------------------------------ir after resolve phi end --------------------------------
 main Main()
 main do_liveness_analysis() done
 main Build() done
+freeze reg MkWorklist insert T[-8]
+freeze reg MkWorklist insert T[-7]
+freeze reg MkWorklist insert T[-6]
 freeze reg MkWorklist insert T[-5]
 freeze reg MkWorklist insert T[-4]
 freeze reg MkWorklist insert T[-3]
 freeze reg MkWorklist insert T[-2]
 freeze reg MkWorklist insert T[-1]
 main MkWorklist() done
+main Coalesce()
+main Coalesce()
+main Coalesce()
 main Coalesce()
 main Simplify()
 main Coalesce()
