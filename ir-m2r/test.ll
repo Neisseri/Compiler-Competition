@@ -1,137 +1,146 @@
 ; module
 define i32 @main(){
 B2:
-  %r2 = add i32 0, 1 ; loadint
-  %r4 = add i32 0, 1 ; loadint
+  %r5 = add i32 0, 0 ; loadint
+  %r7 = add i32 0, 0 ; loadint
   br label %B3
 
 B3:
-  %r76 = phi i32 [ %r2, %B2 ], [ %r75, %B23 ]
-  %r72 = phi i32 [ %r2, %B2 ], [ %r6, %B23 ]
-  %r71 = phi i32 [ %r2, %B2 ], [ %r70, %B23 ]
-  %r67 = phi i32 [ %r2, %B2 ], [ %r66, %B23 ]
-  %r63 = phi i32 [ %r2, %B2 ], [ %r62, %B23 ]
-  %r60 = phi i32 [ %r2, %B2 ], [ %r11, %B23 ]
-  %r58 = phi i32 [ %r2, %B2 ], [ %r59, %B23 ]
-  %r57 = phi i32 [ %r2, %B2 ], [ %r56, %B23 ]
-  %r53 = phi i32 [ %r2, %B2 ], [ %r52, %B23 ]
-  %r51 = phi i32 [ %r2, %B2 ], [ %r50, %B23 ]
-  %tmpconbr72 = trunc i32 %r72 to i1
-  br i1 %tmpconbr72, label %B4, label %B5
+  %r67 = phi i32 [ %r5, %B2 ], [ %r66, %B8 ]
+  %r64 = phi i32 [ %r5, %B2 ], [ %r63, %B8 ]
+  %r61 = phi i32 [ %r5, %B2 ], [ %r60, %B8 ]
+  %r58 = phi i32 [ %r5, %B2 ], [ %r57, %B8 ]
+  %r55 = phi i32 [ %r5, %B2 ], [ %r54, %B8 ]
+  %r52 = phi i32 [ %r5, %B2 ], [ %r51, %B8 ]
+  %r50 = phi i32 [ %r7, %B2 ], [ %r43, %B8 ]
+  %r49 = phi i32 [ %r5, %B2 ], [ %r48, %B8 ]
+  %r46 = phi i32 [ %r5, %B2 ], [ %r12, %B8 ]
+  %r45 = phi i32 [ %r5, %B2 ], [ %r11, %B8 ]
+  %r9 = add i32 0, 2 ; loadint
+  %tmpcmp10 = icmp slt i32 %r50, %r9
+  %r10 = zext i1 %tmpcmp10 to i32
+  %tmpconbr10 = trunc i32 %r10 to i1
+  br i1 %tmpconbr10, label %B4, label %B5
 
 B4:
-  %r6 = add i32 0, 0 ; loadint
-  %r8 = add i32 0, 0 ; loadint
-  %r9 = call i32 @init()
-  %r11 = add i32 0, 0 ; loadint
+  %r11 = add i32 0, 1 ; loadint
+  %r12 = add i32 0, 2 ; loadint
   br label %B6
 
 B5:
-  %r49 = add i32 0, 0 ; loadint
-  ret i32 %r49
+  %r44 = add i32 0, 0 ; loadint
+  ret i32 %r44
 
 B6:
-  %r75 = phi i32 [ %r76, %B4 ], [ %r74, %B11 ]
-  %r70 = phi i32 [ %r71, %B4 ], [ %r69, %B11 ]
-  %r66 = phi i32 [ %r67, %B4 ], [ %r65, %B11 ]
-  %r62 = phi i32 [ %r63, %B4 ], [ %r61, %B11 ]
-  %r59 = phi i32 [ %r8, %B4 ], [ %r47, %B11 ]
-  %r56 = phi i32 [ %r57, %B4 ], [ %r55, %B11 ]
-  %r52 = phi i32 [ %r53, %B4 ], [ %r18, %B11 ]
-  %r50 = phi i32 [ %r51, %B4 ], [ %r16, %B11 ]
-  %r13 = add i32 0, 3 ; loadint
-  %tmpcmp14 = icmp slt i32 %r59, %r13
-  %r14 = zext i1 %tmpcmp14 to i32
-  %tmpconbr14 = trunc i32 %r14 to i1
-  br i1 %tmpconbr14, label %B7, label %B8
+  %r13 = add i32 0, 0 ; loadint
+  %tmpconbr13 = trunc i32 %r13 to i1
+  br i1 %tmpconbr13, label %B7, label %B8
 
 B7:
-  %r16 = add i32 0, 1 ; loadint
-  %r18 = add i32 0, 1 ; loadint
+  %r17 = add i32 %r11, %r12
   br label %B9
 
 B8:
-  br label %B21
+  %r66 = phi i32 [ %r67, %B6 ], [ %r65, %B29 ]
+  %r63 = phi i32 [ %r64, %B6 ], [ %r62, %B29 ]
+  %r60 = phi i32 [ %r61, %B6 ], [ %r59, %B29 ]
+  %r57 = phi i32 [ %r58, %B6 ], [ %r56, %B29 ]
+  %r54 = phi i32 [ %r55, %B6 ], [ %r53, %B29 ]
+  %r51 = phi i32 [ %r52, %B6 ], [ %r17, %B29 ]
+  %r48 = phi i32 [ %r49, %B6 ], [ %r47, %B29 ]
+  %r42 = add i32 0, 2 ; loadint
+  %r43 = add i32 %r50, %r42
+  br label %B3
 
 B9:
-  %r19 = add i32 0, 1 ; loadint
+  %r19 = add i32 0, 0 ; loadint
   %tmpconbr19 = trunc i32 %r19 to i1
   br i1 %tmpconbr19, label %B10, label %B11
 
 B10:
+  %r20 = add i32 0, 0 ; loadint
   br label %B12
 
 B11:
-  %r74 = phi i32 [ %r75, %B9 ], [ %r73, %B20 ]
-  %r69 = phi i32 [ %r70, %B9 ], [ %r68, %B20 ]
-  %r65 = phi i32 [ %r66, %B9 ], [ %r64, %B20 ]
-  %r61 = phi i32 [ %r62, %B9 ], [ %r16, %B20 ]
-  %r55 = phi i32 [ %r56, %B9 ], [ %r54, %B20 ]
-  %r46 = add i32 0, 1 ; loadint
-  %r47 = add i32 %r59, %r46
-  br label %B6
+  %r21 = add i32 0, 0 ; loadint
+  br label %B12
 
 B12:
-  %r25 = add i32 0, 1 ; loadint
-  %r27 = add i32 0, 0 ; loadint
-  %r26 = sub i32 %r27, %r25
-  %tmpcmp28 = icmp ne i32 %r4, %r26
-  %r28 = zext i1 %tmpcmp28 to i32
-  %tmpconbr28 = trunc i32 %r28 to i1
-  br i1 %tmpconbr28, label %B13, label %B14
+  %r53 = phi i32 [ %r20, %B10 ], [ %r21, %B11 ]
+  %tmpconbr53 = trunc i32 %r53 to i1
+  br i1 %tmpconbr53, label %B13, label %B14
 
 B13:
-  %r30 = add i32 0, 1 ; loadint
-  %r32 = add i32 0, 0 ; loadint
-  %r31 = sub i32 %r32, %r30
-  %tmpcmp33 = icmp ne i32 %r4, %r31
-  %r33 = zext i1 %tmpcmp33 to i32
-  br label %B15
+  br label %B14
 
 B14:
-  %r34 = add i32 0, 0 ; loadint
   br label %B15
 
 B15:
-  %r68 = phi i32 [ %r33, %B13 ], [ %r34, %B14 ]
-  %tmpconbr68 = trunc i32 %r68 to i1
-  br i1 %tmpconbr68, label %B16, label %B17
+  %r24 = add i32 0, 0 ; loadint
+  %tmpconbr24 = trunc i32 %r24 to i1
+  br i1 %tmpconbr24, label %B16, label %B17
 
 B16:
-  %r36 = add i32 0, 0 ; loadint
-  %tmpcmp38 = icmp eq i32 %r36, %r11
-  %r38 = zext i1 %tmpcmp38 to i32
+  %r25 = add i32 0, 0 ; loadint
   br label %B18
 
 B17:
-  %r39 = add i32 0, 0 ; loadint
+  %r26 = add i32 0, 0 ; loadint
   br label %B18
 
 B18:
-  %r64 = phi i32 [ %r38, %B16 ], [ %r39, %B17 ]
-  %tmpconbr64 = trunc i32 %r64 to i1
-  br i1 %tmpconbr64, label %B19, label %B20
+  %r56 = phi i32 [ %r25, %B16 ], [ %r26, %B17 ]
+  %tmpconbr56 = trunc i32 %r56 to i1
+  br i1 %tmpconbr56, label %B19, label %B20
 
 B19:
-  %r42 = add i32 0, 1 ; loadint
-  %r44 = add i32 0, 1 ; loadint
+  %r28 = call i32 @init()
   br label %B20
 
 B20:
-  %r73 = phi i32 [ %r75, %B18 ], [ %r44, %B19 ]
-  %r54 = phi i32 [ %r56, %B18 ], [ %r42, %B19 ]
-  br label %B11
+  br label %B21
 
 B21:
-  %r48 = add i32 0, 1 ; loadint
-  %tmpconbr48 = trunc i32 %r48 to i1
-  br i1 %tmpconbr48, label %B22, label %B23
+  %r31 = add i32 0, 0 ; loadint
+  %tmpconbr31 = trunc i32 %r31 to i1
+  br i1 %tmpconbr31, label %B22, label %B23
 
 B22:
-  br label %B23
+  %r32 = add i32 0, 0 ; loadint
+  br label %B24
 
 B23:
-  br label %B3
+  %r33 = add i32 0, 0 ; loadint
+  br label %B24
+
+B24:
+  %r62 = phi i32 [ %r32, %B22 ], [ %r33, %B23 ]
+  %tmpconbr62 = trunc i32 %r62 to i1
+  br i1 %tmpconbr62, label %B25, label %B26
+
+B25:
+  %r35 = add i32 0, 0 ; loadint
+  br label %B27
+
+B26:
+  %r36 = add i32 0, 0 ; loadint
+  br label %B27
+
+B27:
+  %r59 = phi i32 [ %r35, %B25 ], [ %r36, %B26 ]
+  %tmpconbr59 = trunc i32 %r59 to i1
+  br i1 %tmpconbr59, label %B28, label %B29
+
+B28:
+  %r38 = add i32 0, 1 ; loadint
+  %r40 = add i32 0, 1 ; loadint
+  br label %B29
+
+B29:
+  %r65 = phi i32 [ %r67, %B27 ], [ %r40, %B28 ]
+  %r47 = phi i32 [ %r49, %B27 ], [ %r38, %B28 ]
+  br label %B8
 
 }
 define i32 @init(){

@@ -134,7 +134,7 @@ struct GlobalDef: Instruction {
                 ret += " " + std::to_string(init_val[0]);
             }
         }
-        ret += ", i32 " + std::to_string(type.get_array_size() * 4);
+        // ret += ", i32 " + std::to_string(type.get_array_size() * 4);
         return ret;
     }
 
