@@ -224,12 +224,16 @@ namespace riscv {
         std::set<Reg> livein;
         for (auto [dst, src]: pairs) 
           livein.insert(src);
-        Move* mov = nullptr;
+        // Move* mov = nullptr;
+        ADDI* mov = nullptr;
+
         bool has_erase = false;
         for (auto p: pairs) {
           if (!livein.count(p.first)) {
             auto [dst, src] = p;
-            mov = new Move(src, dst);
+            // mov = new Move(src, dst);
+            mov = new ADDI(dst, src, 0);
+
             pairs.erase(p);
             has_erase = true;
             break;
@@ -239,7 +243,9 @@ namespace riscv {
           for (auto p: pairs) {
             if (p.first != p.second) {
               Reg tmp = freshTemp();
-              mov = new Move(p.second, tmp);
+              // mov = new Move(p.second, tmp);
+              mov = new ADDI(tmp, p.second, 0);
+
               p.second = tmp;
             }
           }
@@ -264,7 +270,7 @@ namespace riscv {
           }
         }
         bb->instructions.emplace(insert_tag, mov);
-        phi_moves.insert(mov);
+        // phi_moves.insert(mov);
       }
     }
   }
